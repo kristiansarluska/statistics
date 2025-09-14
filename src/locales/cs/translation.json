@@ -1,10 +1,23 @@
 {
   "navbar": {
-    "home": "Domů",
+    "home": "Úvod",
+    "about": "O bakalářské práci",
     "links": "Důležité odkazy",
-    "about": "O projektu"
+    "topics": "Témy",
+    "dropdown": {
+      "department": "Katedra",
+      "bootstrap": "Bootstrap",
+      "contact": "Kontakt"
+    }
   },
-  "sidebar": {
-    "topics": "Probíraná témata"
+  "topics": {
+    "randomVariable": "Náhodná veličina",
+    "distributions": "Rozdělení pravděpodobnosti",
+    "parameterEstimation": "Odhady parametrů",
+    "hypothesisTesting": "Testování hypotéz",
+    "correlation": "Korelace",
+    "spatialAutocorrelation": "Prostorová autokorelace",
+    "regression": "Regrese",
+    "statisticalMethods": "Statistické metody v geoinformatice"
   }
 }

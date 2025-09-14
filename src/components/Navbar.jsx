@@ -1,12 +1,14 @@
 // src/components/Navbar.jsx
 import React from "react";
 import ThemeToggle from "./ThemeToggle";
-import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import { LanguageSwitcher } from "./LanguageSwitcher.jsx";
+import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 
 function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+  const { t } = useTranslation();
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-secondary border-bottom">
@@ -15,7 +17,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
           className="btn btn-primary d-flex align-items-center"
           onClick={onToggleSidebar}
         >
-          Kapitoly
+          {t("navbar.topics")}
           <img
             className={`arrow ms-2 ${isSidebarOpen ? "open" : ""}`}
             src="./assets/images/up-arrow.png"
@@ -39,12 +41,12 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
           <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
             <li className="nav-item active">
               <a className="nav-link" href="#!">
-                Úvod
+                {t("navbar.home")}
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#!">
-                O bakalárskej práci
+                {t("navbar.about")}
               </a>
             </li>
             <li className="nav-item dropdown">
@@ -57,7 +59,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Dôležité odkazy
+                {t("navbar.links")}
               </a>
               <div
                 className="dropdown-menu dropdown-menu-end"
@@ -76,11 +78,9 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
               </div>
             </li>
           </ul>
-          <div>
-            <LanguageSwitcher />
-          </div>
-          <div className="ms-auto">
+          <div className="d-flex ms-auto align-items-center">
             <ThemeToggle />
+            <LanguageSwitcher />
           </div>
         </div>
       </div>

@@ -1,37 +1,40 @@
 // src/components/Sidebar.jsx
 import React from "react";
 import "../styles/sidebar.css";
+import { useTranslation } from "react-i18next";
 
 function Sidebar() {
+  const { t } = useTranslation();
+
   return (
     <div
       className="border-end bg-body-tertiary d-flex flex-column"
       id="sidebar-wrapper"
     >
       <div className="sidebar-heading border-bottom">
-        Štatistické metódy v geoinformatike
+        {t("topics.statisticalMethods")}
       </div>
       <div className="list-group">
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Náhodná veličina
+          {t("topics.randomVariable")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Rozdelenia pravdepodobnosti
+          {t("topics.distributions")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Odhady parametrov
+          {t("topics.parameterEstimation")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Testovanie hypotéz
+          {t("topics.hypothesisTesting")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Korelácia
+          {t("topics.correlation")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Priestorová autokorelácia
+          {t("topics.spatialAutocorrelation")}
         </a>
         <a className="list-group-item list-group-item-action p-3" href="#!">
-          Regresia
+          {t("topics.regression")}
         </a>
       </div>
     </div>

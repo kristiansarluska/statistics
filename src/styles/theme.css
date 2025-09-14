@@ -95,3 +95,14 @@ input:checked + .slider:before {
 .slider .moon {
   margin-right: 2px;
 }
+
+.language-flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+
+
