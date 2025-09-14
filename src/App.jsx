@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 
 import "./styles/bootstrap.css";
 import "./styles/sidebar.css";
+import "./styles/theme.css";
 
 function App() {
   return (

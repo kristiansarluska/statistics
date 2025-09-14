@@ -5,53 +5,32 @@ import "../styles/sidebar.css";
 function Sidebar() {
   return (
     <div
-      className="border-end bg-white d-flex flex-column"
+      className="border-end bg-body-tertiary d-flex flex-column"
       id="sidebar-wrapper"
     >
-      <div className="sidebar-heading border-bottom bg-light">
+      <div className="sidebar-heading border-bottom">
         Štatistické metódy v geoinformatike
       </div>
       <div className="list-group">
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Náhodná veličina
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Rozdelenia pravdepodobnosti
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Odhady parametrov
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Testovanie hypotéz
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Korelácia
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Priestorová autokorelácia
         </a>
-        <a
-          className="list-group-item list-group-item-action list-group-item-light p-3"
-          href="#!"
-        >
+        <a className="list-group-item list-group-item-action p-3" href="#!">
           Regresia
         </a>
       </div>

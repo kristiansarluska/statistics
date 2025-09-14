@@ -1,9 +1,15 @@
 // src/components/Navbar.jsx
 import React from "react";
+import ThemeToggle from "./ThemeToggle";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext.jsx";
 
 function Navbar({ onToggleSidebar, isSidebarOpen }) {
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <nav className="navbar navbar-expand-lg bg-body-secondary border-bottom">
       <div className="container-fluid">
         <button
           className="btn btn-primary d-flex align-items-center"
@@ -70,6 +76,12 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
               </div>
             </li>
           </ul>
+          <div>
+            <LanguageSwitcher />
+          </div>
+          <div className="ms-auto">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </nav>

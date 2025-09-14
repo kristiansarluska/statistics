@@ -1,0 +1,10 @@
+{
+  "navbar": {
+    "home": "Domů",
+    "links": "Důležité odkazy",
+    "about": "O projektu"
+  },
+  "sidebar": {
+    "topics": "Probíraná témata"
+  }
+}

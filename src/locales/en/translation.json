@@ -1,0 +1,10 @@
+{
+  "navbar": {
+    "home": "Home",
+    "links": "Important links",
+    "about": "About project"
+  },
+  "sidebar": {
+    "topics": "Covered topics"
+  }
+}
