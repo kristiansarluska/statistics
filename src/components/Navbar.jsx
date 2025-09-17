@@ -21,7 +21,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
           {t("navbar.topics")}
           <img
             className={`arrow ms-2 ${isSidebarOpen ? "open" : ""}`}
-            src="./assets/images/up-arrow.png"
+            src={`${import.meta.env.BASE_URL}assets/images/app-arrow.png`}
             alt="Toggle arrow"
           />
         </button>
