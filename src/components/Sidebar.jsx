@@ -2,6 +2,7 @@
 import React from "react";
 import "../styles/sidebar.css";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   const { t } = useTranslation();
@@ -15,27 +16,48 @@ function Sidebar() {
         {t("topics.statisticalMethods")}
       </div>
       <div className="list-group">
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        <Link
+          to="/random-variable"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.randomVariable")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
-          {t("topics.distributions")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        </Link>
+        <Link
+          to="/probability-distributions"
+          className="list-group-item list-group-item-action p-3"
+        >
+          {t("topics.probabilityDistributions")}
+        </Link>
+        <Link
+          to="/parameter-estimation"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.parameterEstimation")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        </Link>
+        <Link
+          to="/hypothesis-testing"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.hypothesisTesting")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        </Link>
+        <Link
+          to="/correlation"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.correlation")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        </Link>
+        <Link
+          to="/spatial-autocorrelation"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.spatialAutocorrelation")}
-        </a>
-        <a className="list-group-item list-group-item-action p-3" href="#!">
+        </Link>
+        <Link
+          to="/regression"
+          className="list-group-item list-group-item-action p-3"
+        >
           {t("topics.regression")}
-        </a>
+        </Link>
       </div>
     </div>
   );

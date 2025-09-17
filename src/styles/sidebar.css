@@ -37,7 +37,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
 #sidebarToggle .arrow {
   width: 1rem;
   transform: rotate(0deg);
-  transition: transform 0.25s ease;
+  transition: transform 1s ease;
 }
 
 /* When open → arrow ▼ */

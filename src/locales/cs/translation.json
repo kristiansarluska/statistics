@@ -12,7 +12,7 @@
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
-    "distributions": "Rozdělení pravděpodobnosti",
+    "probabilityDistributions": "Rozdělení pravděpodobnosti",
     "parameterEstimation": "Odhady parametrů",
     "hypothesisTesting": "Testování hypotéz",
     "correlation": "Korelace",

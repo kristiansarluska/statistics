@@ -5,6 +5,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext.jsx";
+import { Link } from "react-router-dom";
 
 function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -40,9 +41,9 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
             <li className="nav-item active">
-              <a className="nav-link" href="#!">
+              <Link to="/" className="nav-link">
                 {t("navbar.home")}
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#!">
@@ -65,15 +66,26 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdown"
               >
-                <a className="dropdown-item" href="#!">
-                  Katedra
+                <a
+                  className="dropdown-item"
+                  href="https://www.geoinformatics.upol.cz/"
+                  target="_blank"
+                >
+                  {t("navbar.dropdown.department")}
                 </a>
-                <a className="dropdown-item" href="#!">
-                  Bootstrap
+                <a
+                  className="dropdown-item"
+                  href="https://getbootstrap.com/"
+                  target="_blank"
+                >
+                  {t("navbar.dropdown.bootstrap")}
                 </a>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#!">
-                  Kontakt
+                <a
+                  className="dropdown-item"
+                  href="mailto:kikosarluska@gmail.com"
+                >
+                  {t("navbar.dropdown.contact")}
                 </a>
               </div>
             </li>

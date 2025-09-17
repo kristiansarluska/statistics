@@ -13,7 +13,8 @@
     "i18next-http-backend": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^15.7.3"
+    "react-i18next": "^15.7.3",
+    "react-router-dom": "^7.9.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

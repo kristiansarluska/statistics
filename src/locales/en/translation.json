@@ -12,7 +12,7 @@
   },
   "topics": {
     "randomVariable": "Random Variable",
-    "distributions": "Probability Distributions",
+    "probabilityDistributions": "Probability Distributions",
     "parameterEstimation": "Parameter Estimation",
     "hypothesisTesting": "Hypothesis Testing",
     "correlation": "Correlation",
