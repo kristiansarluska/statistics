@@ -5,9 +5,21 @@ export function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
   const languages = [
-    { code: "sk", label: "SK", flag: "/assets/images/sk.webp" },
-    { code: "cs", label: "CZ", flag: "/assets/images/cs.webp" },
-    { code: "en", label: "EN", flag: "/assets/images/en.webp" },
+    {
+      code: "sk",
+      label: "SK",
+      flag: `${import.meta.env.BASE_URL}assets/images/sk.webp`,
+    },
+    {
+      code: "cs",
+      label: "CZ",
+      flag: `${import.meta.env.BASE_URL}assets/images/cs.webp`,
+    },
+    {
+      code: "en",
+      label: "EN",
+      flag: `${import.meta.env.BASE_URL}assets/images/en.webp`,
+    },
   ];
 
   const changeLanguage = (lng) => i18n.changeLanguage(lng);

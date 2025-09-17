@@ -11,12 +11,12 @@ function ThemeToggle() {
       <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
       <span className="slider">
         <img
-          src="../assets/images/sun.png"
+          src={`${import.meta.env.BASE_URL}assets/images/sun.png`}
           alt="Light mode"
           className="icon sun"
         />
         <img
-          src="../assets/images/night-mode.png"
+          src={`${import.meta.env.BASE_URL}assets/images/night-mode.png`}
           alt="Dark mode"
           className="icon moon"
         />
