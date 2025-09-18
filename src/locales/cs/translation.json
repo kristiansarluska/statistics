@@ -12,12 +12,26 @@
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
+    "randomVariable.description": "Náhodná veličina",
+
     "probabilityDistributions": "Rozdělení pravděpodobnosti",
+    "probabilityDistributions.description": "Rozdělení pravděpodobnosti",
+
     "parameterEstimation": "Odhady parametrů",
+    "parameterEstimation.description": "Odhady parametrů",
+
     "hypothesisTesting": "Testování hypotéz",
+    "hypothesisTesting.description": "Testování hypotéz",
+
     "correlation": "Korelace",
+    "correlation.description": "Korelace",
+
     "spatialAutocorrelation": "Prostorová autokorelace",
+    "spatialAutocorrelation.description": "Prostorová autokorelace",
+
     "regression": "Regrese",
+    "regression.description": "Regrese",
+
     "statisticalMethods": "Statistické metody v geoinformatice"
   }
 }
