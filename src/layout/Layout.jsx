@@ -7,6 +7,7 @@ function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
 
   useEffect(() => {
     if (sidebarOpen) {
@@ -18,7 +19,7 @@ function Layout({ children }) {
 
   return (
     <div className="d-flex" id="wrapper">
-      <Sidebar />
+      <Sidebar closeSidebar={closeSidebar} />
       <div id="page-content-wrapper">
         <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
         <div className="container-fluid">{children}</div>

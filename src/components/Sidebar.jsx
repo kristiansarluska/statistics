@@ -2,10 +2,19 @@
 import React from "react";
 import "../styles/sidebar.css";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ closeSidebar }) {
   const { t } = useTranslation();
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 768) {
+      closeSidebar();
+    }
+  };
+
+  const getLinkClass = ({ isActive }) =>
+    `list-group-item list-group-item-action p-3 ${isActive ? "active" : ""}`;
 
   return (
     <div
@@ -16,48 +25,55 @@ function Sidebar() {
         {t("topics.statisticalMethods")}
       </div>
       <div className="list-group">
-        <Link
+        <NavLink
           to="/random-variable"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.randomVariable")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/probability-distributions"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.probabilityDistributions")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/parameter-estimation"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.parameterEstimation")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/hypothesis-testing"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.hypothesisTesting")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/correlation"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.correlation")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/spatial-autocorrelation"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.spatialAutocorrelation")}
-        </Link>
-        <Link
+        </NavLink>
+        <NavLink
           to="/regression"
-          className="list-group-item list-group-item-action p-3"
+          className={getLinkClass}
+          onClick={handleLinkClick}
         >
           {t("topics.regression")}
-        </Link>
+        </NavLink>
       </div>
     </div>
   );
