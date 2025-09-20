@@ -7,7 +7,7 @@ function normalCDF(x, mean, sd) {
   return 0.5 * (1 + erf(z));
 }
 
-// Aproximácia erf (z predchádzajúceho fungujúceho kódu)
+// Aproximácia erf
 function erf(x) {
   const sign = x >= 0 ? 1 : -1;
   x = Math.abs(x);
