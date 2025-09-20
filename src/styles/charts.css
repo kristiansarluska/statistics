@@ -1,0 +1,64 @@
+/* src/styles/charts.css */
+
+/* Wrapper pre viacero grafov */
+.charts-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+/* Každý graf bude flexibilný */
+.charts-wrapper > div {
+  flex: 1 1 45%; /* na PC/tablet vedľa seba, min 45% šírky */
+  min-width: 300px; /* zabráni príliš zúženému grafu */
+}
+
+/* Mobile layout: grafy pod sebou */
+@media (max-width: 768px) {
+  .charts-wrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+/* Spoločné vizuály pre línie grafov */
+.chart-line-primary {
+  stroke: #008cba;
+  stroke-width: 2;
+}
+
+.chart-line-success {
+  stroke: #28a745;
+  stroke-width: 2;
+}
+
+/* Štýly pre ovládacie vstupy grafov */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.controls input[type="number"] {
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+  width: 100px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.controls input[type="number"]:focus {
+  outline: none;
+  border-color: #008cba;
+  box-shadow: 0 0 0 2px rgba(0, 140, 186, 0.2);
+}
