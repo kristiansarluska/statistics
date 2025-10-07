@@ -62,3 +62,39 @@
   border-color: #008cba;
   box-shadow: 0 0 0 2px rgba(0, 140, 186, 0.2);
 }
+
+.csv-dist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.chart-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.data-preview {
+  text-align: center;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.data-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}

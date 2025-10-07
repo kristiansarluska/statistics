@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState, useRef } from "react";
 import NormalDistributionChart from "../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../components/charts/NormalCDFChart";
+import CSVDistributions from "../components/charts/CSVDistributions";
 import "../styles/charts.css";
 
 function ProbabilityDistributions() {
@@ -93,6 +94,8 @@ function ProbabilityDistributions() {
           setHoverX={setHoverX}
         />
       </div>
+      <CSVDistributions />
+      <div></div>
     </>
   );
 }
