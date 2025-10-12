@@ -1,39 +1,93 @@
-/* Base layout */
-#wrapper { overflow-x: hidden; }
+/* ====== Base layout ====== */
+#wrapper {
+  overflow-x: hidden;
+}
 
-/* Sidebar defaults */
+/* ====== Sidebar container ====== */
 #sidebar-wrapper {
   width: 15rem;
   min-height: 100vh;
   transition: margin 0.25s ease-out;
-  margin-left: -15rem; /* hidden by default */
   border-right: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  margin-left: -15rem; /* hidden by default for mobile */
 }
 
-/* Force open when toggled (mobile) */
+/* ====== Sidebar visibility toggle (core logic) ====== */
 body.sb-sidenav-toggled #sidebar-wrapper {
   margin-left: 0 !important;
 }
 
-/* Desktop defaults */
+/* Desktop defaults — sidebar open by default */
 @media (min-width: 768px) {
-  #sidebar-wrapper { margin-left: 0; } /* open by default */
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
 
   body.sb-sidenav-toggled #sidebar-wrapper {
-    margin-left: -15rem !important; /* hide when toggled */
+    margin-left: -15rem !important;
   }
 }
 
-/* Sidebar list width */
-#sidebar-wrapper .list-group { width: 15rem; }
-
-/* Page content */
-#page-content-wrapper { min-width: 100vw; }
-@media (min-width: 768px) {
-  #page-content-wrapper { min-width: 0; width: 100%; }
+/* ====== List group & buttons ====== */
+#sidebar-wrapper .list-group-item,
+#sidebar-wrapper .btn.sidebar-btn,
+#sidebar-wrapper .dropdown-item {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border: none;
+  border-radius: 0;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-/* Default: closed = arrow ► */
+/* Hover efekt: zmena farby + pozadia */
+#sidebar-wrapper .list-group-item:hover,
+#sidebar-wrapper .btn.sidebar-btn:hover,
+#sidebar-wrapper .dropdown-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--bs-primary);
+}
+
+/* Aktívna položka */
+#sidebar-wrapper .list-group-item.active,
+#sidebar-wrapper .dropdown-item.active,
+#sidebar-wrapper .btn.sidebar-btn.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  /*color: var(--bs-primary);*/
+  outline: 1px solid var(--bs-primary);
+  outline-offset: -2px;
+}
+
+/* ====== Dropdown menu ====== */
+#sidebar-wrapper .dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0;
+  min-width: 220px;
+}
+
+#sidebar-wrapper .dropdown-menu .dropdown-item {
+  font-size: 14px;
+  padding-left: 1rem;
+}
+
+/* Submenu vnorené dropend */
+#sidebar-wrapper .dropdown-menu .dropdown-menu {
+  left: 100%;
+  top: 0;
+  margin-left: 0.25rem;
+}
+
+/* Odstránenie default Bootstrap šípky */
+#sidebar-wrapper .dropdown-toggle::after {
+  display: none !important;
+}
+
+/* ====== Arrow logic (toggle button) ====== */
 #sidebarToggle .arrow {
   width: 1rem;
   transform: rotate(0deg);
@@ -58,25 +112,82 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
   }
 }
 
+/* Extra fallback for manual arrow rotation classes */
 .arrow {
   width: 15px;
   height: 15px;
   transition: transform 0.3s ease;
-  transform: rotate(180deg); /* default – otvorený sidebar */
+  transform: rotate(180deg);
 }
 
 .arrow.open {
-  transform: rotate(0deg); /* zatvorený sidebar */
+  transform: rotate(0deg);
 }
 
 @media (max-width: 768px) {
   .arrow {
-    transform: rotate(0deg); /* default – zatvorený sidebar */
+    transform: rotate(0deg);
   }
 
   .arrow.open {
-    transform: rotate(180deg); /* otvorený sidebar */
+    transform: rotate(180deg);
   }
 }
 
+/* ====== Sidebar arrow (submenu arrows) ====== */
+#sidebar-wrapper .sidebar-arrow {
+  width: 15px;
+  height: 15px;
+  margin-left: 8px;
+  opacity: 0.75;
+  transition: transform 0.3s ease;
+}
 
+/* Otočenie šípky pri rozbalení submenu */
+#sidebar-wrapper .collapse.show + .sidebar-arrow,
+#sidebar-wrapper .dropdown.show > .dropdown-toggle-split .sidebar-arrow {
+  transform: rotate(90deg);
+  opacity: 1;
+}
+
+/* ====== Sidebar buttons alignment ====== */
+#sidebar-wrapper button {
+  cursor: pointer;
+}
+
+#sidebar-wrapper .btn.sidebar-btn {
+  width: 100%;
+  text-align: left;
+  background-color: var(--bs-body-bg);
+  font-size: 14px;
+}
+
+/* ====== Page content ====== */
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+@media (min-width: 768px) {
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ====== Scrollbar ====== */
+#sidebar-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+/* sidebar.css */
+.list-group-item.active,
+.list-group-item.active + .dropdown-toggle-split {
+  background-color: rgba(0, 0, 0, 0.15); /* Yeti primárna farba */
+  color: var(--bs-light);             /* svetlý text */
+  border-color: var(--bs-primary);
+}

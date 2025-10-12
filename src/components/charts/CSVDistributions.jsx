@@ -1,4 +1,3 @@
-// src/pages/CapitalPopulationShareCharts.jsx
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import StyledLineChart from "./StyledLineChart";
@@ -8,21 +7,27 @@ function CSVDistributions() {
   const [pdfData, setPdfData] = useState([]);
   const [cdfData, setCdfData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hoverX, setHoverX] = useState(null);
 
-  const CSV_PATH = "/statistics/data/CapitalPopulationShare.csv"; // cesta k dátam
-  const COLUMN_NAME = "2024"; // stĺpec, ktorý chceme zobraziť
-  const NUM_BINS = 20; // počet binov pre PDF
+  const CSV_PATH = "/statistics/data/CapitalPopulationShare.csv"; // súbor v public/data/
+  const COLUMN_NAME = "2024";
+  const NUM_BINS = 20;
 
   useEffect(() => {
     Papa.parse(CSV_PATH, {
       download: true,
       header: true,
       complete: (results) => {
-        // odfiltrujeme null / NaN hodnoty
         const values = results.data
           .map((row) => parseFloat(row[COLUMN_NAME]))
           .filter((v) => !isNaN(v))
           .sort((a, b) => a - b);
+
+        if (values.length === 0) {
+          console.error("CSV neobsahuje žiadne platné čísla.");
+          setLoading(false);
+          return;
+        }
 
         setData(values.map((v) => ({ value: v })));
 
@@ -38,7 +43,7 @@ function CSVDistributions() {
         });
 
         const pdf = bins.map((count, i) => ({
-          x: (min + binWidth * (i + 0.5)).toFixed(2),
+          x: parseFloat((min + binWidth * (i + 0.5)).toFixed(2)),
           y: count / values.length,
         }));
 
@@ -46,9 +51,12 @@ function CSVDistributions() {
 
         // CDF
         const n = values.length;
-        const cdf = values.map((v, i) => ({ x: v, y: (i + 1) / n }));
-        setCdfData(cdf);
+        const cdf = values.map((v, i) => ({
+          x: v,
+          y: (i + 1) / n,
+        }));
 
+        setCdfData(cdf);
         setLoading(false);
       },
       error: (err) => {
@@ -62,7 +70,8 @@ function CSVDistributions() {
 
   return (
     <div>
-      <h2>Capital Population Share - {COLUMN_NAME}</h2>
+      <h2>Capital Population Share – {COLUMN_NAME}</h2>
+
       <div
         className="charts-wrapper"
         style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
@@ -74,8 +83,11 @@ function CSVDistributions() {
             xLabel="Hodnota"
             yLabel="Pravdepodobnosť"
             lineClass="chart-line-primary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
           />
         </div>
+
         <div style={{ flex: "1 1 400px" }}>
           <StyledLineChart
             data={cdfData}
@@ -83,6 +95,8 @@ function CSVDistributions() {
             xLabel="Hodnota"
             yLabel="Kumulatívna pravdepodobnosť"
             lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
           />
         </div>
       </div>
