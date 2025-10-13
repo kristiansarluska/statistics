@@ -138,7 +138,7 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
 #sidebar-wrapper .sidebar-arrow {
   width: 15px;
   height: 15px;
-  margin-left: 8px;
+  /*margin-left: 8px;*/
   opacity: 0.75;
   transition: transform 0.3s ease;
 }
@@ -146,13 +146,14 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
 /* Otočenie šípky pri rozbalení submenu */
 #sidebar-wrapper .collapse.show + .sidebar-arrow,
 #sidebar-wrapper .dropdown.show > .dropdown-toggle-split .sidebar-arrow {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
   opacity: 1;
 }
 
 /* ====== Sidebar buttons alignment ====== */
 #sidebar-wrapper button {
   cursor: pointer;
+  background-color: var(--bs-body-bg);
 }
 
 #sidebar-wrapper .btn.sidebar-btn {
@@ -191,3 +192,64 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
   color: var(--bs-light);             /* svetlý text */
   border-color: var(--bs-primary);
 }
+
+/* ====== Dropend hover open ====== */
+#sidebar-wrapper .dropend:hover > .dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 0.25rem;
+}
+
+#sidebar-wrapper .dropend:hover > .dropdown-toggle-split .sidebar-arrow {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* ====== Dropend hover open + mostík ====== */
+#sidebar-wrapper .dropend {
+  position: relative;
+}
+
+#sidebar-wrapper .dropend:hover > .dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 0.25rem;
+}
+
+#sidebar-wrapper .dropend::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -8px; /* šírka mostíka – podľa potreby */
+  width: 8px;
+  height: 100%;
+  background: transparent;
+  }
+
+/* ====== Lepšia čitateľnosť submenu v dark móde (via data-bs-theme) ====== */
+body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-menu {
+  background-color: var(--bs-body-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.15),
+    0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+/* Tieň aj pre vnorené dropendy */
+body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-menu .dropdown-menu {
+  background-color: var(--bs-body-bg);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.15),
+    0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Jemnejší hover kontrast v dark móde */
+body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--bs-primary);
+}
+
