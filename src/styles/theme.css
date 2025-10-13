@@ -102,6 +102,7 @@ input:checked + .slider:before {
   object-fit: cover;
   border: 1px solid #ccc;
   border-radius: 2px;
+  /*aaa*/
 }
 
 
