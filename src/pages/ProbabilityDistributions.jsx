@@ -1,6 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { BlockMath, InlineMath } from "react-katex";
+import LinkedPDFCDF from "../components/charts/LinkedPDFCDF";
 import NormalDistributionChart from "../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../components/charts/NormalCDFChart";
 import CSVDistributions from "../components/charts/CSVDistributions";
@@ -32,7 +34,7 @@ function ProbabilityDistributions() {
         setMean(num);
         lastValidMean.current = num;
       } else {
-        setMean(lastValidMean.current); // fallback
+        setMean(lastValidMean.current);
       }
     }, 1000);
   };
@@ -47,7 +49,7 @@ function ProbabilityDistributions() {
         setSd(num);
         lastValidSd.current = num;
       } else {
-        setSd(lastValidSd.current); // fallback
+        setSd(lastValidSd.current);
       }
     }, 1000);
   };
@@ -57,23 +59,19 @@ function ProbabilityDistributions() {
 
   // --- scroll na hash po navigácii ---
   useEffect(() => {
-    // run only for this page
     if (!location.pathname.startsWith("/probability-distributions")) return;
 
     if (location.hash) {
       const id = location.hash.replace("#", "");
-      // small delay to ensure element is rendered
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
         } else {
-          // fallback: scroll to top if ID not found
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }, 50);
     } else {
-      // no hash — scroll to top of page
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [location.pathname, location.hash]);
@@ -82,11 +80,65 @@ function ProbabilityDistributions() {
     <>
       <h1 id="page-title">{t("topics.probabilityDistributions")}</h1>
 
+      {/* --- MOTIVÁCIA --- */}
       <h2 id="motivation">Motivácia</h2>
-      <p>{t("topics.probabilityDistributions.description")}</p>
+      <p>
+        V geoinformatike často pracujeme s údajmi, ktoré majú náhodný charakter
+        — napríklad chybou merania, odchýlkami v polohách bodov alebo
+        variabilitou v dátach získaných z terénu. Aby sme tieto javy vedeli
+        modelovať, používame <strong>pravdepodobnostné rozdelenia</strong>.
+      </p>
+      <p>
+        Ich cieľom je matematicky opísať, s akou pravdepodobnosťou sa jednotlivé
+        hodnoty náhodnej veličiny vyskytujú. Na základe takého popisu môžeme
+        nielen analyzovať minulé dáta, ale aj predpovedať správanie systému do
+        budúcnosti.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed nisl
+        dapibus, suscipit nulla et, bibendum mi. Nullam sit amet erat euismod,
+        pulvinar risus nec, facilisis lectus. Vestibulum ante ipsum primis in
+        faucibus orci luctus et ultrices posuere cubilia curae.
+      </p>
 
+      {/* --- PDF A CDF --- */}
       <h2 id="pdf-cdf">Pravdepodobnostná a distribučná funkcia</h2>
-      <p>Placeholder text pre vysvetlenie rozdielu medzi PDF a CDF.</p>
+      <p>
+        Pravdepodobnostné rozdelenie môžeme opísať dvoma príbuznými funkciami:
+        <strong> funkciou hustoty pravdepodobnosti (PDF)</strong> a{" "}
+        <strong>distribučnou funkciou (CDF)</strong>. Tieto dve zložky spolu
+        úzko súvisia — CDF je integrálom PDF.
+      </p>
+
+      <p>
+        <strong>Funkcia hustoty pravdepodobnosti (PDF)</strong> – označovaná ako{" "}
+        <InlineMath math="f(x)" /> – udáva, ako sú hodnoty náhodnej veličiny
+        rozložené. Nie je to samotná pravdepodobnosť, ale platí:
+      </p>
+      <BlockMath math="P(a \leq X \leq b) = \int_a^b f(x)\,dx" />
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pulvinar
+        pharetra enim, sit amet cursus mi ultrices ut. Suspendisse sed leo
+        porttitor, bibendum eros ut, vehicula nulla.
+      </p>
+
+      <p>
+        <strong>Distribučná funkcia (CDF)</strong> – označovaná ako{" "}
+        <InlineMath math="F(x)" /> – vyjadruje, aká je pravdepodobnosť, že
+        náhodná veličina nadobudne hodnotu menšiu alebo rovnakú ako{" "}
+        <InlineMath math="x" />:
+      </p>
+      <BlockMath math="F(x) = P(X \leq x) = \int_{-\infty}^{x} f(t)\,dt" />
+      <p>
+        Táto funkcia má tvar postupne rastúcej (sigmoidnej) krivky, ktorá sa
+        asymptoticky približuje k 1. Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit. Pellentesque habitant morbi tristique senectus et netus
+        et malesuada fames ac turpis egestas.
+      </p>
+
+      <div id="pdf-cdf-example">
+        <LinkedPDFCDF mean={mean} sd={sd} />
+      </div>
 
       <h2 id="discrete-vs-continuous">Diskrétna a spojitá veličina</h2>
       <p>
@@ -116,7 +168,15 @@ function ProbabilityDistributions() {
       <p>Placeholder text pre exponenciálne rozdelenie.</p>
 
       <h3 id="normal">Normálne rozdelenie</h3>
-      <p>Placeholder text pre normálne rozdelenie.</p>
+      <p>
+        Placeholder text pre normálne rozdelenie. Uvedený tvar hustoty
+        pravdepodobnosti je:
+      </p>
+      <BlockMath math="f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 }" />
+      <p>
+        kde <InlineMath math="\mu" /> je stredná hodnota a{" "}
+        <InlineMath math="\sigma" /> smerodajná odchýlka.
+      </p>
 
       <div className="controls">
         <label>

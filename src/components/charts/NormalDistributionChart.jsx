@@ -1,13 +1,6 @@
 import React, { useMemo } from "react";
 import StyledLineChart from "./StyledLineChart";
-
-// PDF normálneho rozdelenia
-function normalPDF(x, mean, sd) {
-  return (
-    (1 / (sd * Math.sqrt(2 * Math.PI))) *
-    Math.exp(-0.5 * Math.pow((x - mean) / sd, 2))
-  );
-}
+import { normalPDF, normalCDF } from "../../utils/distributions";
 
 function NormalDistributionChart({ mean, sd, hoverX, setHoverX }) {
   const data = useMemo(() => {

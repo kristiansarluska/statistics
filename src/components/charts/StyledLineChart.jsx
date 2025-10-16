@@ -1,26 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   LineChart,
   Line,
-  ReferenceLine,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  ReferenceLine,
   ResponsiveContainer,
+  Area,
 } from "recharts";
 import "../../styles/charts.css";
 
-/**
- * Wrapper pre jednotný štýl grafov
- * @param {Array} data - dáta vo formáte [{ x: number, y: number }]
- * @param {string} title - názov grafu
- * @param {string} xLabel - popis osi X
- * @param {string} yLabel - popis osi Y
- * @param {string} lineClass - CSS trieda pre čiaru (default: chart-line-primary)
- * @param {number|null} hoverX - hodnota X, nad ktorou sa nachádza kurzor
- * @param {function} setHoverX - funkcia na nastavenie hodnoty hoverX
- */
 function StyledLineChart({
   data,
   title,
@@ -29,40 +20,13 @@ function StyledLineChart({
   lineClass = "chart-line-primary",
   hoverX = null,
   setHoverX = () => {},
+  type = "pdf", // "pdf" alebo "cdf"
+  minX = null,
+  maxX = null,
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
 
-  //  Inteligentné formátovanie čísel pre tooltip
-  //  Inteligentné formátovanie čísel pre tooltip
-  const formatNumberSmart = (num) => {
-    if (num === null || num === undefined || isNaN(num)) return "-";
-
-    const abs = Math.abs(num);
-    if (abs === 0) return "0.00";
-
-    // väčšie alebo rovné 0.1 → 2 desatinné miesta
-    if (abs >= 0.1) return num.toFixed(2);
-
-    // medzi 0.001 a 0.1 → 4 desatinné miesta
-    if (abs >= 0.001) return num.toFixed(4);
-
-    // menšie než 0.001 → zobraz viac, kým nie sú aspoň dve nenulové číslice
-    const str = num.toExponential(10); // vedecký zápis, napr. 3.2658e-5
-    const fixed = num.toFixed(10).replace(/0+$/, ""); // bežný zápis
-    const match = fixed.match(/0\.0*(\d{2,})/);
-
-    if (match) {
-      const nonZeroDigits = match[1];
-      const decimalsNeeded =
-        nonZeroDigits.length + (match[0].length - match[1].length);
-      return num.toFixed(Math.min(decimalsNeeded, 8));
-    }
-
-    return str;
-  };
-
-  // Ak sa zmenili dáta (nie iba hover), spusti animáciu
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
       setAnimated(true);
@@ -72,22 +36,43 @@ function StyledLineChart({
     }
   }, [data]);
 
+  const formatNumberSmart = (num) => {
+    if (num === null || num === undefined || isNaN(num)) return "-";
+    const abs = Math.abs(num);
+    if (abs === 0) return "0.00";
+    if (abs >= 0.1) return num.toFixed(2);
+    if (abs >= 0.001) return num.toFixed(4);
+    return num.toExponential(4);
+  };
+
   const handleMouseMove = (state) => {
     if (state && state.activeLabel !== undefined) {
       setHoverX(state.activeLabel);
     }
   };
+  const handleMouseLeave = () => setHoverX(null);
 
-  const handleMouseLeave = () => {
-    setHoverX(null);
-  };
+  // Pridanie fillY pre PDF (len pre vykreslenie oblasti)
+  const dataWithFill =
+    type === "pdf" && hoverX !== null
+      ? data.map((point) => ({
+          ...point,
+          fillY: point.x <= hoverX ? point.y : 0,
+        }))
+      : data.map((point) => ({ ...point, fillY: 0 }));
+
+  // Pre CDF reference line
+  const refLineValue =
+    type === "cdf" && hoverX !== null
+      ? data.find((d) => d.x >= hoverX)?.y
+      : null;
 
   return (
     <div className="chart-container">
       {title && <div className="chart-title">{title}</div>}
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={data}
+          data={dataWithFill}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
@@ -95,22 +80,43 @@ function StyledLineChart({
           <XAxis
             dataKey="x"
             type="number"
+            domain={
+              minX !== null && maxX !== null ? [minX, maxX] : ["auto", "auto"]
+            }
             label={{ value: xLabel, position: "insideBottomRight", offset: -5 }}
             className="chart-axis"
-            tickFormatter={(value) => formatNumberSmart(value)}
+            tickFormatter={formatNumberSmart}
           />
           <YAxis
             label={{ value: yLabel, angle: -90, position: "insideLeft" }}
             className="chart-axis"
-            tickFormatter={(value) => formatNumberSmart(value)}
+            tickFormatter={formatNumberSmart}
           />
           <Tooltip
-            formatter={(value) => formatNumberSmart(value)}
-            labelFormatter={(label) => formatNumberSmart(label)}
+            formatter={formatNumberSmart}
+            labelFormatter={formatNumberSmart}
           />
-          {hoverX !== null && (
-            <ReferenceLine x={hoverX} stroke="red" strokeDasharray="3 3" />
+
+          {/* Horizontálna čiara pre CDF */}
+          {type === "cdf" && refLineValue !== null && (
+            <ReferenceLine
+              y={refLineValue}
+              stroke="red"
+              strokeDasharray="3 3"
+            />
           )}
+
+          {/* Vyfarbená oblasť pod PDF */}
+          {type === "pdf" && hoverX !== null && (
+            <Area
+              type="monotone"
+              dataKey="fillY"
+              stroke="none"
+              fill="rgba(0, 140, 186, 0.2)"
+              isAnimationActive={false}
+            />
+          )}
+
           <Line
             type="monotone"
             dataKey="y"
