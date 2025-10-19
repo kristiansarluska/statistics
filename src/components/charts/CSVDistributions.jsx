@@ -80,8 +80,8 @@ function CSVDistributions() {
           <StyledLineChart
             data={pdfData}
             title="Pravdepodobnostná funkcia (PDF)"
-            xLabel="Hodnota"
-            yLabel="Pravdepodobnosť"
+            xLabel="x"
+            yLabel="f(x)"
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
@@ -92,8 +92,8 @@ function CSVDistributions() {
           <StyledLineChart
             data={cdfData}
             title="Distribučná funkcia (CDF)"
-            xLabel="Hodnota"
-            yLabel="Kumulatívna pravdepodobnosť"
+            xLabel="x"
+            yLabel="F(x)"
             lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}

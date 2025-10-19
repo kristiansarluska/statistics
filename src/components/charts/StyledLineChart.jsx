@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+// src/components/charts/StyledLineChart.jsx
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -15,12 +16,12 @@ import "../../styles/charts.css";
 function StyledLineChart({
   data,
   title,
-  xLabel = "x",
-  yLabel = "y",
+  xLabel = "x", // Label pre X os (a tooltip)
+  yLabel = "y", // Label pre Y os (a tooltip) - budeš posielať f(x) alebo F(x)
   lineClass = "chart-line-primary",
   hoverX = null,
   setHoverX = () => {},
-  type = "pdf", // "pdf" alebo "cdf"
+  type = "pdf",
   minX = null,
   maxX = null,
 }) {
@@ -34,7 +35,7 @@ function StyledLineChart({
     } else {
       setAnimated(false);
     }
-  }, [data]);
+  }, [data, hoverX]);
 
   const formatNumberSmart = (num) => {
     if (num === null || num === undefined || isNaN(num)) return "-";
@@ -46,26 +47,84 @@ function StyledLineChart({
   };
 
   const handleMouseMove = (state) => {
-    if (state && state.activeLabel !== undefined) {
-      setHoverX(state.activeLabel);
+    if (state && state.activePayload && state.activePayload.length > 0) {
+      const currentX = state.activePayload[0].payload.x;
+      if (hoverX !== currentX) {
+        setHoverX(currentX);
+      }
+    } else if (state && state.activeLabel !== undefined) {
+      // Fallback ak activePayload nie je dostupný
+      const roundedX = parseFloat(state.activeLabel.toFixed(2));
+      if (hoverX !== roundedX) {
+        setHoverX(roundedX);
+      }
     }
   };
   const handleMouseLeave = () => setHoverX(null);
 
-  // Pridanie fillY pre PDF (len pre vykreslenie oblasti)
-  const dataWithFill =
-    type === "pdf" && hoverX !== null
-      ? data.map((point) => ({
-          ...point,
-          fillY: point.x <= hoverX ? point.y : 0,
-        }))
-      : data.map((point) => ({ ...point, fillY: 0 }));
+  const dataWithFill = useMemo(() => {
+    if (type !== "pdf" || hoverX === null) {
+      return data.map((point) => ({ ...point, fillY: 0 }));
+    }
+    // console.log("Recalculating fill for hoverX:", hoverX); // DEBUGGING
+    return data.map((point) => ({
+      ...point,
+      fillY: point.x <= hoverX ? point.y : 0,
+    }));
+  }, [data, hoverX, type]);
 
-  // Pre CDF reference line
-  const refLineValue =
-    type === "cdf" && hoverX !== null
-      ? data.find((d) => d.x >= hoverX)?.y
-      : null;
+  const cdfRefLineY = useMemo(() => {
+    if (type !== "cdf" || hoverX === null) return null;
+    let pointY = null;
+    let closestPoint = null;
+    let minDiff = Infinity;
+
+    for (const point of data) {
+      const diff = Math.abs(point.x - hoverX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestPoint = point;
+      }
+      if (point.x >= hoverX) {
+        pointY = point.y;
+        break;
+      }
+    }
+    if (pointY === null && data.length > 0) {
+      pointY = closestPoint ? closestPoint.y : data[data.length - 1].y;
+    }
+    return pointY;
+  }, [data, hoverX, type]);
+
+  // === UPRAVENÝ TOOLTIP CONTENT ===
+  const renderTooltipContent = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const point = payload[0].payload;
+      const formattedX = formatNumberSmart(point.x);
+      const formattedY = formatNumberSmart(point.y);
+
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            padding: "5px 10px",
+            border: "1px solid #ccc",
+            borderRadius: "3px",
+            fontSize: "0.85rem",
+          }}
+        >
+          {/* Odstránené tučné písmo */}
+          <p style={{ margin: 0 }}>{`${xLabel}: ${formattedX}`}</p>
+          {/* Použije sa yLabel prop (f(x) alebo F(x)) */}
+          <p
+            style={{ margin: 0, color: payload[0].color || "#000" }}
+          >{`${yLabel}: ${formattedY}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="chart-container">
@@ -75,6 +134,7 @@ function StyledLineChart({
           data={dataWithFill}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
@@ -83,37 +143,62 @@ function StyledLineChart({
             domain={
               minX !== null && maxX !== null ? [minX, maxX] : ["auto", "auto"]
             }
-            label={{ value: xLabel, position: "insideBottomRight", offset: -5 }}
+            label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
             tickFormatter={formatNumberSmart}
+            allowDuplicatedCategory={false}
           />
           <YAxis
-            label={{ value: yLabel, angle: -90, position: "insideLeft" }}
+            label={{
+              value: yLabel,
+              angle: -90,
+              position: "insideLeft",
+              offset: -10,
+            }}
             className="chart-axis"
             tickFormatter={formatNumberSmart}
+            domain={["auto", "auto"]}
           />
           <Tooltip
-            formatter={formatNumberSmart}
-            labelFormatter={formatNumberSmart}
+            content={renderTooltipContent}
+            cursor={{ stroke: "#aaa", strokeWidth: 1 }}
+            animationDuration={50}
           />
 
-          {/* Horizontálna čiara pre CDF */}
-          {type === "cdf" && refLineValue !== null && (
+          {/* Vertikálna čiara - BEZ LABELU */}
+          {hoverX !== null && (
             <ReferenceLine
-              y={refLineValue}
+              x={hoverX}
               stroke="red"
+              strokeWidth={1}
               strokeDasharray="3 3"
+              ifOverflow="extendDomain"
+            />
+          )}
+
+          {/* Horizontálna čiara pre CDF - BEZ LABELU */}
+          {type === "cdf" && cdfRefLineY !== null && (
+            <ReferenceLine
+              y={cdfRefLineY}
+              stroke="red"
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              ifOverflow="extendDomain"
+              // Odstránený label prop
             />
           )}
 
           {/* Vyfarbená oblasť pod PDF */}
           {type === "pdf" && hoverX !== null && (
             <Area
+              // Skúsime pridať key={hoverX} - syntax je bez zložených zátvoriek navyše
+              key={hoverX}
               type="monotone"
               dataKey="fillY"
               stroke="none"
               fill="rgba(0, 140, 186, 0.2)"
               isAnimationActive={false}
+              animationDuration={0}
             />
           )}
 
@@ -121,9 +206,10 @@ function StyledLineChart({
             type="monotone"
             dataKey="y"
             className={lineClass}
+            strokeWidth={2}
             dot={false}
             isAnimationActive={animated}
-            animationDuration={700}
+            animationDuration={animated ? 700 : 0}
           />
         </LineChart>
       </ResponsiveContainer>
