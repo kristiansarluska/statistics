@@ -111,7 +111,6 @@ function CSVDistributions() {
             lineClass="chart-line-secondary" // Zmenená trieda pre odlíšenie
             hoverX={hoverX}
             setHoverX={setHoverX}
-            type="cdf" // <- Pridaj type
             // showReferenceArea={false} // <- Explicitne vypni, ak treba
           />
         </div>

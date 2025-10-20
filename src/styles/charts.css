@@ -39,13 +39,17 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
+  align-items: center; /* Pridané pre lepšie zarovnanie labelov a inputov */
 }
 
 .controls label {
   display: flex;
-  flex-direction: column;
+  /* Zmenené na flex pre lepšie zarovnanie vnútorných elementov */
+  flex-direction: row; /* Predvolené, ale pre istotu */
+  align-items: center; /* Zarovná text a input vertikálne */
   font-weight: 500;
   font-size: 0.9rem;
+  gap: 0.5rem; /* Medzera medzi prvkami v labeli */
 }
 
 .controls input[type="number"] {
@@ -61,6 +65,63 @@
   outline: none;
   border-color: #008cba;
   box-shadow: 0 0 0 2px rgba(0, 140, 186, 0.2);
+}
+
+.controls input[type="range"] {
+  -webkit-appearance: none; /* Odstráni predvolený vzhľad v Chrome/Safari */
+  appearance: none;
+  width: 200px; /* Šírka slidera - môžeš upraviť */
+  height: 8px; /* Výška dráhy */
+  background: #dee2e6; /* Farba dráhy (svetlo šedá) */
+  border-radius: 5px; /* Zaoblenie dráhy */
+  outline: none;
+  cursor: pointer;
+  vertical-align: middle; /* Lepšie zarovnanie s textom */
+}
+
+/* Vzhľad posuvníka (thumb) pre Webkit (Chrome, Safari, Edge) */
+.controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; /* Šírka posuvníka */
+  height: 18px; /* Výška posuvníka */
+  background: #008cba; /* Farba posuvníka (Bootstrap primary) */
+  border-radius: 50%; /* Kruhový posuvník */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Vzhľad posuvníka (thumb) pre Firefox */
+.controls input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #008cba;
+  border-radius: 50%;
+  border: none; /* Firefox môže pridávať border */
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Hover efekt pre posuvník */
+.controls input[type="range"]::-webkit-slider-thumb:hover {
+  background: #007095; /* Tmavšia primary pri hoveri */
+}
+.controls input[type="range"]::-moz-range-thumb:hover {
+  background: #007095;
+}
+
+/* Focus efekt pre slider (podobný ako pri number input) */
+.controls input[type="range"]:focus {
+  outline: none; /* Odstránime default outline */
+}
+/* Focus pre Webkit - pridáme "box-shadow" na thumb */
+.controls input[type="range"]:focus::-webkit-slider-thumb {
+   box-shadow: 0 0 0 3px rgba(0, 140, 186, 0.25); /* Mierne väčší tieň */
+}
+
+/* Firefox nemá priamy ekvivalent box-shadow pre thumb, museli by sme použiť zložitejšie techniky alebo border */
+.controls input[type="range"]::-moz-focus-outer {
+    border: 0; /* Odstráni bodkovaný outline vo Firefoxe */
 }
 
 .csv-dist-container {
