@@ -44,6 +44,7 @@ function LinkedPDFCDF({ mean, sd }) {
           minX={minX}
           maxX={maxX}
           type="pdf" // StyledLineChart vie, čo robiť na základe typu
+          showReferenceArea={true} // <-- PRIDANÝ PROP
         />
       </div>
 

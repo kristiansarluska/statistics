@@ -8,26 +8,29 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceLine,
+  ReferenceArea, // Importuj ReferenceArea
   ResponsiveContainer,
-  Area,
+  // Area, // Area už nepotrebujeme
 } from "recharts";
 import "../../styles/charts.css";
 
 function StyledLineChart({
   data,
   title,
-  xLabel = "x", // Label pre X os (a tooltip)
-  yLabel = "y", // Label pre Y os (a tooltip) - budeš posielať f(x) alebo F(x)
+  xLabel = "x",
+  yLabel = "y",
   lineClass = "chart-line-primary",
   hoverX = null,
   setHoverX = () => {},
   type = "pdf",
   minX = null,
   maxX = null,
+  showReferenceArea = false, // <-- NOVÝ PROP s predvolenou hodnotou false
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
 
+  // Logika pre formátovanie a mouse move/leave zostáva rovnaká
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
       setAnimated(true);
@@ -53,7 +56,6 @@ function StyledLineChart({
         setHoverX(currentX);
       }
     } else if (state && state.activeLabel !== undefined) {
-      // Fallback ak activePayload nie je dostupný
       const roundedX = parseFloat(state.activeLabel.toFixed(2));
       if (hoverX !== roundedX) {
         setHoverX(roundedX);
@@ -62,18 +64,10 @@ function StyledLineChart({
   };
   const handleMouseLeave = () => setHoverX(null);
 
-  const dataWithFill = useMemo(() => {
-    if (type !== "pdf" || hoverX === null) {
-      return data.map((point) => ({ ...point, fillY: 0 }));
-    }
-    // console.log("Recalculating fill for hoverX:", hoverX); // DEBUGGING
-    return data.map((point) => ({
-      ...point,
-      fillY: point.x <= hoverX ? point.y : 0,
-    }));
-  }, [data, hoverX, type]);
+  // Odstránili sme useMemo pre dataWithFill, už ho nepotrebujeme
 
   const cdfRefLineY = useMemo(() => {
+    // Táto logika pre CDF zostáva
     if (type !== "cdf" || hoverX === null) return null;
     let pointY = null;
     let closestPoint = null;
@@ -96,8 +90,8 @@ function StyledLineChart({
     return pointY;
   }, [data, hoverX, type]);
 
-  // === UPRAVENÝ TOOLTIP CONTENT ===
   const renderTooltipContent = ({ active, payload, label }) => {
+    // Tooltip zostáva rovnaký
     if (active && payload && payload.length) {
       const point = payload[0].payload;
       const formattedX = formatNumberSmart(point.x);
@@ -114,9 +108,7 @@ function StyledLineChart({
             fontSize: "0.85rem",
           }}
         >
-          {/* Odstránené tučné písmo */}
           <p style={{ margin: 0 }}>{`${xLabel}: ${formattedX}`}</p>
-          {/* Použije sa yLabel prop (f(x) alebo F(x)) */}
           <p
             style={{ margin: 0, color: payload[0].color || "#000" }}
           >{`${yLabel}: ${formattedY}`}</p>
@@ -126,12 +118,17 @@ function StyledLineChart({
     return null;
   };
 
+  // Určíme začiatočnú X súradnicu pre ReferenceArea
+  // Ak máme minX, použijeme ho, inak prvý bod z dát alebo 0
+  const areaStartX = minX ?? (data.length > 0 ? data[0].x : 0);
+
   return (
     <div className="chart-container">
       {title && <div className="chart-title">{title}</div>}
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          data={dataWithFill}
+          // Použijeme priamo pôvodné dáta
+          data={data}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
@@ -157,7 +154,9 @@ function StyledLineChart({
             }}
             className="chart-axis"
             tickFormatter={formatNumberSmart}
-            domain={["auto", "auto"]}
+            // Pre ReferenceArea je lepšie mať Y os začínajúcu od 0
+            domain={[0, "auto"]}
+            allowDataOverflow={false} // Zabraňuje ReferenceArea pretekať pod os X
           />
           <Tooltip
             content={renderTooltipContent}
@@ -165,7 +164,7 @@ function StyledLineChart({
             animationDuration={50}
           />
 
-          {/* Vertikálna čiara - BEZ LABELU */}
+          {/* Vertikálna čiara zostáva */}
           {hoverX !== null && (
             <ReferenceLine
               x={hoverX}
@@ -176,7 +175,7 @@ function StyledLineChart({
             />
           )}
 
-          {/* Horizontálna čiara pre CDF - BEZ LABELU */}
+          {/* Horizontálna čiara pre CDF zostáva */}
           {type === "cdf" && cdfRefLineY !== null && (
             <ReferenceLine
               y={cdfRefLineY}
@@ -184,21 +183,20 @@ function StyledLineChart({
               strokeWidth={1}
               strokeDasharray="3 3"
               ifOverflow="extendDomain"
-              // Odstránený label prop
             />
           )}
 
-          {/* Vyfarbená oblasť pod PDF */}
-          {type === "pdf" && hoverX !== null && (
-            <Area
-              // Skúsime pridať key={hoverX} - syntax je bez zložených zátvoriek navyše
-              key={hoverX}
-              type="monotone"
-              dataKey="fillY"
+          {/* NOVÉ: Použitie ReferenceArea namiesto Area pre PDF */}
+          {showReferenceArea && type === "pdf" && hoverX !== null && (
+            <ReferenceArea
+              x1={areaStartX} // Začiatok plochy
+              x2={hoverX} // Koniec plochy pri hoveri
+              y1={0} // Začiatok Y na osi
+              // y2 sa nenastavuje, nech sa roztiahne po vrch grafu
+              fill="rgba(0, 140, 186, 0.2)" // Farba výplne
               stroke="none"
-              fill="rgba(0, 140, 186, 0.2)"
-              isAnimationActive={false}
-              animationDuration={0}
+              ifOverflow="hidden" // Nech nepreteká mimo definovaný domain
+              isAnimationActive={false} // Vypneme animáciu pre plynulosť
             />
           )}
 

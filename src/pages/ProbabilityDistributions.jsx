@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { BlockMath, InlineMath } from "react-katex";
 import LinkedPDFCDF from "../components/charts/LinkedPDFCDF";
+import DiscreteDistributionChart from "../components/charts/DiscreteDistributionChart";
 import NormalDistributionChart from "../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../components/charts/NormalCDFChart";
 import CSVDistributions from "../components/charts/CSVDistributions";
@@ -56,6 +57,15 @@ function ProbabilityDistributions() {
 
   // hover hodnota pre oba grafy
   const [hoverX, setHoverX] = useState(null);
+
+  const sampleDiscreteData = [
+    { x: 0, p: 0.03125 },
+    { x: 1, p: 0.15625 },
+    { x: 2, p: 0.3125 },
+    { x: 3, p: 0.3125 },
+    { x: 4, p: 0.15625 },
+    { x: 5, p: 0.03125 },
+  ];
 
   // --- scroll na hash po navigácii ---
   useEffect(() => {
@@ -140,11 +150,18 @@ function ProbabilityDistributions() {
         <LinkedPDFCDF mean={mean} sd={sd} />
       </div>
 
+      <div id="pdf-cdf-example-discrete">
+        {/* Posielame dáta ako prop */}
+        <DiscreteDistributionChart data={sampleDiscreteData} />
+      </div>
+
+      {/*
       <h2 id="discrete-vs-continuous">Diskrétna a spojitá veličina</h2>
       <p>
         Placeholder text pre rozdiel medzi diskrétnou a spojitou náhodnou
         veličinou.
       </p>
+      */}
 
       <h2 id="discrete-distributions">Diskrétne rozdelenia</h2>
       <p>Placeholder text o diskrétnych pravdepodobnostných rozdeleniach.</p>
