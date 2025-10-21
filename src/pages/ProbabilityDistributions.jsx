@@ -2,59 +2,30 @@ import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { BlockMath, InlineMath } from "react-katex";
+import useDebouncedValue from "../hooks/useDebouncedValue";
 import LinkedPDFCDF from "../components/charts/LinkedPDFCDF";
 import DiscreteDistributionChart from "../components/charts/DiscreteDistributionChart";
 import NormalDistributionChart from "../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../components/charts/NormalCDFChart";
 import CSVDistributions from "../components/charts/CSVDistributions";
-import PracticalExample from "../components/content/PracticalExample"; // <-- Importuj komponent
-import BernoulliChart from "../components/charts/BernoulliChart"; // <-- Importuj nový graf
+import PracticalExample from "../components/content/PracticalExample";
+import BernoulliChart from "../components/charts/BernoulliChart";
+import ChiSquareChart from "../components/charts/ChiSquareChart";
 import "../styles/charts.css";
 
 function ProbabilityDistributions() {
   const { t } = useTranslation();
   const location = useLocation();
 
-  // vstupy pre oba grafy
-  const [meanInput, setMeanInput] = useState(0);
-  const [sdInput, setSdInput] = useState(1);
+  const [meanInput, mean, setMeanValue] = useDebouncedValue(0, 1000);
+  const validateMean = (value) => !isNaN(parseFloat(value)); // Jednoduchý validátor
 
-  // debounced hodnoty pre grafy
-  const [mean, setMean] = useState(0);
-  const [sd, setSd] = useState(1);
-
-  const lastValidMean = useRef(mean);
-  const lastValidSd = useRef(sd);
-  const debounceTimer = useRef(null);
-
-  const handleMeanChange = (value) => {
-    setMeanInput(value);
-
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      const num = parseFloat(value);
-      if (!isNaN(num)) {
-        setMean(num);
-        lastValidMean.current = num;
-      } else {
-        setMean(lastValidMean.current);
-      }
-    }, 1000);
-  };
-
-  const handleSdChange = (value) => {
-    setSdInput(value);
-
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      const num = parseFloat(value);
-      if (!isNaN(num) && num > 0) {
-        setSd(num);
-        lastValidSd.current = num;
-      } else {
-        setSd(lastValidSd.current);
-      }
-    }, 1000);
+  // --- Použitie useDebouncedValue pre sd ---
+  const [sdInput, sd, setSdValue] = useDebouncedValue(1, 1000);
+  // Validátor pre smerodajnú odchýlku (musí byť kladná)
+  const validateSd = (value) => {
+    const num = parseFloat(value);
+    return !isNaN(num) && num > 0;
   };
 
   // hover hodnota pre oba grafy
@@ -249,19 +220,21 @@ function ProbabilityDistributions() {
           μ (stred):
           <input
             type="number"
-            value={meanInput}
+            value={meanInput} // Použi inputValue z hooku
             step="0.5"
-            onChange={(e) => handleMeanChange(e.target.value)}
+            // Použi setValue z hooku s validátorom
+            onChange={(e) => setMeanValue(e.target.value, validateMean)}
           />
         </label>
         <label>
           σ (smerodajná odchýlka):
           <input
             type="number"
-            value={sdInput}
+            value={sdInput} // Použi inputValue z hooku
             step="0.1"
-            min="0.1"
-            onChange={(e) => handleSdChange(e.target.value)}
+            min="0.1" // Min atribút zostáva pre UX
+            // Použi setValue z hooku s validátorom
+            onChange={(e) => setSdValue(e.target.value, validateSd)}
           />
         </label>
       </div>
@@ -284,8 +257,26 @@ function ProbabilityDistributions() {
       <CSVDistributions />
 
       <h4 id="chi-square">Chí kvadrát rozdelenie</h4>
-      <p>Placeholder text pre chí-kvadrát rozdelenie.</p>
+      <p>
+        Chí kvadrát rozdelenie s k stupňami voľnosti vzniká ako súčet štvorcov k
+        nezávislých náhodných veličín, ktoré majú štandardizované normálne
+        rozdelenie N(0, 1). Používa sa napríklad pri teste dobrej zhody, teste
+        nezávislosti v kontingenčných tabuľkách alebo pri odhade rozptylu
+        normálneho rozdelenia.
+      </p>
+      <p>Hustota pravdepodobnosti ($\chi^2(k)$) je daná vzorcom:</p>
+      <BlockMath math="f(x; k) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2 - 1} e^{-x/2}, \quad x > 0" />
+      <p>
+        kde k je počet stupňov voľnosti a Gamma$ je Gamma funkcia. Tvar
+        rozdelenia závisí od počtu stupňov voľnosti k. Pre malé k je rozdelenie
+        výrazne pravostranne zošikmené, s rastúcim k sa približuje k normálnemu
+        rozdeleniu.
+      </p>
 
+      {/* Vloženie grafu */}
+      <div className="charts-wrapper justify-content-center">
+        <ChiSquareChart />
+      </div>
       <h4 id="student-t">Studentovo t rozdelenie</h4>
       <p>Placeholder text pre Studentovo t rozdelenie.</p>
 

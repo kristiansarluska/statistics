@@ -3,7 +3,15 @@ import React, { createContext, useState, useEffect } from "react";
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined" && window.matchMedia) {
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      return prefersDark;
+    }
+    return false; // Predvolená hodnota, ak detekcia zlyhá alebo nie je dostupná
+  });
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 

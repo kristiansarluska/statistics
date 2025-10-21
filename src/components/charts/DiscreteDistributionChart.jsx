@@ -47,7 +47,7 @@ const CustomTooltip = ({ active, payload }) => {
         style={{
           backgroundColor: "white",
           padding: "5px",
-          border: "1px solid #ccc",
+          border: "1px solid var(--bs-gray-400)",
           borderRadius: "3px",
           fontSize: "0.85rem",
         }}
@@ -190,8 +190,8 @@ function DiscreteDistributionChart({ data = defaultData }) {
               }}
               domain={[0, "auto"]}
             />
-            <Tooltip />
-            <Bar dataKey="y" fill="#008cba" />
+            <Tooltip cursor={{ fill: "rgba(206, 206, 206, 0.2)" }} />
+            <Bar dataKey="y" fill="var(--bs-primary)" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -227,8 +227,8 @@ function DiscreteDistributionChart({ data = defaultData }) {
             <Line
               type="stepAfter" // Kľúčové: stepAfter
               dataKey="y"
-              stroke="#008cba" // Farba čiary
-              fill="#008cba" // Farba pre zatvorené krúžky (aj keď ich kreslí Scatter)
+              stroke="var(--bs-primary)" // Farba čiary
+              fill="var(--bs-primary)" // Farba pre zatvorené krúžky (aj keď ich kreslí Scatter)
               strokeWidth={2}
               dot={false} // Vypneme defaultné bodky
               isAnimationActive={false}
@@ -237,7 +237,7 @@ function DiscreteDistributionChart({ data = defaultData }) {
             <Scatter
               name="Open"
               data={openCircleData} // Samostatné dáta pre otvorené
-              fill="#008cba" // Farba OKRAJA
+              fill="var(--bs-primary)" // Farba OKRAJA
               shape={renderOpenCircle}
               isAnimationActive={false}
               // Tooltip môžeme dať aj sem, ak chceme info len pri hoveri nad krúžkom
@@ -246,7 +246,7 @@ function DiscreteDistributionChart({ data = defaultData }) {
             <Scatter
               name="Closed"
               data={closedCircleData} // Samostatné dáta pre zatvorené
-              fill="#008cba" // Farba VÝPLNE
+              fill="var(--bs-primary)" // Farba VÝPLNE
               shape={renderClosedCircle}
               isAnimationActive={false}
               // Tooltip aj sem
