@@ -52,7 +52,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--bs-gray-400);
   border-radius: 30px;
   transition: background-color 0.4s;
   display: flex;
@@ -69,14 +69,14 @@
   width: 22px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: var(--bs-white);
   border-radius: 50%;
   transition: transform 0.4s;
   z-index: 2; /* krúžok bude nad ikonami */
 }
 
 input:checked + .slider {
-  background-color: #008cba;
+  background-color: var(--bs-primary);
 }
 
 input:checked + .slider:before {
@@ -102,7 +102,7 @@ input:checked + .slider:before {
   width: 20px;
   height: 14px;
   object-fit: cover;
-  border: 1px solid #ccc;
+  border: 1px solid var(--bs-gray-400);
   border-radius: 2px;
   /*aaa*/
 }

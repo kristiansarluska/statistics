@@ -38,7 +38,7 @@ const renderTooltipContent = ({ active, payload, label }) => {
   return null;
 };
 
-const COLORS = ["#8884d8", "#82ca9d"];
+const COLORS = ["var(--bs-primary)", "var(--bs-info)"];
 
 // Odstránili sme 'p' z props
 function BernoulliChart() {
@@ -74,6 +74,7 @@ function BernoulliChart() {
           Parameter p:
           <input
             type="range"
+            className="form-range"
             min="0"
             max="1"
             step="0.01"

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,6 +24,7 @@ function Layout({ children }) {
       <div id="page-content-wrapper">
         <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
         <div className="container-fluid">{children}</div>
+        <ScrollToTopButton />
       </div>
     </div>
   );

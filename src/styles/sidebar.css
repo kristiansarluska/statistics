@@ -41,7 +41,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   padding: 0.5rem 1rem;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  /*transition: background-color 0.15s, color 0.15s;*/
 }
 
 /* Hover efekt: zmena farby + pozadia */
@@ -56,7 +56,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
 #sidebar-wrapper .list-group-item.active,
 #sidebar-wrapper .dropdown-item.active,
 #sidebar-wrapper .btn.sidebar-btn.active {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--bs-secondary-bg);
   /*color: var(--bs-primary);*/
   outline: 1px solid var(--bs-primary);
   outline-offset: -2px;
@@ -65,7 +65,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
 /* ====== Dropdown menu ====== */
 #sidebar-wrapper .dropdown-menu {
   border-radius: 0.5rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px var(--bs-secondary-bg);
   padding: 0.25rem 0;
   min-width: 220px;
 }
@@ -188,7 +188,7 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
 /* sidebar.css */
 .list-group-item.active,
 .list-group-item.active + .dropdown-toggle-split {
-  background-color: rgba(0, 0, 0, 0.15); /* Yeti primárna farba */
+  background-color: rgba(0, 0, 0, 0.15); 
   color: var(--bs-light);             /* svetlý text */
   border-color: var(--bs-primary);
 }

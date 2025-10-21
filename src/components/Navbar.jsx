@@ -15,7 +15,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
     <nav className="navbar navbar-expand-lg bg-body-secondary border-bottom">
       <div className="container-fluid">
         <button
-          className="btn btn-primary d-flex align-items-center"
+          className="btn btn-primary d-flex align-items-center rounded-5"
           onClick={onToggleSidebar}
         >
           {t("navbar.topics")}

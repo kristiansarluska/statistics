@@ -1,0 +1,41 @@
+/* src/styles/scrollToTop.css */
+
+.scroll-to-top {
+  position: fixed; /* Fixná pozícia vzhľadom na viewport */
+  bottom: 1.5rem;   /* Odsadenie odspodu */
+  right: 1.5rem;    /* Odsadenie sprava */
+  z-index: 1030;    /* Nad väčšinou obsahu, ale pod modalmi/offcanvas */
+  opacity: 0;       /* Predvolene neviditeľné */
+  visibility: hidden; /* Predvolene skryté */
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Plynulý prechod */
+  width: 40px;      /* Fixná šírka */
+  height: 40px;     /* Fixná výška */
+  display: flex;      /* Pre centrovanie ikony */
+  align-items: center; /* Vertikálne centrovanie ikony */
+  justify-content: center; /* Horizontálne centrovanie ikony */
+  padding: 0; /* Bootstrap padding resetujeme, ak je potrebný menší */
+}
+
+.scroll-to-top.show {
+  opacity: 0.8; /* Viditeľné s miernou priehľadnosťou */
+  visibility: visible;
+}
+
+.scroll-to-top:hover {
+  opacity: 1; /* Plná viditeľnosť pri hoveri */
+}
+
+.scroll-to-top-arrow {
+  width: 20px; /* Veľkosť ikony šípky */
+  height: 20px;
+  display: block;
+  margin: auto;
+}
+
+/* Prispôsobenie pozície na menších obrazovkách (voliteľné) */
+@media (max-width: 576px) {
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+  }
+}

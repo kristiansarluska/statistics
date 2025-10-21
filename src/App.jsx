@@ -14,6 +14,7 @@ import Regression from "./pages/Regression";
 import "./styles/bootstrap.css";
 import "./styles/sidebar.css";
 import "./styles/theme.css";
+import "./styles/scrollToTop.css";
 
 function App() {
   return (

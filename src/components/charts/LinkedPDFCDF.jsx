@@ -57,7 +57,6 @@ function LinkedPDFCDF({ mean, sd }) {
           title="Distribučná funkcia (CDF)"
           xLabel="x"
           yLabel="F(x)"
-          lineClass="chart-line-success" // Môžeš zmeniť triedu, ak chceš inú farbu
           minX={minX}
           maxX={maxX}
           type="cdf" // StyledLineChart vie, čo robiť na základe typu
