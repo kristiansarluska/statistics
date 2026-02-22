@@ -1,42 +1,7 @@
 // src/components/charts/BernoulliChart.jsx
-import React, { useState, useMemo } from "react"; // Pridaj useState
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Label,
-  Cell,
-} from "recharts";
+import React, { useState, useMemo } from "react";
+import StyledBarChart from "./StyledBarChart";
 import "../../styles/charts.css";
-
-// Tooltip formatter zostáva rovnaký
-const renderTooltipContent = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    return (
-      <div
-        className="custom-tooltip"
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          padding: "5px 10px",
-          border: "1px solid #ccc",
-          borderRadius: "3px",
-          fontSize: "0.85rem",
-        }}
-      >
-        <p style={{ margin: 0 }}>{`Hodnota (x): ${label}`}</p>
-        <p
-          style={{ margin: 0, color: payload[0].color }}
-        >{`P(X=x): ${data.probability.toFixed(3)}`}</p>
-      </div>
-    );
-  }
-  return null;
-};
 
 const COLORS = ["var(--bs-primary)", "var(--bs-info)"];
 
@@ -110,44 +75,15 @@ function BernoulliChart() {
           Alternatívne (Bernoulliho) rozdelenie
         </div>{" "}
         {/* Pridané text-center */}
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 25,
-            }}
-            barGap={10}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="x" interval={0} tick={{ fontSize: 12 }}>
-              <Label value="Hodnota (x)" offset={-20} position="insideBottom" />
-            </XAxis>
-            <YAxis domain={[0, 1]} tick={{ fontSize: 12 }}>
-              <Label
-                value="Pravdepodobnosť P(X=x)"
-                angle={-90}
-                position="insideLeft"
-                offset={-10}
-                style={{ textAnchor: "middle" }}
-              />
-            </YAxis>
-            <Tooltip
-              content={renderTooltipContent}
-              cursor={{ fill: "rgba(206, 206, 206, 0.2)" }}
-            />
-            <Bar dataKey="probability" barSize={60}>
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        <StyledBarChart
+          data={data}
+          yDataKey="probability"
+          xLabel="Hodnota (x)"
+          yLabel="Pravdepodobnosť P(X=x)"
+          yDomain={[0, 1]}
+          barSize={60}
+          colors={["var(--bs-primary)", "var(--bs-info)"]}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+// src/components/charts/DiscreteDistributionChart.jsx
+import React, { useState, useMemo } from "react";
 import {
-  BarChart,
-  Bar,
   LineChart,
   Line,
   Scatter,
@@ -11,7 +10,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import "../../styles/charts.css"; // Predpokladáme, že štýly sú tu
+import StyledBarChart from "./StyledBarChart";
+import CustomTooltip from "./CustomTooltip"; // Potrebujeme aj tento pre CDF graf
+import "../../styles/charts.css";
 
 // --- Render funkcie pre krúžky ---
 const renderOpenCircle = (props) => {
@@ -35,31 +36,6 @@ const defaultData = [
   { x: 4, p: 0.15625 },
   { x: 5, p: 0.03125 },
 ];
-
-// --- Vlastný Tooltip pre Scatter (voliteľné) ---
-const CustomTooltip = ({ active, payload }) => {
-  if (active && payload && payload.length) {
-    // payload[0].payload obsahuje {x: ..., y: ...}
-    const point = payload[0].payload;
-    return (
-      <div
-        className="custom-tooltip"
-        style={{
-          backgroundColor: "white",
-          padding: "5px",
-          border: "1px solid var(--bs-gray-400)",
-          borderRadius: "3px",
-          fontSize: "0.85rem",
-        }}
-      >
-        <p style={{ margin: 0 }}>{`x: ${point.x}`}</p>
-        {/* Zobrazíme y s rozumným počtom desatinných miest */}
-        <p style={{ margin: 0 }}>{`F(x): ${point.y.toFixed(5)}`}</p>
-      </div>
-    );
-  }
-  return null;
-};
 
 function DiscreteDistributionChart({ data = defaultData }) {
   // --- PMF dáta ---
@@ -170,30 +146,12 @@ function DiscreteDistributionChart({ data = defaultData }) {
       {/* PMF Graf */}
       <div>
         <h3>Pravdepodobnostná funkcia (PMF)</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={pmfData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="x"
-              interval={0}
-              label={{ value: "x", position: "insideBottom", offset: -15 }}
-            />
-            <YAxis
-              label={{
-                value: "P(X=x)",
-                angle: -90,
-                position: "insideLeft",
-                offset: -10,
-              }}
-              domain={[0, "auto"]}
-            />
-            <Tooltip cursor={{ fill: "rgba(206, 206, 206, 0.2)" }} />
-            <Bar dataKey="y" fill="var(--bs-primary)" />
-          </BarChart>
-        </ResponsiveContainer>
+        <StyledBarChart
+          data={pmfData}
+          xLabel="x"
+          yLabel="P(X=x)"
+          yDomain={[0, "auto"]}
+        />
       </div>
 
       {/* CDF Graf */}
@@ -201,15 +159,15 @@ function DiscreteDistributionChart({ data = defaultData }) {
         <h3>Distribučná funkcia (CDF)</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
-            data={cdfPoints} // Dáta pre čiaru idú sem
+            data={cdfPoints}
             margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="x" // dataKey pre čiaru
+              dataKey="x"
               type="number"
-              domain={[minX - 0.5, maxX + 1.5]} // Doména podľa vypočítaných minX, maxX
-              ticks={xTicks} // Použijeme vypočítané ticks
+              domain={[minX - 0.5, maxX + 1.5]}
+              ticks={xTicks}
               allowDuplicatedCategory={false}
               label={{ value: "x", position: "insideBottom", offset: -15 }}
             />
@@ -222,34 +180,32 @@ function DiscreteDistributionChart({ data = defaultData }) {
               }}
               domain={[0, "auto"]}
             />
-            {/* Tooltip pre čiaru - môže byť užitočný */}
-            <Tooltip />
+
+            {/* Využitie nášho nového CustomTooltip pre CDF */}
+            <Tooltip content={<CustomTooltip xLabel="x" yLabel="F(x)" />} />
+
             <Line
-              type="stepAfter" // Kľúčové: stepAfter
+              type="stepAfter"
               dataKey="y"
-              stroke="var(--bs-primary)" // Farba čiary
-              fill="var(--bs-primary)" // Farba pre zatvorené krúžky (aj keď ich kreslí Scatter)
+              stroke="var(--bs-primary)"
+              fill="var(--bs-primary)"
               strokeWidth={2}
-              dot={false} // Vypneme defaultné bodky
+              dot={false}
               isAnimationActive={false}
             />
-            {/* Poradie: Otvorené -> Zatvorené */}
             <Scatter
               name="Open"
-              data={openCircleData} // Samostatné dáta pre otvorené
-              fill="var(--bs-primary)" // Farba OKRAJA
+              data={openCircleData}
+              fill="var(--bs-primary)"
               shape={renderOpenCircle}
               isAnimationActive={false}
-              // Tooltip môžeme dať aj sem, ak chceme info len pri hoveri nad krúžkom
-              // Alebo necháme hlavný Tooltip hore
             />
             <Scatter
               name="Closed"
-              data={closedCircleData} // Samostatné dáta pre zatvorené
-              fill="var(--bs-primary)" // Farba VÝPLNE
+              data={closedCircleData}
+              fill="var(--bs-primary)"
               shape={renderClosedCircle}
               isAnimationActive={false}
-              // Tooltip aj sem
             />
           </LineChart>
         </ResponsiveContainer>

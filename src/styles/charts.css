@@ -75,3 +75,14 @@
   text-align: center;
   margin-bottom: 1rem;
 }
+
+.custom-tooltip {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  padding: 8px 12px;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  font-size: 0.85rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}

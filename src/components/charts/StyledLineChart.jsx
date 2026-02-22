@@ -13,6 +13,7 @@ import {
   // Area, // Area už nepotrebujeme
 } from "recharts";
 import "../../styles/charts.css";
+import CustomTooltip, { formatNumberSmart } from "./CustomTooltip";
 
 function StyledLineChart({
   data,
@@ -29,6 +30,7 @@ function StyledLineChart({
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
+  const displayYLabel = yLabel || (type === "cdf" ? "F(x)" : "f(x)");
 
   // Logika pre formátovanie a mouse move/leave zostáva rovnaká
   useEffect(() => {
@@ -39,15 +41,6 @@ function StyledLineChart({
       setAnimated(false);
     }
   }, [data, hoverX]);
-
-  const formatNumberSmart = (num) => {
-    if (num === null || num === undefined || isNaN(num)) return "-";
-    const abs = Math.abs(num);
-    if (abs === 0) return "0.00";
-    if (abs >= 0.1) return num.toFixed(2);
-    if (abs >= 0.001) return num.toFixed(4);
-    return num.toExponential(4);
-  };
 
   const handleMouseMove = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
@@ -90,34 +83,6 @@ function StyledLineChart({
     return pointY;
   }, [data, hoverX, type]);
 
-  const renderTooltipContent = ({ active, payload, label }) => {
-    // Tooltip zostáva rovnaký
-    if (active && payload && payload.length) {
-      const point = payload[0].payload;
-      const formattedX = formatNumberSmart(point.x);
-      const formattedY = formatNumberSmart(point.y);
-
-      return (
-        <div
-          className="custom-tooltip"
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            padding: "5px 10px",
-            border: "1px solid #ccc",
-            borderRadius: "3px",
-            fontSize: "0.85rem",
-          }}
-        >
-          <p style={{ margin: 0 }}>{`${xLabel}: ${formattedX}`}</p>
-          <p
-            style={{ margin: 0, color: payload[0].color || "#000" }}
-          >{`${yLabel}: ${formattedY}`}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   // Určíme začiatočnú X súradnicu pre ReferenceArea
   // Ak máme minX, použijeme ho, inak prvý bod z dát alebo 0
   const areaStartX = minX ?? (data.length > 0 ? data[0].x : 0);
@@ -147,7 +112,7 @@ function StyledLineChart({
           />
           <YAxis
             label={{
-              value: yLabel,
+              value: displayYLabel,
               angle: -90,
               position: "insideLeft",
               offset: -10,
@@ -159,8 +124,8 @@ function StyledLineChart({
             allowDataOverflow={false} // Zabraňuje ReferenceArea pretekať pod os X
           />
           <Tooltip
-            content={renderTooltipContent}
-            cursor={{ stroke: "#aaa", strokeWidth: 1 }}
+            content={<CustomTooltip xLabel={xLabel} yLabel={displayYLabel} />}
+            cursor={false}
             animationDuration={50}
           />
 
