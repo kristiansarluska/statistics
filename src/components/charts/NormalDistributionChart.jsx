@@ -1,7 +1,7 @@
 // src/components/charts/NormalDistributionChart.jsx
 import React, { useMemo } from "react";
 import StyledLineChart from "./StyledLineChart";
-import { normalPDF } from "../../utils/distributions"; // normalCDF tu netreba
+import { normalPDF } from "../../utils/distributions";
 
 function NormalDistributionChart({ mean, sd, hoverX, setHoverX }) {
   // Vypočítame minX a maxX pre doménu

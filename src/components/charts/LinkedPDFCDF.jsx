@@ -1,4 +1,4 @@
-// src/components/charts/LinkedPDFCDF.jsx (ZJEDNODUŠENÁ VERZIA)
+// src/components/charts/LinkedPDFCDF.jsx
 import React, { useState, useMemo } from "react";
 import StyledLineChart from "./StyledLineChart";
 import { normalPDF, normalCDF } from "../../utils/distributions";
