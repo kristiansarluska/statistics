@@ -31,7 +31,7 @@ function StyledBarChart({
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey={xDataKey}
-          interval={0}
+          interval="preserveStartEnd"
           label={{ value: xLabel, position: "insideBottom", offset: -15 }}
         />
         <YAxis

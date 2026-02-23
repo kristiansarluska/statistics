@@ -11,24 +11,16 @@ export function erf(x) {
     a4 = -1.453152027,
     a5 = 1.061405429;
   const y =
-    1 -
-    (((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t) *
-      Math.exp(-x * x);
+    1 - ((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
   return sign * y;
 }
 
 // hodnoty pre Chí kvadrát rozdelenie
 const g = 7;
 const p = [
-  0.99999999999980993,
-  676.5203681218851,
-  -1259.1392167224028,
-  771.32342877765313,
-  -176.61502916214059,
-  12.507343278686905,
-  -0.13857109526572012,
-  9.9843695780195716e-6,
-  1.5056327351493116e-7
+  0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+  771.32342877765313, -176.61502916214059, 12.507343278686905,
+  -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7,
 ];
 
 // PDF – hustota normálneho rozdelenia
@@ -70,17 +62,34 @@ export function chiSquarePDF(x, k) {
 
   // Ošetrenie delenia nulou alebo neplatných hodnôt Gamma funkcie
   if (denominator === 0 || isNaN(denominator) || !isFinite(denominator)) {
-      // Pre veľmi malé k/2 môže gamma(k/2) byť problematické
-      // Môžeme vrátiť 0 alebo vyhodiť chybu, podľa potreby
-      // Vrátenie 0 je bezpečnejšie pre graf
-      return 0;
+    // Pre veľmi malé k/2 môže gamma(k/2) byť problematické
+    // Môžeme vrátiť 0 alebo vyhodiť chybu, podľa potreby
+    // Vrátenie 0 je bezpečnejšie pre graf
+    return 0;
   }
 
   const result = numerator / denominator;
-    // Ošetrenie prípadov, kedy výsledok nie je platné číslo
+  // Ošetrenie prípadov, kedy výsledok nie je platné číslo
   if (isNaN(result) || !isFinite(result)) {
-        return 0;
-    }
+    return 0;
+  }
 
   return result;
 }
+
+// Helper for combinations (n choose k)
+export const getCombinations = (n, k) => {
+  if (k === 0 || k === n) return 1;
+  let c = 1;
+  for (let i = 1; i <= k; i++) {
+    c = (c * (n - i + 1)) / i;
+  }
+  return c;
+};
+
+// Binomial Probability Mass Function (PMF)
+export const binomialPMF = (k, n, p) => {
+  if (p === 0) return k === 0 ? 1 : 0;
+  if (p === 1) return k === n ? 1 : 0;
+  return getCombinations(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+};

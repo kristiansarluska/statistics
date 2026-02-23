@@ -1,6 +1,7 @@
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import UniformDiscreteChart from "../../components/charts/UniformDiscreteChart";
+import BinomialChart from "../../components/charts/BinomialChart";
 import BernoulliChart from "../../components/charts/BernoulliChart";
 import PracticalExample from "../../components/content/PracticalExample";
 
@@ -64,7 +65,15 @@ function DiscreteDistributions() {
       </div>
 
       <h3 id="binomial">Binomické rozdelenie</h3>
-      <p>Placeholder text pre binomické rozdelenie.</p>
+      <p>
+        Binomické rozdelenie opisuje počet úspechov v postupnosti $n$
+        nezávislých experimentov, pričom každý z nich má rovnakú pravdepodobnosť
+        úspechu $p$.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <BinomialChart />
+      </div>
 
       <h3 id="poisson">Poissonovo rozdelenie</h3>
       <p>Placeholder text pre Poissonovo rozdelenie.</p>
