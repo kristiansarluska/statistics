@@ -20,6 +20,7 @@ function StyledLineChart({
   title,
   xLabel = "x",
   yLabel = "y",
+  yAxisDomain = [0, "auto"],
   lineClass = "chart-line-primary",
   hoverX = null,
   setHoverX = () => {},
@@ -123,9 +124,9 @@ function StyledLineChart({
               offset: -10,
             }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart} // Vizuálne zaokrúhlenie
-            domain={[0, "auto"]}
-            tickCount={6} // Pridáme fixný počet aj pre Y os pre krajšie rozloženie
+            tickFormatter={formatNumberSmart}
+            domain={yAxisDomain || [0, "auto"]}
+            tickCount={6}
             allowDataOverflow={false}
           />
           <Tooltip

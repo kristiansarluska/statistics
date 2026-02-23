@@ -1,6 +1,7 @@
 // src/pages/probabilityDistributions/ContinuousDistributions.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
+import ContinuousUniformChart from "../../components/charts/ContinuousUniformChart";
 import NormalDistributionChart from "../../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../../components/charts/NormalCDFChart";
 import CSVDistributions from "../../components/charts/CSVDistributions";
@@ -21,15 +22,36 @@ function ContinuousDistributions({
   return (
     <>
       <h2 id="continuous-distributions">Spojité rozdelenia</h2>
-      <p>Placeholder text o spojitých pravdepodobnostných rozdeleniach.</p>
+      <p>
+        Spojité pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré
+        môžu nadobúdať akúkoľvek hodnotu v rámci určitého intervalu. Na rozdiel
+        od diskrétnych rozdelení, pravdepodobnosť, že spojitá veličina nadobudne
+        konkrétnu hodnotu (napr. presne $x = 2.0000$), je vždy nulová. Namiesto
+        toho počítame pravdepodobnosť, že hodnota padne do určitého intervalu.
+      </p>
 
+      {/* --- Rovnomerné rozdelenie --- */}
+      <h3 id="continuous-uniform">Rovnomerné rozdelenie</h3>
+      <p>
+        Spojité rovnomerné rozdelenie opisuje náhodnú veličinu, ktorá s rovnakou
+        pravdepodobnosťou nadobúda akúkoľvek hodnotu v uzavretom intervale $ a,
+        b $. Hustota pravdepodobnosti má na tomto intervale konštantnú hodnotu
+        $\frac{1}b - a $ a mimo neho je nulová.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <ContinuousUniformChart />
+      </div>
+
+      {/* --- Exponenciálne rozdelenie --- */}
       <h3 id="exponential">Exponenciálne rozdelenie</h3>
       <p>Placeholder text pre exponenciálne rozdelenie.</p>
 
+      {/* --- Normálne rozdelenie --- */}
       <h3 id="normal">Normálne rozdelenie</h3>
       <p>
-        Placeholder text pre normálne rozdelenie. Uvedený tvar hustoty
-        pravdepodobnosti je:
+        Normálne (Gaussovo) rozdelenie je najdôležitejším spojitým rozdelením.
+        Uvedený tvar hustoty pravdepodobnosti je:
       </p>
       <BlockMath math="f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 }" />
       <p>
@@ -60,7 +82,6 @@ function ContinuousDistributions({
       </div>
 
       <div className="charts-wrapper">
-        {/* DYNAMICKÉ HODNOTY */}
         <NormalDistributionChart
           mean={mean}
           sd={sd}
@@ -77,27 +98,29 @@ function ContinuousDistributions({
 
       <CSVDistributions />
 
+      {/* --- Chí kvadrát rozdelenie --- */}
       <h4 id="chi-square">Chí kvadrát rozdelenie</h4>
       <p>
-        Chí kvadrát rozdelenie s k stupňami voľnosti vzniká ako súčet štvorcov k
-        nezávislých náhodných veličín, ktoré majú štandardizované normálne
-        rozdelenie N(0, 1). Používa sa napríklad pri teste dobrej zhody, teste
+        Chí kvadrát rozdelenie s $k$ stupňami voľnosti vzniká ako súčet štvorcov
+        $k$ nezávislých náhodných veličín, ktoré majú štandardizované normálne
+        rozdelenie $N(0, 1)$. Používa sa napríklad pri teste dobrej zhody, teste
         nezávislosti v kontingenčných tabuľkách alebo pri odhade rozptylu
         normálneho rozdelenia.
       </p>
       <p>Hustota pravdepodobnosti ($\chi^2(k)$) je daná vzorcom:</p>
       <BlockMath math="f(x; k) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2 - 1} e^{-x/2}, \quad x > 0" />
       <p>
-        kde k je počet stupňov voľnosti a Gamma$ je Gamma funkcia. Tvar
-        rozdelenia závisí od počtu stupňov voľnosti k. Pre malé k je rozdelenie
-        výrazne pravostranne zošikmené, s rastúcim k sa približuje k normálnemu
-        rozdeleniu.
+        kde $k$ je počet stupňov voľnosti a $\Gamma$ je Gamma funkcia. Tvar
+        rozdelenia závisí od počtu stupňov voľnosti $k$. Pre malé $k$ je
+        rozdelenie výrazne pravostranne zošikmené, s rastúcim $k$ sa približuje
+        k normálnemu rozdeleniu.
       </p>
 
       <div className="charts-wrapper justify-content-center">
         <ChiSquareChart />
       </div>
 
+      {/* --- Ďalšie rozdelenia --- */}
       <h4 id="student-t">Studentovo t rozdelenie</h4>
       <p>Placeholder text pre Studentovo t rozdelenie.</p>
 
