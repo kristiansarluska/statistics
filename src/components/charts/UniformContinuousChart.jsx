@@ -1,9 +1,9 @@
-// src/components/charts/ContinuousUniformChart.jsx
+// src/components/charts/UniformContinuousChart.jsx
 import React, { useState, useMemo, useCallback } from "react";
 import StyledLineChart from "./StyledLineChart";
 import "../../styles/charts.css";
 
-function ContinuousUniformChart() {
+function UniformContinuousChart() {
   const [a, setA] = useState(-5);
   const [b, setB] = useState(5);
   const [hoverX, setHoverX] = useState(null);
@@ -125,4 +125,4 @@ function ContinuousUniformChart() {
   );
 }
 
-export default ContinuousUniformChart;
+export default UniformContinuousChart;

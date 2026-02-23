@@ -108,3 +108,9 @@ export const factorial = (n) => {
 export const poissonPMF = (k, lambda) => {
   return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
 };
+
+// Exponenciálne rozdelenie (PDF)
+export const exponentialPDF = (x, lambda) => {
+  if (x < 0) return 0;
+  return lambda * Math.exp(-lambda * x);
+};

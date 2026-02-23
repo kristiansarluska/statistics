@@ -42,7 +42,7 @@ export const sidebarData = [
         children: [
           {
             label: "Rovnomerné rozdelenie",
-            path: "/probability-distributions#econtinuous-uniform",
+            path: "/probability-distributions#uniform-continuous",
           },
           {
             label: "Exponenciálne rozdelenie",

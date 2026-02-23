@@ -1,7 +1,8 @@
 // src/pages/probabilityDistributions/ContinuousDistributions.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
-import ContinuousUniformChart from "../../components/charts/ContinuousUniformChart";
+import UniformContinuousChart from "../../components/charts/UniformContinuousChart";
+import ExponentialChart from "../../components/charts/ExponentialChart";
 import NormalDistributionChart from "../../components/charts/NormalDistributionChart";
 import NormalCDFChart from "../../components/charts/NormalCDFChart";
 import CSVDistributions from "../../components/charts/CSVDistributions";
@@ -31,7 +32,7 @@ function ContinuousDistributions({
       </p>
 
       {/* --- Rovnomerné rozdelenie --- */}
-      <h3 id="continuous-uniform">Rovnomerné rozdelenie</h3>
+      <h3 id="uniform-continuous">Rovnomerné rozdelenie</h3>
       <p>
         Spojité rovnomerné rozdelenie opisuje náhodnú veličinu, ktorá s rovnakou
         pravdepodobnosťou nadobúda akúkoľvek hodnotu v uzavretom intervale $ a,
@@ -40,12 +41,22 @@ function ContinuousDistributions({
       </p>
 
       <div className="charts-wrapper justify-content-center">
-        <ContinuousUniformChart />
+        <UniformContinuousChart />
       </div>
 
       {/* --- Exponenciálne rozdelenie --- */}
       <h3 id="exponential">Exponenciálne rozdelenie</h3>
-      <p>Placeholder text pre exponenciálne rozdelenie.</p>
+      <p>
+        Exponenciálne rozdelenie sa často používa na modelovanie času medzi
+        nezávislými javmi, ktoré sa vyskytujú konštantnou priemernou rýchlosťou.
+        Zaujímavou vlastnosťou tohto rozdelenia je, že je "bez pamäti" –
+        pravdepodobnosť, že jav nastane v ďalšej minúte, nezávisí od toho, koľko
+        času už uplynulo od predchádzajúceho javu.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <ExponentialChart />
+      </div>
 
       {/* --- Normálne rozdelenie --- */}
       <h3 id="normal">Normálne rozdelenie</h3>
