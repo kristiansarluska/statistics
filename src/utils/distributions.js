@@ -114,3 +114,12 @@ export const exponentialPDF = (x, lambda) => {
   if (x < 0) return 0;
   return lambda * Math.exp(-lambda * x);
 };
+
+// Hustota pravdepodobnosti Studentovho t-rozdelenia (PDF)
+export const studentTPDF = (x, k) => {
+  const numerator = gamma((k + 1) / 2);
+  const denominator = Math.sqrt(k * Math.PI) * gamma(k / 2);
+  const base = 1 + (x * x) / k;
+  const exponent = -(k + 1) / 2;
+  return (numerator / denominator) * Math.pow(base, exponent);
+};

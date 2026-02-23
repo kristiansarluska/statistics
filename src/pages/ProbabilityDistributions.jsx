@@ -1,8 +1,7 @@
 // src/pages/ProbabilityDistributions.jsx
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import useDebouncedValue from "../hooks/useDebouncedValue";
 import "../styles/charts.css";
 
 // Pod-komponenty
@@ -14,18 +13,6 @@ import ContinuousDistributions from "./probabilityDistributions/ContinuousDistri
 function ProbabilityDistributions() {
   const { t } = useTranslation();
   const location = useLocation();
-
-  // Spoločný stav
-  const [meanInput, mean, setMeanValue] = useDebouncedValue(0, 1000);
-  const validateMean = (value) => !isNaN(parseFloat(value));
-
-  const [sdInput, sd, setSdValue] = useDebouncedValue(1, 1000);
-  const validateSd = (value) => {
-    const num = parseFloat(value);
-    return !isNaN(num) && num > 0;
-  };
-
-  const [hoverX, setHoverX] = useState(null);
 
   // --- scroll na hash po navigácii ---
   useEffect(() => {
@@ -51,20 +38,9 @@ function ProbabilityDistributions() {
       <h1 id="page-title">{t("topics.probabilityDistributions")}</h1>
 
       <Motivation />
-      <PdfCdf mean={mean} sd={sd} />
+      <PdfCdf />
       <DiscreteDistributions />
-      <ContinuousDistributions
-        mean={mean}
-        meanInput={meanInput}
-        setMeanValue={setMeanValue}
-        validateMean={validateMean}
-        sd={sd}
-        sdInput={sdInput}
-        setSdValue={setSdValue}
-        validateSd={validateSd}
-        hoverX={hoverX}
-        setHoverX={setHoverX}
-      />
+      <ContinuousDistributions />
     </>
   );
 }

@@ -4,22 +4,11 @@ import { BlockMath, InlineMath } from "react-katex";
 import UniformContinuousChart from "../../components/charts/UniformContinuousChart";
 import ExponentialChart from "../../components/charts/ExponentialChart";
 import NormalDistributionChart from "../../components/charts/NormalDistributionChart";
-import NormalCDFChart from "../../components/charts/NormalCDFChart";
 import CSVDistributions from "../../components/charts/CSVDistributions";
 import ChiSquareChart from "../../components/charts/ChiSquareChart";
+import StudentTChart from "../../components/charts/StudentTChart";
 
-function ContinuousDistributions({
-  mean,
-  meanInput,
-  setMeanValue,
-  validateMean,
-  sd,
-  sdInput,
-  setSdValue,
-  validateSd,
-  hoverX,
-  setHoverX,
-}) {
+function ContinuousDistributions() {
   return (
     <>
       <h2 id="continuous-distributions">Spojité rozdelenia</h2>
@@ -70,41 +59,9 @@ function ContinuousDistributions({
         <InlineMath math="\sigma" /> smerodajná odchýlka.
       </p>
 
-      <div className="controls mb-3">
-        <label>
-          μ (stred):
-          <input
-            type="number"
-            value={meanInput}
-            step="0.5"
-            onChange={(e) => setMeanValue(e.target.value, validateMean)}
-          />
-        </label>
-        <label>
-          σ (smerodajná odchýlka):
-          <input
-            type="number"
-            value={sdInput}
-            step="0.1"
-            min="0.1"
-            onChange={(e) => setSdValue(e.target.value, validateSd)}
-          />
-        </label>
-      </div>
-
-      <div className="charts-wrapper">
-        <NormalDistributionChart
-          mean={mean}
-          sd={sd}
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-        />
-        <NormalCDFChart
-          mean={mean}
-          sd={sd}
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-        />
+      {/* Tu sa vyrenderujú slidery a oba grafy naraz */}
+      <div className="w-100">
+        <NormalDistributionChart />
       </div>
 
       <CSVDistributions />
@@ -131,9 +88,21 @@ function ContinuousDistributions({
         <ChiSquareChart />
       </div>
 
-      {/* --- Ďalšie rozdelenia --- */}
-      <h4 id="student-t">Studentovo t rozdelenie</h4>
-      <p>Placeholder text pre Studentovo t rozdelenie.</p>
+      {/* --- Studentovo t-rozdelenie --- */}
+      <h4 id="student-t">Studentovo t-rozdelenie</h4>
+      <p>
+        Studentovo t-rozdelenie je symetrické a zvonovité, podobne ako normálne
+        rozdelenie. Rozdiel je však v tom, že t-rozdelenie má "ťažšie chvosty"
+        (vyššiu pravdepodobnosť hodnôt ďaleko od stredu). Používa sa najmä pri
+        odhadoch strednej hodnoty, keď je veľkosť výberového súboru malá a
+        smerodajná odchýlka základného súboru neznáma. So zvyšujúcim sa počtom
+        stupňov voľnosti ($k$) sa t-rozdelenie blíži k štandardizovanému
+        normálnemu rozdeleniu $N(0, 1)$.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <StudentTChart />
+      </div>
 
       <h4 id="fisher-f">Fisherovo F rozdelenie</h4>
       <p>Placeholder text pre Fisherovo F rozdelenie.</p>
