@@ -93,3 +93,18 @@ export const binomialPMF = (k, n, p) => {
   if (p === 1) return k === n ? 1 : 0;
   return getCombinations(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
 };
+
+// Pomocná funkcia pre faktoriál
+export const factorial = (n) => {
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) {
+    result *= i;
+  }
+  return result;
+};
+
+// Pravdepodobnostná funkcia Poissonovho rozdelenia (PMF)
+export const poissonPMF = (k, lambda) => {
+  return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
+};

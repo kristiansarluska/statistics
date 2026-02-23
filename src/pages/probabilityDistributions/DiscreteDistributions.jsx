@@ -1,8 +1,9 @@
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
+import BernoulliChart from "../../components/charts/BernoulliChart";
 import UniformDiscreteChart from "../../components/charts/UniformDiscreteChart";
 import BinomialChart from "../../components/charts/BinomialChart";
-import BernoulliChart from "../../components/charts/BernoulliChart";
+import PoissonChart from "../../components/charts/PoissonChart";
 import PracticalExample from "../../components/content/PracticalExample";
 
 function DiscreteDistributions() {
@@ -76,7 +77,16 @@ function DiscreteDistributions() {
       </div>
 
       <h3 id="poisson">Poissonovo rozdelenie</h3>
-      <p>Placeholder text pre Poissonovo rozdelenie.</p>
+      <p>
+        Poissonovo rozdelenie opisuje pravdepodobnosť, že daný počet udalostí sa
+        vyskytne v pevne stanovenom časovom alebo priestorovom intervale.
+        Parameter $\lambda$ (lambda) predstavuje priemerný (očakávaný) počet
+        výskytov javu v tomto intervale.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <PoissonChart />
+      </div>
     </>
   );
 }
