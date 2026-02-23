@@ -1,5 +1,6 @@
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
+import UniformDiscreteChart from "../../components/charts/UniformDiscreteChart";
 import BernoulliChart from "../../components/charts/BernoulliChart";
 import PracticalExample from "../../components/content/PracticalExample";
 
@@ -52,7 +53,15 @@ function DiscreteDistributions() {
       </PracticalExample>
 
       <h3 id="uniform-discrete">Rovnomerné rozdelenie</h3>
-      <p>Placeholder text pre diskrétne rovnomerné rozdelenie.</p>
+      <p>
+        Diskrétne rovnomerné rozdelenie opisuje náhodnú veličinu, pri ktorej má
+        každý z konečného počtu $n$ možných výsledkov rovnakú pravdepodobnosť
+        výskytu. Typickým príkladom je hod spravodlivou hracou kockou ($n=6$).
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <UniformDiscreteChart />
+      </div>
 
       <h3 id="binomial">Binomické rozdelenie</h3>
       <p>Placeholder text pre binomické rozdelenie.</p>

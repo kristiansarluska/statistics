@@ -17,7 +17,6 @@ function PdfCdf() {
   return (
     <>
       <h2 id="pdf-cdf">Pravdepodobnostná a distribučná funkcia</h2>
-      <h2 id="pdf-cdf">Pravdepodobnostná a distribučná funkcia</h2>
       <p>
         Pravdepodobnostné rozdelenie môžeme opísať dvoma príbuznými funkciami:
         <strong> funkciou hustoty pravdepodobnosti (PDF)</strong> a{" "}
