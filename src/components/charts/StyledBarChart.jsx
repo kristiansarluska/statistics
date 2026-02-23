@@ -14,24 +14,35 @@ import CustomTooltip from "./CustomTooltip";
 
 function StyledBarChart({
   data,
-  xDataKey = "x",
-  yDataKey = "y",
-  xLabel = "x",
-  yLabel = "P(X=x)",
+  xLabel,
+  yLabel,
   yDomain = [0, "auto"],
-  colors = ["var(--bs-primary)"], // Podpora pre viacero farieb
-  barSize,
+  maxBarSize = 60,
+  hoverX,
+  setHoverX,
 }) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
         data={data}
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+        onMouseMove={(state) => {
+          if (
+            setHoverX &&
+            state &&
+            state.isTooltipActive &&
+            state.activeLabel !== undefined
+          ) {
+            setHoverX(String(state.activeLabel));
+          }
+        }}
+        onMouseLeave={() => {
+          if (setHoverX) setHoverX(null);
+        }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis
-          dataKey={xDataKey}
-          interval="preserveStartEnd"
+          dataKey="x"
           label={{ value: xLabel, position: "insideBottom", offset: -15 }}
         />
         <YAxis
@@ -43,14 +54,26 @@ function StyledBarChart({
             offset: -10,
           }}
         />
-        <Tooltip
-          cursor={{ fill: "var(--bs-body-color)", opacity: 0.08 }}
-          content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />}
-        />
-        <Bar dataKey={yDataKey} barSize={barSize}>
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-          ))}
+        <Tooltip content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />} />
+        <Bar dataKey="y" maxBarSize={maxBarSize}>
+          {data.map((entry, index) => {
+            // Určenie farby: ak je stĺpec "hovernutý", použijeme tmavší odtieň alebo inú farbu
+            const isHovered =
+              hoverX !== undefined &&
+              hoverX !== null &&
+              hoverX === String(entry.x);
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={
+                  isHovered
+                    ? "var(--bs-primary-border-subtle, #0a58ca)"
+                    : "var(--bs-primary)"
+                }
+                style={{ transition: "fill 0.2s ease" }}
+              />
+            );
+          })}
         </Bar>
       </BarChart>
     </ResponsiveContainer>

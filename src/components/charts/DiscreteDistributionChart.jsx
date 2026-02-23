@@ -1,33 +1,100 @@
 // src/components/charts/DiscreteDistributionChart.jsx
 import React, { useState, useMemo } from "react";
 import {
-  LineChart,
+  ComposedChart,
   Line,
-  Scatter,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceArea,
 } from "recharts";
 import StyledBarChart from "./StyledBarChart";
-import CustomTooltip from "./CustomTooltip"; // Potrebujeme aj tento pre CDF graf
+import CustomTooltip from "./CustomTooltip";
 import "../../styles/charts.css";
 
-// --- Render funkcie pre krúžky ---
+// --- Custom shape renderers for open and closed circles ---
 const renderOpenCircle = (props) => {
-  const { cx, cy, fill } = props; // Použijeme fill pre farbu OKRAJA
-  // console.log("Open Circle:", cx, cy); // Debug
+  const { cx, cy, index } = props;
+  if (cx == null || cy == null) return null;
   return (
-    <circle cx={cx} cy={cy} r={5} fill="white" stroke={fill} strokeWidth={2} />
+    <circle
+      key={`open-${index}`}
+      cx={cx}
+      cy={cy}
+      r={4}
+      fill="var(--bs-body-bg, white)"
+      stroke="var(--bs-primary)"
+      strokeWidth={2}
+    />
   );
 };
+
 const renderClosedCircle = (props) => {
-  const { cx, cy, fill } = props; // Použijeme fill pre farbu VÝPLNE
-  // console.log("Closed Circle:", cx, cy); // Debug
-  return <circle cx={cx} cy={cy} r={5} fill={fill} />;
+  const { cx, cy, index } = props;
+  if (cx == null || cy == null) return null;
+  return (
+    <circle
+      key={`closed-${index}`}
+      cx={cx}
+      cy={cy}
+      r={4}
+      fill="var(--bs-primary)"
+    />
+  );
 };
-// --- Predvolené dáta ---
+
+// --- Custom mathematically correct Tooltip wrapping CustomTooltip ---
+const renderCDFTooltip = ({
+  active,
+  label,
+  data,
+  xLabel,
+  yLabel,
+  minX,
+  maxX,
+}) => {
+  if (active && label !== null && label !== undefined) {
+    // Hide tooltip for artificial boundary points
+    if (label < minX || label > maxX) {
+      return null;
+    }
+
+    let cdfValue = 0;
+    // Calculate right-continuous CDF value mathematically for exactly this x
+    const sorted = [...data].sort((a, b) => a.x - b.x);
+    for (const item of sorted) {
+      if (item.x <= label) {
+        cdfValue += item.p;
+      } else {
+        break;
+      }
+    }
+
+    // Create an artificial payload that mimics Recharts native structure
+    const correctedValue = Math.round(cdfValue * 10000) / 10000;
+    const correctedPayload = [
+      {
+        value: correctedValue,
+        payload: { x: label, y: correctedValue },
+      },
+    ];
+
+    return (
+      <CustomTooltip
+        active={active}
+        label={label}
+        payload={correctedPayload}
+        xLabel={xLabel}
+        yLabel={yLabel}
+      />
+    );
+  }
+  return null;
+};
+
+// --- Default data fallback ---
 const defaultData = [
   { x: 0, p: 0.03125 },
   { x: 1, p: 0.15625 },
@@ -38,26 +105,23 @@ const defaultData = [
 ];
 
 function DiscreteDistributionChart({ data = defaultData }) {
-  // --- PMF dáta ---
+  // --- Shared hover state for linking charts ---
+  const [hoverX, setHoverX] = useState(null);
+
+  // --- Calculate PMF data ---
   const pmfData = useMemo(() => {
     if (!data || data.length === 0) return [];
     return data.map((item) => ({ x: String(item.x), y: item.p }));
   }, [data]);
 
-  // --- Definícia minX a maxX ---
+  // --- Determine X-axis boundaries ---
   const { minX, maxX } = useMemo(() => {
     if (!data || data.length === 0) return { minX: 0, maxX: 1 };
     const sortedX = data.map((d) => d.x).sort((a, b) => a - b);
     return { minX: sortedX[0], maxX: sortedX[sortedX.length - 1] };
   }, [data]);
 
-  // --- Pomocné zoradené dáta pre CustomStepDot ---
-  const sortedDataForDot = useMemo(() => {
-    if (!data || data.length === 0) return [];
-    return [...data].sort((a, b) => a.x - b.x);
-  }, [data]);
-
-  // --- CDF dáta, krúžky, ticks ---
+  // --- Generate CDF points, intervals, and axis ticks ---
   const { cdfPoints, openCircleData, closedCircleData, xTicks } =
     useMemo(() => {
       if (!data || data.length === 0)
@@ -70,63 +134,49 @@ function DiscreteDistributionChart({ data = defaultData }) {
 
       let currentCDF = 0;
       const sortedData = [...data].sort((a, b) => a.x - b.x);
-      const points = []; // Body pre Line type="stepAfter"
+
+      const points = [];
       const openData = [];
       const closedData = [];
       const ticks = [];
 
-      // Použijeme minX a maxX definované vyššie
       const localMinX = minX;
-      const localMaxX = maxX;
 
-      // 1. Začiatok čiary
-      points.push({ x: localMinX - 1, y: 0 }); // Segment pred minX
-      points.push({ x: localMinX, y: 0 }); // Bod na (minX, 0)
-      closedData.push({ x: localMinX, y: 0 }); // Zatvorený krúžok na (minX, 0)
+      // 1. Initial horizontal line from the left
+      points.push({ x: localMinX - 1, y: 0 });
+      points.push({ x: localMinX, y: 0 });
+      points.push({ x: localMinX, y: null }); // Break line
+
+      openData.push({ x: localMinX, y: 0 });
       ticks.push(localMinX);
 
-      // 2. Body pre schody a krúžky
+      // 2. Generate steps and interval markers
       sortedData.forEach((item, i) => {
         const x_i = item.x;
         const p_i = item.p;
-        const y_before = currentCDF;
 
-        // Otvorený krúžok na začiatku skoku (dole)
-        openData.push({ x: x_i, y: y_before });
-
-        // Aktualizácia CDF
         currentCDF += p_i;
-        const y_after = currentCDF;
+        const y_val = Math.round(currentCDF * 10000) / 10000;
 
-        // Zatvorený krúžok na vrchole skoku
-        closedData.push({ x: x_i, y: y_after });
+        // Closed interval marker at the start of the step
+        closedData.push({ x: x_i, y: y_val });
 
-        // Body pre čiaru stepAfter
-        points.push({ x: x_i, y: y_after }); // Bod, kde čiara skočí hore
         const nextX = sortedData[i + 1]?.x;
-        const endX = nextX ?? x_i + 1;
-        points.push({ x: endX, y: y_after }); // Bod, ktorý definuje koniec horizontálneho segmentu
+        const endX = nextX !== undefined ? nextX : x_i + 1;
+
+        // Step segments exactly on boundaries
+        points.push({ x: x_i, y: y_val });
+        points.push({ x: endX, y: y_val });
+        points.push({ x: endX, y: null }); // Break line
 
         if (nextX !== undefined) {
+          openData.push({ x: endX, y: y_val });
           ticks.push(nextX);
         } else {
           ticks.push(endX);
         }
       });
 
-      // 3. Koniec čiary
-      points.push({ x: localMaxX + 2, y: currentCDF }); // Potiahnutie doprava
-
-      // Odstránime prvý otvorený krúžok na (minX, 0)
-      if (
-        openData.length > 0 &&
-        openData[0].x === localMinX &&
-        openData[0].y === 0
-      ) {
-        openData.shift();
-      }
-
-      // Unikátne ticky
       const uniqueTicks = Array.from(new Set(ticks.sort((a, b) => a - b)));
 
       return {
@@ -135,15 +185,15 @@ function DiscreteDistributionChart({ data = defaultData }) {
         closedCircleData: closedData,
         xTicks: uniqueTicks,
       };
-    }, [data, minX, maxX]); // Pridané minX, maxX
+    }, [data, minX, maxX]);
 
   if (!data || data.length === 0) {
-    return <div>Chýbajú dáta pre diskrétne rozdelenie.</div>;
+    return <div>Missing discrete distribution data.</div>;
   }
 
   return (
     <div className="charts-wrapper">
-      {/* PMF Graf */}
+      {/* PMF Chart */}
       <div>
         <h3>Pravdepodobnostná funkcia (PMF)</h3>
         <StyledBarChart
@@ -151,18 +201,34 @@ function DiscreteDistributionChart({ data = defaultData }) {
           xLabel="x"
           yLabel="P(X=x)"
           yDomain={[0, "auto"]}
+          hoverX={hoverX}
+          setHoverX={setHoverX}
         />
       </div>
 
-      {/* CDF Graf */}
+      {/* CDF Chart */}
       <div>
         <h3>Distribučná funkcia (CDF)</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={cdfPoints}
+          <ComposedChart
             margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+            onMouseMove={(state) => {
+              if (
+                state &&
+                state.isTooltipActive &&
+                state.activeLabel !== undefined
+              ) {
+                // Determine hovered integer x and pass to shared state as string
+                const labelNum = Number(state.activeLabel);
+                if (!isNaN(labelNum)) {
+                  setHoverX(String(Math.round(labelNum)));
+                }
+              }
+            }}
+            onMouseLeave={() => setHoverX(null)}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+
             <XAxis
               dataKey="x"
               type="number"
@@ -178,36 +244,68 @@ function DiscreteDistributionChart({ data = defaultData }) {
                 position: "insideLeft",
                 offset: -10,
               }}
-              domain={[0, "auto"]}
+              domain={[0, 1.1]}
+              ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
             />
 
-            {/* Využitie nášho nového CustomTooltip pre CDF */}
-            <Tooltip content={<CustomTooltip xLabel="x" yLabel="F(x)" />} />
+            {/* Injected CustomTooltip wrapper with boundaries */}
+            <Tooltip
+              content={(props) =>
+                renderCDFTooltip({
+                  ...props,
+                  data,
+                  xLabel: "x",
+                  yLabel: "F(x)",
+                  minX,
+                  maxX,
+                })
+              }
+            />
 
+            {/* Reference area to visualize hover linkage from PMF chart */}
+            {hoverX !== null && hoverX !== undefined && (
+              <ReferenceArea
+                x1={Number(hoverX) - 0.5}
+                x2={Number(hoverX) + 0.5}
+                fill="var(--bs-primary)"
+                fillOpacity={0.1}
+              />
+            )}
+
+            {/* Main steps line */}
             <Line
-              type="stepAfter"
+              data={cdfPoints}
+              type="linear"
               dataKey="y"
               stroke="var(--bs-primary)"
-              fill="var(--bs-primary)"
               strokeWidth={2}
               dot={false}
               isAnimationActive={false}
+              connectNulls={false}
             />
-            <Scatter
-              name="Open"
+
+            {/* Open circles */}
+            <Line
               data={openCircleData}
-              fill="var(--bs-primary)"
-              shape={renderOpenCircle}
+              type="linear"
+              dataKey="y"
+              stroke="none"
+              dot={renderOpenCircle}
+              activeDot={false}
               isAnimationActive={false}
             />
-            <Scatter
-              name="Closed"
+
+            {/* Closed circles */}
+            <Line
               data={closedCircleData}
-              fill="var(--bs-primary)"
-              shape={renderClosedCircle}
+              type="linear"
+              dataKey="y"
+              stroke="none"
+              dot={renderClosedCircle}
+              activeDot={false}
               isAnimationActive={false}
             />
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
     </div>
