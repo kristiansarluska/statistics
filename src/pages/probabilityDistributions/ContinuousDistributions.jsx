@@ -1,3 +1,4 @@
+// src/pages/probabilityDistributions/ContinuousDistributions.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import NormalDistributionChart from "../../components/charts/NormalDistributionChart";
@@ -36,7 +37,7 @@ function ContinuousDistributions({
         <InlineMath math="\sigma" /> smerodajná odchýlka.
       </p>
 
-      <div className="controls">
+      <div className="controls mb-3">
         <label>
           μ (stred):
           <input
@@ -59,6 +60,7 @@ function ContinuousDistributions({
       </div>
 
       <div className="charts-wrapper">
+        {/* DYNAMICKÉ HODNOTY */}
         <NormalDistributionChart
           mean={mean}
           sd={sd}

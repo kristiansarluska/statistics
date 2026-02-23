@@ -6,35 +6,32 @@ import { normalPDF, normalCDF } from "../../utils/distributions";
 function LinkedPDFCDF({ mean, sd }) {
   const [hoverX, setHoverX] = useState(null);
 
-  // Rozsah osí X (fixovaný)
-  const minX = mean - 4 * sd;
-  const maxX = mean + 4 * sd;
+  const m = Number(mean);
+  const s = Number(sd);
 
-  // Generovanie dát (zostáva rovnaké)
-  const dataPDF = useMemo(() => {
+  const minX = m - 4 * s;
+  const maxX = m + 4 * s;
+
+  const { dataPDF, dataCDF } = useMemo(() => {
     const step = (maxX - minX) / 200;
-    return Array.from({ length: 201 }, (_, i) => {
-      const x = parseFloat((minX + i * step).toFixed(2)); // Zaokrúhlenie X
-      return { x, y: normalPDF(x, mean, sd) };
-    });
-  }, [mean, sd, minX, maxX]);
+    const pdf = [];
+    const cdf = [];
 
-  const dataCDF = useMemo(() => {
-    const step = (maxX - minX) / 200;
-    return Array.from({ length: 201 }, (_, i) => {
-      const x = parseFloat((minX + i * step).toFixed(2)); // Zaokrúhlenie X
-      return { x, y: normalCDF(x, mean, sd) };
-    });
-  }, [mean, sd, minX, maxX]);
+    for (let i = 0; i <= 200; i++) {
+      // Posledný bod zachytíme presne na maxX, zvyšok plynulý step, žiadne zaokrúhľovanie
+      const x = i === 200 ? maxX : minX + i * step;
+      pdf.push({ x, y: normalPDF(x, m, s) });
+      cdf.push({ x, y: normalCDF(x, m, s) });
+    }
 
-  // --- ODSTRÁNENÉ VÝPOČTY pdfWithFill a cdfRefLine ---
+    return { dataPDF: pdf, dataCDF: cdf };
+  }, [m, s, minX, maxX]);
 
   return (
     <div className="charts-wrapper">
       <div>
-        {/* Posielame len čisté dáta a type='pdf' */}
         <StyledLineChart
-          data={dataPDF} // Použijeme priamo dataPDF
+          data={dataPDF}
           hoverX={hoverX}
           setHoverX={setHoverX}
           title="Pravdepodobnostná funkcia (PDF)"
@@ -43,15 +40,14 @@ function LinkedPDFCDF({ mean, sd }) {
           lineClass="chart-line-primary"
           minX={minX}
           maxX={maxX}
-          type="pdf" // StyledLineChart vie, čo robiť na základe typu
-          showReferenceArea={true} // <-- PRIDANÝ PROP
+          type="pdf"
+          showReferenceArea={true}
         />
       </div>
 
       <div>
-        {/* Posielame len čisté dáta a type='cdf' */}
         <StyledLineChart
-          data={dataCDF} // Použijeme priamo dataCDF
+          data={dataCDF}
           hoverX={hoverX}
           setHoverX={setHoverX}
           title="Distribučná funkcia (CDF)"
@@ -59,8 +55,7 @@ function LinkedPDFCDF({ mean, sd }) {
           yLabel="F(x)"
           minX={minX}
           maxX={maxX}
-          type="cdf" // StyledLineChart vie, čo robiť na základe typu
-          // referenceY už netreba posielať, StyledLineChart si ho vypočíta sám
+          type="cdf"
         />
       </div>
     </div>

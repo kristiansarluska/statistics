@@ -1,9 +1,10 @@
+// src/pages/probabilityDistributions/PdfCdf.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import LinkedPDFCDF from "../../components/charts/LinkedPDFCDF";
 import DiscreteDistributionChart from "../../components/charts/DiscreteDistributionChart";
 
-function PdfCdf({ mean, sd }) {
+function PdfCdf() {
   const sampleDiscreteData = [
     { x: 0, p: 0.03125 },
     { x: 1, p: 0.15625 },
@@ -15,6 +16,7 @@ function PdfCdf({ mean, sd }) {
 
   return (
     <>
+      <h2 id="pdf-cdf">Pravdepodobnostná a distribučná funkcia</h2>
       <h2 id="pdf-cdf">Pravdepodobnostná a distribučná funkcia</h2>
       <p>
         Pravdepodobnostné rozdelenie môžeme opísať dvoma príbuznými funkciami:
@@ -48,7 +50,8 @@ function PdfCdf({ mean, sd }) {
       </p>
 
       <div id="pdf-cdf-example">
-        <LinkedPDFCDF mean={mean} sd={sd} />
+        {/* STATICKÉ HODNOTY NATVRDO */}
+        <LinkedPDFCDF mean={0} sd={1} />
       </div>
 
       <div id="pdf-cdf-example-discrete">

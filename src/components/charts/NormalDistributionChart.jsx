@@ -4,42 +4,42 @@ import StyledLineChart from "./StyledLineChart";
 import { normalPDF } from "../../utils/distributions";
 
 function NormalDistributionChart({ mean, sd, hoverX, setHoverX }) {
-  // Vypočítame minX a maxX pre doménu
-  const minX = mean - 4 * sd;
-  const maxX = mean + 4 * sd;
+  const m = Number(mean);
+  const s = Number(sd);
 
+  const minX = m - 4 * s;
+  const maxX = m + 4 * s;
+
+  // Dáta teraz rátame na 2 riadky s maximálnou matematickou presnosťou
   const data = useMemo(() => {
-    const points = [];
-    const step = (maxX - minX) / 200; // Presnejší krok
-    // Začneme od minX a ideme po maxX
-    for (let i = 0; i <= 200; i++) {
-      const x = minX + i * step;
-      points.push({ x: parseFloat(x.toFixed(2)), y: normalPDF(x, mean, sd) });
-    }
-    return points;
-  }, [mean, sd, minX, maxX]); // Pridaj minX, maxX do závislostí
+    const step = (maxX - minX) / 200;
+    return Array.from({ length: 201 }, (_, i) => {
+      const x = minX + i * step; // ŽIADNE ZAOKRÚHĽOVANIE!
+      return { x, y: normalPDF(x, m, s) };
+    });
+  }, [m, s, minX, maxX]);
 
-  // Nájdeme maxY pre Y os
   const maxY = useMemo(() => {
     if (!data || data.length === 0) return 1;
     const maxVal = Math.max(...data.map((p) => p.y), 0);
-    return maxVal > 0 ? maxVal * 1.1 : 1; // 10% rezerva
+    return maxVal > 0 ? maxVal * 1.1 : 1;
   }, [data]);
 
   return (
     <StyledLineChart
-      title="Normálne rozdelenie (PDF)" // Upresnený titulok
+      title="Hustota pravdepodobnosti (PDF)"
       data={data}
+      // xTicks prop sme ÚPLNE VYMAZALI, StyledLineChart si to spraví sám
       xLabel="x"
       yLabel="f(x)"
       lineClass="chart-line-primary"
       hoverX={hoverX}
       setHoverX={setHoverX}
-      minX={minX} // <-- Posielame minX
-      maxX={maxX} // <-- Posielame maxX
-      yAxisDomain={[0, maxY]} // <-- Posielame vypočítanú doménu Y
-      type="pdf" // Typ pre StyledLineChart
-      showReferenceArea={false} // Nechceme ReferenceArea tu
+      minX={minX}
+      maxX={maxX}
+      yAxisDomain={[0, maxY]}
+      type="pdf"
+      showReferenceArea={true}
     />
   );
 }

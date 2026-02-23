@@ -4,32 +4,29 @@ import Papa from "papaparse";
 import StyledLineChart from "./StyledLineChart";
 
 function CSVDistributions() {
-  const [rawData, setRawData] = useState([]); // <- Zmena: Uložíme celé riadky
-  const [headers, setHeaders] = useState([]); // <- Nový stav: Pre hlavičky
+  const [rawData, setRawData] = useState([]);
+  const [headers, setHeaders] = useState([]);
   const [pdfData, setPdfData] = useState([]);
   const [cdfData, setCdfData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoverX, setHoverX] = useState(null);
 
   const CSV_PATH = "/statistics/data/CapitalPopulationShare.csv";
-  const COLUMN_NAME = "2024"; // Stále používame pre grafy
+  const COLUMN_NAME = "2024";
   const NUM_BINS = 20;
 
   useEffect(() => {
     Papa.parse(CSV_PATH, {
       download: true,
       header: true,
-      skipEmptyLines: true, // <- Pridané: Ignoruje prázdne riadky
+      skipEmptyLines: true,
       complete: (results) => {
-        // Uložíme hlavičky
         if (results.meta && results.meta.fields) {
           setHeaders(results.meta.fields);
         }
 
-        // Uložíme surové dáta
         setRawData(results.data);
 
-        // --- Spracovanie pre grafy (zostáva podobné) ---
         const values = results.data
           .map((row) => parseFloat(row[COLUMN_NAME]))
           .filter((v) => !isNaN(v))
@@ -37,31 +34,31 @@ function CSVDistributions() {
 
         if (values.length === 0) {
           console.error(
-            `CSV neobsahuje platné čísla v stĺpci '${COLUMN_NAME}'.`
+            `CSV neobsahuje platné čísla v stĺpci '${COLUMN_NAME}'.`,
           );
           setLoading(false);
           return;
         }
 
-        // PDF (histogram) - logika zostáva
         const min = Math.min(...values);
         const max = Math.max(...values);
         const binWidth = (max - min) / NUM_BINS;
         const bins = Array(NUM_BINS).fill(0);
+
         values.forEach((v) => {
           const idx = Math.min(Math.floor((v - min) / binWidth), NUM_BINS - 1);
           bins[idx] += 1;
         });
+
         const pdf = bins.map((count, i) => ({
-          x: parseFloat((min + binWidth * (i + 0.5)).toFixed(2)),
+          x: min + binWidth * (i + 0.5), // Presná hodnota X (bez zaokrúhľovania)
           y: count / values.length,
         }));
         setPdfData(pdf);
 
-        // CDF - logika zostáva
         const n = values.length;
         const cdf = values.map((v, i) => ({
-          x: v,
+          x: v, // Pôvodná hodnota z dátového setu je už číslo
           y: (i + 1) / n,
         }));
         setCdfData(cdf);
@@ -81,7 +78,6 @@ function CSVDistributions() {
 
   return (
     <div>
-      {/* ... Grafy zostávajú rovnaké ... */}
       <h2>Capital Population Share – {COLUMN_NAME}</h2>
 
       <div
@@ -97,8 +93,7 @@ function CSVDistributions() {
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
-            type="pdf" // <- Pridaj type, ak ho StyledLineChart potrebuje
-            // showReferenceArea={false} // <- Explicitne vypni, ak treba
+            type="pdf"
           />
         </div>
 
@@ -108,41 +103,32 @@ function CSVDistributions() {
             title="Distribučná funkcia (CDF)"
             xLabel="x"
             yLabel="F(x)"
-            lineClass="chart-line-secondary" // Zmenená trieda pre odlíšenie
+            lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}
-            // showReferenceArea={false} // <- Explicitne vypni, ak treba
           />
         </div>
       </div>
 
-      {/* --- Upravená Tabuľka --- */}
       <h3>Náhľad dát (prvých 10 riadkov)</h3>
       <div className="table-responsive">
-        {" "}
-        {/* Pridané pre responzivitu */}
         <table className="table table-striped table-bordered table-sm">
-          {" "}
-          {/* table-sm pre menšie padding */}
           <thead>
             <tr>
-              {/* Dynamické generovanie hlavičiek */}
               {headers.map((header, index) => (
                 <th key={index}>{header}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {/* Zobrazenie len prvých 10 riadkov */}
             {rawData.slice(0, 10).map((row, rowIndex) => (
               <tr key={rowIndex}>
-                {/* Dynamické generovanie buniek pre každý stĺpec */}
                 {headers.map((header, colIndex) => (
                   <td key={colIndex}>
                     {row[header] !== undefined && row[header] !== null
                       ? row[header]
                       : "-"}
-                  </td> // Zobrazí hodnotu alebo '-'
+                  </td>
                 ))}
               </tr>
             ))}

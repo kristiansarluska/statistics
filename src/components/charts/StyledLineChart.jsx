@@ -105,9 +105,14 @@ function StyledLineChart({
             domain={
               minX !== null && maxX !== null ? [minX, maxX] : ["auto", "auto"]
             }
+            // TOTO JE MÁGIA: 9 bodov znamená 8 úsekov.
+            // Ideálne pre grafy +- 4 sigma. Recharts to automaticky prepočíta.
+            tickCount={9}
+            // Ak by niekedy Recharts vymýšľal vlastné kroky, môžeme to vynútiť:
+            allowDecimals={true}
             label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart}
+            tickFormatter={formatNumberSmart} // Vizuálne zaokrúhlenie
             allowDuplicatedCategory={false}
           />
           <YAxis
@@ -118,10 +123,10 @@ function StyledLineChart({
               offset: -10,
             }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart}
-            // Pre ReferenceArea je lepšie mať Y os začínajúcu od 0
+            tickFormatter={formatNumberSmart} // Vizuálne zaokrúhlenie
             domain={[0, "auto"]}
-            allowDataOverflow={false} // Zabraňuje ReferenceArea pretekať pod os X
+            tickCount={6} // Pridáme fixný počet aj pre Y os pre krajšie rozloženie
+            allowDataOverflow={false}
           />
           <Tooltip
             content={<CustomTooltip xLabel={xLabel} yLabel={displayYLabel} />}

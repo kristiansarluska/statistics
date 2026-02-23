@@ -23,7 +23,7 @@ function BernoulliChart() {
       { x: 0, probability: 1 - bernoulliP }, // Použijeme lokálny stav bernoulliP
       { x: 1, probability: bernoulliP }, // Použijeme lokálny stav bernoulliP
     ],
-    [bernoulliP]
+    [bernoulliP],
   ); // Závislosť na lokálnom stave
 
   return (
@@ -78,8 +78,8 @@ function BernoulliChart() {
         <StyledBarChart
           data={data}
           yDataKey="probability"
-          xLabel="Hodnota (x)"
-          yLabel="Pravdepodobnosť P(X=x)"
+          xLabel="x"
+          yLabel="P(X=x)"
           yDomain={[0, 1]}
           barSize={60}
           colors={["var(--bs-primary)", "var(--bs-info)"]}
