@@ -7,6 +7,7 @@ import NormalDistributionChart from "../../components/charts/NormalDistributionC
 import CSVDistributions from "../../components/charts/CSVDistributions";
 import ChiSquareChart from "../../components/charts/ChiSquareChart";
 import StudentTChart from "../../components/charts/StudentTChart";
+import FisherFChart from "../../components/charts/FisherFChart";
 
 function ContinuousDistributions() {
   return (
@@ -104,8 +105,21 @@ function ContinuousDistributions() {
         <StudentTChart />
       </div>
 
-      <h4 id="fisher-f">Fisherovo F rozdelenie</h4>
-      <p>Placeholder text pre Fisherovo F rozdelenie.</p>
+      {/* --- Fisherovo F rozdelenie --- */}
+      <h4 id="fisher-f">Fisherovo F-rozdelenie</h4>
+      <p>
+        Fisherovo F-rozdelenie (alebo Snedecorovo rozdelenie) je asymetrické
+        rozdelenie, ktoré sa používa predovšetkým pri testovaní hypotéz, najmä v
+        analýze rozptylu (ANOVA) a pri porovnávaní rozptylov dvoch nezávislých
+        výberov. Je definované ako pomer dvoch nezávislých Chí-kvadrát
+        rozdelení, z ktorých každé je vydelené svojimi stupňami voľnosti. Tvar
+        rozdelenia závisí od dvoch parametrov: stupňov voľnosti čitateľa ($d_1$)
+        a stupňov voľnosti menovateľa ($d_2$). Nadobúda iba nezáporné hodnoty.
+      </p>
+
+      <div className="charts-wrapper justify-content-center">
+        <FisherFChart />
+      </div>
     </>
   );
 }

@@ -123,3 +123,17 @@ export const studentTPDF = (x, k) => {
   const exponent = -(k + 1) / 2;
   return (numerator / denominator) * Math.pow(base, exponent);
 };
+
+// Hustota pravdepodobnosti Fisherovho F-rozdelenia (PDF)
+export const fisherFPDF = (x, d1, d2) => {
+  if (x <= 0) return 0;
+
+  const num1 = gamma((d1 + d2) / 2);
+  const den1 = gamma(d1 / 2) * gamma(d2 / 2);
+  const factor1 = Math.pow(d1 / d2, d1 / 2);
+  const factor2 = Math.pow(x, d1 / 2 - 1);
+  const factor3 = Math.pow(1 + (d1 * x) / d2, -(d1 + d2) / 2);
+
+  const result = (num1 / den1) * factor1 * factor2 * factor3;
+  return isNaN(result) || !isFinite(result) ? 0 : result;
+};
