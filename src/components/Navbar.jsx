@@ -1,9 +1,8 @@
 // src/components/Navbar.jsx
-import React from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { Link } from "react-router-dom";
 
@@ -11,8 +10,70 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // ZMENA: Ref pre zámok automatického scrollovania
+  const isAutoScrolling = useRef(false);
+
+  // Počúva na náš nový CustomEvent zo sidebaru
+  useEffect(() => {
+    const handleSidebarNav = (e) => {
+      isAutoScrolling.current = true;
+
+      // Ak ide o hlavnú kapitolu (h1), Navbar NEskryjeme. Zostane viditeľný.
+      if (e.detail && e.detail.isMainChapter) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false); // Pre podkapitoly skryjeme
+      }
+
+      // Po dobehnutí scrollovania odomkne logiku (limit 2000ms)
+      setTimeout(() => {
+        isAutoScrolling.current = false;
+      }, 2000);
+    };
+
+    window.addEventListener("sidebar-navigate", handleSidebarNav);
+    return () =>
+      window.removeEventListener("sidebar-navigate", handleSidebarNav);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.getElementById("page-content-wrapper")?.scrollTop ||
+        0;
+
+      // ZMENA: Ak nás scrolloval sidebar, ignorujeme vysúvanie a len aktualizujeme Y-pozíciu
+      if (isAutoScrolling.current) {
+        setLastScrollY(currentScrollY);
+        return;
+      }
+
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY || currentScrollY <= 80) {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, [lastScrollY]);
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-secondary border-bottom">
+    <nav
+      className="navbar navbar-expand-lg bg-body-secondary border-bottom sticky-top"
+      style={{
+        transition: "transform 0.3s ease-in-out",
+        transform: isVisible ? "translateY(0)" : "translateY(-100%)",
+        zIndex: 1030,
+      }}
+    >
       <div className="container-fluid">
         <button
           className="btn btn-primary d-flex align-items-center rounded-5"

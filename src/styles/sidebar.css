@@ -6,17 +6,21 @@
 /* ====== Sidebar container ====== */
 #sidebar-wrapper {
   width: 15rem;
+  flex-shrink: 0;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   transition: margin 0.25s ease-out;
   border-right: 1px solid rgba(0, 0, 0, 0.125);
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg) !important; /* Odstráni sivý podmaz */
   color: var(--bs-body-color);
-  margin-left: -15rem; /* Hidden by default for mobile */
+  margin-left: -15rem; /* hidden by default for mobile */
+
+  /* Zabráni poskakovaniu textu pri zobrazení scrollbaru */
+  scrollbar-gutter: stable;
 }
 
-/* ====== Sidebar visibility toggle (Mobile) ====== */
+/* ====== Sidebar visibility toggle (core logic) ====== */
 body.sb-sidenav-toggled #sidebar-wrapper {
   margin-left: 0 !important;
 }
@@ -26,6 +30,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   #sidebar-wrapper {
     margin-left: 0;
   }
+
   body.sb-sidenav-toggled #sidebar-wrapper {
     margin-left: -15rem !important;
   }
@@ -41,13 +46,14 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   cursor: pointer;
 }
 
-/* Hover & Active */
+/* Hover efekt */
 #sidebar-wrapper .list-group-item:hover,
 #sidebar-wrapper .btn.sidebar-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: var(--bs-primary);
 }
 
+/* Aktívna položka */
 #sidebar-wrapper .list-group-item.active,
 #sidebar-wrapper .btn.sidebar-btn.active {
   background-color: var(--bs-secondary-bg);
@@ -55,7 +61,7 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   outline-offset: -2px;
 }
 
-/* ====== Accordion Submenu (Simultaneous Animation) ====== */
+/* ====== Accordion Submenu (Nové správanie) ====== */
 .sidebar-submenu {
   overflow: hidden;
   transition:
@@ -73,7 +79,6 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-/* ====== Dark mode adjustments ====== */
 body[data-bs-theme="dark"] .sidebar-submenu .list-group-item:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
@@ -81,7 +86,7 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ====== Sidebar arrows ====== */
+/* ====== Sidebar arrows (vnútorné šípky akordeónu) ====== */
 #sidebar-wrapper .sidebar-arrow {
   width: 15px;
   height: 15px;
@@ -89,32 +94,49 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   transition: transform 0.3s ease;
 }
 
-/* ====== Arrow logic (toggle button) ====== */
+/* ====== Page content ====== */
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+@media (min-width: 768px) {
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ====== Scrollbar ====== */
+#sidebar-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidebar-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+/* ====== Arrow logic (Tlačidlo na otváranie sidebaru v Navbare) ====== */
 #sidebarToggle .arrow {
   width: 1rem;
   transform: rotate(0deg);
   transition: transform 1s ease;
 }
 
-/* When open → arrow ▼ */
 body.sb-sidenav-toggled #sidebarToggle .arrow {
   transform: rotate(180deg);
 }
 
-/* On desktop (≥768px), sidebar is open by default → flip logic */
 @media (min-width: 768px) {
-  /* Open by default */
   body:not(.sb-sidenav-toggled) #sidebarToggle .arrow {
     transform: rotate(180deg);
   }
 
-  /* Closed on toggle */
   body.sb-sidenav-toggled #sidebarToggle .arrow {
     transform: rotate(0deg);
   }
 }
 
-/* Extra fallback for manual arrow rotation classes */
 .arrow {
   width: 15px;
   height: 15px;
@@ -133,46 +155,5 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
 
   .arrow.open {
     transform: rotate(180deg);
-  }
-}
-
-/* ====== Page content & Scrollbar ====== */
-#page-content-wrapper {
-  min-width: 100vw;
-}
-
-@media (min-width: 768px) {
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-}
-
-#sidebar-wrapper::-webkit-scrollbar {
-  width: 6px;
-}
-#sidebar-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
-}
-
-/* ====== Navbar Toggle Arrow (Mimo sidebaru) ====== */
-#sidebarToggle .arrow {
-  width: 15px;
-  height: 15px;
-  transform: rotate(180deg);
-  transition: transform 0.3s ease;
-}
-
-body.sb-sidenav-toggled #sidebarToggle .arrow {
-  transform: rotate(0deg);
-}
-
-@media (min-width: 768px) {
-  body:not(.sb-sidenav-toggled) #sidebarToggle .arrow {
-    transform: rotate(180deg);
-  }
-  body.sb-sidenav-toggled #sidebarToggle .arrow {
-    transform: rotate(0deg);
   }
 }

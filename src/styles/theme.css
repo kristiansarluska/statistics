@@ -35,7 +35,7 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;  /* trochu širšie kvôli ikonám */
+  width: 60px; /* trochu širšie kvôli ikonám */
   height: 30px;
 }
 
@@ -124,4 +124,18 @@ body {
   flex: 1;
   overflow-y: auto; /* scrolluje iba vnútorný obsah */
   height: 100%;
+}
+
+/* ====== Page content ====== */
+#page-content-wrapper {
+  min-width: 100vw;
+  /* Pridaný priestor, aby sa posledné kotvy (anchors) dali hladko zoscrollovať nahor */
+  padding-bottom: 60vh;
+}
+
+@media (min-width: 768px) {
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
 }

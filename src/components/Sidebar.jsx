@@ -81,10 +81,7 @@ function Sidebar({ closeSidebar }) {
   };
 
   return (
-    <div
-      className="border-end bg-body-tertiary d-flex flex-column"
-      id="sidebar-wrapper"
-    >
+    <div className="border-end d-flex flex-column" id="sidebar-wrapper">
       <div className="sidebar-heading border-bottom">
         {t("topics.statisticalMethods")}
       </div>
@@ -101,7 +98,7 @@ function Sidebar({ closeSidebar }) {
             arrow={arrow}
             t={t}
             level={0}
-            parentPath={location.pathname}
+            parentPath={null}
           />
         ))}
       </div>
