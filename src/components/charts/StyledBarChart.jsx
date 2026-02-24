@@ -21,8 +21,8 @@ function StyledBarChart({
   hoverX,
   setHoverX,
   showReferenceArea = false,
-  referenceAreaX1, // Pridaný parameter pre začiatok zvýraznenia
-  referenceAreaX2, // Pridaný parameter pre koniec zvýraznenia
+  referenceAreaX1,
+  referenceAreaX2,
   barDataKey = "y",
 }) {
   const formattedData = useMemo(() => {
@@ -33,29 +33,36 @@ function StyledBarChart({
     }));
   }, [data]);
 
-  // Ak nepríde špecifická hranica, použijeme aktuálny hoverX
   const rX1 = referenceAreaX1 !== undefined ? referenceAreaX1 : hoverX;
   const rX2 = referenceAreaX2 !== undefined ? referenceAreaX2 : hoverX;
+
+  // Spoločný handler pre myš aj dotyk
+  const handleChartInteraction = (state) => {
+    if (
+      setHoverX &&
+      state &&
+      state.isTooltipActive &&
+      state.activeLabel !== undefined &&
+      state.activeLabel !== null
+    ) {
+      setHoverX(String(state.activeLabel));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (setHoverX) setHoverX(null);
+  };
 
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
         data={formattedData}
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
-        onMouseMove={(state) => {
-          if (
-            setHoverX &&
-            state &&
-            state.isTooltipActive &&
-            state.activeLabel !== undefined &&
-            state.activeLabel !== null
-          ) {
-            setHoverX(String(state.activeLabel));
-          }
-        }}
-        onMouseLeave={() => {
-          if (setHoverX) setHoverX(null);
-        }}
+        onMouseMove={handleChartInteraction}
+        onTouchMove={handleChartInteraction}
+        onTouchStart={handleChartInteraction}
+        onClick={handleChartInteraction}
+        onMouseLeave={handleMouseLeave}
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis
@@ -72,7 +79,6 @@ function StyledBarChart({
           }}
         />
 
-        {/* Priehľadný kurzor (fillOpacity: 0.1) pre štandardné stĺpcové grafy, vypnutý ak showReferenceArea=true */}
         <Tooltip
           cursor={
             showReferenceArea
@@ -82,7 +88,6 @@ function StyledBarChart({
           content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />}
         />
 
-        {/* Vykreslenie oblasti prepojenej s iným grafom */}
         {showReferenceArea && hoverX !== null && hoverX !== undefined && (
           <ReferenceArea
             x1={rX1}

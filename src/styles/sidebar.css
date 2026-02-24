@@ -97,6 +97,9 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 /* ====== Page content ====== */
 #page-content-wrapper {
   min-width: 100vw;
+  padding-bottom: 60vh;
+  /* Kompenzácia za fixed-top Navbar, aby neprekrýval H1 nadpisy */
+  padding-top: 65px;
 }
 
 @media (min-width: 768px) {
@@ -106,14 +109,39 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   }
 }
 
-/* ====== Scrollbar ====== */
-#sidebar-wrapper::-webkit-scrollbar {
-  width: 6px;
+/* ====== Fixed Navbar správanie (Odsúvanie Sidebarom) ====== */
+#page-content-wrapper .navbar.fixed-top {
+  position: fixed;
+  right: 0;
+  left: 0;
+  /* Animujeme aj 'left', aby sa plynule posunul so sidebarom, a 'transform' pre schovávanie nahor */
+  transition:
+    left 0.25s ease-out,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#sidebar-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
+/* Desktop (nad 768px): Sidebar je predvolene otvorený */
+@media (min-width: 768px) {
+  #page-content-wrapper .navbar.fixed-top {
+    left: 15rem; /* Posunuté o šírku sidebaru */
+  }
+
+  /* Keď manuálne zatvoríme sidebar na desktope */
+  body.sb-sidenav-toggled #page-content-wrapper .navbar.fixed-top {
+    left: 0;
+  }
+}
+
+/* Mobily (pod 768px): Sidebar je predvolene zatvorený */
+@media (max-width: 767.98px) {
+  #page-content-wrapper .navbar.fixed-top {
+    left: 0;
+  }
+
+  /* Keď otvoríme hamburger/sidebar menu na mobile */
+  body.sb-sidenav-toggled #page-content-wrapper .navbar.fixed-top {
+    left: 15rem;
+  }
 }
 
 /* ====== Arrow logic (Tlačidlo na otváranie sidebaru v Navbare) ====== */

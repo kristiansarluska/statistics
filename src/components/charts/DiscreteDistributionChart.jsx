@@ -178,6 +178,21 @@ function DiscreteDistributionChart({ data = defaultData }) {
     return <div>Missing discrete distribution data.</div>;
   }
 
+  // Spoločný handler pre myš aj dotyk
+  const handleChartInteraction = (state) => {
+    if (
+      state &&
+      state.isTooltipActive &&
+      state.activeLabel !== undefined &&
+      state.activeLabel !== null
+    ) {
+      const labelNum = Number(state.activeLabel);
+      if (!isNaN(labelNum)) {
+        setHoverX(String(Math.round(labelNum)));
+      }
+    }
+  };
+
   return (
     <div className="charts-wrapper">
       <div>
@@ -200,19 +215,10 @@ function DiscreteDistributionChart({ data = defaultData }) {
         <ResponsiveContainer width="100%" height={300}>
           <ComposedChart
             margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
-            onMouseMove={(state) => {
-              if (
-                state &&
-                state.isTooltipActive &&
-                state.activeLabel !== undefined &&
-                state.activeLabel !== null
-              ) {
-                const labelNum = Number(state.activeLabel);
-                if (!isNaN(labelNum)) {
-                  setHoverX(String(Math.round(labelNum)));
-                }
-              }
-            }}
+            onMouseMove={handleChartInteraction}
+            onTouchMove={handleChartInteraction}
+            onTouchStart={handleChartInteraction}
+            onClick={handleChartInteraction}
             onMouseLeave={() => setHoverX(null)}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -236,12 +242,9 @@ function DiscreteDistributionChart({ data = defaultData }) {
               ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
             />
 
+            {/* cursor={false} zabezpečí, že sa natívna čiara nevykreslí, čím zabránime duplicite a "uviaznutiu" */}
             <Tooltip
-              cursor={{
-                stroke: "var(--bs-danger, red)",
-                strokeWidth: 1,
-                strokeDasharray: "5 5",
-              }}
+              cursor={false}
               content={(props) =>
                 renderCDFTooltip({
                   ...props,
@@ -276,7 +279,6 @@ function DiscreteDistributionChart({ data = defaultData }) {
               isAnimationActive={false}
             />
 
-            {/* Zmena: body-color namiesto body-bg */}
             <Line
               data={closedCircleData}
               type="linear"
@@ -286,8 +288,8 @@ function DiscreteDistributionChart({ data = defaultData }) {
               activeDot={{
                 r: 6,
                 fill: "var(--bs-primary)",
-                stroke: "var(--bs-white)",
-                strokeWidth: 2,
+                stroke: "var(--bs-body-color, black)",
+                strokeWidth: 3,
               }}
               isAnimationActive={false}
             />

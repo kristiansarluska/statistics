@@ -8,9 +8,8 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceLine,
-  ReferenceArea, // Importuj ReferenceArea
+  ReferenceArea,
   ResponsiveContainer,
-  // Area, // Area už nepotrebujeme
 } from "recharts";
 import "../../styles/charts.css";
 import CustomTooltip, { formatNumberSmart } from "./CustomTooltip";
@@ -27,13 +26,12 @@ function StyledLineChart({
   type = "pdf",
   minX = null,
   maxX = null,
-  showReferenceArea = false, // <-- NOVÝ PROP s predvolenou hodnotou false
+  showReferenceArea = false,
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
   const displayYLabel = yLabel || (type === "cdf" ? "F(x)" : "f(x)");
 
-  // Logika pre formátovanie a mouse move/leave zostáva rovnaká
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(data)) {
       setAnimated(true);
@@ -43,25 +41,28 @@ function StyledLineChart({
     }
   }, [data, hoverX]);
 
-  const handleMouseMove = (state) => {
+  // Spoločný handler pre myš aj dotykové udalosti
+  const handleChartInteraction = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
       const currentX = state.activePayload[0].payload.x;
       if (hoverX !== currentX) {
         setHoverX(currentX);
       }
-    } else if (state && state.activeLabel !== undefined) {
+    } else if (
+      state &&
+      state.activeLabel !== undefined &&
+      state.activeLabel !== null
+    ) {
       const roundedX = parseFloat(state.activeLabel.toFixed(2));
       if (hoverX !== roundedX) {
         setHoverX(roundedX);
       }
     }
   };
+
   const handleMouseLeave = () => setHoverX(null);
 
-  // Odstránili sme useMemo pre dataWithFill, už ho nepotrebujeme
-
   const cdfRefLineY = useMemo(() => {
-    // Táto logika pre CDF zostáva
     if (type !== "cdf" || hoverX === null) return null;
     let pointY = null;
     let closestPoint = null;
@@ -84,8 +85,6 @@ function StyledLineChart({
     return pointY;
   }, [data, hoverX, type]);
 
-  // Určíme začiatočnú X súradnicu pre ReferenceArea
-  // Ak máme minX, použijeme ho, inak prvý bod z dát alebo 0
   const areaStartX = minX ?? (data.length > 0 ? data[0].x : 0);
 
   return (
@@ -93,9 +92,11 @@ function StyledLineChart({
       {title && <div className="chart-title">{title}</div>}
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
-          // Použijeme priamo pôvodné dáta
           data={data}
-          onMouseMove={handleMouseMove}
+          onMouseMove={handleChartInteraction}
+          onTouchMove={handleChartInteraction}
+          onTouchStart={handleChartInteraction}
+          onClick={handleChartInteraction}
           onMouseLeave={handleMouseLeave}
           margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
         >
@@ -106,14 +107,11 @@ function StyledLineChart({
             domain={
               minX !== null && maxX !== null ? [minX, maxX] : ["auto", "auto"]
             }
-            // TOTO JE MÁGIA: 9 bodov znamená 8 úsekov.
-            // Ideálne pre grafy +- 4 sigma. Recharts to automaticky prepočíta.
             tickCount={9}
-            // Ak by niekedy Recharts vymýšľal vlastné kroky, môžeme to vynútiť:
             allowDecimals={true}
             label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart} // Vizuálne zaokrúhlenie
+            tickFormatter={formatNumberSmart}
             allowDuplicatedCategory={false}
           />
           <YAxis
@@ -135,7 +133,6 @@ function StyledLineChart({
             animationDuration={50}
           />
 
-          {/* Vertikálna čiara zostáva */}
           {hoverX !== null && (
             <ReferenceLine
               x={hoverX}
@@ -146,7 +143,6 @@ function StyledLineChart({
             />
           )}
 
-          {/* Horizontálna čiara pre CDF zostáva */}
           {type === "cdf" && cdfRefLineY !== null && (
             <ReferenceLine
               y={cdfRefLineY}
@@ -157,17 +153,15 @@ function StyledLineChart({
             />
           )}
 
-          {/* NOVÉ: Použitie ReferenceArea namiesto Area pre PDF */}
           {showReferenceArea && type === "pdf" && hoverX !== null && (
             <ReferenceArea
-              x1={areaStartX} // Začiatok plochy
-              x2={hoverX} // Koniec plochy pri hoveri
-              y1={0} // Začiatok Y na osi
-              // y2 sa nenastavuje, nech sa roztiahne po vrch grafu
-              fill="rgba(0, 140, 186, 0.2)" // Farba výplne
+              x1={areaStartX}
+              x2={hoverX}
+              y1={0}
+              fill="rgba(0, 140, 186, 0.2)"
               stroke="none"
-              ifOverflow="hidden" // Nech nepreteká mimo definovaný domain
-              isAnimationActive={false} // Vypneme animáciu pre plynulosť
+              ifOverflow="hidden"
+              isAnimationActive={false}
             />
           )}
 

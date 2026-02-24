@@ -13,22 +13,37 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // ZMENA: Ref pre zámok automatického scrollovania
+  // NOVÉ: Stav pre uzamknutie Navbaru, keď je na mobile otvorené menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isAutoScrolling = useRef(false);
 
-  // Počúva na náš nový CustomEvent zo sidebaru
+  // NOVÉ: Sledovanie natívnych Bootstrap udalostí pre hamburger menu
+  useEffect(() => {
+    const menu = document.getElementById("navbarSupportedContent");
+    if (!menu) return;
+
+    const handleShow = () => setIsMenuOpen(true);
+    const handleHide = () => setIsMenuOpen(false);
+
+    menu.addEventListener("show.bs.collapse", handleShow);
+    menu.addEventListener("hide.bs.collapse", handleHide);
+
+    return () => {
+      menu.removeEventListener("show.bs.collapse", handleShow);
+      menu.removeEventListener("hide.bs.collapse", handleHide);
+    };
+  }, []);
+
   useEffect(() => {
     const handleSidebarNav = (e) => {
       isAutoScrolling.current = true;
 
-      // Ak ide o hlavnú kapitolu (h1), Navbar NEskryjeme. Zostane viditeľný.
       if (e.detail && e.detail.isMainChapter) {
         setIsVisible(true);
       } else {
-        setIsVisible(false); // Pre podkapitoly skryjeme
+        setIsVisible(false);
       }
 
-      // Po dobehnutí scrollovania odomkne logiku (limit 2000ms)
       setTimeout(() => {
         isAutoScrolling.current = false;
       }, 2000);
@@ -47,7 +62,6 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
         document.getElementById("page-content-wrapper")?.scrollTop ||
         0;
 
-      // ZMENA: Ak nás scrolloval sidebar, ignorujeme vysúvanie a len aktualizujeme Y-pozíciu
       if (isAutoScrolling.current) {
         setLastScrollY(currentScrollY);
         return;
@@ -67,10 +81,12 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
 
   return (
     <nav
-      className="navbar navbar-expand-lg bg-body-secondary border-bottom sticky-top"
+      className="navbar navbar-expand-lg bg-body-secondary border-bottom fixed-top"
       style={{
-        transition: "transform 0.3s ease-in-out",
-        transform: isVisible ? "translateY(0)" : "translateY(-100%)",
+        transform:
+          isVisible || isMenuOpen ? "translateY(0)" : "translateY(-120%)",
+        willChange: "transform",
+        top: 0,
         zIndex: 1030,
       }}
     >
