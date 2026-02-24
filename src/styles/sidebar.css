@@ -6,15 +6,17 @@
 /* ====== Sidebar container ====== */
 #sidebar-wrapper {
   width: 15rem;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   transition: margin 0.25s ease-out;
   border-right: 1px solid rgba(0, 0, 0, 0.125);
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
-  margin-left: -15rem; /* hidden by default for mobile */
+  margin-left: -15rem; /* Hidden by default for mobile */
 }
 
-/* ====== Sidebar visibility toggle (core logic) ====== */
+/* ====== Sidebar visibility toggle (Mobile) ====== */
 body.sb-sidenav-toggled #sidebar-wrapper {
   margin-left: 0 !important;
 }
@@ -24,7 +26,6 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   #sidebar-wrapper {
     margin-left: 0;
   }
-
   body.sb-sidenav-toggled #sidebar-wrapper {
     margin-left: -15rem !important;
   }
@@ -32,59 +33,60 @@ body.sb-sidenav-toggled #sidebar-wrapper {
 
 /* ====== List group & buttons ====== */
 #sidebar-wrapper .list-group-item,
-#sidebar-wrapper .btn.sidebar-btn,
-#sidebar-wrapper .dropdown-item {
-  background-color: var(--bs-body-bg);
+#sidebar-wrapper .btn.sidebar-btn {
+  background-color: transparent;
   color: var(--bs-body-color);
   border: none;
   border-radius: 0;
-  padding: 0.5rem 1rem;
-  font-size: 14px;
   cursor: pointer;
-  /*transition: background-color 0.15s, color 0.15s;*/
 }
 
-/* Hover efekt: zmena farby + pozadia */
+/* Hover & Active */
 #sidebar-wrapper .list-group-item:hover,
-#sidebar-wrapper .btn.sidebar-btn:hover,
-#sidebar-wrapper .dropdown-item:hover {
+#sidebar-wrapper .btn.sidebar-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: var(--bs-primary);
 }
 
-/* Aktívna položka */
 #sidebar-wrapper .list-group-item.active,
-#sidebar-wrapper .dropdown-item.active,
 #sidebar-wrapper .btn.sidebar-btn.active {
   background-color: var(--bs-secondary-bg);
-  /*color: var(--bs-primary);*/
   outline: 1px solid var(--bs-primary);
   outline-offset: -2px;
 }
 
-/* ====== Dropdown menu ====== */
-#sidebar-wrapper .dropdown-menu {
-  border-radius: 0.5rem;
-  box-shadow: 0 0 8px var(--bs-secondary-bg);
-  padding: 0.25rem 0;
-  min-width: 220px;
+/* ====== Accordion Submenu (Simultaneous Animation) ====== */
+.sidebar-submenu {
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.3s ease;
+  background-color: transparent;
 }
 
-#sidebar-wrapper .dropdown-menu .dropdown-item {
-  font-size: 14px;
-  padding-left: 1rem;
+.sidebar-submenu .list-group-item {
+  background-color: transparent;
+  border-bottom: none;
 }
 
-/* Submenu vnorené dropend */
-#sidebar-wrapper .dropdown-menu .dropdown-menu {
-  left: 100%;
-  top: 0;
-  margin-left: 0.25rem;
+.sidebar-submenu .list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
-/* Odstránenie default Bootstrap šípky */
-#sidebar-wrapper .dropdown-toggle::after {
-  display: none !important;
+/* ====== Dark mode adjustments ====== */
+body[data-bs-theme="dark"] .sidebar-submenu .list-group-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ====== Sidebar arrows ====== */
+#sidebar-wrapper .sidebar-arrow {
+  width: 15px;
+  height: 15px;
+  opacity: 0.75;
+  transition: transform 0.3s ease;
 }
 
 /* ====== Arrow logic (toggle button) ====== */
@@ -134,36 +136,7 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
   }
 }
 
-/* ====== Sidebar arrow (submenu arrows) ====== */
-#sidebar-wrapper .sidebar-arrow {
-  width: 15px;
-  height: 15px;
-  /*margin-left: 8px;*/
-  opacity: 0.75;
-  transition: transform 0.3s ease;
-}
-
-/* Otočenie šípky pri rozbalení submenu */
-#sidebar-wrapper .collapse.show + .sidebar-arrow,
-#sidebar-wrapper .dropdown.show > .dropdown-toggle-split .sidebar-arrow {
-  transform: rotate(180deg);
-  opacity: 1;
-}
-
-/* ====== Sidebar buttons alignment ====== */
-#sidebar-wrapper button {
-  cursor: pointer;
-  background-color: var(--bs-body-bg);
-}
-
-#sidebar-wrapper .btn.sidebar-btn {
-  width: 100%;
-  text-align: left;
-  background-color: var(--bs-body-bg);
-  font-size: 14px;
-}
-
-/* ====== Page content ====== */
+/* ====== Page content & Scrollbar ====== */
 #page-content-wrapper {
   min-width: 100vw;
 }
@@ -175,80 +148,31 @@ body.sb-sidenav-toggled #sidebarToggle .arrow {
   }
 }
 
-/* ====== Scrollbar ====== */
 #sidebar-wrapper::-webkit-scrollbar {
   width: 6px;
 }
-
 #sidebar-wrapper::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
-/* sidebar.css */
-.list-group-item.active,
-.list-group-item.active + .dropdown-toggle-split {
-  background-color: rgba(0, 0, 0, 0.15); 
-  color: var(--bs-light);             /* svetlý text */
-  border-color: var(--bs-primary);
-}
-
-/* ====== Dropend hover open ====== */
-#sidebar-wrapper .dropend:hover > .dropdown-menu {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  margin-left: 0.25rem;
-}
-
-#sidebar-wrapper .dropend:hover > .dropdown-toggle-split .sidebar-arrow {
+/* ====== Navbar Toggle Arrow (Mimo sidebaru) ====== */
+#sidebarToggle .arrow {
+  width: 15px;
+  height: 15px;
   transform: rotate(180deg);
-  opacity: 1;
+  transition: transform 0.3s ease;
 }
 
-/* ====== Dropend hover open + mostík ====== */
-#sidebar-wrapper .dropend {
-  position: relative;
+body.sb-sidenav-toggled #sidebarToggle .arrow {
+  transform: rotate(0deg);
 }
 
-#sidebar-wrapper .dropend:hover > .dropdown-menu {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  margin-left: 0.25rem;
-}
-
-#sidebar-wrapper .dropend::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -8px; /* šírka mostíka – podľa potreby */
-  width: 8px;
-  height: 100%;
-  background: transparent;
+@media (min-width: 768px) {
+  body:not(.sb-sidenav-toggled) #sidebarToggle .arrow {
+    transform: rotate(180deg);
   }
-
-/* ====== Lepšia čitateľnosť submenu v dark móde (via data-bs-theme) ====== */
-body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-menu {
-  background-color: var(--bs-body-bg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.15),
-    0 0 15px rgba(255, 255, 255, 0.05);
-}
-
-/* Tieň aj pre vnorené dropendy */
-body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-menu .dropdown-menu {
-  background-color: var(--bs-body-bg);
-  box-shadow:
-    0 0 10px rgba(255, 255, 255, 0.15),
-    0 0 20px rgba(255, 255, 255, 0.05);
-}
-
-/* Jemnejší hover kontrast v dark móde */
-body[data-bs-theme="dark"] #sidebar-wrapper .dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--bs-primary);
+  body.sb-sidenav-toggled #sidebarToggle .arrow {
+    transform: rotate(0deg);
+  }
 }
