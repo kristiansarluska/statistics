@@ -1,9 +1,9 @@
-// src/components/charts/LinkedPDFCDF.jsx
+// src/components/charts/ContinuousDistributionChart.jsx
 import React, { useState, useMemo } from "react";
 import StyledLineChart from "./StyledLineChart";
 import { normalPDF, normalCDF } from "../../utils/distributions";
 
-function LinkedPDFCDF({ mean, sd }) {
+function ContinuousDistributionChart({ mean, sd }) {
   const [hoverX, setHoverX] = useState(null);
 
   const m = Number(mean);
@@ -62,4 +62,4 @@ function LinkedPDFCDF({ mean, sd }) {
   );
 }
 
-export default LinkedPDFCDF;
+export default ContinuousDistributionChart;

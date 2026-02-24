@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  ReferenceArea,
+  ReferenceLine,
 } from "recharts";
 import StyledBarChart from "./StyledBarChart";
 import CustomTooltip from "./CustomTooltip";
@@ -56,13 +56,9 @@ const renderCDFTooltip = ({
   maxX,
 }) => {
   if (active && label !== null && label !== undefined) {
-    // Hide tooltip for artificial boundary points
-    if (label < minX || label > maxX) {
-      return null;
-    }
+    if (label < minX || label > maxX) return null;
 
     let cdfValue = 0;
-    // Calculate right-continuous CDF value mathematically for exactly this x
     const sorted = [...data].sort((a, b) => a.x - b.x);
     for (const item of sorted) {
       if (item.x <= label) {
@@ -72,7 +68,6 @@ const renderCDFTooltip = ({
       }
     }
 
-    // Create an artificial payload that mimics Recharts native structure
     const correctedValue = Math.round(cdfValue * 10000) / 10000;
     const correctedPayload = [
       {
@@ -105,23 +100,19 @@ const defaultData = [
 ];
 
 function DiscreteDistributionChart({ data = defaultData }) {
-  // --- Shared hover state for linking charts ---
   const [hoverX, setHoverX] = useState(null);
 
-  // --- Calculate PMF data ---
   const pmfData = useMemo(() => {
     if (!data || data.length === 0) return [];
     return data.map((item) => ({ x: String(item.x), y: item.p }));
   }, [data]);
 
-  // --- Determine X-axis boundaries ---
   const { minX, maxX } = useMemo(() => {
     if (!data || data.length === 0) return { minX: 0, maxX: 1 };
     const sortedX = data.map((d) => d.x).sort((a, b) => a - b);
     return { minX: sortedX[0], maxX: sortedX[sortedX.length - 1] };
   }, [data]);
 
-  // --- Generate CDF points, intervals, and axis ticks ---
   const { cdfPoints, openCircleData, closedCircleData, xTicks } =
     useMemo(() => {
       if (!data || data.length === 0)
@@ -142,15 +133,13 @@ function DiscreteDistributionChart({ data = defaultData }) {
 
       const localMinX = minX;
 
-      // 1. Initial horizontal line from the left
       points.push({ x: localMinX - 1, y: 0 });
       points.push({ x: localMinX, y: 0 });
-      points.push({ x: localMinX, y: null }); // Break line
+      points.push({ x: localMinX, y: null });
 
       openData.push({ x: localMinX, y: 0 });
       ticks.push(localMinX);
 
-      // 2. Generate steps and interval markers
       sortedData.forEach((item, i) => {
         const x_i = item.x;
         const p_i = item.p;
@@ -158,16 +147,14 @@ function DiscreteDistributionChart({ data = defaultData }) {
         currentCDF += p_i;
         const y_val = Math.round(currentCDF * 10000) / 10000;
 
-        // Closed interval marker at the start of the step
         closedData.push({ x: x_i, y: y_val });
 
         const nextX = sortedData[i + 1]?.x;
         const endX = nextX !== undefined ? nextX : x_i + 1;
 
-        // Step segments exactly on boundaries
         points.push({ x: x_i, y: y_val });
         points.push({ x: endX, y: y_val });
-        points.push({ x: endX, y: null }); // Break line
+        points.push({ x: endX, y: null });
 
         if (nextX !== undefined) {
           openData.push({ x: endX, y: y_val });
@@ -193,7 +180,6 @@ function DiscreteDistributionChart({ data = defaultData }) {
 
   return (
     <div className="charts-wrapper">
-      {/* PMF Chart */}
       <div>
         <h3>Pravdepodobnostná funkcia (PMF)</h3>
         <StyledBarChart
@@ -203,10 +189,12 @@ function DiscreteDistributionChart({ data = defaultData }) {
           yDomain={[0, "auto"]}
           hoverX={hoverX}
           setHoverX={setHoverX}
+          showReferenceArea={true}
+          referenceAreaX1={String(minX)}
+          referenceAreaX2={hoverX}
         />
       </div>
 
-      {/* CDF Chart */}
       <div>
         <h3>Distribučná funkcia (CDF)</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -216,9 +204,9 @@ function DiscreteDistributionChart({ data = defaultData }) {
               if (
                 state &&
                 state.isTooltipActive &&
-                state.activeLabel !== undefined
+                state.activeLabel !== undefined &&
+                state.activeLabel !== null
               ) {
-                // Determine hovered integer x and pass to shared state as string
                 const labelNum = Number(state.activeLabel);
                 if (!isNaN(labelNum)) {
                   setHoverX(String(Math.round(labelNum)));
@@ -248,8 +236,12 @@ function DiscreteDistributionChart({ data = defaultData }) {
               ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
             />
 
-            {/* Injected CustomTooltip wrapper with boundaries */}
             <Tooltip
+              cursor={{
+                stroke: "var(--bs-danger, red)",
+                strokeWidth: 1,
+                strokeDasharray: "5 5",
+              }}
               content={(props) =>
                 renderCDFTooltip({
                   ...props,
@@ -262,17 +254,6 @@ function DiscreteDistributionChart({ data = defaultData }) {
               }
             />
 
-            {/* Reference area to visualize hover linkage from PMF chart */}
-            {hoverX !== null && hoverX !== undefined && (
-              <ReferenceArea
-                x1={Number(hoverX) - 0.5}
-                x2={Number(hoverX) + 0.5}
-                fill="var(--bs-primary)"
-                fillOpacity={0.1}
-              />
-            )}
-
-            {/* Main steps line */}
             <Line
               data={cdfPoints}
               type="linear"
@@ -280,11 +261,11 @@ function DiscreteDistributionChart({ data = defaultData }) {
               stroke="var(--bs-primary)"
               strokeWidth={2}
               dot={false}
+              activeDot={false}
               isAnimationActive={false}
               connectNulls={false}
             />
 
-            {/* Open circles */}
             <Line
               data={openCircleData}
               type="linear"
@@ -295,16 +276,31 @@ function DiscreteDistributionChart({ data = defaultData }) {
               isAnimationActive={false}
             />
 
-            {/* Closed circles */}
+            {/* Zmena: body-color namiesto body-bg */}
             <Line
               data={closedCircleData}
               type="linear"
               dataKey="y"
               stroke="none"
               dot={renderClosedCircle}
-              activeDot={false}
+              activeDot={{
+                r: 6,
+                fill: "var(--bs-primary)",
+                stroke: "var(--bs-white)",
+                strokeWidth: 2,
+              }}
               isAnimationActive={false}
             />
+
+            {hoverX !== null && hoverX !== undefined && (
+              <ReferenceLine
+                x={Number(hoverX)}
+                stroke="var(--bs-danger, red)"
+                strokeDasharray="5 5"
+                strokeWidth={1}
+                isFront={true}
+              />
+            )}
           </ComposedChart>
         </ResponsiveContainer>
       </div>

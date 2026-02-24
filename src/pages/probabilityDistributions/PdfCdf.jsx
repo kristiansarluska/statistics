@@ -1,7 +1,7 @@
 // src/pages/probabilityDistributions/PdfCdf.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
-import LinkedPDFCDF from "../../components/charts/LinkedPDFCDF";
+import ContinuousDistributionChart from "../../components/charts/ContinuousDistributionChart";
 import DiscreteDistributionChart from "../../components/charts/DiscreteDistributionChart";
 
 function PdfCdf() {
@@ -50,7 +50,7 @@ function PdfCdf() {
 
       <div id="pdf-cdf-example">
         {/* STATICKÉ HODNOTY NATVRDO */}
-        <LinkedPDFCDF mean={0} sd={1} />
+        <ContinuousDistributionChart mean={0} sd={1} />
       </div>
 
       <div id="pdf-cdf-example-discrete">

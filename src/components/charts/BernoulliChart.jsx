@@ -3,12 +3,8 @@ import React, { useState, useMemo } from "react";
 import StyledBarChart from "./StyledBarChart";
 import "../../styles/charts.css";
 
-const COLORS = ["var(--bs-primary)", "var(--bs-info)"];
-
-// Odstránili sme 'p' z props
 function BernoulliChart() {
-  // --- Presunutý stav a handler ---
-  const [bernoulliP, setBernoulliP] = useState(0.25); // Lokálny stav pre p
+  const [bernoulliP, setBernoulliP] = useState(0.25);
 
   const handleBernoulliPChange = (event) => {
     const value = parseFloat(event.target.value);
@@ -16,26 +12,21 @@ function BernoulliChart() {
       setBernoulliP(value);
     }
   };
-  // --- Koniec presunutého kódu ---
 
   const data = useMemo(
     () => [
-      { x: 0, probability: 1 - bernoulliP }, // Použijeme lokálny stav bernoulliP
-      { x: 1, probability: bernoulliP }, // Použijeme lokálny stav bernoulliP
+      // Vloženie vlastných farieb (fill) priamo do dát
+      { x: 0, probability: 1 - bernoulliP, fill: "var(--bs-info)" },
+      { x: 1, probability: bernoulliP, fill: "var(--bs-primary)" },
     ],
     [bernoulliP],
-  ); // Závislosť na lokálnom stave
+  );
 
   return (
-    // Obalíme ovládanie a graf do jedného divu pre lepšie usporiadanie
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* --- Presunuté ovládanie (slider) --- */}
+      {/* Ovládanie (slider) */}
       <div className="controls mb-3">
-        {" "}
-        {/* Pridáme trochu medzery pod slider */}
         <label className="d-flex align-items-center">
-          {" "}
-          {/* Upravené pre lepšie zarovnanie */}
           Parameter p:
           <input
             type="range"
@@ -64,7 +55,6 @@ function BernoulliChart() {
           </span>
         </label>
       </div>
-      {/* --- Koniec presunutého ovládania --- */}
 
       {/* Samotný graf */}
       <div
@@ -73,16 +63,15 @@ function BernoulliChart() {
       >
         <div className="chart-title text-center">
           Alternatívne (Bernoulliho) rozdelenie
-        </div>{" "}
-        {/* Pridané text-center */}
+        </div>
+
         <StyledBarChart
           data={data}
-          yDataKey="probability"
+          barDataKey="probability" /* KĽÚČOVÁ ZMENA: prispôsobené pre StyledBarChart */
           xLabel="x"
           yLabel="P(X=x)"
           yDomain={[0, 1]}
-          barSize={60}
-          colors={["var(--bs-primary)", "var(--bs-info)"]}
+          maxBarSize={60}
         />
       </div>
     </div>

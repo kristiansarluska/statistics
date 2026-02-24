@@ -1,5 +1,5 @@
 // src/components/charts/StyledBarChart.jsx
-import React from "react";
+import React, { useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
+  ReferenceArea,
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 
@@ -20,18 +20,35 @@ function StyledBarChart({
   maxBarSize = 60,
   hoverX,
   setHoverX,
+  showReferenceArea = false,
+  referenceAreaX1, // Pridaný parameter pre začiatok zvýraznenia
+  referenceAreaX2, // Pridaný parameter pre koniec zvýraznenia
+  barDataKey = "y",
 }) {
+  const formattedData = useMemo(() => {
+    if (!data) return [];
+    return data.map((entry) => ({
+      ...entry,
+      fill: entry.fill || "var(--bs-primary)",
+    }));
+  }, [data]);
+
+  // Ak nepríde špecifická hranica, použijeme aktuálny hoverX
+  const rX1 = referenceAreaX1 !== undefined ? referenceAreaX1 : hoverX;
+  const rX2 = referenceAreaX2 !== undefined ? referenceAreaX2 : hoverX;
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
-        data={data}
+        data={formattedData}
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
         onMouseMove={(state) => {
           if (
             setHoverX &&
             state &&
             state.isTooltipActive &&
-            state.activeLabel !== undefined
+            state.activeLabel !== undefined &&
+            state.activeLabel !== null
           ) {
             setHoverX(String(state.activeLabel));
           }
@@ -54,27 +71,28 @@ function StyledBarChart({
             offset: -10,
           }}
         />
-        <Tooltip content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />} />
-        <Bar dataKey="y" maxBarSize={maxBarSize}>
-          {data.map((entry, index) => {
-            // Určenie farby: ak je stĺpec "hovernutý", použijeme tmavší odtieň alebo inú farbu
-            const isHovered =
-              hoverX !== undefined &&
-              hoverX !== null &&
-              hoverX === String(entry.x);
-            return (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  isHovered
-                    ? "var(--bs-primary-border-subtle, #0a58ca)"
-                    : "var(--bs-primary)"
-                }
-                style={{ transition: "fill 0.2s ease" }}
-              />
-            );
-          })}
-        </Bar>
+
+        {/* Priehľadný kurzor (fillOpacity: 0.1) pre štandardné stĺpcové grafy, vypnutý ak showReferenceArea=true */}
+        <Tooltip
+          cursor={
+            showReferenceArea
+              ? false
+              : { fill: "var(--bs-secondary, gray)", fillOpacity: 0.1 }
+          }
+          content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />}
+        />
+
+        {/* Vykreslenie oblasti prepojenej s iným grafom */}
+        {showReferenceArea && hoverX !== null && hoverX !== undefined && (
+          <ReferenceArea
+            x1={rX1}
+            x2={rX2}
+            fill="var(--bs-primary)"
+            fillOpacity={0.1}
+          />
+        )}
+
+        <Bar dataKey={barDataKey} maxBarSize={maxBarSize} />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -141,7 +141,7 @@ function StyledLineChart({
               x={hoverX}
               stroke="red"
               strokeWidth={1}
-              strokeDasharray="3 3"
+              strokeDasharray="5 5"
               ifOverflow="extendDomain"
             />
           )}
