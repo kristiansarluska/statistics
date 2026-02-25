@@ -45,7 +45,7 @@ function PoissonChart() {
       <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
         <StyledBarChart
           data={chartData}
-          xLabel="k (počet výskytov)"
+          xLabel="k"
           yLabel="P(X=k)"
           yDomain={[0, "auto"]}
         />

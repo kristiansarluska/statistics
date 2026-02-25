@@ -3,16 +3,18 @@ export const sidebarData = [
   {
     labelKey: "topics.randomVariable",
     path: "/random-variable",
+    children: [
+      {
+        label: "Pravdepodobnostná a distribučná funkcia",
+        path: "/random-variable#pdf-cdf",
+      },
+    ],
   },
   {
     labelKey: "topics.probabilityDistributions",
     path: "/probability-distributions",
     children: [
       { label: "Motivácia", path: "/probability-distributions#motivation" },
-      {
-        label: "Pravdepodobnostná a distribučná funkcia",
-        path: "/probability-distributions#pdf-cdf",
-      },
       /*{ label: "Diskrétna a spojitá veličina", path: "/probability-distributions#discrete-vs-continuous" },*/
       {
         label: "Diskrétne rozdelenia",

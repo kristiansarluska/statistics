@@ -5,7 +5,7 @@ import { studentTPDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function StudentTChart() {
-  const [k, setK] = useState(1); // Stupne voľnosti (štandardne začneme na 1)
+  const [k, setK] = useState(3); // Stupne voľnosti (štandardne začneme na 3)
   const [hoverX, setHoverX] = useState(null);
 
   // Fixný rozsah pre stabilnú os X (zameranie na stred a ťažké chvosty)

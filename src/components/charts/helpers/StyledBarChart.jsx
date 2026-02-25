@@ -1,4 +1,3 @@
-// src/components/charts/helpers/StyledBarChart.jsx
 import React, { useMemo } from "react";
 import {
   BarChart,
@@ -12,6 +11,27 @@ import {
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 import { getAxisConfig } from "../../../utils/distributions";
+
+// Custom komponent pre plynulý posun sivého kurzora (zvýraznenia stĺpca)
+const AnimatedCursor = (props) => {
+  const { x, y, width, height, fillOpacity } = props;
+
+  // Ošetrenie chýbajúcich súradníc
+  if (x == null || y == null) return null;
+
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      fill="var(--bs-gray-400, gray)"
+      fillOpacity={fillOpacity || 0.1}
+      style={{ transition: "x 0.2s ease, width 0.2s ease" }}
+      className="recharts-tooltip-cursor"
+    />
+  );
+};
 
 function StyledBarChart({
   data,
@@ -102,12 +122,12 @@ function StyledBarChart({
         />
 
         <Tooltip
+          // Ak je zapnutá ReferenceArea, kurzor sa nezobrazuje, inak vložíme náš vlastný AnimatedCursor
           cursor={
-            showReferenceArea
-              ? false
-              : { fill: "var(--bs-secondary, gray)", fillOpacity: 0.1 }
+            showReferenceArea ? false : <AnimatedCursor fillOpacity={0.1} />
           }
           content={<CustomTooltip xLabel={xLabel} yLabel={yLabel} />}
+          animationDuration={200} // Zladenie interného zobrazenia s CSS prechodom
         />
 
         {showReferenceArea && hoverX !== null && hoverX !== undefined && (
@@ -119,7 +139,11 @@ function StyledBarChart({
           />
         )}
 
-        <Bar dataKey={barDataKey} maxBarSize={maxBarSize} />
+        <Bar
+          dataKey={barDataKey}
+          maxBarSize={maxBarSize}
+          isAnimationActive={true}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
