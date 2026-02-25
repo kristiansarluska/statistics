@@ -1,7 +1,7 @@
-// src/components/charts/UniformContinuousChart.jsx
+// src/components/charts/probability-distributions/continuous/UniformContinuousChart.jsx
 import React, { useState, useMemo, useCallback } from "react";
-import StyledLineChart from "./StyledLineChart";
-import "../../styles/charts.css";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import "../../../../styles/charts.css";
 
 function UniformContinuousChart() {
   const [a, setA] = useState(-5);

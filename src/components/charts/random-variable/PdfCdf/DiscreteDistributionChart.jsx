@@ -10,9 +10,9 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import StyledBarChart from "./StyledBarChart";
-import CustomTooltip from "./CustomTooltip";
-import "../../styles/charts.css";
+import StyledBarChart from "../../helpers/StyledBarChart";
+import CustomTooltip from "../../helpers/CustomTooltip";
+import "../../../../styles/charts.css";
 
 // --- Custom mathematically correct Tooltip wrapping CustomTooltip ---
 const renderCDFTooltip = ({

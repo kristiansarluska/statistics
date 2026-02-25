@@ -1,8 +1,8 @@
 // src/pages/probabilityDistributions/PdfCdf.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
-import ContinuousDistributionChart from "../../components/charts/ContinuousDistributionChart";
-import DiscreteDistributionChart from "../../components/charts/DiscreteDistributionChart";
+import ContinuousDistributionChart from "../../components/charts/random-variable/PdfCdf/ContinuousDistributionChart";
+import DiscreteDistributionChart from "../../components/charts/random-variable/PdfCdf/DiscreteDistributionChart";
 
 function PdfCdf() {
   const sampleDiscreteData = [

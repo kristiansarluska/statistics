@@ -6,7 +6,6 @@ import "../styles/charts.css";
 
 // Pod-komponenty
 import Motivation from "./probabilityDistributions/Motivation";
-import PdfCdf from "./probabilityDistributions/PdfCdf";
 import DiscreteDistributions from "./probabilityDistributions/DiscreteDistributions";
 import ContinuousDistributions from "./probabilityDistributions/ContinuousDistributions";
 
@@ -37,7 +36,6 @@ function ProbabilityDistributions() {
     <>
       <h1 id="page-title">{t("topics.probabilityDistributions")}</h1>
       <Motivation />
-      <PdfCdf />
       <DiscreteDistributions />
       <ContinuousDistributions />
     </>

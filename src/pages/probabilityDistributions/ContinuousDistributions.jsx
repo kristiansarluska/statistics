@@ -1,13 +1,13 @@
 // src/pages/probabilityDistributions/ContinuousDistributions.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
-import UniformContinuousChart from "../../components/charts/UniformContinuousChart";
-import ExponentialChart from "../../components/charts/ExponentialChart";
-import NormalDistributionChart from "../../components/charts/NormalDistributionChart";
-import CSVDistributions from "../../components/charts/CSVDistributions";
-import ChiSquareChart from "../../components/charts/ChiSquareChart";
-import StudentTChart from "../../components/charts/StudentTChart";
-import FisherFChart from "../../components/charts/FisherFChart";
+import UniformContinuousChart from "../../components/charts/probability-distributions/continuous/UniformContinuousChart";
+import ExponentialChart from "../../components/charts/probability-distributions/continuous/ExponentialChart";
+import NormalChart from "../../components/charts/probability-distributions/continuous/NormalChart";
+import CSVDistributions from "../../components/charts/probability-distributions/continuous/CSVDistributions";
+import ChiSquareChart from "../../components/charts/probability-distributions/continuous/ChiSquareChart";
+import StudentTChart from "../../components/charts/probability-distributions/continuous/StudentTChart";
+import FisherFChart from "../../components/charts/probability-distributions/continuous/FisherFChart";
 
 function ContinuousDistributions() {
   return (
@@ -62,7 +62,7 @@ function ContinuousDistributions() {
 
       {/* Tu sa vyrenderujú slidery a oba grafy naraz */}
       <div className="w-100">
-        <NormalDistributionChart />
+        <NormalChart />
       </div>
 
       <CSVDistributions />

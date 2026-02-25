@@ -1,8 +1,8 @@
-// src/components/charts/ChiSquareChart.jsx
+// src/components/charts/probability-distributions/continuous/ChiSquareChart.jsx
 import React, { useState, useMemo } from "react";
-import { chiSquarePDF } from "../../utils/distributions";
-import StyledLineChart from "./StyledLineChart";
-import "../../styles/charts.css";
+import { chiSquarePDF } from "../../../../utils/distributions";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import "../../../../styles/charts.css";
 
 function ChiSquareChart() {
   const [k, setK] = useState(5);

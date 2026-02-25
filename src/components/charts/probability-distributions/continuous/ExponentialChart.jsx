@@ -1,8 +1,8 @@
-// src/components/charts/ExponentialChart.jsx
+// src/components/charts/probability-distributions/continuous/ExponentialChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledLineChart from "./StyledLineChart";
-import { exponentialPDF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import { exponentialPDF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
 function ExponentialChart() {
   const [lambda, setLambda] = useState(1);

@@ -1,4 +1,4 @@
-// src/components/charts/CustomTooltip.jsx
+// src/components/charts/helpers/CustomTooltip.jsx
 import React from "react";
 
 // Vylepšená formatter funkcia pre inteligentné zaokrúhľovanie

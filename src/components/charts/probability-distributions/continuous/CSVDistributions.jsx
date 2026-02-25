@@ -1,7 +1,7 @@
-// src/components/charts/CSVDistributions.jsx
+// src/components/charts/probability-distributions/continuous/CSVDistributions.jsx
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
-import StyledLineChart from "./StyledLineChart";
+import StyledLineChart from "../../helpers/StyledLineChart";
 
 function CSVDistributions() {
   const [rawData, setRawData] = useState([]);

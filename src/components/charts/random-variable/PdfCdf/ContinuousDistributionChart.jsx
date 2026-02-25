@@ -1,7 +1,7 @@
 // src/components/charts/ContinuousDistributionChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledLineChart from "./StyledLineChart";
-import { normalPDF, normalCDF } from "../../utils/distributions";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import { normalPDF, normalCDF } from "../../../../utils/distributions";
 
 function ContinuousDistributionChart({ mean, sd }) {
   const [hoverX, setHoverX] = useState(null);

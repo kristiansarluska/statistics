@@ -1,4 +1,4 @@
-// src/components/charts/StyledBarChart.jsx
+// src/components/charts/helpers/StyledBarChart.jsx
 import React, { useMemo } from "react";
 import {
   BarChart,
@@ -11,7 +11,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
-import { getAxisConfig } from "../../utils/distributions";
+import { getAxisConfig } from "../../../utils/distributions";
 
 function StyledBarChart({
   data,

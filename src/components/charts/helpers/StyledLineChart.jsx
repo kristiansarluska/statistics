@@ -1,4 +1,4 @@
-// src/components/charts/StyledLineChart.jsx
+// src/components/charts/helpers/StyledLineChart.jsx
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   LineChart,
@@ -12,9 +12,9 @@ import {
   ReferenceDot,
   ResponsiveContainer,
 } from "recharts";
-import "../../styles/charts.css";
+import "../../../styles/charts.css";
 import CustomTooltip from "./CustomTooltip";
-import { getAxisConfig } from "../../utils/distributions";
+import { getAxisConfig } from "../../../utils/distributions";
 
 function StyledLineChart({
   data,

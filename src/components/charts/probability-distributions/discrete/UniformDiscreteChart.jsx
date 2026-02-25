@@ -1,7 +1,7 @@
-// src/components/charts/UniformDiscreteChart.jsx
+// src/components/charts/probability-distributions/discrete/UniformDiscreteChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledBarChart from "./StyledBarChart";
-import "../../styles/charts.css";
+import StyledBarChart from "../../helpers/StyledBarChart";
+import "../../../../styles/charts.css";
 
 function UniformDiscreteChart() {
   const [n, setN] = useState(6); // Default set to 6

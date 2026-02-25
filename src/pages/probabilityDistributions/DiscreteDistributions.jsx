@@ -1,9 +1,9 @@
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
-import BernoulliChart from "../../components/charts/BernoulliChart";
-import UniformDiscreteChart from "../../components/charts/UniformDiscreteChart";
-import BinomialChart from "../../components/charts/BinomialChart";
-import PoissonChart from "../../components/charts/PoissonChart";
+import BernoulliChart from "../../components/charts/probability-distributions/discrete/BernoulliChart";
+import UniformDiscreteChart from "../../components/charts/probability-distributions/discrete/UniformDiscreteChart";
+import BinomialChart from "../../components/charts/probability-distributions/discrete/BinomialChart";
+import PoissonChart from "../../components/charts/probability-distributions/discrete/PoissonChart";
 import PracticalExample from "../../components/content/PracticalExample";
 
 function DiscreteDistributions() {

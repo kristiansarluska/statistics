@@ -1,7 +1,7 @@
-// src/components/charts/BernoulliChart.jsx
+// src/components/charts/probability-distributions/discrete/BernoulliChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledBarChart from "./StyledBarChart";
-import "../../styles/charts.css";
+import StyledBarChart from "../../helpers/StyledBarChart";
+import "../../../../styles/charts.css";
 
 function BernoulliChart() {
   const [bernoulliP, setBernoulliP] = useState(0.25);

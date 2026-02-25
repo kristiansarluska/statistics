@@ -1,8 +1,8 @@
-// src/components/charts/PoissonChart.jsx
+// src/components/charts/probability-distributions/discrete/PoissonChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledBarChart from "./StyledBarChart";
-import { poissonPMF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledBarChart from "../../helpers/StyledBarChart";
+import { poissonPMF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
 function PoissonChart() {
   const [lambda, setLambda] = useState(5); // Defaultná lambda

@@ -1,8 +1,8 @@
-// src/components/charts/BinomialChart.jsx
+// src/components/charts/probability-distributions/discrete/BinomialChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledBarChart from "./StyledBarChart";
-import { binomialPMF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledBarChart from "../../helpers/StyledBarChart";
+import { binomialPMF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
 function BinomialChart() {
   const [n, setN] = useState(10); // Default number of trials

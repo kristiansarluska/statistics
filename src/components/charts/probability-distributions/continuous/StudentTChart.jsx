@@ -1,8 +1,8 @@
-// src/components/charts/StudentTChart.jsx
+// src/components/charts/probability-distributions/continuous/StudentTChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledLineChart from "./StyledLineChart";
-import { studentTPDF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import { studentTPDF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
 function StudentTChart() {
   const [k, setK] = useState(1); // Stupne voľnosti (štandardne začneme na 1)

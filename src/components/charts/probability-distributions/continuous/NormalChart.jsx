@@ -1,10 +1,10 @@
-// src/components/charts/NormalDistributionChart.jsx
+// src/components/charts/probability-distributions/continuous/NormalChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledLineChart from "./StyledLineChart";
-import { normalPDF, normalCDF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import { normalPDF, normalCDF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
-function NormalDistributionChart() {
+function NormalChart() {
   const [mean, setMean] = useState(0);
   const [sd, setSd] = useState(1);
   const [hoverX, setHoverX] = useState(null);
@@ -122,4 +122,4 @@ function NormalDistributionChart() {
   );
 }
 
-export default NormalDistributionChart;
+export default NormalChart;

@@ -1,8 +1,8 @@
-// src/components/charts/FisherFChart.jsx
+// src/components/charts/probability-distributions/continuous/FisherFChart.jsx
 import React, { useState, useMemo } from "react";
-import StyledLineChart from "./StyledLineChart";
-import { fisherFPDF } from "../../utils/distributions";
-import "../../styles/charts.css";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import { fisherFPDF } from "../../../../utils/distributions";
+import "../../../../styles/charts.css";
 
 function FisherFChart() {
   const [d1, setD1] = useState(5);
