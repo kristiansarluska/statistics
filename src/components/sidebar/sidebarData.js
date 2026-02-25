@@ -8,6 +8,10 @@ export const sidebarData = [
         label: "Pravdepodobnostná a distribučná funkcia",
         path: "/random-variable#pdf-cdf",
       },
+      {
+        label: "Kvantilová funkcia",
+        path: "/random-variable#quantile-function",
+      },
     ],
   },
   {

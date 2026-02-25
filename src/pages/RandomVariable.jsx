@@ -1,16 +1,20 @@
-import { useTranslation } from "react-i18next";
+// src/pages/RandomVariable.jsx
+import React from "react";
 import PdfCdf from "./randomVariable/PdfCdf";
+import QuantileFunction from "./randomVariable/QuantileFunction";
 
-function RandomVariable() {
-  const { t } = useTranslation();
-
+const RandomVariable = () => {
   return (
-    <>
-      <h1>{t("topics.randomVariable")}</h1>
-      <p>{t("topics.randomVariable.description")}</p>
+    <div className="container mt-4">
+      <h1 className="mb-4">Náhodná veličina</h1>
+
+      {/* Existing content (e.g., Theory, Probability Density, Cumulative Distribution) */}
       <PdfCdf />
-    </>
+
+      {/* New Quantile Function section */}
+      <QuantileFunction />
+    </div>
   );
-}
+};
 
 export default RandomVariable;

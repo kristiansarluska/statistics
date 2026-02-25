@@ -7,8 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ReferenceLine,
   ReferenceArea,
+  ReferenceLine,
   ReferenceDot,
   ResponsiveContainer,
 } from "recharts";
@@ -29,6 +29,8 @@ function StyledLineChart({
   minX = null,
   maxX = null,
   showReferenceArea = false,
+  lineType = "monotone", // Pridané pre podporu iných typov čiar (napr. stepBefore)
+  children, // Pridané pre možnosť vložiť vlastné elementy (napr. kvantily)
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
@@ -41,23 +43,19 @@ function StyledLineChart({
     } else {
       setAnimated(false);
     }
-  }, [data, hoverX]);
+  }, [data]); // Odstránený hoverX z dependecy array
 
   const handleChartInteraction = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
       const currentX = state.activePayload[0].payload.x;
-      if (hoverX !== currentX) {
-        setHoverX(currentX);
-      }
+      if (hoverX !== currentX) setHoverX(currentX);
     } else if (
       state &&
       state.activeLabel !== undefined &&
       state.activeLabel !== null
     ) {
       const roundedX = parseFloat(state.activeLabel.toFixed(2));
-      if (hoverX !== roundedX) {
-        setHoverX(roundedX);
-      }
+      if (hoverX !== roundedX) setHoverX(roundedX);
     }
   };
 
@@ -77,7 +75,6 @@ function StyledLineChart({
     return closestPoint.y;
   }, [data, hoverX]);
 
-  // Vypočet maxím z dát
   const minDataX = useMemo(() => {
     if (!data || data.length === 0) return 0;
     return Math.min(...data.map((d) => d.x || 0));
@@ -96,7 +93,6 @@ function StyledLineChart({
   const yDomainMin = Array.isArray(yAxisDomain) ? yAxisDomain[0] : 0;
   const yDomainMax = Array.isArray(yAxisDomain) ? yAxisDomain[1] : "auto";
 
-  // Aplikovanie univerzálnej logiky na obe osi
   const xConfig = getAxisConfig(maxDataX, minX, maxX, minDataX);
   const yConfig = getAxisConfig(maxDataY, yDomainMin, yDomainMax, 0);
 
@@ -120,7 +116,7 @@ function StyledLineChart({
             dataKey="x"
             type="number"
             domain={xConfig.domain}
-            ticks={xConfig.ticks} // Osi sú teraz absolútne presné
+            ticks={xConfig.ticks}
             allowDecimals={true}
             label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
@@ -137,14 +133,17 @@ function StyledLineChart({
             className="chart-axis"
             tickFormatter={yConfig.formatTick}
             domain={yConfig.domain}
-            ticks={yConfig.ticks} // Osi sú teraz absolútne presné
+            ticks={yConfig.ticks}
             allowDataOverflow={false}
           />
+
           <Tooltip
             content={<CustomTooltip xLabel={xLabel} yLabel={displayYLabel} />}
             cursor={false}
             animationDuration={50}
           />
+
+          {children}
 
           {hoverX !== null && (
             <ReferenceLine
@@ -180,12 +179,12 @@ function StyledLineChart({
           )}
 
           <Line
-            type="monotone"
+            type={lineType}
             dataKey="y"
             className={lineClass}
             strokeWidth={2}
             dot={false}
-            activeDot={false}
+            activeDot={true} // Zapnuté defaultné bodky pri hoveri z Recharts
             isAnimationActive={animated}
             animationDuration={animated ? 700 : 0}
           />
