@@ -41,7 +41,7 @@ function FisherFChart() {
 
     // Ak sa vrchol priblíži k 1 (napr. prevýši 0.85), zdvihneme os na 1.2
     if (peak > 0.85) {
-      return 1.25;
+      return 1.2;
     }
 
     // Štandardne držíme pevnú a peknú os 1.0

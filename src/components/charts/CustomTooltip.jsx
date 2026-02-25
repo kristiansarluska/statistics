@@ -1,14 +1,26 @@
 // src/components/charts/CustomTooltip.jsx
 import React from "react";
 
-// Formatter function moved here for reusability
-export const formatNumberSmart = (num) => {
-  if (num === null || num === undefined || isNaN(num)) return "-";
-  const abs = Math.abs(num);
-  if (abs === 0) return "0.00";
-  if (abs >= 0.1) return num.toFixed(2);
-  if (abs >= 0.001) return num.toFixed(4);
-  return num.toExponential(4);
+// Vylepšená formatter funkcia pre inteligentné zaokrúhľovanie
+export const formatNumberSmart = (value) => {
+  if (value === null || value === undefined) return "";
+
+  const num = Number(value);
+  if (isNaN(num)) return value;
+
+  if (num === 0) return 0;
+
+  const absNum = Math.abs(num);
+
+  // Ak je číslo veľmi malé (začína nulami, napr. 0.0036), zachováme platné číslice
+  if (absNum < 0.01) {
+    // toPrecision(3) zabezpečí, že napr. 0.003612 sa zaokrúhli na 0.00361
+    return Number(num.toPrecision(2));
+  }
+
+  // Pre bežné čísla aplikujeme zaokrúhlenie na max 2 desatinné miesta
+  // Vonkajší Number() odstráni prebytočné nuly na konci (napr. 5.10 -> 5.1)
+  return Number(num.toFixed(2));
 };
 
 function CustomTooltip({ active, payload, xLabel = "x", yLabel = "f(x)" }) {
@@ -19,8 +31,8 @@ function CustomTooltip({ active, payload, xLabel = "x", yLabel = "f(x)" }) {
       point.x !== undefined
         ? point.x
         : point.name !== undefined
-        ? point.name
-        : payload[0].name;
+          ? point.name
+          : payload[0].name;
     const yVal = point.y !== undefined ? point.y : payload[0].value;
 
     const formattedX =

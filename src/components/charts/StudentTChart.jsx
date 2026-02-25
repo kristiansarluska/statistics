@@ -24,7 +24,7 @@ function StudentTChart() {
   }, [k]);
 
   // Pevný strop osi Y pre perfektné zobrazenie toho, ako vrchol rastie s k
-  const maxY = 0.45;
+  const maxY = 0.5;
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
@@ -41,7 +41,7 @@ function StudentTChart() {
           className="form-range"
           id="kRangeStudent"
           min="1"
-          max="15"
+          max="10"
           step="1"
           value={k}
           onChange={(e) => setK(Number(e.target.value))}

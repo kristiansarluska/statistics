@@ -92,8 +92,15 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
     >
       <div className="container-fluid">
         <button
-          className="btn btn-primary d-flex align-items-center rounded-5"
-          onClick={onToggleSidebar}
+          className="btn btn-primary d-flex align-items-center rounded-5 text-nowrap"
+          onClick={(e) => {
+            isAutoScrolling.current = true;
+            setTimeout(() => {
+              isAutoScrolling.current = false;
+            }, 500);
+
+            onToggleSidebar();
+          }}
         >
           {t("navbar.topics")}
           <img
@@ -104,7 +111,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
         </button>
 
         <button
-          className="navbar-toggler"
+          className="navbar-toggler ms-2" /* ms-2 pre istotu pridá malú medzeru, ak by sa displej extrémne zúžil */
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"

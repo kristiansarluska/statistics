@@ -9,10 +9,12 @@ import {
   Tooltip,
   ReferenceLine,
   ReferenceArea,
+  ReferenceDot,
   ResponsiveContainer,
 } from "recharts";
 import "../../styles/charts.css";
-import CustomTooltip, { formatNumberSmart } from "./CustomTooltip";
+import CustomTooltip from "./CustomTooltip";
+import { getAxisConfig } from "../../utils/distributions";
 
 function StyledLineChart({
   data,
@@ -41,7 +43,6 @@ function StyledLineChart({
     }
   }, [data, hoverX]);
 
-  // Spoločný handler pre myš aj dotykové udalosti
   const handleChartInteraction = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
       const currentX = state.activePayload[0].payload.x;
@@ -62,28 +63,42 @@ function StyledLineChart({
 
   const handleMouseLeave = () => setHoverX(null);
 
-  const cdfRefLineY = useMemo(() => {
-    if (type !== "cdf" || hoverX === null) return null;
-    let pointY = null;
-    let closestPoint = null;
-    let minDiff = Infinity;
-
-    for (const point of data) {
-      const diff = Math.abs(point.x - hoverX);
+  const hoverY = useMemo(() => {
+    if (hoverX === null || !data || data.length === 0) return null;
+    let closestPoint = data[0];
+    let minDiff = Math.abs(data[0].x - hoverX);
+    for (let i = 1; i < data.length; i++) {
+      const diff = Math.abs(data[i].x - hoverX);
       if (diff < minDiff) {
         minDiff = diff;
-        closestPoint = point;
-      }
-      if (point.x >= hoverX) {
-        pointY = point.y;
-        break;
+        closestPoint = data[i];
       }
     }
-    if (pointY === null && data.length > 0) {
-      pointY = closestPoint ? closestPoint.y : data[data.length - 1].y;
-    }
-    return pointY;
-  }, [data, hoverX, type]);
+    return closestPoint.y;
+  }, [data, hoverX]);
+
+  // Vypočet maxím z dát
+  const minDataX = useMemo(() => {
+    if (!data || data.length === 0) return 0;
+    return Math.min(...data.map((d) => d.x || 0));
+  }, [data]);
+
+  const maxDataX = useMemo(() => {
+    if (!data || data.length === 0) return 1;
+    return Math.max(...data.map((d) => d.x || 0));
+  }, [data]);
+
+  const maxDataY = useMemo(() => {
+    if (!data || data.length === 0) return 0.1;
+    return Math.max(...data.map((d) => d.y || 0));
+  }, [data]);
+
+  const yDomainMin = Array.isArray(yAxisDomain) ? yAxisDomain[0] : 0;
+  const yDomainMax = Array.isArray(yAxisDomain) ? yAxisDomain[1] : "auto";
+
+  // Aplikovanie univerzálnej logiky na obe osi
+  const xConfig = getAxisConfig(maxDataX, minX, maxX, minDataX);
+  const yConfig = getAxisConfig(maxDataY, yDomainMin, yDomainMax, 0);
 
   const areaStartX = minX ?? (data.length > 0 ? data[0].x : 0);
 
@@ -104,14 +119,12 @@ function StyledLineChart({
           <XAxis
             dataKey="x"
             type="number"
-            domain={
-              minX !== null && maxX !== null ? [minX, maxX] : ["auto", "auto"]
-            }
-            tickCount={9}
+            domain={xConfig.domain}
+            ticks={xConfig.ticks} // Osi sú teraz absolútne presné
             allowDecimals={true}
             label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart}
+            tickFormatter={xConfig.formatTick}
             allowDuplicatedCategory={false}
           />
           <YAxis
@@ -122,9 +135,9 @@ function StyledLineChart({
               offset: -10,
             }}
             className="chart-axis"
-            tickFormatter={formatNumberSmart}
-            domain={yAxisDomain || [0, "auto"]}
-            tickCount={6}
+            tickFormatter={yConfig.formatTick}
+            domain={yConfig.domain}
+            ticks={yConfig.ticks} // Osi sú teraz absolútne presné
             allowDataOverflow={false}
           />
           <Tooltip
@@ -136,17 +149,17 @@ function StyledLineChart({
           {hoverX !== null && (
             <ReferenceLine
               x={hoverX}
-              stroke="red"
+              stroke="var(--bs-danger, red)"
               strokeWidth={1}
               strokeDasharray="5 5"
               ifOverflow="extendDomain"
             />
           )}
 
-          {type === "cdf" && cdfRefLineY !== null && (
+          {type === "cdf" && hoverY !== null && (
             <ReferenceLine
-              y={cdfRefLineY}
-              stroke="red"
+              y={hoverY}
+              stroke="var(--bs-danger, red)"
               strokeWidth={1}
               strokeDasharray="3 3"
               ifOverflow="extendDomain"
@@ -158,7 +171,8 @@ function StyledLineChart({
               x1={areaStartX}
               x2={hoverX}
               y1={0}
-              fill="rgba(0, 140, 186, 0.2)"
+              fill="var(--bs-primary)"
+              fillOpacity={0.1}
               stroke="none"
               ifOverflow="hidden"
               isAnimationActive={false}
@@ -171,9 +185,22 @@ function StyledLineChart({
             className={lineClass}
             strokeWidth={2}
             dot={false}
+            activeDot={false}
             isAnimationActive={animated}
             animationDuration={animated ? 700 : 0}
           />
+
+          {hoverX !== null && hoverY !== null && (
+            <ReferenceDot
+              x={hoverX}
+              y={hoverY}
+              r={5}
+              fill="var(--bs-primary)"
+              stroke="var(--bs-body-color, black)"
+              strokeWidth={2}
+              isFront={true}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>

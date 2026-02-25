@@ -107,10 +107,14 @@ input:checked + .slider:before {
   /*aaa*/
 }
 
+/* ====== Global Mobile Fixes ====== */
 html,
 body {
-  height: 100%;
-  overflow: hidden; /* zabráni druhému scrollbar-u */
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  /* Zakáže "naťahovanie" za okraj obrazovky na Androide/iOS */
+  overscroll-behavior-x: none;
 }
 
 #root {

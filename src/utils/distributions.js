@@ -1,5 +1,104 @@
 // src/utils/distributions.js
 
+// Ticks calculation helper for charts, ensuring nice round numbers and appropriate spacing
+export const getAxisConfig = (
+  dataMax,
+  explicitMin = "auto",
+  explicitMax = "auto",
+  dataMin = 0,
+) => {
+  let min =
+    explicitMin !== null && explicitMin !== "auto" ? explicitMin : dataMin;
+  let max =
+    explicitMax !== null && explicitMax !== "auto" ? explicitMax : dataMax || 0;
+
+  // Odstránenie mikroskopických odchýlok a chýb plávajúcej desatinnej čiarky
+  max = Number(Number(max).toPrecision(10));
+  min = Number(Number(min).toPrecision(10));
+
+  // Ak sa hodnota veľmi blíži k celému číslu (napr. 10.001 pre rovnomerné rozdelenie), zaokrúhlime ju na rovné číslo.
+  if (explicitMax === "auto" || explicitMax === null) {
+    if (Math.abs(Math.round(max) - max) < 0.05 && max > 1) {
+      max = Math.round(max);
+    }
+  }
+
+  if (max === 0 && min === 0) max = 1;
+
+  const range = max - min;
+  let step = 1;
+
+  // Rozhodovací strom pre ideálny "krok" (step) medzi číslami na osi
+  if (range === 0) {
+    step = 0.1;
+  } else if (range > 10) {
+    if (range <= 25) step = 5;
+    else if (range <= 50) step = 10;
+    else if (range <= 100) step = 20;
+    else if (range <= 250) step = 50;
+    else step = Math.ceil(range / 50) * 10; // Univerzálny fallback pre veľmi veľké čísla
+  } else if (range >= 3) {
+    if (range <= 4) step = 0.5;
+    else if (range <= 7) step = 1;
+    else step = 2; // Pre rozpätie 8-10 bude krok 2
+  } else if (range >= 0.5) {
+    if (range <= 0.7) step = 0.1;
+    else if (range <= 1.5) step = 0.2;
+    else if (range <= 2.5) step = 0.5;
+    else step = 0.5;
+  } else {
+    // Pre veľmi malé čísla (napr. os Y pri hodnote 0.04) prispôsobíme rád
+    const magnitude = Math.pow(10, Math.floor(Math.log10(range)));
+    const normalized = range / magnitude;
+    if (normalized <= 1.5) step = 0.2 * magnitude;
+    else if (normalized <= 3) step = 0.5 * magnitude;
+    else if (normalized <= 7) step = 1 * magnitude;
+    else step = 2 * magnitude;
+  }
+
+  let niceMax = max;
+  let niceMin = min;
+
+  if (explicitMax === "auto" || explicitMax === null) {
+    // Vypočítanie pekného maxima na základe kroku (napr. 45.29 pri kroku 10 sa zaokrúhli presne na 50)
+    niceMax = Math.ceil(Number(((max - 1e-7) / step).toPrecision(10))) * step;
+  }
+
+  if (explicitMin === "auto" || explicitMin === null) {
+    niceMin = Math.floor(Number(((min + 1e-7) / step).toPrecision(10))) * step;
+  }
+
+  // Vygenerovanie presných bodov (ticks) pre mriežku a os
+  const ticks = [];
+  let startTick = Math.floor(Number((niceMin / step).toPrecision(10))) * step;
+
+  for (let t = startTick; t <= niceMax + 1e-9; t += step) {
+    if (t >= niceMin - 1e-9) {
+      ticks.push(Number(t.toPrecision(10)));
+    }
+  }
+
+  // Vypočítanie potrebných desatinných miest pre popisky
+  let decimals = 0;
+  const stepStr = Number(step.toPrecision(10)).toString();
+  if (stepStr.includes(".")) {
+    if (stepStr.includes("e-")) {
+      decimals = parseInt(stepStr.split("e-")[1], 10);
+    } else {
+      decimals = stepStr.split(".")[1].length;
+    }
+  }
+
+  return {
+    domain: [niceMin, niceMax],
+    ticks: ticks,
+    formatTick: (val) => {
+      if (val === null || val === undefined) return "";
+      return Number(Number(val).toFixed(decimals));
+    },
+  };
+};
+
 // Error function approximation
 export function erf(x) {
   const sign = x < 0 ? -1 : 1;

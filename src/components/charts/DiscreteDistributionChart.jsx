@@ -14,37 +14,6 @@ import StyledBarChart from "./StyledBarChart";
 import CustomTooltip from "./CustomTooltip";
 import "../../styles/charts.css";
 
-// --- Custom shape renderers for open and closed circles ---
-const renderOpenCircle = (props) => {
-  const { cx, cy, index } = props;
-  if (cx == null || cy == null) return null;
-  return (
-    <circle
-      key={`open-${index}`}
-      cx={cx}
-      cy={cy}
-      r={4}
-      fill="var(--bs-body-bg, white)"
-      stroke="var(--bs-primary)"
-      strokeWidth={2}
-    />
-  );
-};
-
-const renderClosedCircle = (props) => {
-  const { cx, cy, index } = props;
-  if (cx == null || cy == null) return null;
-  return (
-    <circle
-      key={`closed-${index}`}
-      cx={cx}
-      cy={cy}
-      r={4}
-      fill="var(--bs-primary)"
-    />
-  );
-};
-
 // --- Custom mathematically correct Tooltip wrapping CustomTooltip ---
 const renderCDFTooltip = ({
   active,
@@ -89,7 +58,6 @@ const renderCDFTooltip = ({
   return null;
 };
 
-// --- Default data fallback ---
 const defaultData = [
   { x: 0, p: 0.03125 },
   { x: 1, p: 0.15625 },
@@ -178,7 +146,6 @@ function DiscreteDistributionChart({ data = defaultData }) {
     return <div>Missing discrete distribution data.</div>;
   }
 
-  // Spoločný handler pre myš aj dotyk
   const handleChartInteraction = (state) => {
     if (
       state &&
@@ -242,7 +209,7 @@ function DiscreteDistributionChart({ data = defaultData }) {
               ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
             />
 
-            {/* cursor={false} zabezpečí, že sa natívna čiara nevykreslí, čím zabránime duplicite a "uviaznutiu" */}
+            {/* Vypnutý natívny kurzor - zamedzí vzniku dvoch čiar */}
             <Tooltip
               cursor={false}
               content={(props) =>
@@ -274,24 +241,51 @@ function DiscreteDistributionChart({ data = defaultData }) {
               type="linear"
               dataKey="y"
               stroke="none"
-              dot={renderOpenCircle}
               activeDot={false}
               isAnimationActive={false}
+              dot={(props) => {
+                const { cx, cy, index } = props;
+                if (cx == null || cy == null) return null;
+                return (
+                  <circle
+                    key={`open-${index}`}
+                    cx={cx}
+                    cy={cy}
+                    r={4}
+                    fill="var(--bs-body-bg, white)"
+                    stroke="var(--bs-primary)"
+                    strokeWidth={2}
+                  />
+                );
+              }}
             />
 
+            {/* Inline dot funkcia nám umožní reagovať priamo na spoločný state hoverX */}
             <Line
               data={closedCircleData}
               type="linear"
               dataKey="y"
               stroke="none"
-              dot={renderClosedCircle}
-              activeDot={{
-                r: 6,
-                fill: "var(--bs-primary)",
-                stroke: "var(--bs-body-color, black)",
-                strokeWidth: 3,
-              }}
+              activeDot={false} // Vypíname natívny aktívny bod
               isAnimationActive={false}
+              dot={(props) => {
+                const { cx, cy, index, payload } = props;
+                if (cx == null || cy == null) return null;
+                const isHovered =
+                  hoverX !== null && Number(hoverX) === payload.x;
+                return (
+                  <circle
+                    key={`closed-${index}`}
+                    cx={cx}
+                    cy={cy}
+                    r={isHovered ? 5 : 4}
+                    fill="var(--bs-primary)"
+                    stroke={isHovered ? "var(--bs-body-color, black)" : "none"}
+                    strokeWidth={isHovered ? 2 : 0}
+                    style={{ transition: "all 0.2s ease" }}
+                  />
+                );
+              }}
             />
 
             {hoverX !== null && hoverX !== undefined && (

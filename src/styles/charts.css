@@ -1,5 +1,11 @@
 /* src/styles/charts.css */
 
+/* Zrušenie focus outline pre všetky grafy Recharts */
+.recharts-wrapper,
+.recharts-surface {
+  outline: none !important;
+}
+
 /* Wrapper pre viacero grafov */
 .charts-wrapper {
   display: flex;
