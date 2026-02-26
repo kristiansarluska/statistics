@@ -54,7 +54,7 @@ function PdfCdf() {
       </div>
 
       <div id="pdf-cdf-example-discrete">
-        <DiscreteDistributionChart data={sampleDiscreteData} />
+        <DiscreteDistributionChart />
       </div>
     </>
   );

@@ -2,17 +2,27 @@
 import React, { useState, useMemo } from "react";
 import { ReferenceLine } from "recharts";
 import StyledLineChart from "../../../charts/helpers/StyledLineChart";
+import ResetButton from "../../../charts/helpers/ResetButton";
+
+const DEFAULT_DATA = [
+  5, 5, 15, 15, 16, 16, 20, 20, 21, 21, 25, 25, 26, 26, 27, 27, 30, 30, 30, 30,
+  31, 31, 32, 32, 34, 34, 35, 35, 38, 38, 38, 38, 41, 41, 43, 43, 47, 47, 66,
+  66,
+];
 
 const QuantileFunctionInput = () => {
-  const [data, setData] = useState([
-    5, 5, 15, 15, 16, 16, 20, 20, 21, 21, 25, 25, 26, 26, 27, 27, 30, 30, 30,
-    30, 31, 31, 32, 32, 34, 34, 35, 35, 38, 38, 38, 38, 41, 41, 43, 43, 47, 47,
-    66, 66,
-  ]);
+  const [data, setData] = useState(DEFAULT_DATA); // Použijeme konštantu
+
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
+  const isDefault =
+    data.length === DEFAULT_DATA.length &&
+    data.every((val, idx) => val === DEFAULT_DATA[idx]);
 
+  const handleReset = () => {
+    setData([...DEFAULT_DATA]);
+  };
   const { sortedData, chartData, n } = useMemo(() => {
     const sorted = [...data].sort((a, b) => a - b);
     const length = sorted.length;
@@ -194,6 +204,7 @@ const QuantileFunctionInput = () => {
           >
             Pridať
           </button>
+          <ResetButton onClick={handleReset} disabled={isDefault} />
         </form>
       </div>
     </div>

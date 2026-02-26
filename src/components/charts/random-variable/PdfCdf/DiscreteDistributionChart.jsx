@@ -1,4 +1,4 @@
-// src/components/charts/DiscreteDistributionChart.jsx
+// src/components/charts/random-variable/PdfCdf/DiscreteDistributionChart.jsx
 import React, { useState, useMemo } from "react";
 import {
   ComposedChart,
@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import StyledBarChart from "../../helpers/StyledBarChart";
 import CustomTooltip from "../../helpers/CustomTooltip";
+import ResetButton from "../../helpers/ResetButton";
 import "../../../../styles/charts.css";
 
 // --- Custom mathematically correct Tooltip wrapping CustomTooltip ---
@@ -58,17 +59,23 @@ const renderCDFTooltip = ({
   return null;
 };
 
-const defaultData = [
-  { x: 0, p: 0.03125 },
-  { x: 1, p: 0.15625 },
-  { x: 2, p: 0.3125 },
-  { x: 3, p: 0.3125 },
-  { x: 4, p: 0.15625 },
-  { x: 5, p: 0.03125 },
-];
+const DEFAULT_COUNTS = ["1", "5", "10", "10", "5", "1"];
 
-function DiscreteDistributionChart({ data = defaultData }) {
+function DiscreteDistributionChart() {
   const [hoverX, setHoverX] = useState(null);
+  const [counts, setCounts] = useState(DEFAULT_COUNTS);
+  const [rotation, setRotation] = useState(0);
+  // Kontrola, či sú všetky aktuálne hodnoty rovnaké ako defaultné
+  const isDefault = counts.every((val, index) => val === DEFAULT_COUNTS[index]);
+  const data = useMemo(() => {
+    const numericCounts = counts.map((c) => parseInt(c, 10) || 0);
+    const sum = numericCounts.reduce((a, b) => a + b, 0);
+
+    return numericCounts.map((count, i) => ({
+      x: i,
+      p: sum === 0 ? 0 : count / sum,
+    }));
+  }, [counts]);
 
   const pmfData = useMemo(() => {
     if (!data || data.length === 0) return [];
@@ -142,10 +149,6 @@ function DiscreteDistributionChart({ data = defaultData }) {
       };
     }, [data, minX, maxX]);
 
-  if (!data || data.length === 0) {
-    return <div>Missing discrete distribution data.</div>;
-  }
-
   const handleChartInteraction = (state) => {
     if (
       state &&
@@ -160,145 +163,192 @@ function DiscreteDistributionChart({ data = defaultData }) {
     }
   };
 
+  const handleReset = () => {
+    setCounts([...DEFAULT_COUNTS]);
+  };
+
   return (
-    <div className="charts-wrapper">
-      <div>
-        <h3>Pravdepodobnostná funkcia (PMF)</h3>
-        <StyledBarChart
-          data={pmfData}
-          xLabel="x"
-          yLabel="P(X=x)"
-          yDomain={[0, "auto"]}
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-          showReferenceArea={true}
-          referenceAreaX1={String(minX)}
-          referenceAreaX2={hoverX}
-        />
+    <div className="card shadow-sm p-4 mb-4">
+      <h5 className="mb-4">Interaktívne frekvencie dát pre (x = 0 až 5)</h5>
+
+      {/* Zarovnanie nastavené na flex-start, aby si elementy výšku držali sami */}
+      <div className="d-flex flex-wrap gap-3 mb-4 align-items-start">
+        {counts.map((val, index) => (
+          <div key={index} className="d-flex flex-column">
+            <label
+              className="form-label mb-1 fw-bold text-center"
+              style={{ fontSize: "0.9rem" }}
+            >
+              x = {index}
+            </label>
+            <div className="controls">
+              <input
+                type="number"
+                min="0"
+                className="form-control text-center"
+                style={{ width: "80px" }}
+                value={val}
+                onChange={(e) => {
+                  const newCounts = [...counts];
+                  newCounts[index] = e.target.value;
+                  setCounts(newCounts);
+                }}
+              />
+            </div>
+          </div>
+        ))}
+
+        <div className="d-flex flex-column ms-2">
+          <label
+            className="form-label mb-1 text-center"
+            style={{ fontSize: "0.9rem", visibility: "hidden" }}
+          >
+            Reset
+          </label>
+          <ResetButton onClick={handleReset} disabled={isDefault} />
+        </div>
       </div>
 
-      <div>
-        <h3>Distribučná funkcia (CDF)</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <ComposedChart
-            margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
-            onMouseMove={handleChartInteraction}
-            onTouchMove={handleChartInteraction}
-            onTouchStart={handleChartInteraction}
-            onClick={handleChartInteraction}
-            onMouseLeave={() => setHoverX(null)}
-          >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+      <div className="charts-wrapper">
+        <div>
+          <h6 className="mb-3 text-center">Pravdepodobnostná funkcia (PMF)</h6>
+          <StyledBarChart
+            data={pmfData}
+            xLabel="x"
+            yLabel="P(X=x)"
+            yDomain={[0, "auto"]}
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            showReferenceArea={true}
+            referenceAreaX1={String(minX)}
+            referenceAreaX2={hoverX}
+          />
+        </div>
 
-            <XAxis
-              dataKey="x"
-              type="number"
-              domain={[minX - 0.5, maxX + 1.5]}
-              ticks={xTicks}
-              allowDuplicatedCategory={false}
-              label={{ value: "x", position: "insideBottom", offset: -15 }}
-            />
-            <YAxis
-              label={{
-                value: "F(x)",
-                angle: -90,
-                position: "insideLeft",
-                offset: -10,
-              }}
-              domain={[0, 1.1]}
-              ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
-            />
+        <div>
+          <h6 className="mb-3 text-center">Distribučná funkcia (CDF)</h6>
+          <ResponsiveContainer width="100%" height={300}>
+            <ComposedChart
+              margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+              onMouseMove={handleChartInteraction}
+              onTouchMove={handleChartInteraction}
+              onTouchStart={handleChartInteraction}
+              onClick={handleChartInteraction}
+              onMouseLeave={() => setHoverX(null)}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
-            {/* Vypnutý natívny kurzor - zamedzí vzniku dvoch čiar */}
-            <Tooltip
-              cursor={false}
-              content={(props) =>
-                renderCDFTooltip({
-                  ...props,
-                  data,
-                  xLabel: "x",
-                  yLabel: "F(x)",
-                  minX,
-                  maxX,
-                })
-              }
-            />
-
-            <Line
-              data={cdfPoints}
-              type="linear"
-              dataKey="y"
-              stroke="var(--bs-primary)"
-              strokeWidth={2}
-              dot={false}
-              activeDot={false}
-              isAnimationActive={false}
-              connectNulls={false}
-            />
-
-            <Line
-              data={openCircleData}
-              type="linear"
-              dataKey="y"
-              stroke="none"
-              activeDot={false}
-              isAnimationActive={false}
-              dot={(props) => {
-                const { cx, cy, index } = props;
-                if (cx == null || cy == null) return null;
-                return (
-                  <circle
-                    key={`open-${index}`}
-                    cx={cx}
-                    cy={cy}
-                    r={4}
-                    fill="var(--bs-body-bg, white)"
-                    stroke="var(--bs-primary)"
-                    strokeWidth={2}
-                  />
-                );
-              }}
-            />
-
-            {/* Inline dot funkcia nám umožní reagovať priamo na spoločný state hoverX */}
-            <Line
-              data={closedCircleData}
-              type="linear"
-              dataKey="y"
-              stroke="none"
-              activeDot={false} // Vypíname natívny aktívny bod
-              isAnimationActive={false}
-              dot={(props) => {
-                const { cx, cy, index, payload } = props;
-                if (cx == null || cy == null) return null;
-                const isHovered =
-                  hoverX !== null && Number(hoverX) === payload.x;
-                return (
-                  <circle
-                    key={`closed-${index}`}
-                    cx={cx}
-                    cy={cy}
-                    r={isHovered ? 5 : 4}
-                    fill="var(--bs-primary)"
-                    stroke={isHovered ? "var(--bs-body-color, black)" : "none"}
-                    strokeWidth={isHovered ? 2 : 0}
-                    style={{ transition: "all 0.2s ease" }}
-                  />
-                );
-              }}
-            />
-
-            {hoverX !== null && hoverX !== undefined && (
-              <ReferenceLine
-                x={Number(hoverX)}
-                stroke="var(--bs-danger, red)"
-                strokeDasharray="5 5"
-                strokeWidth={1}
-                isFront={true}
+              <XAxis
+                dataKey="x"
+                type="number"
+                domain={[minX - 0.5, maxX + 1.5]}
+                ticks={xTicks}
+                allowDuplicatedCategory={false}
+                label={{ value: "x", position: "insideBottom", offset: -15 }}
               />
-            )}
-          </ComposedChart>
-        </ResponsiveContainer>
+              <YAxis
+                label={{
+                  value: "F(x)",
+                  angle: -90,
+                  position: "insideLeft",
+                  offset: -10,
+                }}
+                domain={[0, 1.1]}
+                ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
+              />
+
+              <Tooltip
+                cursor={false}
+                content={(props) =>
+                  renderCDFTooltip({
+                    ...props,
+                    data,
+                    xLabel: "x",
+                    yLabel: "F(x)",
+                    minX,
+                    maxX,
+                  })
+                }
+              />
+
+              <Line
+                data={cdfPoints}
+                type="linear"
+                dataKey="y"
+                stroke="var(--bs-primary)"
+                strokeWidth={2}
+                dot={false}
+                activeDot={false}
+                isAnimationActive={true}
+                animationDuration={500}
+                connectNulls={false}
+              />
+
+              <Line
+                data={openCircleData}
+                type="linear"
+                dataKey="y"
+                stroke="none"
+                activeDot={false}
+                isAnimationActive={false}
+                dot={(props) => {
+                  const { cx, cy, index } = props;
+                  if (cx == null || cy == null) return null;
+                  return (
+                    <circle
+                      key={`open-${index}`}
+                      cx={cx}
+                      cy={cy}
+                      r={4}
+                      fill="var(--bs-body-bg, white)"
+                      stroke="var(--bs-primary)"
+                      strokeWidth={2}
+                    />
+                  );
+                }}
+              />
+
+              <Line
+                data={closedCircleData}
+                type="linear"
+                dataKey="y"
+                stroke="none"
+                activeDot={false}
+                isAnimationActive={false}
+                dot={(props) => {
+                  const { cx, cy, index, payload } = props;
+                  if (cx == null || cy == null) return null;
+                  const isHovered =
+                    hoverX !== null && Number(hoverX) === payload.x;
+                  return (
+                    <circle
+                      key={`closed-${index}`}
+                      cx={cx}
+                      cy={cy}
+                      r={isHovered ? 5 : 4}
+                      fill="var(--bs-primary)"
+                      stroke={
+                        isHovered ? "var(--bs-body-color, black)" : "none"
+                      }
+                      strokeWidth={isHovered ? 2 : 0}
+                      style={{ transition: "all 0.2s ease" }}
+                    />
+                  );
+                }}
+              />
+
+              {hoverX !== null && hoverX !== undefined && (
+                <ReferenceLine
+                  x={Number(hoverX)}
+                  stroke="var(--bs-danger, red)"
+                  strokeDasharray="5 5"
+                  strokeWidth={1}
+                  isFront={true}
+                />
+              )}
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
