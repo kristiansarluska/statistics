@@ -11,6 +11,7 @@ const QuantileFunctionInput = () => {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
+  const [hoverX, setHoverX] = useState(null);
 
   const { sortedData, chartData, n } = useMemo(() => {
     const sorted = [...data].sort((a, b) => a - b);
@@ -24,24 +25,47 @@ const QuantileFunctionInput = () => {
 
     const fullPoints =
       length > 0 ? [{ x: 0, y: sorted[0], index: -1 }, ...points] : [];
+
     return { sortedData: sorted, chartData: fullPoints, n: length };
   }, [data]);
 
-  const highlightIndices = useMemo(() => {
-    if (n === 0 || activeQuantile === "none") return [];
-    const getIndex = (p) => Math.ceil(p * n) - 1;
-
-    switch (activeQuantile) {
-      case "median":
-        return [getIndex(0.5)];
-      case "quartiles":
-        return [0.25, 0.5, 0.75].map(getIndex);
-      case "deciles":
-        return Array.from({ length: 9 }, (_, i) => getIndex((i + 1) * 0.1));
-      default:
-        return [];
+  const quantileData = useMemo(() => {
+    if (n === 0 || activeQuantile === "none") {
+      return { lines: [], activeIndices: [], injectedValues: [] };
     }
-  }, [n, activeQuantile]);
+
+    const ps =
+      activeQuantile === "median"
+        ? [0.5]
+        : activeQuantile === "quartiles"
+          ? [0.25, 0.5, 0.75]
+          : Array.from({ length: 9 }, (_, i) => (i + 1) * 0.1);
+
+    const activeIndices = [];
+    const lines = [];
+    const injectedValues = [];
+
+    ps.forEach((p) => {
+      const exactK = p * n;
+      const isIntegerK = Math.abs(exactK - Math.round(exactK)) < 1e-9;
+      const k = Math.round(exactK);
+
+      let value;
+      if (isIntegerK && k > 0 && k < n) {
+        value = (sortedData[k - 1] + sortedData[k]) / 2;
+        activeIndices.push(k - 1, k);
+        injectedValues.push({ p, value, insertAfterIdx: k - 1 });
+      } else {
+        const idx = Math.ceil(exactK) - 1;
+        value = sortedData[idx];
+        activeIndices.push(idx);
+      }
+
+      lines.push({ x: p, y: value });
+    });
+
+    return { lines, activeIndices, injectedValues };
+  }, [n, activeQuantile, sortedData]);
 
   const handleAddNumber = (e) => {
     e.preventDefault();
@@ -56,28 +80,22 @@ const QuantileFunctionInput = () => {
     setData(sortedData.filter((_, idx) => idx !== indexToRemove));
   };
 
-  const referenceLines = highlightIndices.map((idx, i) => {
-    const point = chartData.find((d) => d.index === idx);
-    if (!point) return null;
-    return (
-      <React.Fragment key={`ref-${i}`}>
-        <ReferenceLine
-          x={point.x}
-          stroke="var(--bs-success)"
-          strokeWidth={1.5}
-          strokeDasharray="4 4"
-          opacity={0.8}
-        />
-        <ReferenceLine
-          y={point.y}
-          stroke="var(--bs-success)"
-          strokeWidth={1.5}
-          strokeDasharray="4 4"
-          opacity={0.8}
-        />
-      </React.Fragment>
-    );
-  });
+  const referenceLines = quantileData.lines.map((lineData, i) => (
+    <React.Fragment key={`ref-${i}`}>
+      <ReferenceLine
+        x={lineData.x}
+        stroke="var(--bs-success)"
+        strokeWidth={1}
+        opacity={0.8}
+      />
+      <ReferenceLine
+        y={lineData.y}
+        stroke="var(--bs-success)"
+        strokeWidth={1}
+        opacity={0.8}
+      />
+    </React.Fragment>
+  ));
 
   return (
     <div className="card shadow-sm p-4 mb-4">
@@ -87,7 +105,7 @@ const QuantileFunctionInput = () => {
         {["none", "median", "quartiles", "deciles"].map((qType) => (
           <button
             key={qType}
-            className={`btn ${activeQuantile === qType ? "btn-primary" : "btn-outline-primary"}`}
+            className={`btn rounded-pill ${activeQuantile === qType ? "btn-primary" : "btn-outline-primary"}`}
             onClick={() => setActiveQuantile(qType)}
           >
             {qType === "none"
@@ -101,7 +119,6 @@ const QuantileFunctionInput = () => {
         ))}
       </div>
 
-      {/* Upravený responzívny obal */}
       <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
@@ -109,7 +126,8 @@ const QuantileFunctionInput = () => {
           yLabel="Hodnota (x)"
           lineType="stepBefore"
           type="cdf"
-          useCustomCursor={false} // Aktivuje defaultný Recharts kurzor, vypne červený
+          hoverX={hoverX}
+          setHoverX={setHoverX}
         >
           {referenceLines}
         </StyledLineChart>
@@ -117,37 +135,63 @@ const QuantileFunctionInput = () => {
 
       <div>
         <h6>Vstupné dáta (usporiadané)</h6>
-        <div className="d-flex flex-wrap gap-2 mb-3">
+        <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
           {sortedData.map((val, idx) => {
-            const isHighlighted = highlightIndices.includes(idx);
+            const isHighlighted = quantileData.activeIndices.includes(idx);
+            const injected = quantileData.injectedValues.filter(
+              (q) => q.insertAfterIdx === idx,
+            );
+
             return (
-              <span
-                key={idx}
-                className={`badge d-flex align-items-center ${isHighlighted ? "bg-success" : "bg-secondary"}`}
-                style={{ fontSize: "0.9rem", cursor: "pointer" }}
-                onClick={() => handleRemoveNumber(idx)}
-                title="Kliknutím odstrániš"
-              >
-                {val} &times;
-              </span>
+              <React.Fragment key={idx}>
+                <button
+                  type="button"
+                  className={`btn btn-sm rounded-pill d-flex align-items-center ${isHighlighted ? "btn-success" : "btn-secondary"}`}
+                  style={{ fontSize: "0.85rem" }}
+                  onClick={() => handleRemoveNumber(idx)}
+                  title="Kliknutím odstrániš"
+                >
+                  {val}{" "}
+                  <span aria-hidden="true" className="ms-1">
+                    &times;
+                  </span>
+                </button>
+
+                {/* Vymenené triedy pre svetlozelený vzhľad (Bootstrap 5.3) */}
+                {injected.map((q, i) => (
+                  <span
+                    key={`inj-${i}`}
+                    className="badge rounded-pill border border-success bg-success-subtle text-success"
+                    style={{ fontSize: "0.8rem", userSelect: "none" }}
+                    title={`Vypočítaný kvantil (${q.p})`}
+                  >
+                    ={q.value}
+                  </span>
+                ))}
+              </React.Fragment>
             );
           })}
         </div>
+
+        {/* Úprava form: flex-nowrap a fixná malá šírka pre input */}
         <form
           onSubmit={handleAddNumber}
-          className="d-flex gap-2"
-          style={{ maxWidth: "300px" }}
+          className="controls d-flex flex-nowrap align-items-center gap-2 m-0"
         >
           <input
             type="number"
-            className="form-control"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Nová hodnota"
+            placeholder="Hodnota"
             step="any"
             required
+            className="form-control"
+            style={{ width: "100px" }}
           />
-          <button type="submit" className="btn btn-success">
+          <button
+            type="submit"
+            className="btn btn-success rounded-pill text-nowrap"
+          >
             Pridať
           </button>
         </form>
