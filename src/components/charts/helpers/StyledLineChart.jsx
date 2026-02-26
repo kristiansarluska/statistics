@@ -252,22 +252,26 @@ function StyledLineChart({
             />
           )}
 
-          {type === "cdf" && hoverX !== null && hoverY !== null && (
-            <ReferenceLine
-              {...(hoverLineType === "segment"
-                ? {
-                    segment: [
-                      { x: chartDomainMin, y: hoverY },
-                      { x: hoverX, y: hoverY },
-                    ],
-                  }
-                : { y: hoverY })}
-              stroke="var(--bs-danger, red)"
-              strokeWidth={1}
-              strokeDasharray="3 3"
-              ifOverflow={hoverLineType === "full" ? "extendDomain" : "hidden"}
-            />
-          )}
+          {hoverX !== null &&
+            hoverY !== null &&
+            !(showReferenceArea && type === "pdf") && (
+              <ReferenceLine
+                {...(hoverLineType === "segment"
+                  ? {
+                      segment: [
+                        { x: chartDomainMin, y: hoverY },
+                        { x: hoverX, y: hoverY },
+                      ],
+                    }
+                  : { y: hoverY })}
+                stroke="var(--bs-danger, red)"
+                strokeWidth={1}
+                strokeDasharray="5 5"
+                ifOverflow={
+                  hoverLineType === "full" ? "extendDomain" : "hidden"
+                }
+              />
+            )}
 
           <Line
             type={lineType}

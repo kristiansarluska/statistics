@@ -16,6 +16,8 @@ const QuantileFunctionInput = () => {
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
+  const [hoveredRemoveIdx, setHoveredRemoveIdx] = useState(null);
+
   const isDefault =
     data.length === DEFAULT_DATA.length &&
     data.every((val, idx) => val === DEFAULT_DATA[idx]);
@@ -152,22 +154,35 @@ const QuantileFunctionInput = () => {
               (q) => q.insertAfterIdx === idx,
             );
 
+            // Dynamické určenie triedy a štýlu podľa hoveru
+            const isHovered = hoveredRemoveIdx === idx;
+
+            let btnClass = "btn-outline-secondary";
+            if (isHovered) {
+              btnClass = "btn-danger text-white";
+            } else if (isHighlighted) {
+              btnClass = "btn-success";
+            }
+
             return (
               <React.Fragment key={idx}>
                 <button
                   type="button"
-                  className={`btn btn-sm rounded-pill d-flex align-items-center ${isHighlighted ? "btn-success" : "btn-light"}`}
-                  style={{ fontSize: "0.85rem" }}
+                  className={`btn btn-sm rounded-pill ${btnClass}`}
+                  style={{
+                    fontSize: "0.85rem",
+                    transition: "all 0.2s",
+                    // Pridané prečiarknutie pri hoveri
+                    textDecoration: isHovered ? "line-through" : "none",
+                  }}
                   onClick={() => handleRemoveNumber(idx)}
+                  onMouseEnter={() => setHoveredRemoveIdx(idx)}
+                  onMouseLeave={() => setHoveredRemoveIdx(null)}
                   title="Kliknutím odstrániš"
                 >
-                  {val}{" "}
-                  <span aria-hidden="true" className="ms-1">
-                    &times;
-                  </span>
+                  {val}
                 </button>
 
-                {/* Vymenené triedy pre svetlozelený vzhľad (Bootstrap 5.3) */}
                 {injected.map((q, i) => (
                   <span
                     key={`inj-${i}`}
@@ -183,7 +198,6 @@ const QuantileFunctionInput = () => {
           })}
         </div>
 
-        {/* Úprava form: flex-nowrap a fixná malá šírka pre input */}
         <form
           onSubmit={handleAddNumber}
           className="controls d-flex flex-nowrap align-items-center gap-2 m-0"
@@ -198,12 +212,14 @@ const QuantileFunctionInput = () => {
             className="form-control"
             style={{ width: "100px" }}
           />
+          {/* Zmenená trieda na btn-info a pridaný text-white pre lepší kontrast */}
           <button
             type="submit"
-            className="btn btn-success rounded-pill text-nowrap"
+            className="btn btn-info text-white rounded-pill text-nowrap"
           >
             Pridať
           </button>
+
           <ResetButton onClick={handleReset} disabled={isDefault} />
         </form>
       </div>

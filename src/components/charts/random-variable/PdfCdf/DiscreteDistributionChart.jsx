@@ -198,7 +198,7 @@ function DiscreteDistributionChart() {
           </div>
         ))}
 
-        <div className="d-flex flex-column ms-2">
+        <div className="ms-auto">
           <label
             className="form-label mb-1 text-center"
             style={{ fontSize: "0.9rem", visibility: "hidden" }}

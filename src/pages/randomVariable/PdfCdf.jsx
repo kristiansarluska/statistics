@@ -50,7 +50,7 @@ function PdfCdf() {
 
       <div id="pdf-cdf-example">
         {/* STATICKÉ HODNOTY NATVRDO */}
-        <ContinuousDistributionChart mean={0} sd={1} />
+        <ContinuousDistributionChart />
       </div>
 
       <div id="pdf-cdf-example-discrete">
