@@ -132,7 +132,7 @@ const QuantileFunctionSlider = () => {
         Kvantilová funkcia: Podiel populácie hlavného mesta (Real data)
       </h5>
 
-      <div className="row g-4 mb-4 align-items-center">
+      <div className="col-md-6 d-flex align-items-center gap-3">
         <div className="col-md-6">
           <label className="form-label fw-bold mb-1">
             Zobraziť podľa kvantilu (p):{" "}

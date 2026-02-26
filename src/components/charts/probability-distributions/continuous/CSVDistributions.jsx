@@ -42,27 +42,48 @@ function CSVDistributions() {
 
         const min = Math.min(...values);
         const max = Math.max(...values);
-        const binWidth = (max - min) / NUM_BINS;
-        const bins = Array(NUM_BINS).fill(0);
-
-        values.forEach((v) => {
-          const idx = Math.min(Math.floor((v - min) / binWidth), NUM_BINS - 1);
-          bins[idx] += 1;
-        });
-
-        const pdf = bins.map((count, i) => ({
-          x: min + binWidth * (i + 0.5), // Presná hodnota X (bez zaokrúhľovania)
-          y: count / values.length,
-        }));
-        setPdfData(pdf);
-
         const n = values.length;
-        const cdf = values.map((v, i) => ({
-          x: v, // Pôvodná hodnota z dátového setu je už číslo
-          y: (i + 1) / n,
-        }));
-        setCdfData(cdf);
 
+        // 1. KDE (Kernel Density Estimation) for a smooth PDF
+        const mean = values.reduce((sum, v) => sum + v, 0) / n;
+        const variance =
+          values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / n;
+        const stdDev = Math.sqrt(variance);
+
+        // Silverman's Rule of Thumb for optimal bandwidth
+        const bandwidth = 0.5 * stdDev * Math.pow(n, -0.2);
+
+        const kernelDensity = (x) => {
+          return (
+            values.reduce((sum, v) => {
+              const u = (x - v) / bandwidth;
+              return (
+                sum + (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * u * u)
+              );
+            }, 0) /
+            (n * bandwidth)
+          );
+        };
+
+        // 2. Generate identical 200-point grid for perfect sync
+        const NUM_POINTS = 200;
+        const step = (max - min) / NUM_POINTS;
+
+        const pdf = [];
+        const cdf = [];
+
+        for (let i = 0; i <= NUM_POINTS; i++) {
+          const x = i === NUM_POINTS ? max : min + i * step; // No floating-point errors at the end
+
+          pdf.push({ x, y: kernelDensity(x) });
+
+          // Empirical CDF
+          const countLessEqual = values.filter((v) => v <= x).length;
+          cdf.push({ x, y: countLessEqual / n });
+        }
+
+        setPdfData(pdf);
+        setCdfData(cdf);
         setLoading(false);
       },
       error: (err) => {

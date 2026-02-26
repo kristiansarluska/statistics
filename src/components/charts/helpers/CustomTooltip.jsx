@@ -23,9 +23,14 @@ export const formatNumberSmart = (value) => {
   return Number(num.toFixed(2));
 };
 
-function CustomTooltip({ active, payload, xLabel = "x", yLabel = "f(x)" }) {
+function CustomTooltip({
+  active,
+  payload,
+  xLabel = "x",
+  yLabel = "f(x)",
+  overrideY = null,
+}) {
   if (active && payload && payload.length) {
-    // Check where the value is stored (LineCharts use point.x/y, BarCharts use standard payload)
     const point = payload[0].payload;
     const xVal =
       point.x !== undefined
@@ -33,7 +38,14 @@ function CustomTooltip({ active, payload, xLabel = "x", yLabel = "f(x)" }) {
         : point.name !== undefined
           ? point.name
           : payload[0].name;
-    const yVal = point.y !== undefined ? point.y : payload[0].value;
+
+    // Ak máme overrideY (náš vypočítaný vrch schodu), použije ten, inak pôvodné
+    const yVal =
+      overrideY !== null
+        ? overrideY
+        : point.y !== undefined
+          ? point.y
+          : payload[0].value;
 
     const formattedX =
       typeof xVal === "number" ? formatNumberSmart(xVal) : xVal;

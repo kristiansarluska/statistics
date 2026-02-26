@@ -65,17 +65,46 @@ function StyledLineChart({
 
   const hoverY = useMemo(() => {
     if (hoverX === null || !data || data.length === 0) return null;
-    let closestPoint = data[0];
-    let minDiff = Math.abs(data[0].x - hoverX);
-    for (let i = 1; i < data.length; i++) {
+
+    let minDiff = Infinity;
+    for (let i = 0; i < data.length; i++) {
       const diff = Math.abs(data[i].x - hoverX);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestPoint = data[i];
+      if (diff < minDiff) minDiff = diff;
+    }
+
+    // Všetky indexy, ktoré sa zhodujú s hoverX
+    const closestIndices = [];
+    for (let i = 0; i < data.length; i++) {
+      if (Math.abs(Math.abs(data[i].x - hoverX) - minDiff) < 1e-6) {
+        closestIndices.push(i);
       }
     }
-    return closestPoint.y;
-  }, [data, hoverX]);
+
+    if (closestIndices.length === 0) return null;
+
+    // Najvyššie Y z nájdených bodov
+    let bestY = data[closestIndices[0]].y;
+    for (let idx of closestIndices) {
+      if (data[idx].y > bestY) bestY = data[idx].y;
+    }
+
+    // Trik pre Recharts: Pri step-grafoch sa skok deje vizuálne,
+    // hoci vrchný bod nemusí byť v dátach na danom X fyzicky prítomný.
+    const firstIdx = closestIndices[0];
+    const lastIdx = closestIndices[closestIndices.length - 1];
+
+    if (lineType === "stepBefore" && lastIdx < data.length - 1) {
+      // Skok pri stepBefore ide z aktuálneho Y na NASLEDUJÚCE Y
+      const nextY = data[lastIdx + 1].y;
+      if (nextY > bestY) bestY = nextY;
+    } else if (lineType === "stepAfter" && firstIdx > 0) {
+      // Skok pri stepAfter ide z PREDCHÁDZAJÚCEHO Y na aktuálne Y
+      const prevY = data[firstIdx - 1].y;
+      if (prevY > bestY) bestY = prevY;
+    }
+
+    return bestY;
+  }, [data, hoverX, lineType]);
 
   const minDataX = useMemo(() => {
     if (!data || data.length === 0) return 0;
@@ -180,7 +209,13 @@ function StyledLineChart({
           />
 
           <Tooltip
-            content={<CustomTooltip xLabel={xLabel} yLabel={displayYLabel} />}
+            content={
+              <CustomTooltip
+                xLabel={xLabel}
+                yLabel={displayYLabel}
+                overrideY={hoverY}
+              />
+            }
             cursor={false}
             animationDuration={50}
           />
@@ -240,7 +275,7 @@ function StyledLineChart({
             className={lineClass}
             strokeWidth={2}
             dot={false}
-            activeDot={true}
+            activeDot={false}
             isAnimationActive={animated}
             animationDuration={animated ? 700 : 0}
           />
