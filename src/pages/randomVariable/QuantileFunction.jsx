@@ -1,13 +1,15 @@
 // src/pages/randomVariable/QuantileFunction.jsx
 import React from "react";
 import QuantileFunctionInput from "../../components/charts/random-variable/quantile-function/QuantileFunctionInput";
+import QuantileFunctionSlider from "../../components/charts/random-variable/quantile-function/QuantileFunctionSlider";
 
 const QuantileFunction = () => {
   return (
     <section className="mt-5">
-      <h2 id="quantile-function">Kvantilová funkcia</h2>
+      <h2 id="quantile-function" className="mb-4">
+        Kvantilová funkcia
+      </h2>
 
-      {/* Theoretical part */}
       <div className="mb-4">
         <p>
           Kvantilová funkcia priraďuje každej pravdepodobnosti $p \in (0, 1)$
@@ -30,11 +32,9 @@ const QuantileFunction = () => {
         </ul>
       </div>
 
-      {/* Interactive component #1 */}
       <QuantileFunctionInput />
 
-      {/* Placeholder for future interactive chart #2 */}
-      {/* <SecondQuantileChartComponent /> */}
+      <QuantileFunctionSlider />
     </section>
   );
 };

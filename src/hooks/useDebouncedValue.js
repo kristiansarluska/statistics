@@ -1,5 +1,5 @@
 // src/hooks/useDebouncedValue.js
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 /**
  * Vlastný hook pre oneskorenú hodnotu s validáciou a korekciou.
@@ -38,7 +38,8 @@ function useDebouncedValue(initialValue, delay = 1000) {
    * @param {function(value: any): any} [options.postValidationAction=(val) => val] - Funkcia, ktorá sa aplikuje na hodnotu *po* úspešnej základnej validácii (napr. clamping, konverzia na číslo). Jej výsledok sa nastaví do debouncedValue.
    */
   const setValue = (newValue, options = {}) => {
-    const { validator = (val) => true, postValidationAction = (val) => val } = options;
+    const { validator = (val) => true, postValidationAction = (val) => val } =
+      options;
 
     // Vždy aktualizuj okamžitú hodnotu inputu (ako string)
     setInputValue(newValue); // Už je to string z event.target.value
@@ -53,7 +54,7 @@ function useDebouncedValue(initialValue, delay = 1000) {
       const trimmedValue = String(newValue).trim(); // Ostriháme medzery
 
       // Špeciálna logika pre prázdny string: nechaj input prázdny, nemen debouncedValue
-      if (trimmedValue === '') {
+      if (trimmedValue === "") {
         // Input zostane prázdny (už je nastavený cez setInputValue vyššie)
         // Neaktualizuj debouncedValue ani lastValidDebouncedValue
         // Graf bude používať poslednú platnú hodnotu z 'debouncedValue' stavu
@@ -65,22 +66,21 @@ function useDebouncedValue(initialValue, delay = 1000) {
         // Skús aplikovať post-validačnú akciu (napr. clamping, konverzia na číslo)
         // Použijeme try-catch pre prípad, že by postValidationAction zlyhala (napr. pri parseFloat)
         try {
-            const correctedValue = postValidationAction(trimmedValue);
+          const correctedValue = postValidationAction(trimmedValue);
 
-            setDebouncedValue(correctedValue); // Nastav debounced hodnotu (môže byť string alebo number)
-            lastValidDebouncedValue.current = correctedValue; // Ulož ako poslednú platnú
+          setDebouncedValue(correctedValue); // Nastav debounced hodnotu (môže byť string alebo number)
+          lastValidDebouncedValue.current = correctedValue; // Ulož ako poslednú platnú
 
-            // Ak sa hodnota po korekcii zmenila oproti *ostrihanému* vstupu, aktualizuj aj input
-            // Porovnávame ako stringy
-            if (String(correctedValue) !== trimmedValue) {
-                setInputValue(String(correctedValue));
-            }
+          // Ak sa hodnota po korekcii zmenila oproti *ostrihanému* vstupu, aktualizuj aj input
+          // Porovnávame ako stringy
+          if (String(correctedValue) !== trimmedValue) {
+            setInputValue(String(correctedValue));
+          }
         } catch (error) {
-             console.error("Error during postValidationAction:", error);
-             // Akcia zlyhala, vráť input na poslednú platnú hodnotu
-             setInputValue(String(lastValidDebouncedValue.current));
+          console.error("Error during postValidationAction:", error);
+          // Akcia zlyhala, vráť input na poslednú platnú hodnotu
+          setInputValue(String(lastValidDebouncedValue.current));
         }
-
       } else {
         // Ak validácia formátu zlyhala (a vstup nie je prázdny), vráť inputValue na poslednú platnú hodnotu
         setInputValue(String(lastValidDebouncedValue.current));
