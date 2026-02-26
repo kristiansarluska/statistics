@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 import { ReferenceLine } from "recharts";
 import StyledLineChart from "../../../charts/helpers/StyledLineChart";
+import BackgroundArea from "../../../charts/helpers/BackgroundArea";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
 const QuantileFunctionSlider = () => {
@@ -43,20 +44,30 @@ const QuantileFunctionSlider = () => {
     });
   }, []);
 
-  const { chartData, n, minX, maxX } = useMemo(() => {
+  const { chartData, cdfData, n, minX, maxX } = useMemo(() => {
     const length = data.length;
-    if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
+    if (length === 0)
+      return { chartData: [], cdfData: [], n: 0, minX: 0, maxX: 0 };
 
+    // Quantile function (x: p in %, y: value)
     const points = data.map((val, idx) => ({
-      x: (idx + 1) / length,
+      x: ((idx + 1) / length) * 100,
       y: val,
       index: idx,
     }));
 
+    // CDF - Cumulative Distribution Function (x: value, y: p in %)
+    const cdfPoints = data.map((val, idx) => ({
+      x: val,
+      y: ((idx + 1) / length) * 100,
+    }));
+
     const fullPoints = [{ x: 0, y: data[0], index: -1 }, ...points];
+    const fullCdfPoints = [{ x: 0, y: 0 }, ...cdfPoints];
 
     return {
       chartData: fullPoints,
+      cdfData: fullCdfPoints,
       n: length,
       minX: data[0],
       maxX: data[length - 1],
@@ -164,7 +175,6 @@ const QuantileFunctionSlider = () => {
               className="form-control"
               value={inputX}
               onKeyDown={(e) => {
-                // Zachytenie stlačenia šípok na klávesnici pri prázdnom poli
                 if (inputX === "" && target?.x != null) {
                   if (e.key === "ArrowUp") {
                     e.preventDefault();
@@ -179,7 +189,6 @@ const QuantileFunctionSlider = () => {
               }}
               onChange={(e) => {
                 let val = e.target.value;
-                // Zachytenie kliknutia na šípky v UI prehliadača (nativeEvent.data je null)
                 if (
                   inputX === "" &&
                   target?.x != null &&
@@ -213,25 +222,51 @@ const QuantileFunctionSlider = () => {
       {target && !target.msg && (
         <div className="alert alert-success bg-success-subtle text-success py-2 px-3 mb-4">
           <strong>Výsledok:</strong> Pre pravdepodobnosť{" "}
-          <strong>p = {target.p.toFixed(3)}</strong> je hodnota{" "}
-          <strong>x = {target.x.toFixed(2)} %</strong>.
+          <strong>
+            p = {target.p.toFixed(3)} ({(target.p * 100).toFixed(1)} %)
+          </strong>{" "}
+          je hodnota <strong>x = {target.x.toFixed(2)} %</strong>.
         </div>
       )}
 
       <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
-          xLabel="p"
-          yLabel="x"
+          xLabel="p (%)"
+          yLabel="x (%)"
           lineType="stepBefore"
           type="cdf"
           hoverX={hoverX}
           setHoverX={setHoverX}
+          minX={0}
+          maxX={100}
+          yAxisDomain={[0, 100]}
         >
+          {/* Os y=x pre vizualizáciu inverznej funkcie */}
+          <ReferenceLine
+            segment={[
+              { x: 0, y: 0 },
+              { x: 100, y: 100 },
+            ]}
+            stroke="var(--bs-secondary)"
+            strokeDasharray="3 3"
+            opacity={0.5}
+          />
+
+          {/* CDF v pozadí - teraz zjednotené vizuálne */}
+          <BackgroundArea
+            data={cdfData}
+            dataKey="y"
+            type="stepAfter"
+            color="var(--bs-gray-400)"
+            fillOpacity={0.05}
+            strokeWidth={1}
+          />
+
           {target && !target.msg && (
             <>
               <ReferenceLine
-                x={target.p}
+                x={target.p * 100}
                 stroke="var(--bs-success)"
                 strokeWidth={1}
                 opacity={0.8}

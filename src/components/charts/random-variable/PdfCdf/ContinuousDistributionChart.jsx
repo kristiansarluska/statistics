@@ -1,7 +1,7 @@
 // src/components/charts/random-variable/PdfCdf/ContinuousDistributionChart.jsx
 import React, { useState, useMemo } from "react";
-import { Area, Line } from "recharts";
 import StyledLineChart from "../../helpers/StyledLineChart";
+import BackgroundArea from "../../helpers/BackgroundArea";
 import { normalPDF, normalCDF } from "../../../../utils/distributions";
 import ResetButton from "../../helpers/ResetButton";
 
@@ -155,15 +155,12 @@ function ContinuousDistributionChart() {
             showReferenceArea={true}
           >
             {measurements.length > 0 && (
-              <Area
+              <BackgroundArea
                 dataKey="histY"
                 type="stepBefore"
-                fill="var(--bs-gray-400)"
-                fillOpacity={0.25}
-                stroke="var(--bs-gray-400)"
+                color="var(--bs-gray-400)"
+                fillOpacity={0.05}
                 strokeWidth={1}
-                isAnimationActive={false}
-                activeDot={false}
               />
             )}
           </StyledLineChart>
@@ -182,29 +179,13 @@ function ContinuousDistributionChart() {
             type="cdf"
           >
             {measurements.length > 0 && (
-              <>
-                {/* Nová plocha pod empirickou CDF */}
-                <Area
-                  dataKey="ecdfY"
-                  type="stepBefore"
-                  fill="var(--bs-gray-400)"
-                  fillOpacity={0.15}
-                  stroke="none"
-                  isAnimationActive={false}
-                  activeDot={false}
-                />
-                {/* Zvýraznená plná línia */}
-                <Line
-                  dataKey="ecdfY"
-                  type="stepBefore"
-                  stroke="var(--bs-gray-400)"
-                  strokeWidth={2}
-                  dot={false}
-                  activeDot={false}
-                  // strokeDasharray odstránené pre neprerušovanú líniu
-                  isAnimationActive={false}
-                />
-              </>
+              <BackgroundArea
+                dataKey="ecdfY"
+                type="stepBefore"
+                color="var(--bs-gray-400)"
+                fillOpacity={0.05}
+                strokeWidth={1}
+              />
             )}
           </StyledLineChart>
         </div>
