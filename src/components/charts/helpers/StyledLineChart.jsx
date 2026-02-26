@@ -1,13 +1,13 @@
 // src/components/charts/helpers/StyledLineChart.jsx
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useId } from "react";
 import {
-  LineChart,
+  ComposedChart,
   Line,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  ReferenceArea,
   ReferenceLine,
   ReferenceDot,
   ResponsiveContainer,
@@ -29,11 +29,13 @@ function StyledLineChart({
   minX = null,
   maxX = null,
   showReferenceArea = false,
-  lineType = "monotone", // Pridané pre podporu iných typov čiar (napr. stepBefore)
-  children, // Pridané pre možnosť vložiť vlastné elementy (napr. kvantily)
+  lineType = "monotone",
+  hoverLineType = "segment", // "segment" (po krivku) alebo "full" (cez celý graf)
+  children,
 }) {
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
+  const gradientId = useId();
   const displayYLabel = yLabel || (type === "cdf" ? "F(x)" : "f(x)");
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function StyledLineChart({
     } else {
       setAnimated(false);
     }
-  }, [data]); // Odstránený hoverX z dependecy array
+  }, [data]);
 
   const handleChartInteraction = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
@@ -96,13 +98,38 @@ function StyledLineChart({
   const xConfig = getAxisConfig(maxDataX, minX, maxX, minDataX);
   const yConfig = getAxisConfig(maxDataY, yDomainMin, yDomainMax, 0);
 
-  const areaStartX = minX ?? (data.length > 0 ? data[0].x : 0);
+  const chartDomainMin =
+    Array.isArray(xConfig.domain) && typeof xConfig.domain[0] === "number"
+      ? xConfig.domain[0]
+      : minX !== null
+        ? minX
+        : minDataX;
+
+  const chartDomainMax =
+    Array.isArray(xConfig.domain) && typeof xConfig.domain[1] === "number"
+      ? xConfig.domain[1]
+      : maxX !== null
+        ? maxX
+        : maxDataX;
+
+  const chartDomainYMin =
+    Array.isArray(yConfig.domain) && typeof yConfig.domain[0] === "number"
+      ? yConfig.domain[0]
+      : 0;
+
+  const hoverPercent = useMemo(() => {
+    if (hoverX === null) return 0;
+    if (chartDomainMax <= chartDomainMin) return 0;
+    const percent =
+      ((hoverX - chartDomainMin) / (chartDomainMax - chartDomainMin)) * 100;
+    return Math.max(0, Math.min(100, percent));
+  }, [hoverX, chartDomainMin, chartDomainMax]);
 
   return (
     <div className="chart-container">
       {title && <div className="chart-title">{title}</div>}
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart
+        <ComposedChart
           data={data}
           onMouseMove={handleChartInteraction}
           onTouchMove={handleChartInteraction}
@@ -111,6 +138,21 @@ function StyledLineChart({
           onMouseLeave={handleMouseLeave}
           margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
         >
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
+              <stop
+                offset={`${hoverPercent}%`}
+                stopColor="var(--bs-primary)"
+                stopOpacity={0.25}
+              />
+              <stop
+                offset={`${hoverPercent}%`}
+                stopColor="transparent"
+                stopOpacity={0}
+              />
+            </linearGradient>
+          </defs>
+
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="x"
@@ -145,36 +187,50 @@ function StyledLineChart({
 
           {children}
 
-          {hoverX !== null && (
+          {showReferenceArea && type === "pdf" && hoverX !== null && (
+            <Area
+              type={lineType}
+              dataKey="y"
+              data={data}
+              fill={`url(#${gradientId})`}
+              stroke="none"
+              isAnimationActive={false}
+              activeDot={false}
+              style={{ pointerEvents: "none" }}
+            />
+          )}
+
+          {hoverX !== null && hoverY !== null && (
             <ReferenceLine
-              x={hoverX}
+              {...(hoverLineType === "segment"
+                ? {
+                    segment: [
+                      { x: hoverX, y: chartDomainYMin },
+                      { x: hoverX, y: hoverY },
+                    ],
+                  }
+                : { x: hoverX })}
               stroke="var(--bs-danger, red)"
               strokeWidth={1}
               strokeDasharray="5 5"
-              ifOverflow="extendDomain"
+              ifOverflow={hoverLineType === "full" ? "extendDomain" : "hidden"}
             />
           )}
 
-          {type === "cdf" && hoverY !== null && (
+          {type === "cdf" && hoverX !== null && hoverY !== null && (
             <ReferenceLine
-              y={hoverY}
+              {...(hoverLineType === "segment"
+                ? {
+                    segment: [
+                      { x: chartDomainMin, y: hoverY },
+                      { x: hoverX, y: hoverY },
+                    ],
+                  }
+                : { y: hoverY })}
               stroke="var(--bs-danger, red)"
               strokeWidth={1}
               strokeDasharray="3 3"
-              ifOverflow="extendDomain"
-            />
-          )}
-
-          {showReferenceArea && type === "pdf" && hoverX !== null && (
-            <ReferenceArea
-              x1={areaStartX}
-              x2={hoverX}
-              y1={0}
-              fill="var(--bs-primary)"
-              fillOpacity={0.1}
-              stroke="none"
-              ifOverflow="hidden"
-              isAnimationActive={false}
+              ifOverflow={hoverLineType === "full" ? "extendDomain" : "hidden"}
             />
           )}
 
@@ -184,7 +240,7 @@ function StyledLineChart({
             className={lineClass}
             strokeWidth={2}
             dot={false}
-            activeDot={true} // Zapnuté defaultné bodky pri hoveri z Recharts
+            activeDot={true}
             isAnimationActive={animated}
             animationDuration={animated ? 700 : 0}
           />
@@ -200,7 +256,7 @@ function StyledLineChart({
               isFront={true}
             />
           )}
-        </LineChart>
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

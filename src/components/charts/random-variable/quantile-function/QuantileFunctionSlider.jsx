@@ -221,8 +221,8 @@ const QuantileFunctionSlider = () => {
       <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
-          xLabel="Pravdepodobnosť (p)"
-          yLabel="Podiel populácie (%)"
+          xLabel="p"
+          yLabel="x"
           lineType="stepBefore"
           type="cdf"
           hoverX={hoverX}

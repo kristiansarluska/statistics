@@ -5,9 +5,9 @@ import StyledLineChart from "../../../charts/helpers/StyledLineChart";
 
 const QuantileFunctionInput = () => {
   const [data, setData] = useState([
-    30, 16, 30, 20, 26, 15, 5, 34, 66, 43, 32, 38, 27, 21, 25, 38, 31, 47, 35,
-    41, 5, 15, 16, 20, 21, 25, 26, 27, 30, 30, 31, 32, 34, 35, 38, 38, 41, 43,
-    47, 66,
+    5, 5, 15, 15, 16, 16, 20, 20, 21, 21, 25, 25, 26, 26, 27, 27, 30, 30, 30,
+    30, 31, 31, 32, 32, 34, 34, 35, 35, 38, 38, 38, 38, 41, 41, 43, 43, 47, 47,
+    66, 66,
   ]);
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
@@ -122,8 +122,8 @@ const QuantileFunctionInput = () => {
       <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
-          xLabel="Pravdepodobnosť (p)"
-          yLabel="Hodnota (x)"
+          xLabel="p"
+          yLabel="x"
           lineType="stepBefore"
           type="cdf"
           hoverX={hoverX}
@@ -134,7 +134,7 @@ const QuantileFunctionInput = () => {
       </div>
 
       <div>
-        <h6>Vstupné dáta (usporiadané)</h6>
+        <h6>Vstupné dáta</h6>
         <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
           {sortedData.map((val, idx) => {
             const isHighlighted = quantileData.activeIndices.includes(idx);
@@ -146,7 +146,7 @@ const QuantileFunctionInput = () => {
               <React.Fragment key={idx}>
                 <button
                   type="button"
-                  className={`btn btn-sm rounded-pill d-flex align-items-center ${isHighlighted ? "btn-success" : "btn-secondary"}`}
+                  className={`btn btn-sm rounded-pill d-flex align-items-center ${isHighlighted ? "btn-success" : "btn-light"}`}
                   style={{ fontSize: "0.85rem" }}
                   onClick={() => handleRemoveNumber(idx)}
                   title="Kliknutím odstrániš"

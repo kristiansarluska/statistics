@@ -14,8 +14,8 @@ function NormalChart() {
 
   // Zafixujeme os X ("kamera" stojí na mieste)
   // Rozsah -20 až 20 bezpečne pokryje posuny meanu od -10 do 10 a všetky šírky
-  const minX = -20;
-  const maxX = 20;
+  const minX = -15;
+  const maxX = 15;
 
   const { dataPDF, dataCDF } = useMemo(() => {
     // Zvýšime počet bodov na 500, aby sme nevynechali ostrý vrchol pri malej odchýlke
