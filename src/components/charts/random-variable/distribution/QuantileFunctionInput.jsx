@@ -1,8 +1,8 @@
 // src/components/charts/random-variable/quantile-function/QuantileFunctionInput.jsx
 import React, { useState, useMemo } from "react";
 import { ReferenceLine } from "recharts";
-import StyledLineChart from "../../../charts/helpers/StyledLineChart";
-import ResetButton from "../../../charts/helpers/ResetButton";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import ResetButton from "../../helpers/ResetButton";
 
 const DEFAULT_DATA = [
   5, 5, 15, 15, 16, 16, 20, 20, 21, 21, 25, 25, 26, 26, 27, 27, 30, 30, 30, 30,

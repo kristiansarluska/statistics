@@ -1,18 +1,21 @@
 // src/pages/RandomVariable.jsx
 import React from "react";
-import PdfCdf from "./randomVariable/PdfCdf";
-import QuantileFunction from "./randomVariable/QuantileFunction";
+import ContinuousDiscrete from "./randomVariable/ContinuousDiscrete";
+import Distribution from "./randomVariable/Distribution";
+import Characteristics from "./randomVariable/Characteristics";
 
 const RandomVariable = () => {
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Náhodná veličina</h1>
+    <div className="container-fluid content-container">
+      <h1 id="random-variable" className="mb-4">
+        Náhodná veličina
+      </h1>
 
-      {/* Existing content (e.g., Theory, Probability Density, Cumulative Distribution) */}
-      <PdfCdf />
+      <ContinuousDiscrete />
 
-      {/* New Quantile Function section */}
-      <QuantileFunction />
+      <Distribution />
+
+      <Characteristics />
     </div>
   );
 };

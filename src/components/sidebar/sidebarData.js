@@ -5,12 +5,48 @@ export const sidebarData = [
     path: "/random-variable",
     children: [
       {
-        label: "Pravdepodobnostná a distribučná funkcia",
-        path: "/random-variable#pdf-cdf",
+        label: "Spojitá a diskrétna náhodná veličina",
+        path: "/random-variable#continuous-discrete",
       },
       {
-        label: "Kvantilová funkcia",
-        path: "/random-variable#quantile-function",
+        label: "Rozdelenie náhodnej veličiny",
+        path: "/random-variable#distribution",
+        children: [
+          {
+            label: "Pravdepodobnostná funkcia",
+            path: "/random-variable#pmf-pdf",
+          },
+          {
+            label: "Distribučná funkcia",
+            path: "/random-variable#cdf",
+          },
+          {
+            label: "Kvantilová funkcia",
+            path: "/random-variable#quantile",
+          },
+        ],
+      },
+      {
+        label: "Charakteristiky náhodnej veličiny",
+        path: "/random-variable#characteristics",
+        children: [
+          {
+            label: "Charakteristiky polohy",
+            path: "/random-variable#location",
+          },
+          {
+            label: "Charakteristiky variability",
+            path: "/random-variable#variability",
+          },
+          {
+            label: "Iné číselné miery",
+            path: "/random-variable#other-measures",
+          },
+          {
+            label: "Päťčíselná charakteristika",
+            path: "/random-variable#five-number",
+          },
+        ],
       },
     ],
   },
@@ -19,7 +55,6 @@ export const sidebarData = [
     path: "/probability-distributions",
     children: [
       { label: "Motivácia", path: "/probability-distributions#motivation" },
-      /*{ label: "Diskrétna a spojitá veličina", path: "/probability-distributions#discrete-vs-continuous" },*/
       {
         label: "Diskrétne rozdelenia",
         path: "/probability-distributions#discrete-distributions",

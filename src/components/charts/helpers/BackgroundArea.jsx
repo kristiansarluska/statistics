@@ -10,6 +10,8 @@ const BackgroundArea = ({
   fillOpacity = 0.15,
   strokeWidth = 2,
   showLine = true,
+  isAnimationActive = false, // Pridané pre podporu animácií
+  animationDuration = 500, // Pridané pre dĺžku animácie
 }) => {
   return (
     <>
@@ -20,7 +22,8 @@ const BackgroundArea = ({
         fill={color}
         fillOpacity={fillOpacity}
         stroke="none"
-        isAnimationActive={false}
+        isAnimationActive={isAnimationActive}
+        animationDuration={animationDuration}
         activeDot={false}
       />
       {showLine && (
@@ -32,7 +35,8 @@ const BackgroundArea = ({
           strokeWidth={strokeWidth}
           dot={false}
           activeDot={false}
-          isAnimationActive={false}
+          isAnimationActive={isAnimationActive}
+          animationDuration={animationDuration}
         />
       )}
     </>

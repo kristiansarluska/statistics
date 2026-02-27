@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 import { ReferenceLine } from "recharts";
-import StyledLineChart from "../../../charts/helpers/StyledLineChart";
-import BackgroundArea from "../../../charts/helpers/BackgroundArea";
+import StyledLineChart from "../../helpers/StyledLineChart";
+import BackgroundArea from "../../helpers/BackgroundArea";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
 const QuantileFunctionSlider = () => {
@@ -44,36 +44,54 @@ const QuantileFunctionSlider = () => {
     });
   }, []);
 
-  const { chartData, cdfData, n, minX, maxX } = useMemo(() => {
+  const { chartData, n, minX, maxX } = useMemo(() => {
     const length = data.length;
-    if (length === 0)
-      return { chartData: [], cdfData: [], n: 0, minX: 0, maxX: 0 };
+    if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
 
-    // Quantile function (x: p in %, y: value)
-    const points = data.map((val, idx) => ({
-      x: ((idx + 1) / length) * 100,
-      y: val,
-      index: idx,
-    }));
+    // 1. Zozbierame všetky unikátne body X pre obe funkcie (odstráni diery v dátach)
+    const allX = new Set([0, 100]);
+    data.forEach((val, idx) => {
+      allX.add(((idx + 1) / length) * 100); // X pre Kvantilovú funkciu (p)
+      allX.add(val); // X pre CDF (value)
+    });
 
-    // CDF - Cumulative Distribution Function (x: value, y: p in %)
-    const cdfPoints = data.map((val, idx) => ({
-      x: val,
-      y: ((idx + 1) / length) * 100,
-    }));
+    const sortedX = Array.from(allX).sort((a, b) => a - b);
 
-    const fullPoints = [{ x: 0, y: data[0], index: -1 }, ...points];
-    const fullCdfPoints = [{ x: 0, y: 0 }, ...cdfPoints];
+    // 2. Pre každý bod X na osi vypočítame presnú hodnotu Kvantilu aj CDF
+    const mergedData = sortedX.map((x) => {
+      // --- Kvantilová funkcia (y) ---
+      const exactK = (x / 100) * length;
+      const k = Math.round(exactK);
+      const isIntegerK = Math.abs(exactK - k) < 1e-9;
+
+      let quantileVal;
+      if (x === 0) {
+        quantileVal = data[0];
+      } else if (isIntegerK && k > 0 && k < length) {
+        quantileVal = (data[k - 1] + data[k]) / 2;
+      } else {
+        const idx = Math.ceil(exactK) - 1;
+        quantileVal = data[Math.min(Math.max(idx, 0), length - 1)];
+      }
+
+      // --- Inverzná CDF funkcia (cdfY) ---
+      let count = 0;
+      for (let i = 0; i < length; i++) {
+        if (data[i] <= x) count++;
+        else break;
+      }
+      const cdfY = (count / length) * 100;
+
+      return { x, y: quantileVal, cdfY };
+    });
 
     return {
-      chartData: fullPoints,
-      cdfData: fullCdfPoints,
+      chartData: mergedData,
       n: length,
       minX: data[0],
       maxX: data[length - 1],
     };
   }, [data]);
-
   const target = useMemo(() => {
     if (n === 0) return null;
 
@@ -255,8 +273,8 @@ const QuantileFunctionSlider = () => {
 
           {/* CDF v pozadí - teraz zjednotené vizuálne */}
           <BackgroundArea
-            data={cdfData}
-            dataKey="y"
+            data={chartData}
+            dataKey="cdfY"
             type="stepAfter"
             color="var(--bs-gray-400)"
             fillOpacity={0.05}

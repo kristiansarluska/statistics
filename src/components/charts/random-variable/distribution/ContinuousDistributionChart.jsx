@@ -161,6 +161,8 @@ function ContinuousDistributionChart() {
                 color="var(--bs-gray-400)"
                 fillOpacity={0.05}
                 strokeWidth={1}
+                isAnimationActive={true}
+                animationDuration={500}
               />
             )}
           </StyledLineChart>
@@ -185,6 +187,8 @@ function ContinuousDistributionChart() {
                 color="var(--bs-gray-400)"
                 fillOpacity={0.05}
                 strokeWidth={1}
+                isAnimationActive={true}
+                animationDuration={500}
               />
             )}
           </StyledLineChart>
