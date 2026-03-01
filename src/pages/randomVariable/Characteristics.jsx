@@ -1,6 +1,8 @@
 // src/pages/randomVariable/Characteristics.jsx
 import React from "react";
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
+import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
+import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
 
 const Characteristics = () => {
   return (
@@ -22,10 +24,25 @@ const Characteristics = () => {
         </div>
 
         <h4 className="mt-4">Harmonický priemer</h4>
-        <p>{/* Content... */}</p>
+        <p>
+          Harmonický priemer sa v geoinformatike využíva najmä pri výpočte
+          priemerných rýchlostí (napríklad rýchlosť vozidla alebo bezpilotného
+          lietadla), ak sa vzťahujú na rovnako dlhé úseky dráhy.
+        </p>
+        <div className="my-4">
+          <HarmonicMeanCalc />
+        </div>
 
         <h4 className="mt-4">Geometrický priemer</h4>
-        <p>{/* Content... */}</p>
+        <p>
+          Geometrický priemer je vhodný na výpočet priemerného tempa rastu.
+          Používa sa napríklad pri analýze časových radov v GIS, ako je
+          priemerné ročné tempo expanzie mestskej zástavby alebo zmeny rozlohy
+          lesov.
+        </p>
+        <div className="my-4">
+          <GeometricMeanCalc />
+        </div>
 
         <h4 className="mt-4">Vážený priemer</h4>
         <p>{/* Content... */}</p>
