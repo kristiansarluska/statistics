@@ -3,6 +3,7 @@ import React from "react";
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
 import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
+import WeightedMeanCalc from "../../components/content/characteristics/WeightedMeanCalc";
 
 const Characteristics = () => {
   return (
@@ -45,7 +46,16 @@ const Characteristics = () => {
         </div>
 
         <h4 className="mt-4">Vážený priemer</h4>
-        <p>{/* Content... */}</p>
+        <p>
+          Vážený priemer sa používa v situáciách, kedy jednotlivé merania nemajú
+          rovnakú dôležitosť (váhu). V geoinformatike ho môžeme aplikovať
+          napríklad pri zlučovaní súradníc z viacerých prístrojov, kde váhou je
+          presnosť daného merania (napríklad prevrátená hodnota rozptylu
+          prístroja).
+        </p>
+        <div className="my-4">
+          <WeightedMeanCalc />
+        </div>
 
         <h4 className="mt-4">Modus</h4>
         <p>{/* Content... */}</p>
