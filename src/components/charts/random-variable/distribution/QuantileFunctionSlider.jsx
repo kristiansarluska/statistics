@@ -44,22 +44,20 @@ const QuantileFunctionSlider = () => {
     });
   }, []);
 
+  // Opravená zjednotená logika z predchádzajúcich úprav pre bezproblémový hover
   const { chartData, n, minX, maxX } = useMemo(() => {
     const length = data.length;
     if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
 
-    // 1. Zozbierame všetky unikátne body X pre obe funkcie (odstráni diery v dátach)
     const allX = new Set([0, 100]);
     data.forEach((val, idx) => {
-      allX.add(((idx + 1) / length) * 100); // X pre Kvantilovú funkciu (p)
-      allX.add(val); // X pre CDF (value)
+      allX.add(((idx + 1) / length) * 100);
+      allX.add(val);
     });
 
     const sortedX = Array.from(allX).sort((a, b) => a - b);
 
-    // 2. Pre každý bod X na osi vypočítame presnú hodnotu Kvantilu aj CDF
     const mergedData = sortedX.map((x) => {
-      // --- Kvantilová funkcia (y) ---
       const exactK = (x / 100) * length;
       const k = Math.round(exactK);
       const isIntegerK = Math.abs(exactK - k) < 1e-9;
@@ -74,7 +72,6 @@ const QuantileFunctionSlider = () => {
         quantileVal = data[Math.min(Math.max(idx, 0), length - 1)];
       }
 
-      // --- Inverzná CDF funkcia (cdfY) ---
       let count = 0;
       for (let i = 0; i < length; i++) {
         if (data[i] <= x) count++;
@@ -92,6 +89,7 @@ const QuantileFunctionSlider = () => {
       maxX: data[length - 1],
     };
   }, [data]);
+
   const target = useMemo(() => {
     if (n === 0) return null;
 
@@ -115,20 +113,18 @@ const QuantileFunctionSlider = () => {
       const val = parseFloat(debouncedInputX);
       if (isNaN(val)) return null;
 
-      if (val < minX) {
+      if (val < minX)
         return {
           p: null,
           x: null,
           msg: `Zadaná hodnota (${val}) je nižšia ako minimum v dátach (${minX.toFixed(2)}).`,
         };
-      }
-      if (val > maxX) {
+      if (val > maxX)
         return {
           p: null,
           x: null,
           msg: `Zadaná hodnota (${val}) prekračuje maximum v dátach (${maxX.toFixed(2)}).`,
         };
-      }
 
       let count = 0;
       for (let i = 0; i < n; i++) {
@@ -156,16 +152,25 @@ const QuantileFunctionSlider = () => {
     return <div className="p-4 text-center">Načítavam dáta z CSV...</div>;
 
   return (
-    <div className="card shadow-sm p-4 mb-4">
-      <h5 className="mb-4">
-        Kvantilová funkcia: Podiel populácie hlavného mesta (Real data)
-      </h5>
-
-      <div className="col-md-6 d-flex align-items-center gap-3">
-        <div className="col-md-6">
-          <label className="form-label fw-bold mb-1">
-            Zobraziť podľa kvantilu (p):{" "}
-            <span className="text-primary">{displayPercentage}%</span>
+    <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      {/* Ovládacie prvky pre slider a input (pôvodný flex layout) */}
+      <div
+        className="controls mb-4 d-flex flex-wrap justify-content-center gap-5 w-100"
+        style={{ maxWidth: "800px" }}
+      >
+        <div className="d-flex flex-column align-items-center flex-grow-1">
+          <label
+            className="form-label fw-bold mb-2 text-center"
+            style={{ fontSize: "0.9rem" }}
+          >
+            Zobraziť podľa kvantilu (p):
+            {/* Pridaná fixná šírka, aby slider neskákal */}
+            <span
+              className="text-primary d-inline-block text-start ms-1"
+              style={{ width: "45px" }}
+            >
+              {displayPercentage}%
+            </span>
           </label>
           <input
             type="range"
@@ -183,71 +188,84 @@ const QuantileFunctionSlider = () => {
           />
         </div>
 
-        <div className="col-md-6">
-          <label className="form-label fw-bold mb-1">
+        <div className="d-flex flex-column align-items-center flex-grow-1">
+          <label
+            className="form-label fw-bold mb-2 text-center"
+            style={{ fontSize: "0.9rem" }}
+          >
             Alebo zadaj konkrétnu hodnotu (x):
           </label>
-          <div className="controls d-flex gap-2">
-            <input
-              type="number"
-              className="form-control"
-              value={inputX}
-              onKeyDown={(e) => {
-                if (inputX === "" && target?.x != null) {
-                  if (e.key === "ArrowUp") {
-                    e.preventDefault();
-                    setInputX(String((target.x + 1).toFixed(2)));
-                    setActiveMode("input");
-                  } else if (e.key === "ArrowDown") {
-                    e.preventDefault();
-                    setInputX(String((target.x - 1).toFixed(2)));
-                    setActiveMode("input");
-                  }
-                }
-              }}
-              onChange={(e) => {
-                let val = e.target.value;
-                if (
-                  inputX === "" &&
-                  target?.x != null &&
-                  e.nativeEvent.data == null &&
-                  val !== ""
-                ) {
-                  const direction = parseFloat(val) > 0 ? 1 : -1;
-                  val = String((target.x + direction).toFixed(2));
-                }
-                setInputX(val);
-                setActiveMode("input");
-              }}
-              placeholder={
-                target?.x != null
-                  ? target.x.toFixed(2).replace(".", ",")
-                  : "napr. 25,5"
+          <input
+            type="number"
+            className="form-control text-center shadow-sm"
+            value={inputX}
+            onChange={(e) => {
+              let val = e.target.value;
+              if (
+                inputX === "" &&
+                target?.x != null &&
+                e.nativeEvent.data == null &&
+                val !== ""
+              ) {
+                const direction = parseFloat(val) > 0 ? 1 : -1;
+                val = String((target.x + direction).toFixed(2));
               }
-              step="any"
-              style={{ maxWidth: "150px" }}
-            />
-          </div>
+              setInputX(val);
+              setActiveMode("input");
+            }}
+            placeholder={
+              target?.x != null
+                ? target.x.toFixed(2).replace(".", ",")
+                : "napr. 25,5"
+            }
+            step="any"
+            style={{ maxWidth: "150px" }}
+          />
         </div>
       </div>
 
-      {target?.msg && (
-        <div className="alert alert-warning py-2 px-3 mb-4" role="alert">
-          {target.msg}
-        </div>
-      )}
+      {/* Zobrazenie výsledku s fixnou šírkou pre čísla */}
+      <div
+        className="w-100 mb-4 text-center"
+        style={{ maxWidth: "800px", minHeight: "40px" }}
+      >
+        {target?.msg && (
+          <div className="text-danger fw-bold" style={{ fontSize: "0.95rem" }}>
+            {target.msg}
+          </div>
+        )}
+        {target && !target.msg && (
+          <div
+            className="px-4 py-2 rounded-pill bg-body-tertiary border shadow-sm d-inline-block"
+            style={{ fontSize: "0.95rem" }}
+          >
+            <span className="text-muted me-2">Výsledok:</span>
+            Pravdepodobnosti
+            <strong
+              className="text-primary d-inline-block text-start ms-1"
+              style={{ width: "75px" }}
+            >
+              p = {(target.p * 100).toFixed(1)} %
+            </strong>{" "}
+            zodpovedá hodnota
+            <strong
+              className="text-primary d-inline-block text-start ms-1"
+              style={{ width: "85px" }}
+            >
+              x = {target.x.toFixed(2)} %
+            </strong>
+          </div>
+        )}
+      </div>
 
-      {target && !target.msg && (
-        <div className="alert alert-success bg-success-subtle text-success py-2 px-3 mb-4">
-          <strong>Výsledok:</strong> Pre pravdepodobnosť{" "}
-          <strong>
-            p = {target.p.toFixed(3)} ({(target.p * 100).toFixed(1)} %)
-          </strong>{" "}
-          je hodnota <strong>x = {target.x.toFixed(2)} %</strong>.
-        </div>
-      )}
-
-      <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
+      {/* Graf */}
+      <div
+        className="charts-wrapper w-100 mx-auto"
+        style={{ maxWidth: "800px" }}
+      >
+        <h6 className="mb-3 text-center">
+          Kvantilová funkcia: Podiel populácie hlavného mesta (Real data)
+        </h6>
         <StyledLineChart
           data={chartData}
           xLabel="p (%)"
@@ -260,7 +278,6 @@ const QuantileFunctionSlider = () => {
           maxX={100}
           yAxisDomain={[0, 100]}
         >
-          {/* Os y=x pre vizualizáciu inverznej funkcie */}
           <ReferenceLine
             segment={[
               { x: 0, y: 0 },
@@ -270,10 +287,7 @@ const QuantileFunctionSlider = () => {
             strokeDasharray="3 3"
             opacity={0.5}
           />
-
-          {/* CDF v pozadí - teraz zjednotené vizuálne */}
           <BackgroundArea
-            data={chartData}
             dataKey="cdfY"
             type="stepAfter"
             color="var(--bs-gray-400)"

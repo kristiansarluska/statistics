@@ -11,8 +11,7 @@ const DEFAULT_DATA = [
 ];
 
 const QuantileFunctionInput = () => {
-  const [data, setData] = useState(DEFAULT_DATA); // Použijeme konštantu
-
+  const [data, setData] = useState(DEFAULT_DATA);
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
@@ -25,6 +24,7 @@ const QuantileFunctionInput = () => {
   const handleReset = () => {
     setData([...DEFAULT_DATA]);
   };
+
   const { sortedData, chartData, n } = useMemo(() => {
     const sorted = [...data].sort((a, b) => a - b);
     const length = sorted.length;
@@ -81,7 +81,7 @@ const QuantileFunctionInput = () => {
 
   const handleAddNumber = (e) => {
     e.preventDefault();
-    const num = parseFloat(inputValue);
+    const num = parseFloat(inputValue.replace(",", "."));
     if (!isNaN(num)) {
       setData([...data, num]);
       setInputValue("");
@@ -110,28 +110,49 @@ const QuantileFunctionInput = () => {
   ));
 
   return (
-    <div className="card shadow-sm p-4 mb-4">
-      <h5 className="mb-4">Interaktívna kvantilová funkcia z vlastných dát</h5>
+    <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      <h5 className="mb-4 text-center">
+        Interaktívna kvantilová funkcia z vlastných dát
+      </h5>
 
-      <div className="d-flex flex-wrap gap-2 mb-4">
-        {["none", "median", "quartiles", "deciles"].map((qType) => (
-          <button
-            key={qType}
-            className={`btn rounded-pill ${activeQuantile === qType ? "btn-primary" : "btn-outline-primary"}`}
-            onClick={() => setActiveQuantile(qType)}
-          >
-            {qType === "none"
-              ? "Bez zvýraznenia"
-              : qType === "median"
-                ? "Medián"
-                : qType === "quartiles"
-                  ? "Kvartily"
-                  : "Decily"}
-          </button>
-        ))}
+      {/* Ovládacie prvky pre výber kvantilu */}
+      <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
+        <div className="btn-group shadow-sm" role="group">
+          {["none", "median", "quartiles", "deciles"].map(
+            (qType, index, arr) => {
+              const isActive = activeQuantile === qType;
+              // Zaoblenie výhradne pre prvý a posledný prvok (pill efekt bez deformácie okrajov)
+              const roundingClass =
+                index === 0
+                  ? "rounded-start-pill"
+                  : index === arr.length - 1
+                    ? "rounded-end-pill"
+                    : "";
+
+              return (
+                <button
+                  key={qType}
+                  type="button"
+                  // Využívame natívnu triedu "active" na btn-outline-primary pre dokonalé splynutie borderov
+                  className={`btn btn-sm px-3 btn-outline-primary ${isActive ? "active" : ""} ${roundingClass}`}
+                  onClick={() => setActiveQuantile(qType)}
+                >
+                  {qType === "none"
+                    ? "Bez zvýraznenia"
+                    : qType === "median"
+                      ? "Medián"
+                      : qType === "quartiles"
+                        ? "Kvartily"
+                        : "Decily"}
+                </button>
+              );
+            },
+          )}
+        </div>
       </div>
 
-      <div className="mb-4 w-100 mx-auto" style={{ maxWidth: "800px" }}>
+      {/* Samotný graf - zrušená trieda charts-wrapper */}
+      <div className="w-100 mb-5" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
           xLabel="p"
@@ -145,24 +166,50 @@ const QuantileFunctionInput = () => {
         </StyledLineChart>
       </div>
 
-      <div>
-        <h6>Vstupné dáta</h6>
-        <div className="d-flex flex-wrap gap-2 mb-3 align-items-center">
+      {/* Ovládanie vstupných dát - celé zarovnané doľava */}
+      <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
+        {/* Formulár presunutý nad dáta a zarovnaný vľavo */}
+        <form
+          onSubmit={handleAddNumber}
+          className="controls d-flex flex-wrap justify-content-start align-items-center gap-2 mb-4"
+        >
+          <input
+            type="number"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Nová hodnota"
+            step="any"
+            required
+            className="form-control"
+            style={{ width: "130px" }}
+          />
+          <button
+            type="submit"
+            className="btn btn-info text-white rounded-pill text-nowrap px-3"
+          >
+            Pridať
+          </button>
+          <div className="ms-2">
+            <ResetButton onClick={handleReset} disabled={isDefault} />
+          </div>
+        </form>
+
+        <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
+          Vstupné dáta (zoradené):
+        </h6>
+
+        {/* Zdrojové dáta zarovnané vľavo */}
+        <div className="d-flex flex-wrap justify-content-start gap-2 align-items-center">
           {sortedData.map((val, idx) => {
             const isHighlighted = quantileData.activeIndices.includes(idx);
             const injected = quantileData.injectedValues.filter(
               (q) => q.insertAfterIdx === idx,
             );
-
-            // Dynamické určenie triedy a štýlu podľa hoveru
             const isHovered = hoveredRemoveIdx === idx;
 
             let btnClass = "btn-outline-secondary";
-            if (isHovered) {
-              btnClass = "btn-danger text-white";
-            } else if (isHighlighted) {
-              btnClass = "btn-success";
-            }
+            if (isHovered) btnClass = "btn-danger text-white";
+            else if (isHighlighted) btnClass = "btn-success text-white";
 
             return (
               <React.Fragment key={idx}>
@@ -172,7 +219,6 @@ const QuantileFunctionInput = () => {
                   style={{
                     fontSize: "0.85rem",
                     transition: "all 0.2s",
-                    // Pridané prečiarknutie pri hoveri
                     textDecoration: isHovered ? "line-through" : "none",
                   }}
                   onClick={() => handleRemoveNumber(idx)}
@@ -197,31 +243,6 @@ const QuantileFunctionInput = () => {
             );
           })}
         </div>
-
-        <form
-          onSubmit={handleAddNumber}
-          className="controls d-flex flex-nowrap align-items-center gap-2 m-0"
-        >
-          <input
-            type="number"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Hodnota"
-            step="any"
-            required
-            className="form-control"
-            style={{ width: "100px" }}
-          />
-          {/* Zmenená trieda na btn-info a pridaný text-white pre lepší kontrast */}
-          <button
-            type="submit"
-            className="btn btn-info text-white rounded-pill text-nowrap"
-          >
-            Pridať
-          </button>
-
-          <ResetButton onClick={handleReset} disabled={isDefault} />
-        </form>
       </div>
     </div>
   );

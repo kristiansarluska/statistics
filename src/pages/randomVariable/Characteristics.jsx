@@ -1,5 +1,6 @@
 // src/pages/randomVariable/Characteristics.jsx
 import React from "react";
+import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 
 const Characteristics = () => {
   return (
@@ -10,7 +11,15 @@ const Characteristics = () => {
         <h3 className="mb-3">Charakteristiky polohy</h3>
 
         <h4 className="mt-4">Aritmetický priemer</h4>
-        <p>{/* Content... */}</p>
+        <p>
+          Aritmetický priemer je najpoužívanejšou mierou polohy. Predstavuje
+          ťažisko hodnôt náhodnej veličiny. V geoinformatike sa využíva
+          napríklad na určenie najpravdepodobnejšej hodnoty pri opakovaných
+          meraniach toho istého bodu.
+        </p>
+        <div className="my-4">
+          <ArithmeticMeanCalc />
+        </div>
 
         <h4 className="mt-4">Harmonický priemer</h4>
         <p>{/* Content... */}</p>
