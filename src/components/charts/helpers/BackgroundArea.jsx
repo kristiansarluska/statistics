@@ -10,14 +10,15 @@ const BackgroundArea = ({
   fillOpacity = 0.15,
   strokeWidth = 2,
   showLine = true,
-  isAnimationActive = false, // Pridané pre podporu animácií
-  animationDuration = 500, // Pridané pre dĺžku animácie
+  isAnimationActive = false,
+  animationDuration = 500,
 }) => {
   return (
     <>
       <Area
         data={data}
         dataKey={dataKey}
+        name="ignore_tooltip" // Marker pre CustomTooltip
         type={type}
         fill={color}
         fillOpacity={fillOpacity}
@@ -30,6 +31,7 @@ const BackgroundArea = ({
         <Line
           data={data}
           dataKey={dataKey}
+          name="ignore_tooltip" // Marker pre CustomTooltip
           type={type}
           stroke={color}
           strokeWidth={strokeWidth}

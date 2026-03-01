@@ -12,14 +12,10 @@ export const formatNumberSmart = (value) => {
 
   const absNum = Math.abs(num);
 
-  // Ak je číslo veľmi malé (začína nulami, napr. 0.0036), zachováme platné číslice
   if (absNum < 0.01) {
-    // toPrecision(3) zabezpečí, že napr. 0.003612 sa zaokrúhli na 0.00361
     return Number(num.toPrecision(2));
   }
 
-  // Pre bežné čísla aplikujeme zaokrúhlenie na max 2 desatinné miesta
-  // Vonkajší Number() odstráni prebytočné nuly na konci (napr. 5.10 -> 5.1)
   return Number(num.toFixed(2));
 };
 
@@ -31,36 +27,53 @@ function CustomTooltip({
   overrideY = null,
 }) {
   if (active && payload && payload.length) {
-    const point = payload[0].payload;
+    // Odstránime z tooltipu záznamy patriace BackgroundArea
+    const validPayload = payload.filter(
+      (entry) => entry.name !== "ignore_tooltip",
+    );
+
+    if (validPayload.length === 0) return null;
+
+    const point = validPayload[0].payload;
     const xVal =
       point.x !== undefined
         ? point.x
         : point.name !== undefined
           ? point.name
-          : payload[0].name;
-
-    // Ak máme overrideY (náš vypočítaný vrch schodu), použije ten, inak pôvodné
-    const yVal =
-      overrideY !== null
-        ? overrideY
-        : point.y !== undefined
-          ? point.y
-          : payload[0].value;
+          : validPayload[0].name;
 
     const formattedX =
       typeof xVal === "number" ? formatNumberSmart(xVal) : xVal;
-    const formattedY =
-      typeof yVal === "number" ? formatNumberSmart(yVal) : yVal;
 
     return (
       <div className="custom-tooltip">
         <p className="mb-0 fw-bold">{`${xLabel}: ${formattedX}`}</p>
-        <p
-          className="mb-0"
-          style={{ color: payload[0].color || "var(--bs-primary)" }}
-        >
-          {`${yLabel}: ${formattedY}`}
-        </p>
+        {validPayload.map((entry, index) => {
+          const val =
+            index === 0 && overrideY !== null
+              ? overrideY
+              : entry.value !== undefined
+                ? entry.value
+                : point.y;
+
+          const formattedY =
+            typeof val === "number" ? formatNumberSmart(val) : val;
+
+          const labelName =
+            entry.name && entry.name !== "y" ? entry.name : yLabel;
+
+          return (
+            <p
+              key={index}
+              className="mb-0"
+              style={{
+                color: entry.color || entry.fill || "var(--bs-primary)",
+              }}
+            >
+              {`${labelName}: ${formattedY}`}
+            </p>
+          );
+        })}
       </div>
     );
   }

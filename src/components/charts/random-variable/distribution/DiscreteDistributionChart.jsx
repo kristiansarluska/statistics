@@ -1,4 +1,4 @@
-// src/components/charts/random-variable/PdfCdf/DiscreteDistributionChart.jsx
+// src/components/charts/random-variable/distribution/DiscreteDistributionChart.jsx
 import React, { useState, useMemo } from "react";
 import {
   ComposedChart,
@@ -15,7 +15,6 @@ import CustomTooltip from "../../helpers/CustomTooltip";
 import ResetButton from "../../helpers/ResetButton";
 import "../../../../styles/charts.css";
 
-// --- Custom mathematically correct Tooltip wrapping CustomTooltip ---
 const renderCDFTooltip = ({
   active,
   label,
@@ -64,9 +63,9 @@ const DEFAULT_COUNTS = ["1", "5", "10", "10", "5", "1"];
 function DiscreteDistributionChart() {
   const [hoverX, setHoverX] = useState(null);
   const [counts, setCounts] = useState(DEFAULT_COUNTS);
-  const [rotation, setRotation] = useState(0);
-  // Kontrola, či sú všetky aktuálne hodnoty rovnaké ako defaultné
+
   const isDefault = counts.every((val, index) => val === DEFAULT_COUNTS[index]);
+
   const data = useMemo(() => {
     const numericCounts = counts.map((c) => parseInt(c, 10) || 0);
     const sum = numericCounts.reduce((a, b) => a + b, 0);
@@ -106,14 +105,12 @@ function DiscreteDistributionChart() {
       const closedData = [];
       const ticks = [];
 
-      const localMinX = minX;
+      points.push({ x: minX - 1, y: 0 });
+      points.push({ x: minX, y: 0 });
+      points.push({ x: minX, y: null });
 
-      points.push({ x: localMinX - 1, y: 0 });
-      points.push({ x: localMinX, y: 0 });
-      points.push({ x: localMinX, y: null });
-
-      openData.push({ x: localMinX, y: 0 });
-      ticks.push(localMinX);
+      openData.push({ x: minX, y: 0 });
+      ticks.push(minX);
 
       sortedData.forEach((item, i) => {
         const x_i = item.x;
@@ -147,7 +144,7 @@ function DiscreteDistributionChart() {
         closedCircleData: closedData,
         xTicks: uniqueTicks,
       };
-    }, [data, minX, maxX]);
+    }, [data, minX]);
 
   const handleChartInteraction = (state) => {
     if (
@@ -168,48 +165,42 @@ function DiscreteDistributionChart() {
   };
 
   return (
-    <div className="card shadow-sm p-4 mb-4">
-      <h5 className="mb-4">Interaktívne frekvencie dát pre (x = 0 až 5)</h5>
-
-      {/* Zarovnanie nastavené na flex-start, aby si elementy výšku držali sami */}
-      <div className="d-flex flex-wrap gap-3 mb-4 align-items-start">
+    <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Ovládacie prvky - centrované a kompaktné */}
+      <div
+        className="controls mb-4 d-flex flex-wrap justify-content-center align-items-end gap-2"
+        style={{ width: "100%", maxWidth: "800px" }}
+      >
         {counts.map((val, index) => (
-          <div key={index} className="d-flex flex-column">
+          <div key={index} className="d-flex flex-column align-items-center">
             <label
-              className="form-label mb-1 fw-bold text-center"
-              style={{ fontSize: "0.9rem" }}
+              className="form-label mb-1 fw-bold"
+              style={{ fontSize: "0.85rem" }}
             >
               x = {index}
             </label>
-            <div className="controls">
-              <input
-                type="number"
-                min="0"
-                className="form-control text-center"
-                style={{ width: "80px" }}
-                value={val}
-                onChange={(e) => {
-                  const newCounts = [...counts];
-                  newCounts[index] = e.target.value;
-                  setCounts(newCounts);
-                }}
-              />
-            </div>
+            <input
+              type="number"
+              min="0"
+              className="form-control form-control-sm text-center shadow-sm"
+              style={{ width: "60px" }}
+              value={val}
+              onChange={(e) => {
+                const newCounts = [...counts];
+                newCounts[index] = e.target.value;
+                setCounts(newCounts);
+              }}
+            />
           </div>
         ))}
 
-        <div className="ms-auto">
-          <label
-            className="form-label mb-1 text-center"
-            style={{ fontSize: "0.9rem", visibility: "hidden" }}
-          >
-            Reset
-          </label>
+        <div className="ms-2">
           <ResetButton onClick={handleReset} disabled={isDefault} />
         </div>
       </div>
 
-      <div className="charts-wrapper">
+      {/* Grafy v spoločnom wrapperi */}
+      <div className="charts-wrapper w-100">
         <div>
           <h6 className="mb-3 text-center">Pravdepodobnostná funkcia (PMF)</h6>
           <StyledBarChart
@@ -231,32 +222,26 @@ function DiscreteDistributionChart() {
             <ComposedChart
               margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
               onMouseMove={handleChartInteraction}
-              onTouchMove={handleChartInteraction}
-              onTouchStart={handleChartInteraction}
-              onClick={handleChartInteraction}
               onMouseLeave={() => setHoverX(null)}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-
               <XAxis
                 dataKey="x"
                 type="number"
                 domain={[minX - 0.5, maxX + 1.5]}
                 ticks={xTicks}
-                allowDuplicatedCategory={false}
                 label={{ value: "x", position: "insideBottom", offset: -15 }}
               />
               <YAxis
+                domain={[0, 1.1]}
+                ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
                 label={{
                   value: "F(x)",
                   angle: -90,
                   position: "insideLeft",
                   offset: -10,
                 }}
-                domain={[0, 1.1]}
-                ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
               />
-
               <Tooltip
                 cursor={false}
                 content={(props) =>
@@ -270,7 +255,6 @@ function DiscreteDistributionChart() {
                   })
                 }
               />
-
               <Line
                 data={cdfPoints}
                 type="linear"
@@ -279,18 +263,14 @@ function DiscreteDistributionChart() {
                 strokeWidth={2}
                 dot={false}
                 activeDot={false}
-                isAnimationActive={true}
-                animationDuration={500}
                 connectNulls={false}
               />
-
               <Line
                 data={openCircleData}
                 type="linear"
                 dataKey="y"
                 stroke="none"
                 activeDot={false}
-                isAnimationActive={false}
                 dot={(props) => {
                   const { cx, cy, index } = props;
                   if (cx == null || cy == null) return null;
@@ -307,14 +287,12 @@ function DiscreteDistributionChart() {
                   );
                 }}
               />
-
               <Line
                 data={closedCircleData}
                 type="linear"
                 dataKey="y"
                 stroke="none"
                 activeDot={false}
-                isAnimationActive={false}
                 dot={(props) => {
                   const { cx, cy, index, payload } = props;
                   if (cx == null || cy == null) return null;
@@ -331,19 +309,15 @@ function DiscreteDistributionChart() {
                         isHovered ? "var(--bs-body-color, black)" : "none"
                       }
                       strokeWidth={isHovered ? 2 : 0}
-                      style={{ transition: "all 0.2s ease" }}
                     />
                   );
                 }}
               />
-
-              {hoverX !== null && hoverX !== undefined && (
+              {hoverX !== null && (
                 <ReferenceLine
                   x={Number(hoverX)}
                   stroke="var(--bs-danger, red)"
                   strokeDasharray="5 5"
-                  strokeWidth={1}
-                  isFront={true}
                 />
               )}
             </ComposedChart>
