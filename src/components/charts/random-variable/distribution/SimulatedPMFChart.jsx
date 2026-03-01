@@ -45,7 +45,6 @@ function SimulatedPMFChart() {
       const prob = combinations(n, i) * Math.pow(p, i) * Math.pow(1 - p, n - i);
       const empiricalProb = total > 0 ? bins[i] / total : 0;
 
-      // Zachytenie najvyššieho stĺpca pre os Y
       maxY = Math.max(maxY, prob, empiricalProb);
 
       data.push({
@@ -54,12 +53,18 @@ function SimulatedPMFChart() {
         Empirická: Number(empiricalProb.toFixed(4)),
       });
     }
-    return { chartData: data, customMaxY: maxY };
+
+    // Zvýšime maximum pre os Y o 10%, aby sa legenda na vrchu neprekrývala so stĺpcami
+    return { chartData: data, customMaxY: maxY * 1.1 };
   }, [measurements, n, p]);
 
   return (
-    <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5">
-      <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
+    <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      <h6 className="mb-4 text-center">
+        Simulácia počtu zachytených satelitov (Binomické rozdelenie)
+      </h6>
+
+      <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3 w-100">
         <div className="btn-group shadow-sm rounded-pill overflow-hidden">
           <button
             className="btn btn-primary btn-sm px-3"
@@ -84,7 +89,7 @@ function SimulatedPMFChart() {
         </div>
 
         <div
-          className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill shadow-sm"
+          className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill shadow-sm text-nowrap"
           style={{ fontSize: "0.9rem" }}
         >
           Merania: {measurements.length}
@@ -96,11 +101,8 @@ function SimulatedPMFChart() {
         />
       </div>
 
-      <div className="charts-wrapper w-100" style={{ maxWidth: "800px" }}>
-        <h6 className="mb-3 text-center">
-          Simulácia počtu zachytených satelitov (Binomické rozdelenie)
-        </h6>
-
+      {/* Odstránená kolízna trieda charts-wrapper */}
+      <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledBarChart
           data={chartData}
           xLabel="Počet satelitov (k)"
@@ -109,16 +111,21 @@ function SimulatedPMFChart() {
           hoverX={hoverX}
           setHoverX={setHoverX}
         >
-          <Legend verticalAlign="top" height={36} />
-          <Bar
-            dataKey="Empirická"
-            fill="var(--bs-info)"
-            radius={[4, 4, 0, 0]}
-            animationDuration={500}
+          {/* Pridaný wrapperStyle pre oddelenie legendy od grafu */}
+          <Legend
+            verticalAlign="top"
+            wrapperStyle={{ paddingBottom: "20px" }}
+            height={40}
           />
           <Bar
             dataKey="Teoretická"
             fill="var(--bs-primary)"
+            radius={[4, 4, 0, 0]}
+            animationDuration={500}
+          />
+          <Bar
+            dataKey="Empirická"
+            fill="var(--bs-gray-400)"
             radius={[4, 4, 0, 0]}
             animationDuration={500}
           />

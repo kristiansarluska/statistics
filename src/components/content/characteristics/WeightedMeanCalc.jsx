@@ -1,5 +1,5 @@
 // src/components/content/characteristics/WeightedMeanCalc.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { InlineMath, BlockMath } from "react-katex";
 import ResetButton from "../../charts/helpers/ResetButton";
 import "katex/dist/katex.min.css";
@@ -14,10 +14,36 @@ function WeightedMeanCalc() {
   const [inputX, setInputX] = useState("");
   const [inputW, setInputW] = useState("");
 
-  const [hoveredRemoveIdx, setHoveredRemoveIdx] = useState(null);
+  const [activeActionIdx, setActiveActionIdx] = useState(null);
   const [editingIdx, setEditingIdx] = useState(null);
   const [editX, setEditX] = useState("");
   const [editW, setEditW] = useState("");
+
+  const badgesContainerRef = useRef(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detekcia dotykového zariadenia a sledovanie kliknutia mimo
+  useEffect(() => {
+    // Overenie, či prehliadač podporuje dotyk
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
+    const handleClickOutside = (event) => {
+      if (
+        badgesContainerRef.current &&
+        !badgesContainerRef.current.contains(event.target)
+      ) {
+        setActiveActionIdx(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
 
   const isDefault =
     measurements.length === DEFAULT_DATA.length &&
@@ -39,19 +65,20 @@ function WeightedMeanCalc() {
 
   const handleRemove = (indexToRemove) => {
     setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
-    setHoveredRemoveIdx(null);
+    setActiveActionIdx(null);
   };
 
   const handleReset = () => {
     setMeasurements([...DEFAULT_DATA]);
     setEditingIdx(null);
+    setActiveActionIdx(null);
   };
 
   const startEdit = (idx, m) => {
     setEditingIdx(idx);
     setEditX(String(m.x));
     setEditW(String(m.w));
-    setHoveredRemoveIdx(null);
+    setActiveActionIdx(null);
   };
 
   const saveEdit = (idx) => {
@@ -93,26 +120,28 @@ function WeightedMeanCalc() {
           Namerané hodnoty a ich váhy:
         </h6>
 
-        {/* Zoznam hodnôt a editácia */}
         <div
+          ref={badgesContainerRef}
           className="d-flex flex-wrap gap-2 mb-3 align-items-center"
           style={{ minHeight: "38px" }}
         >
           {measurements.map((m, idx) => {
             const isEditing = editingIdx === idx;
-            const isHovered = hoveredRemoveIdx === idx;
+            const isActiveAction = activeActionIdx === idx;
 
             return (
               <div
                 key={idx}
                 className="position-relative d-inline-flex"
+                // Hover aktivujeme iba na zariadeniach s myšou
                 onMouseEnter={() => {
-                  if (!isEditing) setHoveredRemoveIdx(idx);
+                  if (!isTouchDevice && !isEditing) setActiveActionIdx(idx);
                 }}
-                onMouseLeave={() => setHoveredRemoveIdx(null)}
+                onMouseLeave={() => {
+                  if (!isTouchDevice) setActiveActionIdx(null);
+                }}
               >
                 {isEditing ? (
-                  /* Riadkový formulár pre editáciu */
                   <form
                     className="d-inline-flex align-items-center gap-1 bg-body-tertiary border rounded-pill p-1 shadow-sm m-0"
                     onSubmit={(e) => {
@@ -165,26 +194,30 @@ function WeightedMeanCalc() {
                       onClick={cancelEdit}
                       title="Zrušiť"
                     >
-                      <span style={{ fontSize: "0.75rem" }}>✖</span>
+                      <span style={{ fontSize: "0.75rem" }}>✕</span>
                     </button>
                   </form>
                 ) : (
                   <>
-                    {/* Základné zobrazenie - vždy v DOM pre zafixovanie veľkosti */}
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-secondary rounded-pill"
                       style={{
                         fontSize: "0.85rem",
-                        opacity: isHovered ? 0 : 1,
+                        opacity: isActiveAction ? 0 : 1,
                       }}
+                      // Kliknutie reaguje iba na dotykových zariadeniach
+                      onClick={() => {
+                        if (isTouchDevice)
+                          setActiveActionIdx(isActiveAction ? null : idx);
+                      }}
+                      title={isTouchDevice ? "Kliknutím zobrazíš možnosti" : ""}
                     >
                       {m.x} m{" "}
                       <span className="opacity-75 ms-1">(v: {m.w})</span>
                     </button>
 
-                    {/* Prekrytie s rovnako veľkými tlačidlami pri hoveri */}
-                    {isHovered && (
+                    {isActiveAction && (
                       <div className="btn-group shadow-sm rounded-pill overflow-hidden position-absolute top-0 start-0 w-100 h-100">
                         <button
                           type="button"
@@ -213,7 +246,6 @@ function WeightedMeanCalc() {
           {n === 0 && <span className="text-muted small">Žiadne dáta...</span>}
         </div>
 
-        {/* Vstupný formulár pre nové hodnoty */}
         <form
           onSubmit={handleAdd}
           className="controls d-flex flex-wrap align-items-center gap-2 m-0"
@@ -250,7 +282,6 @@ function WeightedMeanCalc() {
         </form>
       </div>
 
-      {/* Zobrazenie výsledku */}
       {n > 0 && sumW > 0 && (
         <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center overflow-auto w-100">
           <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
