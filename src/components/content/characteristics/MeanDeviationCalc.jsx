@@ -2,7 +2,6 @@
 import React from "react";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
-// Geoinformatics-themed data: Repeated measurements of a parcel boundary length (m)
 const DEFAULT_DATA = [50.12, 50.15, 50.08, 50.11, 50.14];
 
 function MeanDeviationCalc() {
@@ -12,28 +11,30 @@ function MeanDeviationCalc() {
       inputLabel="Namerané dĺžky (m):"
       defaultData={DEFAULT_DATA}
       placeholder="Nová dĺžka"
-      getMathContent={(measurements) => {
+      getMathContent={(measurements, isExpanded) => {
         const n = measurements.length;
         const sum = measurements.reduce((acc, val) => acc + val, 0);
         const mean = sum / n;
+        const meanStr = mean.toFixed(3);
 
         const deviations = measurements.map((x) => Math.abs(x - mean));
         const sumDeviations = deviations.reduce((acc, val) => acc + val, 0);
         const mad = sumDeviations / n;
 
-        // Generate equation string safely for KaTeX
+        // Vrátené na pôvodný breakpoint
+        const isExpandable = n > 4;
         let devString = "";
-        if (n <= 4) {
+
+        if (!isExpandable || isExpanded) {
           devString = measurements
-            .map((x) => `|${x} - ${mean.toFixed(2)}|`)
+            .map((x) => `|${x} - ${meanStr}|`)
             .join(" + ");
         } else {
-          // If too many items, use ellipsis to prevent text overflow
-          devString = `|${measurements[0]} - ${mean.toFixed(2)}| + \\dots + |${measurements[n - 1]} - ${mean.toFixed(2)}|`;
+          devString = `|${measurements[0]} - ${meanStr}| + \\dots + |${measurements[n - 1]} - ${meanStr}|`;
         }
 
         const blockMath = `\\begin{gathered} 
-          \\bar{x} = ${mean.toFixed(3)} \\text{ m} \\\\ 
+          \\bar{x} = ${meanStr} \\text{ m} \\\\ 
           \\text{MD} = \\frac{1}{n} \\sum_{i=1}^{n} |x_i - \\bar{x}| = \\frac{${devString}}{${n}} = ${mad.toFixed(4)} 
         \\end{gathered}`;
 
@@ -41,6 +42,7 @@ function MeanDeviationCalc() {
           blockMath,
           inlineMath: `\\text{MD} = `,
           resultText: `${mad.toFixed(4)} m`,
+          isExpandable,
         };
       }}
     />

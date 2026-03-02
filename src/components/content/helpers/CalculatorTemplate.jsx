@@ -15,12 +15,13 @@ function CalculatorTemplate({
   step = "any",
   placeholder = "Hodnota",
   sortData = false,
-  renderExtra, // Novej props (val, idx, mathContent) => ReactNode
+  renderExtra,
 }) {
   const initData = sortData
     ? [...defaultData].sort((a, b) => a - b)
     : defaultData;
   const [measurements, setMeasurements] = useState(initData);
+  const [isMathExpanded, setIsMathExpanded] = useState(false);
 
   const isDefault =
     measurements.length === defaultData.length &&
@@ -40,11 +41,12 @@ function CalculatorTemplate({
 
   const handleReset = () => {
     setMeasurements([...initData]);
+    setIsMathExpanded(false);
   };
 
   const n = measurements.length;
-  // Výpočet matematických hodnôt a indexov pre zvýraznenie
-  const mathContent = n > 0 ? getMathContent(measurements) : null;
+  const mathContent =
+    n > 0 ? getMathContent(measurements, isMathExpanded) : null;
   const highlightIndices = mathContent?.highlightIndices || [];
 
   return (
@@ -73,7 +75,6 @@ function CalculatorTemplate({
           itemClassName={(_, idx) =>
             highlightIndices.includes(idx) ? "btn-info" : ""
           }
-          // Posunieme mathContent, aby ho renderExtra mohol využiť (napríklad vložený medián)
           renderExtra={(val, idx) =>
             renderExtra ? renderExtra(val, idx, mathContent) : null
           }
@@ -81,14 +82,42 @@ function CalculatorTemplate({
       </div>
 
       {n > 0 && mathContent && (
-        <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center overflow-auto w-100">
+        <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100 position-relative">
           <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
             Postup výpočtu:
           </p>
-          <div className="mb-2" style={{ fontSize: "1.1rem" }}>
-            <BlockMath math={mathContent.blockMath} />
+
+          {mathContent.isExpandable && (
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 rounded-pill px-3"
+              style={{ fontSize: "0.75rem", zIndex: 10 }}
+              onClick={() => setIsMathExpanded(!isMathExpanded)}
+            >
+              {isMathExpanded ? "Skrátiť zápis" : "Rozbaliť celý zápis"}
+            </button>
+          )}
+
+          {/* Zmena:
+            - overflowX: "auto" (lišta zmizne ak nie je treba)
+            - minHeight: "135px" (pevná výška garantuje, že pri rozbalení sa box nepredĺži)
+            - paddingBottom: "15px" (garantuje, že ak naskočí posuvník, neprekryje matematiku)
+          */}
+          <div
+            className="w-100 text-start"
+            style={{
+              fontSize: "1.1rem",
+              overflowX: "auto",
+              overflowY: "hidden",
+              minHeight: "135px",
+            }}
+          >
+            <div style={{ paddingTop: "10px", paddingBottom: "15px" }}>
+              <BlockMath math={mathContent.blockMath} />
+            </div>
           </div>
-          <div className="fs-5 mt-3">
+
+          <div className="fs-5 mt-1">
             <InlineMath math={mathContent.inlineMath} />
             <strong className="text-primary">{mathContent.resultText}</strong>
           </div>

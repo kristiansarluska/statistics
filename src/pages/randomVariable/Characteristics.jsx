@@ -8,6 +8,8 @@ import ModeCalc from "../../components/content/characteristics/ModeCalc";
 import MedianCalc from "../../components/content/characteristics/MedianCalc";
 import RangeCalc from "../../components/content/characteristics/RangeCalc";
 import MeanDeviationCalc from "../../components/content/characteristics/MeanDeviationCalc";
+import MeanDifferenceCalc from "../../components/content/characteristics/MeanDifferenceCalc";
+import VarianceCalc from "../../components/content/characteristics/VarianceCalc";
 
 const Characteristics = () => {
   return (
@@ -169,11 +171,57 @@ const Characteristics = () => {
           <MeanDeviationCalc />
         </div>
 
-        <h4 className="mt-4">Stredná diferencia</h4>
-        <p>{/* Content... */}</p>
+        <h4 className="mb-3">Stredná diferencia (Mean Absolute Difference)</h4>
+        <p className="mb-4">
+          Stredná diferencia ($\Delta$) nevyjadruje odchýlku hodnôt od ich
+          priemeru, ale priemerný absolútny rozdiel medzi{" "}
+          <strong>akýmikolvek dvoma hodnotami</strong> navzájom. Počíta sa ako
+          súčet absolútnych rozdielov všetkých možných dvojíc vydelený počtom
+          týchto dvojíc.
+        </p>
 
-        <h4 className="mt-4">Rozptyl</h4>
-        <p>{/* Content... */}</p>
+        <h5 className="mb-3">
+          Empirická stredná diferencia: Heterogenita znečistenia ovzdušia
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          V geoinformatike často pracujeme so senzorovými sieťami. Predstavme si
+          meracie stanice, ktoré sledujú koncentráciu prachových častíc PM10 (v
+          µg/m³) vo veľkomeste. Stredná diferencia nám priamo povie, aký
+          priemerný rozdiel v znečistení môžeme očakávať, ak sa presunieme z
+          okolia jednej ľubovoľnej stanice k inej. Vyskúšajte do siete pridať
+          stanicu ležiacu pri rušnej križovatke (napríklad s hodnotou 85.0) a
+          sledujte, ako vzrastie priemerný rozdiel v sieti.
+        </p>
+
+        <div className="mb-5">
+          <MeanDifferenceCalc />
+        </div>
+
+        <h4 className="mb-3">Rozptyl (Variance)</h4>
+        <p className="mb-4">
+          Rozptyl ($s^2$ pre výberový súbor, $\sigma^2$ pre základný súbor) je
+          priemerná štvorcová odchýlka hodnôt od ich strednej hodnoty. Tým, že
+          sa odchýlky umocňujú na druhú, rozptyl
+          <strong> výrazne penalizuje veľké extrémy</strong>. Nevýhodou je, že
+          výsledok vychádza v štvorcových jednotkách (napr. metre štvorcové,
+          stupne Celzia na druhú), čo je ťažšie na priamu interpretáciu.
+        </p>
+
+        <h5 className="mb-3">
+          Empirický rozptyl: Heterogenita mračna bodov (LiDAR)
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Pri leteckom laserovom skenovaní lesa nás zaujíma nielen priemerná
+          hustota bodov, ale aj jej variabilita. Nasledujúce dáta reprezentujú
+          počet odrazov (bodov) na meter štvorcový vo vybraných testovacích
+          plochách. Vyskúšajte pridať plochu s extrémne hustým pokrytím (napr.
+          50 bodov/m²) a všimnite si, ako hodnota rozptylu kvôli umocňovaniu
+          rapídne narastie.
+        </p>
+
+        <div className="mb-5">
+          <VarianceCalc />
+        </div>
 
         <h4 className="mt-4">Smerodajná odchýlka</h4>
         <p>{/* Content... */}</p>
