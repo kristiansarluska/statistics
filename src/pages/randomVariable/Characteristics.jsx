@@ -5,6 +5,7 @@ import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicM
 import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
 import WeightedMeanCalc from "../../components/content/characteristics/WeightedMeanCalc";
 import ModeCalc from "../../components/content/characteristics/ModeCalc";
+import MedianCalc from "../../components/content/characteristics/MedianCalc";
 
 const Characteristics = () => {
   return (
@@ -83,8 +84,30 @@ const Characteristics = () => {
           <ModeCalc />
         </div>
 
-        <h4 className="mt-4">Medián</h4>
-        <p>{/* Content... */}</p>
+        <h3 className="mb-3">Medián</h3>
+        <p className="mb-4">
+          Medián rozdeľuje štatistický súbor na dve rovnako veľké polovice.
+          Polovina hodnôt je menšia alebo rovná mediánu a druhá polovina je
+          väčšia alebo rovná mediánu.
+        </p>
+
+        <h5 className="mb-3">
+          Empirický medián: Výška budov a rezistencia voči extrémom
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Hlavnou výhodou mediánu oproti aritmetickému priemeru je jeho{" "}
+          <strong>odolnosť (rezistentnosť) voči odľahlým hodnotám</strong>.
+          Predstavme si, že analyzujeme výšky budov v bežnej zástavbe.
+          Vyskúšajte si do dát pridať extrémnu hodnotu – napríklad nový{" "}
+          <strong>150-metrový mrakodrap</strong>. Všimnite si, že kým
+          aritmetický priemer by táto stavba radikálne skreslila (vystrelil by
+          na takmer dvojnásobok), medián sa posunie len minimálne, pretože
+          zohľadňuje výhradne fyzický stred zoradeného radu.
+        </p>
+
+        <div className="mb-5">
+          <MedianCalc />
+        </div>
       </div>
 
       <div id="variability" className="mb-5">

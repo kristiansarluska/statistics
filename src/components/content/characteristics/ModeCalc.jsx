@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from "react";
 import { Bar, Cell } from "recharts";
 import StyledBarChart from "../../charts/helpers/StyledBarChart";
-import ResetButton from "../../charts/helpers/ResetButton";
+import DataInputControl from "../../content/helpers/DataInputControl";
 
 // Geoinformatics-themed data: Number of floors in urban buildings
 const DEFAULT_DATA = [
@@ -80,7 +80,7 @@ const ModeCalc = () => {
             modes.map((m, i) => (
               <span
                 key={i}
-                className="badge bg-info text-dark rounded-pill mx-1 shadow-sm px-3"
+                className="badge bg-info fw-bold rounded-pill mx-1 shadow-sm px-3"
               >
                 {m}{" "}
                 {m === 1
@@ -122,69 +122,27 @@ const ModeCalc = () => {
           </Bar>
         </StyledBarChart>
       </div>
-
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
-        <form
-          onSubmit={handleAddNumber}
-          className="controls d-flex flex-wrap justify-content-start align-items-center gap-2 mb-4"
-        >
-          <input
-            type="number"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Nová budova"
-            min="1"
-            step="1"
-            required
-            className="form-control"
-            style={{ width: "140px" }}
-          />
-          <button
-            type="submit"
-            className="btn btn-info text-white rounded-pill text-nowrap"
-          >
-            Pridať
-          </button>
-          <div className="ms-2">
-            <ResetButton onClick={handleReset} disabled={isDefault} />
-          </div>
-        </form>
-
+        {/* Nahradiť starý formulár a tlačidlá v ModeCalc.jsx */}
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
           Namerané dáta (zoradené podľa poschodí):
         </h6>
-
-        <div className="d-flex flex-wrap justify-content-start gap-2 align-items-center">
-          {sortedData.map((val, idx) => {
-            const isHovered = hoveredRemoveIdx === idx;
-            const isMode = modes.includes(val);
-
-            // Zvýraznenie konkrétnych hodnôt modusu farbou bs-info
-            let btnClass = isMode
-              ? "btn-info"
-              : "btn-outline-secondary text-body";
-            if (isHovered) btnClass = "btn-danger text-white";
-
-            return (
-              <button
-                key={idx}
-                type="button"
-                className={`btn btn-sm rounded-pill shadow-sm ${btnClass}`}
-                style={{
-                  fontSize: "0.85rem",
-                  transition: "all 0.2s",
-                  textDecoration: isHovered ? "line-through" : "none",
-                }}
-                onClick={() => handleRemoveNumber(idx)}
-                onMouseEnter={() => setHoveredRemoveIdx(idx)}
-                onMouseLeave={() => setHoveredRemoveIdx(null)}
-                title="Kliknutím odstrániš"
-              >
-                {val}
-              </button>
-            );
-          })}
-        </div>
+        <DataInputControl
+          data={sortedData}
+          onAdd={(val) => setData([...data, val])}
+          onRemove={(idxToRemove) => {
+            // Odstraňujeme nad už zoradenými dátami (sortedData) pre konzistentnosť indexov
+            setData(sortedData.filter((_, idx) => idx !== idxToRemove));
+          }}
+          onReset={handleReset}
+          isDefault={isDefault}
+          min="1"
+          step="1"
+          placeholder="Nová budova"
+          itemClassName={(val) =>
+            modes.includes(val) ? "btn-info" : "btn-outline-secondary text-body"
+          }
+        />
       </div>
     </div>
   );

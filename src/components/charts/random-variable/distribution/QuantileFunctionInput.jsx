@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import { ReferenceLine } from "recharts";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import ResetButton from "../../helpers/ResetButton";
+import DataInputControl from "../../../content/helpers/DataInputControl"; // Dôležitý import
 
 // Geoinformatics-themed data: Tree heights (in meters) measured in a nature reserve
 const DEFAULT_DATA = [
@@ -15,7 +16,6 @@ const QuantileFunctionInput = () => {
   const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
-  const [hoveredRemoveIdx, setHoveredRemoveIdx] = useState(null);
 
   const isDefault =
     data.length === DEFAULT_DATA.length &&
@@ -80,19 +80,6 @@ const QuantileFunctionInput = () => {
 
     return { lines, activeIndices, injectedValues };
   }, [n, activeQuantile, sortedData]);
-
-  const handleAddNumber = (e) => {
-    e.preventDefault();
-    const num = parseFloat(inputValue.replace(",", "."));
-    if (!isNaN(num)) {
-      setData([...data, num]);
-      setInputValue("");
-    }
-  };
-
-  const handleRemoveNumber = (indexToRemove) => {
-    setData(sortedData.filter((_, idx) => idx !== indexToRemove));
-  };
 
   const referenceLines = quantileData.lines.map((lineData, i) => (
     <React.Fragment key={`ref-${i}`}>
@@ -165,79 +152,39 @@ const QuantileFunctionInput = () => {
       </div>
 
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
-        <form
-          onSubmit={handleAddNumber}
-          className="controls d-flex flex-wrap justify-content-start align-items-center gap-2 mb-4"
-        >
-          <input
-            type="number"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Nová hodnota"
-            step="any"
-            required
-            className="form-control"
-            style={{ width: "130px" }}
-          />
-          <button
-            type="submit"
-            className="btn btn-info text-white rounded-pill text-nowrap px-3"
-          >
-            Pridať
-          </button>
-          <div className="ms-2">
-            <ResetButton onClick={handleReset} disabled={isDefault} />
-          </div>
-        </form>
-
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
           Vstupné dáta (zoradené):
         </h6>
-
-        <div className="d-flex flex-wrap justify-content-start gap-2 align-items-center">
-          {sortedData.map((val, idx) => {
-            const isHighlighted = quantileData.activeIndices.includes(idx);
+        <DataInputControl
+          data={sortedData}
+          onAdd={(val) => setData([...data, val])}
+          onRemove={(idxToRemove) => {
+            setData(sortedData.filter((_, idx) => idx !== idxToRemove));
+          }}
+          onReset={handleReset}
+          isDefault={isDefault}
+          placeholder="Nová hodnota"
+          itemClassName={(_, idx) =>
+            quantileData.activeIndices.includes(idx)
+              ? "btn-success"
+              : "btn-outline-secondary text-body"
+          }
+          renderExtra={(_, idx) => {
             const injected = quantileData.injectedValues.filter(
               (q) => q.insertAfterIdx === idx,
             );
-            const isHovered = hoveredRemoveIdx === idx;
-
-            let btnClass = "btn-outline-secondary";
-            if (isHovered) btnClass = "btn-danger text-white";
-            else if (isHighlighted) btnClass = "btn-success text-white";
-
-            return (
-              <React.Fragment key={idx}>
-                <button
-                  type="button"
-                  className={`btn btn-sm rounded-pill ${btnClass}`}
-                  style={{
-                    fontSize: "0.85rem",
-                    transition: "all 0.2s",
-                    textDecoration: isHovered ? "line-through" : "none",
-                  }}
-                  onClick={() => handleRemoveNumber(idx)}
-                  onMouseEnter={() => setHoveredRemoveIdx(idx)}
-                  onMouseLeave={() => setHoveredRemoveIdx(null)}
-                  title="Kliknutím odstrániš"
-                >
-                  {val}
-                </button>
-
-                {injected.map((q, i) => (
-                  <span
-                    key={`inj-${i}`}
-                    className="badge rounded-pill border border-success bg-success-subtle text-success"
-                    style={{ fontSize: "0.8rem", userSelect: "none" }}
-                    title={`Vypočítaný kvantil (${q.p})`}
-                  >
-                    ={q.value}
-                  </span>
-                ))}
-              </React.Fragment>
-            );
-          })}
-        </div>
+            return injected.map((q, i) => (
+              <span
+                key={`inj-${i}`}
+                className="badge rounded-pill border border-success bg-success-subtle text-success"
+                style={{ fontSize: "0.8rem", userSelect: "none" }}
+                title={`Vypočítaný kvantil (${q.p})`}
+              >
+                ={q.value.toLocaleString("sk-SK", { maximumFractionDigits: 2 })}
+              </span>
+            ));
+          }}
+        />
       </div>
     </div>
   );

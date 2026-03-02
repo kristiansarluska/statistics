@@ -10,16 +10,27 @@ function CalculatorTemplate({
   defaultData = [],
   onValidate = (val) => !isNaN(val),
   getMathContent,
+  min,
+  max,
+  step = "any",
+  placeholder = "Hodnota",
+  sortData = false,
+  renderExtra, // Novej props (val, idx, mathContent) => ReactNode
 }) {
-  const [measurements, setMeasurements] = useState(defaultData);
+  const initData = sortData
+    ? [...defaultData].sort((a, b) => a - b)
+    : defaultData;
+  const [measurements, setMeasurements] = useState(initData);
 
   const isDefault =
     measurements.length === defaultData.length &&
-    measurements.every((val, idx) => val === defaultData[idx]);
+    measurements.every((val, idx) => val === initData[idx]);
 
   const handleAdd = (val) => {
     if (onValidate(val)) {
-      setMeasurements([...measurements, val]);
+      let newData = [...measurements, val];
+      if (sortData) newData.sort((a, b) => a - b);
+      setMeasurements(newData);
     }
   };
 
@@ -27,10 +38,14 @@ function CalculatorTemplate({
     setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
   };
 
-  const handleReset = () => setMeasurements([...defaultData]);
+  const handleReset = () => {
+    setMeasurements([...initData]);
+  };
 
   const n = measurements.length;
+  // Výpočet matematických hodnôt a indexov pre zvýraznenie
   const mathContent = n > 0 ? getMathContent(measurements) : null;
+  const highlightIndices = mathContent?.highlightIndices || [];
 
   return (
     <div
@@ -51,6 +66,17 @@ function CalculatorTemplate({
           onRemove={handleRemove}
           onReset={handleReset}
           isDefault={isDefault}
+          min={min}
+          max={max}
+          step={step}
+          placeholder={placeholder}
+          itemClassName={(_, idx) =>
+            highlightIndices.includes(idx) ? "btn-info" : ""
+          }
+          // Posunieme mathContent, aby ho renderExtra mohol využiť (napríklad vložený medián)
+          renderExtra={(val, idx) =>
+            renderExtra ? renderExtra(val, idx, mathContent) : null
+          }
         />
       </div>
 
