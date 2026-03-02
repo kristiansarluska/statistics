@@ -18,18 +18,21 @@ const Distribution = () => {
           {/* Tu pôjde teoretický úvod k pravdepodobnostnej funkcii a hustote... */}
         </p>
         <SimulatedPMFChart />
-        <h5 className="mb-3">
-          Simulácia odchýlky GNSS merania (Hustota pravdepodobnosti)
-        </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
-          Generovanie náhodných chýb GPS prijímača. Teoretické rozdelenie (modrá
-          krivka) má strednú hodnotu <strong>0 m</strong> a smerodajnú odchýlku{" "}
-          <strong>2.5 m</strong>. Sledujte, ako sa empirický histogram (sivá
-          plocha) s rastúcim počtom meraní postupne približuje k dokonalým
-          teoretickým krivkám.
-        </p>
-        <div className="mb-4">
-          <SimulatedPDFChart />
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">
+            Simulácia odchýlky GNSS merania (Hustota pravdepodobnosti)
+          </h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Generovanie náhodných chýb GPS prijímača. Teoretické rozdelenie
+            (modrá krivka) má strednú hodnotu <strong>0 m</strong> a smerodajnú
+            odchýlku <strong>2.5 m</strong>. Sledujte, ako sa empirický
+            histogram (sivá plocha) s rastúcim počtom meraní postupne približuje
+            k dokonalým teoretickým krivkám.
+          </p>
+          <div className="mb-4">
+            <SimulatedPDFChart />
+          </div>
         </div>
       </div>
 
@@ -48,18 +51,22 @@ const Distribution = () => {
         <div className="mb-4">
           <QuantileFunctionSlider />
         </div>
-        <h5 className="mb-3">
-          Empirická kvantilová funkcia: Výška stromov v rezervácii
-        </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
-          Predvolené dáta reprezentujú zoradené výšky stromov (v metroch)
-          namerané v malej prírodnej rezervácii (napr. z dát leteckého
-          laserového skenovania - LiDAR). Vyskúšajte si zobraziť{" "}
-          <strong>medián</strong> (50 % stromov je nižších alebo rovnako
-          vysokých) alebo <strong>decily</strong> (napr. 9. decil ukáže hraničnú
-          výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta môžete
-          interaktívne mazať a dopĺňať vlastnými hodnotami.
-        </p>
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">
+            Empirická kvantilová funkcia: Výška stromov v rezervácii
+          </h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Predvolené dáta reprezentujú zoradené výšky stromov (v metroch)
+            namerané v malej prírodnej rezervácii (napr. z dát leteckého
+            laserového skenovania - LiDAR). Vyskúšajte si zobraziť{" "}
+            <strong>medián</strong> (50 % stromov je nižších alebo rovnako
+            vysokých) alebo <strong>decily</strong> (napr. 9. decil ukáže
+            hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta
+            môžete interaktívne mazať a dopĺňať vlastnými hodnotami.
+          </p>
+        </div>
+
         <div>
           <QuantileFunctionInput />
         </div>

@@ -82,27 +82,30 @@ function CalculatorTemplate({
       </div>
 
       {n > 0 && mathContent && (
-        <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100 position-relative">
-          <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
-            Postup výpočtu:
-          </p>
-
-          {mathContent.isExpandable && (
-            <button
-              type="button"
-              className="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 rounded-pill px-3"
-              style={{ fontSize: "0.75rem", zIndex: 10 }}
-              onClick={() => setIsMathExpanded(!isMathExpanded)}
+        // Odstránené "position-relative" z hlavného div-u
+        <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100">
+          {/* Nový flex kontajner pre hlavičku výpočtu */}
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <p
+              className="mb-0 fw-bold text-muted text-start"
+              style={{ fontSize: "0.9rem" }}
             >
-              {isMathExpanded ? "Skrátiť zápis" : "Rozbaliť celý zápis"}
-            </button>
-          )}
+              Postup výpočtu:
+            </p>
 
-          {/* Zmena:
-            - overflowX: "auto" (lišta zmizne ak nie je treba)
-            - minHeight: "135px" (pevná výška garantuje, že pri rozbalení sa box nepredĺži)
-            - paddingBottom: "15px" (garantuje, že ak naskočí posuvník, neprekryje matematiku)
-          */}
+            {mathContent.isExpandable && (
+              <button
+                type="button"
+                // Odstránené "position-absolute top-0 end-0 m-2"
+                className="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                style={{ fontSize: "0.75rem" }}
+                onClick={() => setIsMathExpanded(!isMathExpanded)}
+              >
+                {isMathExpanded ? "Skrátiť zápis" : "Rozbaliť celý zápis"}
+              </button>
+            )}
+          </div>
+
           <div
             className="w-100 text-start"
             style={{

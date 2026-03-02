@@ -32,16 +32,16 @@ function StandardDeviationCalc() {
     let formulaExpanded = "";
     if (isExpanded) {
       const diffsStr = data.map((x) => `(${x} - ${meanStr})^2`).join(" + ");
-      formulaExpanded = `s = \\sqrt{\\frac{${diffsStr}}{${n} - 1}} \\\\[1ex]`;
+      formulaExpanded = `s &= \\sqrt{\\frac{${diffsStr}}{${n} - 1}} \\\\[1ex]`;
     }
 
     const sumSquaredStr = sumSquaredDiffs.toFixed(4);
 
-    const blockMath = `
-      s = \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n-1}} \\\\[2ex]
+    const blockMath = `\\begin{aligned}
+      s &= \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n-1}} \\\\[2ex]
       ${formulaExpanded}
-      s = \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
-    `;
+      s &= \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
+    \\end{aligned}`;
 
     return {
       blockMath,

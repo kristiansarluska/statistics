@@ -47,16 +47,16 @@ function CoefficientOfVariationCalc() {
     let formulaExpanded = "";
     if (isExpanded) {
       formulaExpanded = `
-        s = ${stdDevStr} \\\\[2ex]
-        \\bar{x} = ${meanStr} \\\\[1ex]
+        \\bar{x} &= ${meanStr} \\\\[1ex]
+        s &= ${stdDevStr} \\\\[2ex]
       `;
     }
 
-    const blockMath = `
-      v_k = \\frac{s}{|\\bar{x}|} \\cdot 100\\% \\\\[2ex]
+    const blockMath = `\\begin{aligned}
+      v_k &= \\frac{s}{|\\bar{x}|} \\cdot 100\\% \\\\[2ex]
       ${formulaExpanded}
-      v_k = \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
-    `;
+      v_k &= \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
+    \\end{aligned}`;
 
     return {
       blockMath,
