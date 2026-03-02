@@ -13,6 +13,7 @@ import VarianceCalc from "../../components/content/characteristics/VarianceCalc"
 import StandardDeviationCalc from "../../components/content/characteristics/StandardDeviationCalc";
 import CoefficientOfVariationCalc from "../../components/content/characteristics/CoefficientOfVariationCalc";
 import InterquartileRangeCalc from "../../components/content/characteristics/InterquartileRangeCalc";
+import SkewnessChart from "../../components/charts/random-variable/characteristics/SkewnessChart";
 
 const Characteristics = () => {
   return (
@@ -338,7 +339,29 @@ const Characteristics = () => {
         <h3 className="mb-3">Iné číselné miery</h3>
 
         <h4 className="mt-4">Koeficient šikmosti</h4>
-        <p>{/* Content... */}</p>
+        <p className="mb-4">
+          Koeficient šikmosti hodnotí <strong>asymetriu</strong> rozdelenia dát
+          okolo ich strednej hodnoty. Ak má rozdelenie dlhší chvost smerom k
+          vyšším hodnotám, ide o <strong>kladnú šikmosť</strong>
+          (extrémne veľké hodnoty ťahajú priemer nahor). Ak má dlhší chvost
+          smerom k nižším hodnotám, ide o <strong>zápornú šikmosť</strong>.
+        </p>
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">Interaktívna ukážka: Veková štruktúra lesa</h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Presuňte bežec pre zmenu šikmosti rozdelenia veku stromov v lese.
+            <strong>Kladná šikmosť</strong> predstavuje napríklad zmladený les
+            po ťažbe (drvivá väčšina stromov je mladá, starých je minimum -
+            chvost vpravo). <strong>Záporná šikmosť</strong> naopak modeluje
+            starý neprestupný prales (väčšina stromov je stará, prežije len málo
+            mladých kvôli nedostatku svetla - chvost vľavo).
+          </p>
+
+          <div className="mb-5">
+            <SkewnessChart />
+          </div>
+        </div>
 
         <h4 className="mt-4">Koeficient špicatosti</h4>
         <p>{/* Content... */}</p>
