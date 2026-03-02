@@ -109,7 +109,6 @@ function CalculatorTemplate({
               fontSize: "1.1rem",
               overflowX: "auto",
               overflowY: "hidden",
-              minHeight: "135px",
             }}
           >
             <div style={{ paddingTop: "10px", paddingBottom: "15px" }}>

@@ -10,6 +10,8 @@ import RangeCalc from "../../components/content/characteristics/RangeCalc";
 import MeanDeviationCalc from "../../components/content/characteristics/MeanDeviationCalc";
 import MeanDifferenceCalc from "../../components/content/characteristics/MeanDifferenceCalc";
 import VarianceCalc from "../../components/content/characteristics/VarianceCalc";
+import StandardDeviationCalc from "../../components/content/characteristics/StandardDeviationCalc";
+import CoefficientOfVariationCalc from "../../components/content/characteristics/CoefficientOfVariationCalc";
 
 const Characteristics = () => {
   return (
@@ -224,10 +226,63 @@ const Characteristics = () => {
         </div>
 
         <h4 className="mt-4">Smerodajná odchýlka</h4>
-        <p>{/* Content... */}</p>
+        <p className="mb-4">
+          Smerodajná odchýlka ($s$ alebo $\sigma$) je odmocninou z rozptylu. Jej
+          hlavnou výhodou je, že{" "}
+          <strong>vracia výsledok do pôvodných jednotiek</strong> merania
+          (napríklad stupne Celzia, metre), čo ju robí oveľa intuitívnejšou a
+          ľahšie interpretovateľnou v praxi. Hovorí nám, o koľko sa hodnoty
+          typicky odchyľujú od priemeru.
+        </p>
 
-        <h4 className="mt-4">Variačný koeficient</h4>
-        <p>{/* Content... */}</p>
+        <h5 className="mb-3">
+          Empirická smerodajná odchýlka: Mestský ostrov tepla (UHI)
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Fenomén mestského ostrova tepla spôsobuje, že centrá miest sú výrazne
+          teplejšie ako ich okolie. Predstavme si sieť piatich teplotných
+          senzorov rozmiestnených v rôznych zónach mesta. Smerodajná odchýlka
+          nám v tomto prípade hovorí, aké výrazné sú teplotné rozdiely v rámci
+          tohto územia. Skúste pridať senzor z chladnejšieho prímestského parku
+          (napr. 18.5 °C) a sledujte, ako sa odchýlka v systéme zväčší.
+        </p>
+
+        <div className="mb-5">
+          <StandardDeviationCalc />
+        </div>
+
+        <h4 className="mt-4">Variačný koeficient (Coefficient of Variation)</h4>
+        <p className="mb-4">
+          Variačný koeficient ($v_k$) je bezrozmerná (relatívna) miera
+          variability, najčastejšie vyjadrená v percentách. Počíta sa ako pomer
+          smerodajnej odchýlky k aritmetickému priemeru. Jeho obrovskou výhodou
+          je, že
+          <strong>
+            {" "}
+            umožňuje porovnávať variabilitu medzi súbormi s rôznymi
+            jednotkami{" "}
+          </strong>
+          alebo diametrálne odlišnými priemermi (napr. variabilitu výšky stromov
+          vs. hrúbky ich kmeňov).
+        </p>
+
+        <h5 className="mb-3">
+          Empirický variačný koeficient: Priestorová nestálosť zrážok
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          V hydrológii a klimatológii sa variačný koeficient často využíva na
+          zhodnotenie stabilitu zrážok. Nasledujúce dáta predstavujú ročné úhrny
+          zrážok (v mm) na piatich rôznych zrážkomerných staniciach v sledovanej
+          oblasti. Ak je výsledný koeficient vysoký (napr. nad 30 %), hovorí nám
+          to, že zrážky sú v území priestorovo veľmi nevyrovnané a
+          nepredvídateľné. Vyskúšajte zmeniť hodnoty tak, aby boli zrážky
+          vyrovnanejšie (napríklad všetkým staniciam nastavte hodnoty okolo 500
+          mm) a sledujte pokles percentuálnej variability.
+        </p>
+
+        <div className="mb-5">
+          <CoefficientOfVariationCalc />
+        </div>
 
         <h4 className="mt-4">Medzikvartilová odchýlka</h4>
         <p>{/* Content... */}</p>
