@@ -4,6 +4,7 @@ import ArithmeticMeanCalc from "../../components/content/characteristics/Arithme
 import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
 import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
 import WeightedMeanCalc from "../../components/content/characteristics/WeightedMeanCalc";
+import ModeCalc from "../../components/content/characteristics/ModeCalc";
 
 const Characteristics = () => {
   return (
@@ -57,8 +58,30 @@ const Characteristics = () => {
           <WeightedMeanCalc />
         </div>
 
-        <h4 className="mt-4">Modus</h4>
-        <p>{/* Content... */}</p>
+        <h3 className="mb-3">Modus</h3>
+        <p className="mb-4">
+          Modus je hodnota, ktorá sa v štatistickom súbore vyskytuje
+          najčastejšie. Pri spojitých dátach (napríklad presné GNSS merania) sa
+          určuje ťažšie a hľadáme skôr interval s najväčšou hustotou. Pre
+          diskrétne dáta je to však priama, konkrétna hodnota.
+        </p>
+
+        <h5 className="mb-3">
+          Empirický modus: Počet poschodí v mestskej zástavbe
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          V nasledovnom príklade analyzujeme podlažnosť budov vo vybranej
+          mestskej štvrti. Modusom bude typ budovy, ktorý sa v danej oblasti
+          vyskytuje najviac (napr. dvojposchodové rodinné domy). Na grafe si
+          môžete všimnúť aj sekundárny lokálny vrchol (tzv. lokálny modus)
+          reprezentujúci napríklad zhluk sedemposchodových panelákov. Pridávaním
+          alebo odoberaním budov môžete sledovať, ako sa mení najčastejšie sa
+          vyskytujúca hodnota.
+        </p>
+
+        <div className="mb-5">
+          <ModeCalc />
+        </div>
 
         <h4 className="mt-4">Medián</h4>
         <p>{/* Content... */}</p>

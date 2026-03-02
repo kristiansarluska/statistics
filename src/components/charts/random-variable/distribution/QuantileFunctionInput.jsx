@@ -1,13 +1,13 @@
-// src/components/charts/random-variable/quantile-function/QuantileFunctionInput.jsx
+// src/components/charts/random-variable/distribution/QuantileFunctionInput.jsx
 import React, { useState, useMemo } from "react";
 import { ReferenceLine } from "recharts";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import ResetButton from "../../helpers/ResetButton";
 
+// Geoinformatics-themed data: Tree heights (in meters) measured in a nature reserve
 const DEFAULT_DATA = [
-  5, 5, 15, 15, 16, 16, 20, 20, 21, 21, 25, 25, 26, 26, 27, 27, 30, 30, 30, 30,
-  31, 31, 32, 32, 34, 34, 35, 35, 38, 38, 38, 38, 41, 41, 43, 43, 47, 47, 66,
-  66,
+  12.5, 14.1, 14.8, 15.2, 16.0, 16.5, 17.3, 18.1, 18.5, 19.2, 20.4, 21.0, 21.5,
+  22.8, 23.4, 24.1, 25.6, 26.2, 27.5, 29.8,
 ];
 
 const QuantileFunctionInput = () => {
@@ -64,7 +64,9 @@ const QuantileFunctionInput = () => {
 
       let value;
       if (isIntegerK && k > 0 && k < n) {
-        value = (sortedData[k - 1] + sortedData[k]) / 2;
+        const rawValue = (sortedData[k - 1] + sortedData[k]) / 2;
+        value = Math.round(rawValue * 1000) / 1000;
+
         activeIndices.push(k - 1, k);
         injectedValues.push({ p, value, insertAfterIdx: k - 1 });
       } else {
@@ -112,16 +114,14 @@ const QuantileFunctionInput = () => {
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
       <h5 className="mb-4 text-center">
-        Interaktívna kvantilová funkcia z vlastných dát
+        Interaktívna kvantilová funkcia z vlastných dát (výška stromov v m)
       </h5>
 
-      {/* Ovládacie prvky pre výber kvantilu */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
         <div className="btn-group shadow-sm" role="group">
           {["none", "median", "quartiles", "deciles"].map(
             (qType, index, arr) => {
               const isActive = activeQuantile === qType;
-              // Zaoblenie výhradne pre prvý a posledný prvok (pill efekt bez deformácie okrajov)
               const roundingClass =
                 index === 0
                   ? "rounded-start-pill"
@@ -133,7 +133,6 @@ const QuantileFunctionInput = () => {
                 <button
                   key={qType}
                   type="button"
-                  // Využívame natívnu triedu "active" na btn-outline-primary pre dokonalé splynutie borderov
                   className={`btn btn-sm px-3 btn-outline-primary ${isActive ? "active" : ""} ${roundingClass}`}
                   onClick={() => setActiveQuantile(qType)}
                 >
@@ -151,7 +150,6 @@ const QuantileFunctionInput = () => {
         </div>
       </div>
 
-      {/* Samotný graf - zrušená trieda charts-wrapper */}
       <div className="w-100 mb-5" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
@@ -166,9 +164,7 @@ const QuantileFunctionInput = () => {
         </StyledLineChart>
       </div>
 
-      {/* Ovládanie vstupných dát - celé zarovnané doľava */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
-        {/* Formulár presunutý nad dáta a zarovnaný vľavo */}
         <form
           onSubmit={handleAddNumber}
           className="controls d-flex flex-wrap justify-content-start align-items-center gap-2 mb-4"
@@ -198,7 +194,6 @@ const QuantileFunctionInput = () => {
           Vstupné dáta (zoradené):
         </h6>
 
-        {/* Zdrojové dáta zarovnané vľavo */}
         <div className="d-flex flex-wrap justify-content-start gap-2 align-items-center">
           {sortedData.map((val, idx) => {
             const isHighlighted = quantileData.activeIndices.includes(idx);

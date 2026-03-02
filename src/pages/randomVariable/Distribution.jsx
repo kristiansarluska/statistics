@@ -48,6 +48,18 @@ const Distribution = () => {
         <div className="mb-4">
           <QuantileFunctionSlider />
         </div>
+        <h5 className="mb-3">
+          Empirická kvantilová funkcia: Výška stromov v rezervácii
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predvolené dáta reprezentujú zoradené výšky stromov (v metroch)
+          namerané v malej prírodnej rezervácii (napr. z dát leteckého
+          laserového skenovania - LiDAR). Vyskúšajte si zobraziť{" "}
+          <strong>medián</strong> (50 % stromov je nižších alebo rovnako
+          vysokých) alebo <strong>decily</strong> (napr. 9. decil ukáže hraničnú
+          výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta môžete
+          interaktívne mazať a dopĺňať vlastnými hodnotami.
+        </p>
         <div>
           <QuantileFunctionInput />
         </div>
