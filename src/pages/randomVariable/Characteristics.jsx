@@ -6,6 +6,8 @@ import GeometricMeanCalc from "../../components/content/characteristics/Geometri
 import WeightedMeanCalc from "../../components/content/characteristics/WeightedMeanCalc";
 import ModeCalc from "../../components/content/characteristics/ModeCalc";
 import MedianCalc from "../../components/content/characteristics/MedianCalc";
+import RangeCalc from "../../components/content/characteristics/RangeCalc";
+import MeanDeviationCalc from "../../components/content/characteristics/MeanDeviationCalc";
 
 const Characteristics = () => {
   return (
@@ -111,13 +113,61 @@ const Characteristics = () => {
       </div>
 
       <div id="variability" className="mb-5">
-        <h3 className="mb-3">Charakteristiky variability</h3>
+        <h3 className="mb-3">Charakteristiky variability (rozptýlenosti)</h3>
+        <p className="mb-4">
+          Kým miery polohy nám hovoria, kde sa dáta sústreďujú, miery
+          variability nám prezrádzajú, ako veľmi sú od seba rozptýlené.
+          Najjednoduchšou mierou je variačné rozpätie.
+        </p>
 
-        <h4 className="mt-4">Variačné rozpätie</h4>
-        <p>{/* Content... */}</p>
+        <h4 className="mb-3">Variačné rozpätie (Range)</h4>
+        <p className="mb-4">
+          Variačné rozpätie ($R$) je rozdiel medzi maximálnou a minimálnou
+          hodnotou v štatistickom súbore. Je to rýchly ukazovateľ šírky
+          intervalu, v ktorom sa dáta nachádzajú, no pre svoju podstatu je
+          extrémne citlivý na odľahlé (extrémne) hodnoty.
+        </p>
 
-        <h4 className="mt-4">Priemerná odchýlka</h4>
-        <p>{/* Content... */}</p>
+        <h5 className="mb-3">
+          Empirické variačné rozpätie: Prevýšenie lyžiarskeho svahu
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že analyzujeme výškový profil lyžiarskeho svahu na
+          Malej Morávke. Získali sme niekoľko výškových bodov (v metroch nad
+          morom). Variačné rozpätie nám v tomto prípade udáva celkové prevýšenie
+          zjazdovky. Pridajte do výpočtu extrémnu hodnotu (napríklad blízky
+          vrchol Praděd s výškou 1492 m n. m.) a sledujte, ako sa variačné
+          rozpätie okamžite skreslí.
+        </p>
+
+        <div className="mb-5">
+          <RangeCalc />
+        </div>
+
+        <h4 className="mb-3">Priemerná odchýlka (Mean Absolute Deviation)</h4>
+        <p className="mb-4">
+          Priemerná odchýlka vyjadruje, o koľko sa v priemere jednotlivé hodnoty
+          štatistického súboru odchyľujú od ich aritmetického priemeru. Počíta
+          sa ako aritmetický priemer absolútnych hodnôt odchýlok od strednej
+          hodnoty. Oproti variačnému rozpätiu využíva informácie zo všetkých
+          meraní, nielen z extrémov.
+        </p>
+
+        <h5 className="mb-3">
+          Empirická priemerná odchýlka: Opakované meranie dĺžky
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          V geodézii nikdy nezmeriame rovnakú vzdialenosť dvakrát s absolútne
+          identickým výsledkom. Nasledujúce dáta predstavujú päť nezávislých
+          meraní dĺžky hranice parcely v metroch. Priemerná odchýlka nám v tomto
+          prípade udáva priemernú absolútnu chybu jednotlivého merania voči
+          strednej hodnote. Vyskúšajte pridať meranie so zjavnou hrubou chybou
+          (napr. 51.5) a sledujte zmenu odchýlky.
+        </p>
+
+        <div className="mb-5">
+          <MeanDeviationCalc />
+        </div>
 
         <h4 className="mt-4">Stredná diferencia</h4>
         <p>{/* Content... */}</p>
