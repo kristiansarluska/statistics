@@ -7,7 +7,8 @@ import { formatNumberSmart } from "../../helpers/CustomTooltip";
 // ─── Constants ────────────────────────────────────────────────────────────────
 const categoryOrder = ["low", "medium", "high"];
 const categoryLabels = { low: "Nízka", medium: "Stredná", high: "Vysoká" };
-const yearColors = { 2012: "var(--bs-info)", 2016: "var(--bs-primary)" };
+const yearColors = (id) =>
+  id === "2012" ? "var(--bs-info)" : "var(--bs-primary)";
 
 const translate = {
   nizka: "low",
@@ -68,7 +69,7 @@ const buildEntry = (stats, id) =>
   !stats
     ? {}
     : {
-        [`color_${id}`]: yearColors[id],
+        [`color_${id}`]: yearColors(id),
         [`stats_${id}`]: stats,
         [`min_invisible_${id}`]: stats.whiskerMin,
         [`whisker_bottom_${id}`]: stats.q1 - stats.whiskerMin,
@@ -143,7 +144,7 @@ function FiveNumberSummaryBoxplot() {
     () =>
       ["2012", "2016"]
         .filter((yr) => year === "both" || year === yr)
-        .map((id) => ({ id, color: yearColors[id] })),
+        .map((id) => ({ id, color: yearColors(id) })),
     [year],
   );
 
@@ -162,7 +163,7 @@ function FiveNumberSummaryBoxplot() {
             label: cat,
             outlierValue: val,
             seriesId: id,
-            color: yearColors[id],
+            color: yearColors(id),
           }),
         );
       });

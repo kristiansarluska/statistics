@@ -1,5 +1,5 @@
 // src/components/charts/helpers/StyledBoxplot.jsx
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import {
   ComposedChart,
   Bar,
@@ -8,7 +8,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Customized,
 } from "recharts";
 import { formatNumberSmart } from "./CustomTooltip";
 import { getAxisConfig } from "../../../utils/distributions";
@@ -16,9 +15,9 @@ import { getAxisConfig } from "../../../utils/distributions";
 // ─── Internal constants ───────────────────────────────────────────────────────
 const barCatGapRatio = 0.4;
 const barGapPx = 3;
+const CHART_MARGIN = { top: 20, right: 20, bottom: 20, left: -20 };
 
 // ─── Shape primitives ─────────────────────────────────────────────────────────
-// Each shape receives resolvedColor injected by withSeries()
 const BottomCapShape = ({ x, y, width, resolvedColor: stroke }) => {
   if (!width) return null;
   const capW = Math.min(width * 0.5, 40),
@@ -151,48 +150,9 @@ const TopWhiskerWithCapShape = ({
   );
 };
 
-// Injects series colour from payload before rendering a shape
 const withSeries = (Shape, seriesId) => (props) => {
   const color = props.payload?.[`color_${seriesId}`] || "var(--bs-primary)";
   return <Shape {...props} resolvedColor={color} />;
-};
-
-// ─── Outlier dots (via <Customized> — no XAxis side-effects) ─────────────────
-const OutliersLayer = ({ xAxisMap, yAxisMap, scatterData, seriesIds }) => {
-  const xAxis = xAxisMap?.[0],
-    yAxis = yAxisMap?.[0];
-  if (!xAxis?.scale || !yAxis?.scale || !scatterData?.length) return null;
-
-  const bw = xAxis.scale.bandwidth ? xAxis.scale.bandwidth() : 0;
-  const margin = (bw * barCatGapRatio) / 2;
-  const usable = bw * (1 - barCatGapRatio);
-  const barW = seriesIds.length > 1 ? (usable - barGapPx) / 2 : usable;
-  const dualMode = seriesIds.length > 1;
-
-  return (
-    <g>
-      {scatterData.map((pt, i) => {
-        const xBand = xAxis.scale(pt.label);
-        if (xBand === undefined) return null;
-        let cx;
-        if (dualMode) {
-          const idx = seriesIds.indexOf(pt.seriesId);
-          cx = xBand + margin + idx * (barW + barGapPx) + barW / 2;
-        } else {
-          cx = xBand + margin + barW / 2;
-        }
-        return (
-          <circle
-            key={i}
-            cx={cx}
-            cy={yAxis.scale(pt.outlierValue)}
-            r={4}
-            fill={pt.color || "var(--bs-danger)"}
-          />
-        );
-      })}
-    </g>
-  );
 };
 
 // ─── Default tooltip ──────────────────────────────────────────────────────────
@@ -264,7 +224,7 @@ const DefaultTooltip = ({
  *   scatterData    — outlier points: [{ label, outlierValue, seriesId, color }]
  *   series         — [{ id: "2012", color: "var(--bs-info)" }]
  *   categoryLabels — { low: "Nízka", ... }  – X axis tick formatter
- *   tooltipContent — optional custom tooltip component (receives series + categoryLabels)
+ *   tooltipContent — optional custom tooltip component
  *   height         — CSS height string (default "clamp(260px, 50vw, 400px)")
  *   maxBarSize     — max bar width in px (default 60)
  */
@@ -278,8 +238,53 @@ function StyledBoxplot({
   maxBarSize = 60,
 }) {
   const seriesIds = series.map((s) => s.id);
+  const wrapperRef = useRef(null);
+  const [wrapperSize, setWrapperSize] = useState({
+    width: 0,
+    height: 0,
+    plotLeft: 0,
+    plotTop: 0,
+    plotBottom: 0,
+  });
 
-  // Compute Y-axis bounds from whisker extremes + outliers
+  // Measure actual plot area bounds from rendered DOM elements
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const measure = () => {
+      const svg = el.querySelector(".recharts-surface");
+      const yAxisEl = el.querySelector(".recharts-yAxis");
+      const gridEl = el.querySelector(".recharts-cartesian-grid");
+      // Measure actual rendered bar width
+      const barEl = el.querySelector(
+        ".recharts-bar-rectangle path, .recharts-bar-rectangle rect",
+      );
+      if (!svg || !yAxisEl || !gridEl) return;
+      const svgRect = svg.getBoundingClientRect();
+      const yAxisRect = yAxisEl.getBoundingClientRect();
+      const gridRect = gridEl.getBoundingClientRect();
+
+      console.log("barEl:", barEl);
+      console.log("barEl bbox:", barEl?.getBoundingClientRect());
+
+      setWrapperSize({
+        width: svgRect.width,
+        height: svgRect.height,
+        plotLeft: yAxisRect.right - svgRect.left,
+        plotTop: gridRect.top - svgRect.top,
+        plotBottom: gridRect.bottom - svgRect.top,
+      });
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    // Also run after a tick to catch first render
+    const t = setTimeout(measure, 50);
+    return () => {
+      ro.disconnect();
+      clearTimeout(t);
+    };
+  }, []);
+
   const yAxisConfig = useMemo(() => {
     const allVals = [];
     chartData.forEach((entry) => {
@@ -299,6 +304,44 @@ function StyledBoxplot({
     );
   }, [chartData, scatterData, seriesIds]);
 
+  // Compute pixel positions for outlier dots from measured plot area
+  const outlierDots = useMemo(() => {
+    const { width: W, plotLeft, plotTop, plotBottom } = wrapperSize;
+    if (!W || !plotLeft || !scatterData.length || !chartData.length) return [];
+
+    const xStart = plotLeft;
+    const xEnd = W - CHART_MARGIN.right;
+    const plotW = xEnd - xStart;
+    const plotH = plotBottom - plotTop;
+
+    const categories = chartData.map((d) => d.label);
+    const nCats = categories.length;
+    const nSeries = seriesIds.length;
+
+    const [yMin, yMax] = yAxisConfig.domain;
+    const yScale = (val) =>
+      plotTop + plotH - ((val - yMin) / (yMax - yMin)) * plotH;
+
+    const bandW = plotW / nCats;
+    const gap = bandW * barCatGapRatio;
+    const usable = bandW - gap;
+    const barW = nSeries > 1 ? (usable - barGapPx) / 2 : usable;
+
+    return scatterData
+      .map((pt) => {
+        const catIdx = categories.indexOf(pt.label);
+        if (catIdx === -1) return null;
+        const bandStart = xStart + catIdx * bandW + gap / 2;
+        const seriesIdx = seriesIds.indexOf(pt.seriesId);
+        const cx =
+          nSeries > 1
+            ? bandStart + seriesIdx * (barW + barGapPx) + barW / 2
+            : bandStart + barW / 2;
+        return { cx, cy: yScale(pt.outlierValue), color: pt.color };
+      })
+      .filter(Boolean);
+  }, [wrapperSize, scatterData, chartData, seriesIds, yAxisConfig]);
+
   const resolvedTooltip = tooltipContent ? (
     tooltipContent
   ) : (
@@ -306,11 +349,14 @@ function StyledBoxplot({
   );
 
   return (
-    <div style={{ width: "100%", height }}>
-      <ResponsiveContainer>
+    <div
+      ref={wrapperRef}
+      style={{ width: "100%", height, position: "relative" }}
+    >
+      <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           data={chartData}
-          margin={{ top: 20, right: 20, bottom: 20, left: -20 }}
+          margin={CHART_MARGIN}
           barCategoryGap="40%"
           barGap={barGapPx}
         >
@@ -372,18 +418,26 @@ function StyledBoxplot({
               />
             </React.Fragment>
           ))}
-
-          <Customized
-            component={(props) => (
-              <OutliersLayer
-                {...props}
-                scatterData={scatterData}
-                seriesIds={seriesIds}
-              />
-            )}
-          />
         </ComposedChart>
       </ResponsiveContainer>
+
+      {/* Outlier dots as absolute SVG overlay — avoids Recharts axis interference */}
+      {outlierDots.length > 0 && (
+        <svg
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        >
+          {outlierDots.map((dot, i) => (
+            <circle key={i} cx={dot.cx} cy={dot.cy} r={4} fill={dot.color} />
+          ))}
+        </svg>
+      )}
     </div>
   );
 }
