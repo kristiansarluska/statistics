@@ -14,6 +14,7 @@ import StandardDeviationCalc from "../../components/content/characteristics/Stan
 import CoefficientOfVariationCalc from "../../components/content/characteristics/CoefficientOfVariationCalc";
 import InterquartileRangeCalc from "../../components/content/characteristics/InterquartileRangeCalc";
 import SkewnessChart from "../../components/charts/random-variable/characteristics/SkewnessChart";
+import KurtosisChart from "../../components/charts/random-variable/characteristics/KurtosisChart";
 
 const Characteristics = () => {
   return (
@@ -363,8 +364,37 @@ const Characteristics = () => {
           </div>
         </div>
 
-        <h4 className="mt-4">Koeficient špicatosti</h4>
-        <p>{/* Content... */}</p>
+        <h4 className="mt-4">Koeficient špicatosti (Kurtosis)</h4>
+        <p className="mb-4">
+          Koeficient špicatosti opisuje koncentráciu hodnôt okolo strednej
+          hodnoty v porovnaní s normálnym rozdelením. Zatiaľ čo laický pohľad sa
+          často upriamuje len na "výšku špicu", v štatistike je dôležitejším
+          prejavom špicatosti tzv.
+          <strong> hrúbka chvostov</strong> (či sa v dátach vyskytujú extrémne
+          odľahlé hodnoty).
+        </p>
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">
+            Interaktívna ukážka: Režim prietokov a bleskové povodne
+          </h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            V hydrológii je tvar rozdelenia kľúčový pre predikciu extrémov.
+            <strong> Špicaté rozdelenie (Leptokurtické)</strong> s tučnými
+            chvostmi modeluje napríklad neskrotenú horskú bystrinu alebo vádí v
+            púšti. Drvivú väčšinu roka je prietok stabilne minimálny (vysoký
+            špic v strede), no ak príde silná búrka, nastane nečakaná extrémna
+            blesková povodeň (hrubé chvosty ďaleko od stredu). Naopak,
+            <strong> ploché rozdelenie (Platykurtické)</strong> predstavuje
+            veľkú rieku regulovanú priehradou. Prietok tu predvídateľne a
+            rovnomerne kolíše v širšom strednom pásme, no k anomálnym extrémnym
+            povodniam takmer nedochádza (tenké chvosty).
+          </p>
+
+          <div className="mb-5">
+            <KurtosisChart />
+          </div>
+        </div>
       </div>
 
       <div id="five-number" className="mb-4">

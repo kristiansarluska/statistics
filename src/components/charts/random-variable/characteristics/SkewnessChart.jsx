@@ -13,9 +13,9 @@ function SkewnessChart() {
     let sum = 0;
     const rawData = [];
 
-    for (let x = 0; x <= 120; x += 2) {
+    for (let x = 0; x <= 100; x += 2) {
       // Ošetrenie presnosti floatu v JS
-      const t = Math.max(0, Math.min(1, x / 120));
+      const t = Math.max(0, Math.min(1, x / 100));
 
       // Výpočet Y s ochranou proti NaN
       let y = Math.pow(t, alpha - 1) * Math.pow(1 - t, beta - 1);
@@ -90,7 +90,7 @@ function SkewnessChart() {
           type="line"
           showReferenceArea={false}
           minX={0} // FIXED: Pevné uzamknutie začiatku osi X
-          maxX={120} // FIXED: Pevné uzamknutie konca osi X
+          maxX={100} // FIXED: Pevné uzamknutie konca osi X
         />
       </div>
     </div>
