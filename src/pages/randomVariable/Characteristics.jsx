@@ -15,7 +15,7 @@ import CoefficientOfVariationCalc from "../../components/content/characteristics
 import InterquartileRangeCalc from "../../components/content/characteristics/InterquartileRangeCalc";
 import SkewnessChart from "../../components/charts/random-variable/characteristics/SkewnessChart";
 import KurtosisChart from "../../components/charts/random-variable/characteristics/KurtosisChart";
-import FiveNumberSummaryBoxplot from "../../components/content/characteristics/FiveNumberSummaryBoxplot";
+import FiveNumberSummaryBoxplot from "../../components/charts/random-variable/characteristics/FiveNumberSummaryBoxplot";
 
 const Characteristics = () => {
   return (
@@ -401,17 +401,17 @@ const Characteristics = () => {
       <div id="five-number" className="mb-4">
         <h3 className="mb-3">Päťčíselná charakteristika a Boxplot</h3>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
-          <p className="mb-4">
-            Päťčíselná charakteristika predstavuje mimoriadne efektívny spôsob
-            zhrnutia dát pomocou piatich kľúčových hodnôt:{" "}
-            <strong>
-              Minimum, Dolný kvartil ($Q_1$), Medián, Horný kvartil ($Q_3$) a
-              Maximum
-            </strong>
-            . Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).
-          </p>
+        <p className="mb-4">
+          Päťčíselná charakteristika predstavuje mimoriadne efektívny spôsob
+          zhrnutia dát pomocou piatich kľúčových hodnôt:{" "}
+          <strong>
+            Minimum, Dolný kvartil ($Q_1$), Medián, Horný kvartil ($Q_3$) a
+            Maximum
+          </strong>
+          . Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).
+        </p>
 
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Interaktívna ukážka: Index atraktivity regiónov (AI_2016)
           </h5>
