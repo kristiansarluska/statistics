@@ -59,8 +59,9 @@ function Sidebar({ closeSidebar }) {
       }
     };
 
-    // Vynútené zachytenie scrollu z akéhokoľvek kontajneru (capture phase)
-    window.addEventListener("scroll", handleScroll, true);
+    const contentEl = document.getElementById("page-content-wrapper");
+    contentEl?.addEventListener("scroll", handleScroll);
+    return () => contentEl?.removeEventListener("scroll", handleScroll);
 
     // Spustenie hneď po načítaní
     handleScroll();

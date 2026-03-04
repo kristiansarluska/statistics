@@ -110,10 +110,10 @@ input:checked + .slider:before {
 /* ====== Global Mobile Fixes ====== */
 html,
 body {
+  height: 100%;
   overflow-x: hidden;
   width: 100%;
   position: relative;
-  /* Zakáže "naťahovanie" za okraj obrazovky na Androide/iOS */
   overscroll-behavior-x: none;
 }
 
@@ -132,7 +132,8 @@ body {
 
 /* ====== Page content ====== */
 #page-content-wrapper {
-  min-width: 100vw;
+  overflow-y: auto;
+  height: 100%;
   /* Pridaný priestor, aby sa posledné kotvy (anchors) dali hladko zoscrollovať nahor */
   padding-bottom: 60vh;
 }

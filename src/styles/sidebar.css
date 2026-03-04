@@ -1,10 +1,10 @@
 /* ====== Base layout ====== */
 #wrapper {
+  height: 100%;
   overflow-x: hidden;
   width: 100%;
   position: relative;
 }
-
 /* ====== Sidebar container ====== */
 #sidebar-wrapper {
   width: 15rem;
@@ -98,17 +98,15 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
 /* ====== Page content ====== */
 #page-content-wrapper {
-  min-width: 100vw;
+  min-width: 0;
+  flex: 1;
   padding-bottom: 60vh;
-  /* Kompenzácia za fixed-top Navbar, aby neprekrýval H1 nadpisy */
   padding-top: 65px;
+  overflow-x: hidden;
 }
 
-@media (min-width: 768px) {
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
+#page-content-wrapper > .container-fluid {
+  max-width: 1200px;
 }
 
 /* ====== Fixed Navbar správanie (Odsúvanie Sidebarom) ====== */
