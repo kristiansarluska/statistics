@@ -236,21 +236,21 @@ const QuantileFunctionSlider = () => {
         )}
         {target && !target.msg && (
           <div
-            className="px-4 py-2 rounded-pill bg-body-tertiary border shadow-sm d-inline-block"
+            className="px-4 py-2 rounded-pill bg-body-tertiary border shadow-sm d-inline-block text-nowrap"
             style={{ fontSize: "0.95rem" }}
           >
             <span className="text-muted me-2">Výsledok:</span>
             Pravdepodobnosti
             <strong
-              className="text-primary d-inline-block text-start ms-1"
-              style={{ width: "75px" }}
+              className="text-primary d-inline-block text-start ms-1 text-nowrap"
+              style={{ width: "85px" }}
             >
               p = {(target.p * 100).toFixed(1)} %
             </strong>{" "}
             zodpovedá hodnota
             <strong
-              className="text-primary d-inline-block text-start ms-1"
-              style={{ width: "85px" }}
+              className="text-primary d-inline-block text-start ms-1 text-nowrap"
+              style={{ width: "100px" }}
             >
               x = {target.x.toFixed(2)} %
             </strong>
@@ -258,14 +258,15 @@ const QuantileFunctionSlider = () => {
         )}
       </div>
 
+      <h6 className="mb-3 text-center">
+        Kvantilová funkcia: Podiel populácie hlavného mesta
+      </h6>
+
       {/* Graf */}
       <div
         className="charts-wrapper w-100 mx-auto"
         style={{ maxWidth: "800px" }}
       >
-        <h6 className="mb-3 text-center">
-          Kvantilová funkcia: Podiel populácie hlavného mesta (Real data)
-        </h6>
         <StyledLineChart
           data={chartData}
           xLabel="p (%)"

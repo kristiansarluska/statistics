@@ -21,104 +21,194 @@ function ContinuousDistributions() {
         toho počítame pravdepodobnosť, že hodnota padne do určitého intervalu.
       </p>
 
-      {/* --- Rovnomerné rozdelenie --- */}
-      <h3 id="uniform-continuous">Rovnomerné rozdelenie</h3>
-      <p>
-        Spojité rovnomerné rozdelenie opisuje náhodnú veličinu, ktorá s rovnakou
-        pravdepodobnosťou nadobúda akúkoľvek hodnotu v uzavretom intervale $ a,
-        b $. Hustota pravdepodobnosti má na tomto intervale konštantnú hodnotu
-        $\frac{1}b - a $ a mimo neho je nulová.
+      {/* ROVNOMERNÉ SPOJITÉ ROZDELENIE */}
+      <h3 id="uniform-continuous" className="mb-3 mt-5">
+        Rovnomerné rozdelenie
+      </h3>
+      <p className="mb-4">
+        Spojité rovnomerné rozdelenie definuje náhodnú veličinu, ktorá môže
+        nadobudnúť akúkoľvek hodnotu v uzavretom intervale{" "}
+        <InlineMath math="[a, b]" />. Hustota pravdepodobnosti je v celom tomto
+        intervale konštantná, čo znamená, že všetky podintervaly rovnakej dĺžky
+        sú rovnako pravdepodobné.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <UniformContinuousChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Čakanie na prírodný úkaz (Gejzír)
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že sledujete gejzír, o ktorom je známe, že vybuchuje
+          náhodne v intervale od <strong>a</strong> do <strong>b</strong> minút
+          od poslednej erupcie. Ak nemáme žiadnu ďalšiu informáciu,
+          predpokladáme, že pravdepodobnosť výbuchu v 14. minúte je rovnaká ako
+          v 18. minúte. Na grafe nižšie vidíte, že hustota pravdepodobnosti
+          tvorí obdĺžnik – jeho plocha musí byť vždy rovná 1, preto sa so
+          zväčšovaním intervalu výška obdĺžnika znižuje.
+        </p>
+
+        <div className="mb-5">
+          <UniformContinuousChart />
+        </div>
       </div>
 
-      {/* --- Exponenciálne rozdelenie --- */}
-      <h3 id="exponential">Exponenciálne rozdelenie</h3>
-      <p>
+      {/* EXPONENCIÁLNE ROZDELENIE */}
+      <h3 id="exponential" className="mb-3 mt-5">
+        Exponenciálne rozdelenie
+      </h3>
+      <p className="mb-4">
         Exponenciálne rozdelenie sa často používa na modelovanie času medzi
-        nezávislými javmi, ktoré sa vyskytujú konštantnou priemernou rýchlosťou.
-        Zaujímavou vlastnosťou tohto rozdelenia je, že je "bez pamäti" –
-        pravdepodobnosť, že jav nastane v ďalšej minúte, nezávisí od toho, koľko
-        času už uplynulo od predchádzajúceho javu.
+        náhodnými udalosťami v Poissonovom procese. Je to rozdelenie s "krátkou
+        pamäťou" – pravdepodobnosť, že udalosť nastane v najbližšom momente,
+        nezávisí od toho, ako dlho už čakáme.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <ExponentialChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Spoľahlivosť monitorovacej siete
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si automatickú meteostanicu v teréne. Exponenciálne
+          rozdelenie modeluje <strong>čas medzi dvoma výpadkami</strong>{" "}
+          odosielania dát. Parameter <strong>&lambda;</strong> (lambda)
+          predstavuje intenzitu porúch – čím je vyššia, tým častejšie k výpadkom
+          dochádza a tým kratšie sú intervaly medzi nimi. Všimnite si, že krivka
+          začína vysoko (krátke intervaly sú najpravdepodobnejšie) a smerom
+          doprava k dlhým časom čakania prudko klesá.
+        </p>
+
+        <div className="mb-5">
+          <ExponentialChart />
+        </div>
       </div>
 
-      {/* --- Normálne rozdelenie --- */}
-      <h3 id="normal">Normálne rozdelenie</h3>
-      <p>
-        Normálne (Gaussovo) rozdelenie je najdôležitejším spojitým rozdelením.
-        Uvedený tvar hustoty pravdepodobnosti je:
-      </p>
-      <BlockMath math="f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 }" />
-      <p>
-        kde <InlineMath math="\mu" /> je stredná hodnota a{" "}
-        <InlineMath math="\sigma" /> smerodajná odchýlka.
+      {/* NORMÁLNE ROZDELENIE */}
+      <h3 id="normal" className="mb-3 mt-5">
+        Normálne (Gaussovo) rozdelenie
+      </h3>
+      <p className="mb-4">
+        Normálne rozdelenie je najdôležitejším rozdelením v štatistike. Je
+        symetrické okolo strednej hodnoty <InlineMath math="\mu" /> a jeho tvar
+        "zvonu" je určený smerodajnou odchýlkou <InlineMath math="\sigma" />. V
+        prírode a technike sa ním riadi väčšina náhodných chýb merania.
       </p>
 
-      {/* Tu sa vyrenderujú slidery a oba grafy naraz */}
-      <div className="w-100">
-        <NormalChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Kalibrácia a presnosť GNSS prijímača
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si meranie polohy stacionárneho bodu pomocou GNSS.
+          Parameter <strong>&mu; (stredná hodnota)</strong> predstavuje
+          systematickú chybu (napr. ak je prístroj zle kalibrovaný a vždy posúva
+          výsledok o 1 meter). Parameter{" "}
+          <strong>&sigma; (smerodajná odchýlka)</strong> určuje presnosť
+          prístroja — čím je menšia, tým sú merania tesnejšie okolo stredu a
+          prístroj je kvalitnejší. Všimnite si, že pri zmenšení{" "}
+          <strong>&sigma;</strong> sa graf zúži a jeho vrchol prudko narastie,
+          pretože celková plocha pod krivkou musí ostať rovná 1.
+        </p>
+
+        <div className="mb-5">
+          <NormalChart />
+        </div>
       </div>
 
-      <CSVDistributions />
+      {/* <CSVDistributions /> zatial necham tak*/}
 
-      {/* --- Chí kvadrát rozdelenie --- */}
-      <h4 id="chi-square">Chí kvadrát rozdelenie</h4>
-      <p>
-        Chí kvadrát rozdelenie s $k$ stupňami voľnosti vzniká ako súčet štvorcov
-        $k$ nezávislých náhodných veličín, ktoré majú štandardizované normálne
-        rozdelenie $N(0, 1)$. Používa sa napríklad pri teste dobrej zhody, teste
-        nezávislosti v kontingenčných tabuľkách alebo pri odhade rozptylu
-        normálneho rozdelenia.
-      </p>
-      <p>Hustota pravdepodobnosti ($\chi^2(k)$) je daná vzorcom:</p>
-      <BlockMath math="f(x; k) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2 - 1} e^{-x/2}, \quad x > 0" />
-      <p>
-        kde $k$ je počet stupňov voľnosti a $\Gamma$ je Gamma funkcia. Tvar
-        rozdelenia závisí od počtu stupňov voľnosti $k$. Pre malé $k$ je
-        rozdelenie výrazne pravostranne zošikmené, s rastúcim $k$ sa približuje
-        k normálnemu rozdeleniu.
+      {/* CHÍ-KVADRÁT ROZDELENIE */}
+      <h3 id="chi-square" className="mb-3 mt-5">
+        Chí-kvadrát rozdelenie (<InlineMath math="\chi^2" />)
+      </h3>
+      <p className="mb-4">
+        Chí-kvadrát rozdelenie je asymetrické a nadobúda len nezáporné hodnoty.
+        Je definované parametrom <strong>df (stupne voľnosti)</strong>. Hrá
+        kľúčovú úlohu pri testovaní hypotéz o rozptyle a pri testoch dobrej
+        zhody.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <ChiSquareChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Kontrola stability presnosti merania
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že testujete presnosť nového laserového diaľkomera.
+          Nevyhodnocujete priemernú dĺžku, ale{" "}
+          <strong>variabilitu (rozptyl)</strong>
+          opakovaných meraní na známu vzdialenosť. <InlineMath math="\chi^2" />{" "}
+          rozdelenie modeluje súčet štvorcov týchto chýb. Parameter{" "}
+          <strong>df (stupne voľnosti)</strong>
+          závisí od počtu vykonaných meraní (n-1). Sledujte, ako sa pri nízkom{" "}
+          <strong>df</strong>
+          pravdepodobnosť koncentruje blízko nuly a so zvyšujúcim sa počtom
+          meraní sa rozdelenie začína podobať na normálne.
+        </p>
+
+        <div className="mb-5">
+          <ChiSquareChart />
+        </div>
       </div>
 
-      {/* --- Studentovo t-rozdelenie --- */}
-      <h4 id="student-t">Studentovo t-rozdelenie</h4>
-      <p>
-        Studentovo t-rozdelenie je symetrické a zvonovité, podobne ako normálne
-        rozdelenie. Rozdiel je však v tom, že t-rozdelenie má "ťažšie chvosty"
-        (vyššiu pravdepodobnosť hodnôt ďaleko od stredu). Používa sa najmä pri
-        odhadoch strednej hodnoty, keď je veľkosť výberového súboru malá a
-        smerodajná odchýlka základného súboru neznáma. So zvyšujúcim sa počtom
-        stupňov voľnosti ($k$) sa t-rozdelenie blíži k štandardizovanému
-        normálnemu rozdeleniu $N(0, 1)$.
+      {/* STUDENTOVO T-ROZDELENIE */}
+      <h3 id="student-t" className="mb-3 mt-5">
+        Studentovo t-rozdelenie
+      </h3>
+      <p className="mb-4">
+        Studentovo t-rozdelenie sa používa na odhad strednej hodnoty populácie v
+        prípadoch, keď je veľkosť vzorky malá a smerodajná odchýlka populácie
+        nie je známa. Je podobné normálnemu rozdeleniu, ale má "ťažšie konce"
+        (vyššiu pravdepodobnosť extrémnych hodnôt).
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <StudentTChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Overenie presnosti nového meracieho prístroja
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že testujete presnosť nového laserového skenera, ale
+          stihli ste vykonať len 5 kontrolných meraní (malá vzorka). Kvôli
+          malému počtu dát máme vyššiu neistotu, čo t-rozdelenie vyjadruje
+          širšími koncami krivky. Parameter{" "}
+          <strong>df (stupne voľnosti)</strong> priamo súvisí s počtom meraní.
+          Všimnite si, že so zvyšujúcim sa <strong>df</strong> sa t-rozdelenie
+          postupne približuje k normálnemu rozdeleniu (čierna prerušovaná čiara
+          v grafe).
+        </p>
+
+        <div className="mb-5">
+          <StudentTChart />
+        </div>
       </div>
 
-      {/* --- Fisherovo F rozdelenie --- */}
-      <h4 id="fisher-f">Fisherovo F-rozdelenie</h4>
-      <p>
-        Fisherovo F-rozdelenie (alebo Snedecorovo rozdelenie) je asymetrické
-        rozdelenie, ktoré sa používa predovšetkým pri testovaní hypotéz, najmä v
-        analýze rozptylu (ANOVA) a pri porovnávaní rozptylov dvoch nezávislých
-        výberov. Je definované ako pomer dvoch nezávislých Chí-kvadrát
-        rozdelení, z ktorých každé je vydelené svojimi stupňami voľnosti. Tvar
-        rozdelenia závisí od dvoch parametrov: stupňov voľnosti čitateľa ($d_1$)
-        a stupňov voľnosti menovateľa ($d_2$). Nadobúda iba nezáporné hodnoty.
+      {/* FISHEROVO F-ROZDELENIE */}
+      <h3 id="fisher-f" className="mb-3 mt-5">
+        Fisherovo F-rozdelenie
+      </h3>
+      <p className="mb-4">
+        Fisherovo-Snedecorovo rozdelenie je kľúčové pre analýzu rozptylu (ANOVA)
+        a testovanie významnosti regresných modelov. Je definované dvoma
+        parametrami stupňov voľnosti:
+        <InlineMath math="df_1" /> (pre čitateľa) a <InlineMath math="df_2" />{" "}
+        (pre menovateľa).
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <FisherFChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Porovnanie kvality ovzdušia v rôznych zónach mesta
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že porovnávate priemerné koncentrácie prachu{" "}
+          <InlineMath math="PM_{10}" /> v priemyselnej, rezidenčnej a parkovej
+          zóne. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi týmito
+          zónami <strong>štatisticky významné</strong> vzhľadom na prirodzené
+          kolísanie hodnôt vnútri každej zóny. Sledujte, ako zmena kombinácie
+          stupňov voľnosti <strong>df1</strong> a <strong>df2</strong> mení
+          asymetriu a "špičatosť" rozdelenia.
+        </p>
+
+        <div className="mb-5">
+          <FisherFChart />
+        </div>
       </div>
     </>
   );

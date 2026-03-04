@@ -25,48 +25,94 @@ const Characteristics = () => {
       <div id="location" className="mb-5">
         <h3 className="mb-3">Charakteristiky polohy</h3>
 
-        <h4 className="mt-4">Aritmetický priemer</h4>
-        <p>
-          Aritmetický priemer je najpoužívanejšou mierou polohy. Predstavuje
-          ťažisko hodnôt náhodnej veličiny. V geoinformatike sa využíva
-          napríklad na určenie najpravdepodobnejšej hodnoty pri opakovaných
-          meraniach toho istého bodu.
+        <h4 className="mb-3">Aritmetický priemer</h4>
+        <p className="mb-4">
+          Aritmetický priemer je najbežnejším odhadom strednej hodnoty. Vypočíta
+          sa ako súčet všetkých nameraných hodnôt vydelený ich počtom. V
+          geoinformatike ho často využívame pri spracovaní opakovaných meraní na
+          tom istom mieste, aby sme eliminovali náhodné chyby.
         </p>
-        <div className="my-4">
-          <ArithmeticMeanCalc />
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">Určenie nadmorskej výšky bodu</h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Pri presnom určovaní nadmorskej výšky bodu vykonávame sériu
+            nezávislých meraní (napr. GNSS aparatúrou). Aritmetický priemer nám
+            poskytne výslednú hodnotu výšky. Vyskúšajte do kalkulačky zadať
+            niekoľko hodnôt blízkych 420 m. Ak pridáte jednu chybnú hodnotu
+            (napr. 480 m kvôli odrazu signálu), uvidíte, ako priemer citlivo
+            zareaguje na tento extrém.
+          </p>
+          <div className="mb-5">
+            <ArithmeticMeanCalc />
+          </div>
         </div>
 
-        <h4 className="mt-4">Harmonický priemer</h4>
-        <p>
-          Harmonický priemer sa v geoinformatike využíva najmä pri výpočte
-          priemerných rýchlostí (napríklad rýchlosť vozidla alebo bezpilotného
-          lietadla), ak sa vzťahujú na rovnako dlhé úseky dráhy.
+        <h4 className="mb-3">Harmonický priemer</h4>
+        <p className="mb-4">
+          Harmonický priemer ($x_h$) je vhodný pre veličiny, ktoré sú definované
+          ako pomery (napr. jednotky za čas). Je to prevrátená hodnota
+          aritmetického priemeru prevrátených hodnôt dát. V geografii ho
+          využívame najmä pri výpočtoch priemerných rýchlostí na úsekoch s
+          rovnakou dĺžkou.
         </p>
-        <div className="my-4">
-          <HarmonicMeanCalc />
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">Priemerná rýchlosť letu dronu pri snímkovaní</h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Predstavte si, že dron letí nad územím po dvoch rovnako dlhých
+            trasách. Prvú preletí rýchlosťou 12,5 m/s (proti vetru) a druhú
+            rýchlosťou 18 m/s (po vetre). Ak chceme vedieť priemernú rýchlosť za
+            celú misiu, aritmetický priemer by nás oklamal. Harmonický priemer
+            správne zohľadní, že dron strávil viac času na pomalšom úseku.
+          </p>
+          <div className="mb-5">
+            <HarmonicMeanCalc />
+          </div>
         </div>
 
-        <h4 className="mt-4">Geometrický priemer</h4>
-        <p>
-          Geometrický priemer je vhodný na výpočet priemerného tempa rastu.
-          Používa sa napríklad pri analýze časových radov v GIS, ako je
-          priemerné ročné tempo expanzie mestskej zástavby alebo zmeny rozlohy
-          lesov.
+        <h4 className="mb-3">Geometrický priemer</h4>
+        <p className="mb-4">
+          Používa sa pre hodnoty, ktoré majú charakter mier rastu alebo indexov.
+          Na rozdiel od aritmetického priemeru pracuje súčinom hodnôt a n-tou
+          odmocninou, čím lepšie zachytáva <strong>kumulatívne zmeny</strong>.
         </p>
-        <div className="my-4">
-          <GeometricMeanCalc />
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">
+            Analýza urbanizácie: Miera rastu zastavaného územia
+          </h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Ak sledujeme, o koľko percent sa rozrástlo mesto v desiatich po sebe
+            idúcich rokoch, geometrický priemer nám povie skutočnú priemernú
+            ročnú mieru rastu. Je ideálny pre dáta, kde každá ďalšia hodnota
+            nadväzuje na predchádzajúcu (reťazové indexy).
+          </p>
+          <div className="mb-5">
+            <GeometricMeanCalc />
+          </div>
         </div>
 
-        <h4 className="mt-4">Vážený priemer</h4>
-        <p>
-          Vážený priemer sa používa v situáciách, kedy jednotlivé merania nemajú
-          rovnakú dôležitosť (váhu). V geoinformatike ho môžeme aplikovať
-          napríklad pri zlučovaní súradníc z viacerých prístrojov, kde váhou je
-          presnosť daného merania (napríklad prevrátená hodnota rozptylu
-          prístroja).
+        <h4 className="mb-3">Vážený priemer</h4>
+        <p className="mb-4">
+          Vážený priemer zohľadňuje nerovnakú dôležitosť alebo presnosť
+          jednotlivých meraní. Každej hodnote priraďujeme váhu ($w_i$), ktorá
+          určuje, akou mierou prispeje k výsledku. Je to kľúčový nástroj pri
+          spájaní dát z rôznych zdrojov.
         </p>
-        <div className="my-4">
-          <WeightedMeanCalc />
+
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+          <h5 className="mb-3">Kombinované meranie nadmorskej výšky</h5>
+          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+            Ak meriame nadmorskú výšku toho istého bodu dvoma rôznymi prístrojmi
+            — profesionálnou GNSS stanicou a smartfónom — nemôžeme ich brať
+            rovnocenne. Profesionálnemu prístroju priradíme vyššiu váhu (napr.
+            podľa prevrátenej hodnoty chyby merania). Vážený priemer tak
+            "pritiahne" výsledok bližšie k spoľahlivejšiemu meraniu.
+          </p>
+          <div className="mb-5">
+            <WeightedMeanCalc />
+          </div>
         </div>
 
         <h3 className="mb-3">Modus</h3>

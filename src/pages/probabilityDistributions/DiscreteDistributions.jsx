@@ -4,88 +4,152 @@ import BernoulliChart from "../../components/charts/probability-distributions/di
 import UniformDiscreteChart from "../../components/charts/probability-distributions/discrete/UniformDiscreteChart";
 import BinomialChart from "../../components/charts/probability-distributions/discrete/BinomialChart";
 import PoissonChart from "../../components/charts/probability-distributions/discrete/PoissonChart";
-import PracticalExample from "../../components/content/PracticalExample";
 
 function DiscreteDistributions() {
   return (
     <>
-      <h2 id="discrete-distributions">Diskrétne rozdelenia</h2>
-      <p>Placeholder text o diskrétnych pravdepodobnostných rozdeleniach.</p>
-
-      <h3 id="bernoulli">Alternatívne rozdelenie</h3>
-      <p>
-        Alternatívne (alebo Bernoulliho) rozdelenie je najjednoduchšie diskrétne
-        rozdelenie. Používa sa pre náhodné veličiny, ktoré môžu mať iba dva
-        možné, vzájomne sa vylučujúce výsledky. Tieto výsledky sa často označujú
-        ako "úspech" (hodnota 1) a "neúspech" (hodnota 0). Množina možných
-        výsledkov je teda <InlineMath math="\Omega = \{0, 1\}" />.
+      <h2 id="discrete-distributions" className="mb-4">
+        Diskrétne rozdelenia
+      </h2>
+      <p className="mb-5">
+        Diskrétne pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré
+        môžu nadobúdať len spočítateľné množstvo hodnôt (napríklad celé čísla).
       </p>
-      <p>
-        Pravdepodobnosť úspechu označíme ako <InlineMath math="p" />, teda{" "}
-        <InlineMath math="P(X=1) = p" />. Keďže sú len dva možné výsledky,
-        pravdepodobnosť neúspechu musí byť <InlineMath math="P(X=0) = 1 - p" />.
-        Parameter <InlineMath math="p" /> musí byť v intervale{" "}
-        <InlineMath math="\langle 0, 1 \rangle" />.
-      </p>
-      <p>Pravdepodobnostná funkcia p(x) je definovaná ako:</p>
-      <BlockMath
-        math={`p(x) = P(X=x) = \\begin{cases} 1-p & \\text{pre } x = 0 \\\\ p & \\text{pre } x = 1 \\\\ 0 & \\text{inak} \\end{cases}`}
-      />
 
-      {/* Graf Alternatívneho rozdelenia */}
-      <div className="charts-wrapper justify-content-center">
-        <BernoulliChart />
+      {/* ALTERNATÍVNE ROZDELENIE */}
+      <h3 id="bernoulli" className="mb-3">
+        Alternatívne (Bernoulliho) rozdelenie
+      </h3>
+      <p className="mb-3">
+        Je to najjednoduchšie diskrétne rozdelenie pre experimenty, ktoré majú
+        iba dva vzájomne sa vylučujúce výsledky: "úspech" (hodnota 1) a
+        "neúspech" (hodnota 0). Množina možných výsledkov je{" "}
+        <InlineMath math="\Omega = \{0, 1\}" />. Pravdepodobnosť úspechu
+        označujeme ako <InlineMath math="p" /> (kde{" "}
+        <InlineMath math="p \in \langle 0, 1 \rangle" />
+        ), teda <InlineMath math="P(X=1) = p" />. Pravdepodobnosť neúspechu je
+        doplnkom do 1, teda <InlineMath math="P(X=0) = 1 - p" />.
+      </p>
+
+      <div className="mb-4">
+        <BlockMath
+          math={`p(x) = P(X=x) = \\begin{cases} 1-p & \\text{pre } x = 0 \\\\ p & \\text{pre } x = 1 \\\\ 0 & \\text{inak} \\end{cases}`}
+        />
       </div>
 
-      {/* Praktický Príklad */}
-      <PracticalExample title="Losovanie guličky">
-        <p>
-          Losujeme jednu guličku z vrecka, kde je 1 biela a 3 čierne guličky.
-          Náhodná veličina X predstavuje výsledok ťahu, kde X=1, ak vytiahneme
-          bielu guličku (úspech) a X=0, ak vytiahneme čiernu (neúspech).
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Klasifikácia satelitnej snímky
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavme si, že analyzujeme satelitnú snímku územia, kde 25 %
+          rozlohy tvorí vodná plocha. Náhodne vyberieme jeden pixel na snímke.
+          Náhodná veličina X nadobúda hodnotu 1 (úspech), ak pixel reprezentuje
+          vodu, a 0 (neúspech), ak ide o pevninu. V grafe nižšie môžete meniť
+          parameter <strong>p</strong> (podiel vodnej plochy v území) a sledovať
+          zmenu pravdepodobnostnej funkcie.
         </p>
-        <p>
-          Pravdepodobnosť vytiahnutia bielej guličky (úspechu) je{" "}
-          <InlineMath math="p = P(X=1) = \frac{1}{1+3} = 0.25" />.
-        </p>
-        <p>
-          Pravdepodobnosť vytiahnutia čiernej guličky (neúspechu) je{" "}
-          <InlineMath math="1-p = P(X=0) = \frac{3}{1+3} = 0.75" />.
-        </p>
-      </PracticalExample>
 
-      <h3 id="uniform-discrete">Rovnomerné rozdelenie</h3>
-      <p>
+        <div className="mb-5">
+          <BernoulliChart />
+        </div>
+      </div>
+
+      {/* ROVNOMERNÉ ROZDELENIE */}
+      <h3 id="uniform-discrete" className="mb-3 mt-5">
+        Rovnomerné rozdelenie
+      </h3>
+      <p className="mb-4">
         Diskrétne rovnomerné rozdelenie opisuje náhodnú veličinu, pri ktorej má
-        každý z konečného počtu $n$ možných výsledkov rovnakú pravdepodobnosť
-        výskytu. Typickým príkladom je hod spravodlivou hracou kockou ($n=6$).
+        každý z konečného počtu <InlineMath math="n" /> možných výsledkov
+        rovnakú pravdepodobnosť výskytu. Pravdepodobnostná funkcia je
+        konštantná: <InlineMath math="P(X=x) = \frac{1}{n}" /> pre všetky možné
+        hodnoty.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <UniformDiscreteChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Náhodný výber administratívnej jednotky
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Predstavte si, že chcete vykonať náhodnú kontrolu kvality ovzdušia v
+          jednom vybranom okrese určitého kraja. Parameter <strong>n</strong> tu
+          predstavuje celkový počet okresov v danom kraji. Ak je výber úplne
+          náhodný, každý okres má rovnakú šancu na kontrolu. Zmenou parametra{" "}
+          <strong>n</strong> na posuvníku simulujete prechod do iného kraja s
+          iným počtom okresov (napr. Bratislavský kraj má{" "}
+          <InlineMath math="n=8" />, Trnavský <InlineMath math="n=7" />
+          ). Všimnite si, že čím viac je okresov, tým nižšia je pravdepodobnosť
+          výberu konkrétneho z nich.
+        </p>
+
+        <div className="mb-5">
+          <UniformDiscreteChart />
+        </div>
       </div>
 
-      <h3 id="binomial">Binomické rozdelenie</h3>
-      <p>
-        Binomické rozdelenie opisuje počet úspechov v postupnosti $n$
-        nezávislých experimentov, pričom každý z nich má rovnakú pravdepodobnosť
-        úspechu $p$.
+      {/* BINOMICKÉ ROZDELENIE (Zatiaľ len placeholder na ďalší krok) */}
+      <h3 id="binomial" className="mb-3 mt-5">
+        Binomické rozdelenie
+      </h3>
+      <p className="mb-4">
+        Binomické rozdelenie opisuje počet úspechov v postupnosti{" "}
+        <InlineMath math="n" /> nezávislých pokusov, pričom v každom pokuse je
+        rovnaká pravdepodobnosť úspechu <InlineMath math="p" />. Je základom pre
+        modelovanie javov s dvoma možnými výsledkami (áno/nie), ktoré sa
+        opakujú.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <BinomialChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Automatická extrakcia objektov (AI detekcia)
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Pri analýze satelitných snímok používame algoritmus na detekciu budov.
+          Parameter <strong>p</strong> predstavuje pravdepodobnosť, že
+          algoritmus správne rozpozná budovu (úspech), a <strong>n</strong> je
+          celkový počet budov na snímke, ktoré má spracovať. Všimnite si, že ak
+          je presnosť algoritmu vysoká (napr. <InlineMath math="p = 0.9" />
+          ), najvyššia pravdepodobnosť sa kumuluje pri hodnote blízkej celkovému
+          počtu budov <strong>n</strong>.
+        </p>
+
+        <div className="mb-5">
+          <BinomialChart />
+        </div>
       </div>
 
-      <h3 id="poisson">Poissonovo rozdelenie</h3>
-      <p>
-        Poissonovo rozdelenie opisuje pravdepodobnosť, že daný počet udalostí sa
-        vyskytne v pevne stanovenom časovom alebo priestorovom intervale.
-        Parameter $\lambda$ (lambda) predstavuje priemerný (očakávaný) počet
-        výskytov javu v tomto intervale.
+      {/* POISSONOVO ROZDELENIE */}
+      <h3 id="poisson" className="mb-3 mt-5">
+        Poissonovo rozdelenie
+      </h3>
+      <p className="mb-4">
+        Poissonovo rozdelenie opisuje pravdepodobnosť výskytu určitého počtu
+        náhodných udalostí v pevne stanovenom časovom alebo priestorovom
+        intervale. Kľúčovým parametrom je <InlineMath math="\lambda" />{" "}
+        (lambda), ktorý predstavuje priemerný počet týchto udalostí na danú
+        jednotku.
       </p>
 
-      <div className="charts-wrapper justify-content-center">
-        <PoissonChart />
+      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <h5 className="mb-3">
+          Príklad z praxe: Kontrola kvality digitálneho modelu reliéfu (DMR)
+        </h5>
+        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          Pri spracovaní dát z leteckého laserového skenovania môžu vznikať v
+          modeli chybné body (tzv. artefakty). Predpokladajme, že pri
+          štandardnej kvalite spracovania sa v priemere vyskytuje{" "}
+          <strong>&lambda;</strong> chýb na 100 hektárov plochy. Poissonovo
+          rozdelenie nám povie, aká je pravdepodobnosť, že na nasledujúcej
+          kontrolovanej ploche nenájdeme žiadnu chybu, alebo ich tam bude naopak
+          neprirodzene veľa. Sledujte, ako sa pri zvyšovaní priemerného počtu
+          chýb (<strong>&lambda;</strong>) rozdelenie "rozťahuje" a vrchol sa
+          posúva doprava.
+        </p>
+
+        <div className="mb-5">
+          <PoissonChart />
+        </div>
       </div>
     </>
   );

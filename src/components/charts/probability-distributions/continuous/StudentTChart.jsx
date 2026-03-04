@@ -5,7 +5,7 @@ import { studentTPDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function StudentTChart() {
-  const [k, setK] = useState(3); // Stupne voľnosti (štandardne začneme na 3)
+  const [k, setK] = useState(5); // Stupne voľnosti (štandardne začneme na 5)
   const [hoverX, setHoverX] = useState(null);
 
   // Fixný rozsah pre stabilnú os X (zameranie na stred a ťažké chvosty)
@@ -41,7 +41,7 @@ function StudentTChart() {
           className="form-range"
           id="kRangeStudent"
           min="1"
-          max="10"
+          max="30"
           step="1"
           value={k}
           onChange={(e) => setK(Number(e.target.value))}

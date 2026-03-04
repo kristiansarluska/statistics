@@ -58,7 +58,7 @@ const renderCDFTooltip = ({
   return null;
 };
 
-const DEFAULT_COUNTS = ["1", "5", "10", "10", "5", "1"];
+const DEFAULT_COUNTS = ["10", "20", "35", "20", "10", "5"];
 
 function DiscreteDistributionChart() {
   const [hoverX, setHoverX] = useState(null);

@@ -21,14 +21,14 @@ import { getAxisConfig } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function UniformContinuousChart() {
-  const [a, setA] = useState(-5);
-  const [b, setB] = useState(5);
+  const [a, setA] = useState(12);
+  const [b, setB] = useState(20);
   const [hoverX, setHoverX] = useState(null);
   const [animated, setAnimated] = useState(true);
   const prevDataRef = useRef([]);
 
-  const minX = -10;
-  const maxX = 10;
+  const minX = 0;
+  const maxX = 30;
   const step = 1;
 
   const handleAChange = (e) => {
