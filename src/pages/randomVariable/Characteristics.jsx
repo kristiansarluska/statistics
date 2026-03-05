@@ -33,7 +33,7 @@ const Characteristics = () => {
           tom istom mieste, aby sme eliminovali náhodné chyby.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Určenie nadmorskej výšky bodu</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Pri presnom určovaní nadmorskej výšky bodu vykonávame sériu
@@ -57,7 +57,7 @@ const Characteristics = () => {
           rovnakou dĺžkou.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Priemerná rýchlosť letu dronu pri snímkovaní</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Predstavte si, že dron letí nad územím po dvoch rovnako dlhých
@@ -78,7 +78,7 @@ const Characteristics = () => {
           odmocninou, čím lepšie zachytáva <strong>kumulatívne zmeny</strong>.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Analýza urbanizácie: Miera rastu zastavaného územia
           </h5>
@@ -101,7 +101,7 @@ const Characteristics = () => {
           spájaní dát z rôznych zdrojov.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Kombinované meranie nadmorskej výšky</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Ak meriame nadmorskú výšku toho istého bodu dvoma rôznymi prístrojmi
@@ -123,7 +123,7 @@ const Characteristics = () => {
           diskrétne dáta je to však priama, konkrétna hodnota.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirický modus: Počet poschodí v mestskej zástavbe
           </h5>
@@ -149,7 +149,7 @@ const Characteristics = () => {
           väčšia alebo rovná mediánu.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirický medián: Výška budov a rezistencia voči extrémom
           </h5>
@@ -186,7 +186,7 @@ const Characteristics = () => {
           extrémne citlivý na odľahlé (extrémne) hodnoty.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirické variačné rozpätie: Prevýšenie lyžiarskeho svahu
           </h5>
@@ -213,7 +213,7 @@ const Characteristics = () => {
           meraní, nielen z extrémov.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirická priemerná odchýlka: Opakované meranie dĺžky
           </h5>
@@ -240,7 +240,7 @@ const Characteristics = () => {
           týchto dvojíc.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirická stredná diferencia: Heterogenita znečistenia ovzdušia
           </h5>
@@ -269,7 +269,7 @@ const Characteristics = () => {
           stupne Celzia na druhú), čo je ťažšie na priamu interpretáciu.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirický rozptyl: Heterogenita mračna bodov (LiDAR)
           </h5>
@@ -297,7 +297,7 @@ const Characteristics = () => {
           typicky odchyľujú od priemeru.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirická smerodajná odchýlka: Mestský ostrov tepla (UHI)
           </h5>
@@ -331,7 +331,7 @@ const Characteristics = () => {
           vs. hrúbky ich kmeňov).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirický variačný koeficient: Priestorová nestálosť zrážok
           </h5>
@@ -363,7 +363,7 @@ const Characteristics = () => {
           outlierom).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirické IQR: Trhové ceny pozemkov a vplyv extrémov
           </h5>
@@ -395,7 +395,7 @@ const Characteristics = () => {
           smerom k nižším hodnotám, ide o <strong>zápornú šikmosť</strong>.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Interaktívna ukážka: Veková štruktúra lesa</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Presuňte bežec pre zmenu šikmosti rozdelenia veku stromov v lese.
@@ -421,7 +421,7 @@ const Characteristics = () => {
           odľahlé hodnoty).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Interaktívna ukážka: Režim prietokov a bleskové povodne
           </h5>
@@ -457,7 +457,7 @@ const Characteristics = () => {
           . Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Interaktívna ukážka: Index atraktivity regiónov (AI_2016)
           </h5>

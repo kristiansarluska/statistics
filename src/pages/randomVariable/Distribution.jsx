@@ -40,7 +40,7 @@ const Distribution = () => {
           <strong>plochou pod krivkou hustoty</strong> na danom úseku.
         </p>
 
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Príklad: Počet viditeľných GNSS satelitov (PMF)
           </h5>
@@ -55,7 +55,7 @@ const Distribution = () => {
           <SimulatedPMFChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Simulácia odchýlky GNSS merania (Hustota pravdepodobnosti)
           </h5>
@@ -84,7 +84,7 @@ const Distribution = () => {
           ukazuje okamžitý stav, distribučná funkcia ponúka súhrnný obraz.
         </p>
 
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Diskrétny prípad: Dostupnosť družicových dát</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Predstavte si, že mesačne očakávate max. 5 preletov družice. Náhodná
@@ -109,7 +109,7 @@ const Distribution = () => {
           <DiscreteDistributionChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Spojitý prípad: Distribúcia chýb GNSS merania
           </h5>
@@ -153,7 +153,7 @@ const Distribution = () => {
         </p>
 
         {/* KVANTILOVÁ FUNKCIA Z REÁLNYCH DÁT */}
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Príklad z praxe: Podiel obyvateľstva v hlavnom meste
           </h5>
@@ -179,7 +179,7 @@ const Distribution = () => {
           </div>
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             Empirická kvantilová funkcia: Výška stromov v rezervácii
           </h5>

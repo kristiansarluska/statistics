@@ -33,7 +33,7 @@ function ContinuousDistributions() {
         sú rovnako pravdepodobné.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Čakanie na prírodný úkaz (Gejzír)
         </h5>
@@ -63,7 +63,7 @@ function ContinuousDistributions() {
         nezávisí od toho, ako dlho už čakáme.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Spoľahlivosť monitorovacej siete
         </h5>
@@ -93,7 +93,7 @@ function ContinuousDistributions() {
         prírode a technike sa ním riadi väčšina náhodných chýb merania.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Kalibrácia a presnosť GNSS prijímača
         </h5>
@@ -127,7 +127,7 @@ function ContinuousDistributions() {
         zhody.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Kontrola stability presnosti merania
         </h5>
@@ -160,7 +160,7 @@ function ContinuousDistributions() {
         (vyššiu pravdepodobnosť extrémnych hodnôt).
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Overenie presnosti nového meracieho prístroja
         </h5>
@@ -192,7 +192,7 @@ function ContinuousDistributions() {
         (pre menovateľa).
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Porovnanie kvality ovzdušia v rôznych zónach mesta
         </h5>

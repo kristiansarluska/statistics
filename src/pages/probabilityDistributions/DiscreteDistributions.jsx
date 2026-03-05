@@ -37,7 +37,7 @@ function DiscreteDistributions() {
         />
       </div>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Klasifikácia satelitnej snímky
         </h5>
@@ -67,7 +67,7 @@ function DiscreteDistributions() {
         hodnoty.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Náhodný výber administratívnej jednotky
         </h5>
@@ -100,7 +100,7 @@ function DiscreteDistributions() {
         opakujú.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Automatická extrakcia objektov (AI detekcia)
         </h5>
@@ -131,7 +131,7 @@ function DiscreteDistributions() {
         jednotku.
       </p>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
+      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Kontrola kvality digitálneho modelu reliéfu (DMR)
         </h5>
