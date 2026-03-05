@@ -1,7 +1,7 @@
 // src/components/charts/probability-distributions/continuous/StudentTChart.jsx
 import React, { useState, useMemo } from "react";
 import StyledLineChart from "../../helpers/StyledLineChart";
-import { studentTPDF } from "../../../../utils/distributions";
+import { studentTPDF, studentTCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function StudentTChart() {
@@ -12,25 +12,27 @@ function StudentTChart() {
   const minX = -5;
   const maxX = 5;
 
-  const chartData = useMemo(() => {
-    const data = [];
+  const { dataPDF, dataCDF } = useMemo(() => {
+    const pdf = [];
+    const cdf = [];
     const step = (maxX - minX) / 200;
 
     for (let i = 0; i <= 200; i++) {
       const x = i === 200 ? maxX : minX + i * step;
-      data.push({ x, y: studentTPDF(x, k) });
+      pdf.push({ x, y: studentTPDF(x, k) });
+      cdf.push({ x, y: studentTCDF(x, k) });
     }
-    return data;
+    return { dataPDF: pdf, dataCDF: cdf };
   }, [k]);
 
   // Pevný strop osi Y pre perfektné zobrazenie toho, ako vrchol rastie s k
-  const maxY = 0.5;
+  const maxY_PDF = 0.5;
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Parameter Control (Slider) */}
+      {/* Ovládacie prvky (Slider) */}
       <div
-        className="controls mb-3"
+        className="controls mb-4"
         style={{ width: "100%", maxWidth: "400px" }}
       >
         <label htmlFor="kRangeStudent" className="form-label w-100 text-center">
@@ -48,22 +50,40 @@ function StudentTChart() {
         />
       </div>
 
-      {/* Render Chart */}
-      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        <StyledLineChart
-          data={chartData}
-          title={`Studentovo t-rozdelenie (k=${k})`}
-          xLabel="t"
-          yLabel="f(t)"
-          lineClass="chart-line-primary"
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-          minX={minX}
-          maxX={maxX}
-          yAxisDomain={[0, maxY]} // Fixná os Y
-          type="pdf"
-          showReferenceArea={false}
-        />
+      {/* Prepojené grafy v spoločnom wrapperi */}
+      <div className="charts-wrapper w-100">
+        <div>
+          <StyledLineChart
+            data={dataPDF}
+            title={`Hustota pravdepodobnosti (PDF)`}
+            xLabel="t"
+            yLabel="f(t; k)"
+            lineClass="chart-line-primary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, maxY_PDF]} // Fixná os Y
+            type="pdf"
+            showReferenceArea={true}
+          />
+        </div>
+        <div>
+          <StyledLineChart
+            data={dataCDF}
+            title={`Distribučná funkcia (CDF)`}
+            xLabel="t"
+            yLabel="F(t; k)"
+            lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, 1.1]}
+            type="cdf"
+            showReferenceArea={false}
+          />
+        </div>
       </div>
     </div>
   );

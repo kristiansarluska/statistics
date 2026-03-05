@@ -1,3 +1,4 @@
+// src/components/charts/probability-distributions/continuous/UniformContinuousChart.jsx
 import React, {
   useState,
   useMemo,
@@ -17,6 +18,7 @@ import {
   ReferenceDot,
 } from "recharts";
 import CustomTooltip from "../../helpers/CustomTooltip";
+import StyledLineChart from "../../helpers/StyledLineChart";
 import { getAxisConfig } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
@@ -46,32 +48,56 @@ function UniformContinuousChart() {
     [minX, maxX],
   );
 
-  const { chartData, openCircleData, closedCircleData } = useMemo(() => {
-    const height = 1 / (b - a);
+  const { chartData, openCircleData, closedCircleData, cdfData } =
+    useMemo(() => {
+      const height = 1 / (b - a);
+      const epsilon = 1e-7;
 
-    const lData = [
-      { x: minX, y: 0 },
-      { x: a, y: 0 },
-      { x: a, y: null },
-      { x: a, y: height },
-      { x: b, y: height },
-      { x: b, y: null },
-      { x: b, y: 0 },
-      { x: maxX, y: 0 },
-    ];
+      // --- Dáta pre PDF (Hustota) ---
+      const lData = [
+        { x: minX, y: 0 },
+        { x: a - epsilon, y: 0 },
+        { x: a, y: null },
+        { x: a, y: height },
+        { x: b, y: height },
+        { x: b, y: null },
+        { x: b + epsilon, y: 0 },
+        { x: maxX, y: 0 },
+      ];
 
-    const cData = [
-      { x: a, y: height },
-      { x: b, y: height },
-    ];
+      const cData = [
+        { x: a, y: height },
+        { x: b, y: height },
+      ];
 
-    const oData = [
-      { x: a, y: 0 },
-      { x: b, y: 0 },
-    ];
+      const oData = [
+        { x: a, y: 0 },
+        { x: b, y: 0 },
+      ];
 
-    return { chartData: lData, openCircleData: oData, closedCircleData: cData };
-  }, [a, b, minX, maxX]);
+      // --- Dáta pre CDF (Distribučná funkcia) ---
+      const cdf = [];
+      const numPoints = 300; // Dostatočne hustá sieť pre hladký hover
+      const stepSize = (maxX - minX) / numPoints;
+
+      for (let i = 0; i <= numPoints; i++) {
+        const x = i === numPoints ? maxX : minX + i * stepSize;
+        let y = 0;
+        if (x >= b) {
+          y = 1;
+        } else if (x > a) {
+          y = (x - a) / (b - a);
+        }
+        cdf.push({ x, y });
+      }
+
+      return {
+        chartData: lData,
+        openCircleData: oData,
+        closedCircleData: cData,
+        cdfData: cdf,
+      };
+    }, [a, b, minX, maxX]);
 
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(chartData)) {
@@ -125,6 +151,7 @@ function UniformContinuousChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Ovládacie prvky (Slidre) */}
       <div
         className="controls mb-4"
         style={{ width: "100%", maxWidth: "400px" }}
@@ -175,19 +202,25 @@ function UniformContinuousChart() {
         </div>
       </div>
 
-      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        <div className="chart-container">
-          <div className="chart-title">{`Spojité rovnomerné rozdelenie U(${a}, ${b})`}</div>
+      <h5 className="mb-4 text-center fw-bold">
+        Spojité rovnomerné rozdelenie U({a}, {b})
+      </h5>
+
+      {/* Prepojené grafy */}
+      <div className="charts-wrapper w-100">
+        {/* PDF Graf (Zložitý Custom Chart kvôli zlomom a bodom) */}
+        <div>
+          <h6 className="mb-3 text-center">Hustota pravdepodobnosti (PDF)</h6>
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart
-              margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
+              margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
               onMouseMove={handleChartInteraction}
               onTouchMove={handleChartInteraction}
               onTouchStart={handleChartInteraction}
               onClick={handleChartInteraction}
               onMouseLeave={() => setHoverX(null)}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis
                 dataKey="x"
                 type="number"
@@ -195,7 +228,6 @@ function UniformContinuousChart() {
                 ticks={xConfig.ticks}
                 allowDecimals={true}
                 label={{ value: "x", position: "insideBottom", offset: -15 }}
-                className="chart-axis"
                 tickFormatter={xConfig.formatTick}
                 allowDuplicatedCategory={false}
               />
@@ -206,7 +238,6 @@ function UniformContinuousChart() {
                   position: "insideLeft",
                   offset: -10,
                 }}
-                className="chart-axis"
                 tickFormatter={yConfig.formatTick}
                 domain={yConfig.domain}
                 ticks={yConfig.ticks}
@@ -311,6 +342,24 @@ function UniformContinuousChart() {
               )}
             </ComposedChart>
           </ResponsiveContainer>
+        </div>
+
+        {/* CDF Graf (Pomocou šablóny StyledLineChart) */}
+        <div>
+          <h6 className="mb-3 text-center">Distribučná funkcia (CDF)</h6>
+          <StyledLineChart
+            data={cdfData}
+            xLabel="x"
+            yLabel="F(x)"
+            lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, 1.1]}
+            type="cdf"
+            showReferenceArea={false}
+          />
         </div>
       </div>
     </div>

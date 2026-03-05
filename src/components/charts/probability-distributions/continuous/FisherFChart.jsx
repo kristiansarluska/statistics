@@ -1,7 +1,7 @@
 // src/components/charts/probability-distributions/continuous/FisherFChart.jsx
 import React, { useState, useMemo } from "react";
 import StyledLineChart from "../../helpers/StyledLineChart";
-import { fisherFPDF } from "../../../../utils/distributions";
+import { fisherFPDF, fisherFCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function FisherFChart() {
@@ -12,45 +12,42 @@ function FisherFChart() {
   const minX = 0;
   const maxX = 5;
 
-  const chartData = useMemo(() => {
-    const data = [];
+  const { dataPDF, dataCDF } = useMemo(() => {
+    const pdf = [];
+    const cdf = [];
     const step = maxX / 200;
 
     for (let i = 0; i <= 200; i++) {
       const x = i === 200 ? maxX : i * step;
       const safeX = x === 0 ? 0.0001 : x;
 
-      let y = fisherFPDF(safeX, d1, d2);
+      let yPDF = fisherFPDF(safeX, d1, d2);
 
-      // Už nezastrihávame y na 1, aby sme nesploštili vrchol pri vysokých d1, d2.
-      // Zastrihneme ho len na 2.5, aby asymptota pri d1=1 "neodpálila" vykresľovanie.
-      if (y > 2.5) y = 2.5;
+      // We clip y to 2.5 only to prevent the asymptote at d1=1 from ruining the scale
+      if (yPDF > 2.5) yPDF = 2.5;
 
-      data.push({ x, y });
+      pdf.push({ x, y: yPDF });
+      cdf.push({ x, y: fisherFCDF(x, d1, d2) });
     }
-    return data;
+    return { dataPDF: pdf, dataCDF: cdf };
   }, [d1, d2]);
 
-  // Dynamický výpočet pre maxY
-  const maxY = useMemo(() => {
-    // Nájdeme vrchol "kopčeka".
-    // Ignorujeme prvé body (x < 0.1), aby asymptota pri d1=1 nespustila tento limit.
-    const peak = Math.max(
-      ...chartData.filter((d) => d.x >= 0.1).map((d) => d.y),
-    );
+  // Dynamic calculation for Y-axis maximum on PDF chart
+  const maxY_PDF = useMemo(() => {
+    // Find the peak, ignoring early values (x < 0.1) so d1=1 asymptote doesn't trigger it
+    const peak = Math.max(...dataPDF.filter((d) => d.x >= 0.1).map((d) => d.y));
 
-    // Ak sa vrchol priblíži k 1 (napr. prevýši 0.85), zdvihneme os na 1.2
+    // If peak gets close to 1, raise axis to 1.2
     if (peak > 0.85) {
       return 1.2;
     }
 
-    // Štandardne držíme pevnú a peknú os 1.0
     return 1.0;
-  }, [chartData]);
+  }, [dataPDF]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládacie prvky (Slidery) */}
+      {/* Controls (Sliders) */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
         style={{ width: "100%", maxWidth: "500px" }}
@@ -88,22 +85,40 @@ function FisherFChart() {
         </div>
       </div>
 
-      {/* Render Chart */}
-      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        <StyledLineChart
-          data={chartData}
-          title={`Fisherovo F-rozdelenie (d₁=${d1}, d₂=${d2})`}
-          xLabel="x"
-          yLabel="f(x)"
-          lineClass="chart-line-primary"
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-          minX={minX}
-          maxX={maxX}
-          yAxisDomain={[0, maxY]} // Bude 1.0 alebo 1.2
-          type="pdf"
-          showReferenceArea={false}
-        />
+      {/* Linked Charts in wrapper */}
+      <div className="charts-wrapper w-100">
+        <div>
+          <StyledLineChart
+            data={dataPDF}
+            title={`Hustota pravdepodobnosti (PDF)`}
+            xLabel="x"
+            yLabel="f(x; d₁, d₂)"
+            lineClass="chart-line-primary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, maxY_PDF]} // Will be 1.0 or 1.2
+            type="pdf"
+            showReferenceArea={true}
+          />
+        </div>
+        <div>
+          <StyledLineChart
+            data={dataCDF}
+            title={`Distribučná funkcia (CDF)`}
+            xLabel="x"
+            yLabel="F(x; d₁, d₂)"
+            lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, 1.1]}
+            type="cdf"
+            showReferenceArea={false}
+          />
+        </div>
       </div>
     </div>
   );

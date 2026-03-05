@@ -176,6 +176,24 @@ export function chiSquarePDF(x, k) {
   return result;
 }
 
+export function chiSquareCDF(x, k) {
+  if (x <= 0 || k <= 0) return 0;
+  const s = k / 2;
+  const z = x / 2;
+
+  // Výpočet pomocou nekonečného radu pre neúplnú gama funkciu
+  let sum = 1 / s;
+  let term = 1 / s;
+  for (let i = 1; i < 200; i++) {
+    term = (term * z) / (s + i);
+    sum += term;
+    if (term < 1e-12) break; // Zastavíme, keď je ďalší príspevok zanedbateľný
+  }
+
+  const result = ((Math.exp(-z) * Math.pow(z, s)) / gamma(s)) * sum;
+  return isNaN(result) || !isFinite(result) ? 0 : result;
+}
+
 // Helper for combinations (n choose k)
 export const getCombinations = (n, k) => {
   if (k === 0 || k === n) return 1;
@@ -214,6 +232,12 @@ export const exponentialPDF = (x, lambda) => {
   return lambda * Math.exp(-lambda * x);
 };
 
+// Exponenciálne rozdelenie (CDF)
+export const exponentialCDF = (x, lambda) => {
+  if (x < 0) return 0;
+  return 1 - Math.exp(-lambda * x);
+};
+
 // Hustota pravdepodobnosti Studentovho t-rozdelenia (PDF)
 export const studentTPDF = (x, k) => {
   const numerator = gamma((k + 1) / 2);
@@ -221,6 +245,29 @@ export const studentTPDF = (x, k) => {
   const base = 1 + (x * x) / k;
   const exponent = -(k + 1) / 2;
   return (numerator / denominator) * Math.pow(base, exponent);
+};
+
+// Distribučná funkcia Studentovho t-rozdelenia (CDF) - Numerická integrácia
+export const studentTCDF = (x, k) => {
+  if (x === 0) return 0.5;
+  const isNegative = x < 0;
+  const absX = Math.abs(x);
+
+  // Simpsonovo pravidlo pre výpočet integrálu od 0 po |x|
+  const n = 100; // Počet krokov (musí byť párne)
+  const h = absX / n;
+  let sum = studentTPDF(0, k) + studentTPDF(absX, k);
+
+  for (let i = 1; i < n; i++) {
+    const t = i * h;
+    sum += (i % 2 === 0 ? 2 : 4) * studentTPDF(t, k);
+  }
+
+  const integral = (h / 3) * sum;
+  const result = 0.5 + integral;
+
+  // Využívame symetriu rozdelenia
+  return isNegative ? 1 - result : result;
 };
 
 // Hustota pravdepodobnosti Fisherovho F-rozdelenia (PDF)
@@ -235,4 +282,24 @@ export const fisherFPDF = (x, d1, d2) => {
 
   const result = (num1 / den1) * factor1 * factor2 * factor3;
   return isNaN(result) || !isFinite(result) ? 0 : result;
+};
+
+// Cumulative Distribution Function for Fisher's F-distribution (Numerical Integration)
+export const fisherFCDF = (x, d1, d2) => {
+  if (x <= 0) return 0;
+
+  const n = 100; // Number of integration steps (must be even)
+  const h = x / n;
+
+  // For d1 < 2, PDF goes to infinity at x=0, so we start slightly above 0
+  let sum = fisherFPDF(1e-5, d1, d2) + fisherFPDF(x, d1, d2);
+
+  for (let i = 1; i < n; i++) {
+    const t = i * h;
+    sum += (i % 2 === 0 ? 2 : 4) * fisherFPDF(t, d1, d2);
+  }
+
+  const result = (h / 3) * sum;
+  // Clamp to 1 to prevent floating point inaccuracies from exceeding 100%
+  return Math.min(result, 1);
 };

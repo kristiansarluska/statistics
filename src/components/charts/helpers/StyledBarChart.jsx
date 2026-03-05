@@ -30,6 +30,23 @@ const AnimatedCursor = (props) => {
   );
 };
 
+const AnimatedAreaShape = (props) => {
+  const { x, y, width, height } = props;
+  if (x == null || y == null || isNaN(width) || isNaN(height)) return null;
+
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={Math.max(0, width)}
+      height={Math.max(0, height)}
+      fill="var(--bs-primary)"
+      fillOpacity={0.1}
+      style={{ transition: "x 0.2s ease, width 0.2s ease" }}
+    />
+  );
+};
+
 function StyledBarChart({
   data,
   xLabel,
@@ -116,12 +133,7 @@ function StyledBarChart({
         />
 
         {showReferenceArea && hoverX !== null && hoverX !== undefined && (
-          <ReferenceArea
-            x1={rX1}
-            x2={rX2}
-            fill="var(--bs-primary)"
-            fillOpacity={0.1}
-          />
+          <ReferenceArea x1={rX1} x2={rX2} shape={<AnimatedAreaShape />} />
         )}
 
         {children ? (

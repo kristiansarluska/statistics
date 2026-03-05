@@ -1,7 +1,10 @@
 // src/components/charts/probability-distributions/continuous/ExponentialChart.jsx
 import React, { useState, useMemo } from "react";
 import StyledLineChart from "../../helpers/StyledLineChart";
-import { exponentialPDF } from "../../../../utils/distributions";
+import {
+  exponentialPDF,
+  exponentialCDF,
+} from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function ExponentialChart() {
@@ -12,18 +15,20 @@ function ExponentialChart() {
   const minX = 0;
   const maxX = 10;
 
-  const chartData = useMemo(() => {
-    const data = [];
+  const { dataPDF, dataCDF } = useMemo(() => {
+    const pdf = [];
+    const cdf = [];
     const step = maxX / 200;
 
     for (let i = 0; i <= 200; i++) {
       const x = i === 200 ? maxX : i * step;
-      data.push({ x, y: exponentialPDF(x, lambda) });
+      pdf.push({ x, y: exponentialPDF(x, lambda) });
+      cdf.push({ x, y: exponentialCDF(x, lambda) });
     }
-    return data;
-  }, [lambda]); // maxX je teraz konštanta, takže sme ju odstránili zo závislostí
+    return { dataPDF: pdf, dataCDF: cdf };
+  }, [lambda]);
 
-  const maxY = useMemo(() => {
+  const maxY_PDF = useMemo(() => {
     // Krivka vždy začína v bode y = lambda.
     // Pridáme 10 % rezervu a zaokrúhlime na desatiny pre pekný vzhľad.
     return (Math.floor(lambda * 1.1 * 10) + 1) / 10;
@@ -31,9 +36,9 @@ function ExponentialChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Parameter Control (Slider) */}
+      {/* Ovládacie prvky (Slider) */}
       <div
-        className="controls mb-3"
+        className="controls mb-4"
         style={{ width: "100%", maxWidth: "300px" }}
       >
         <label
@@ -54,22 +59,40 @@ function ExponentialChart() {
         />
       </div>
 
-      {/* Render Chart */}
-      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        <StyledLineChart
-          data={chartData}
-          title={`Exponenciálne rozdelenie Exp(${lambda.toFixed(1)})`}
-          xLabel="x"
-          yLabel="f(x)"
-          lineClass="chart-line-primary"
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-          minX={minX}
-          maxX={maxX}
-          yAxisDomain={[0, maxY]}
-          type="pdf"
-          showReferenceArea={false}
-        />
+      {/* Prepojené grafy v spoločnom wrapperi */}
+      <div className="charts-wrapper w-100">
+        <div>
+          <StyledLineChart
+            data={dataPDF}
+            title="Hustota pravdepodobnosti (PDF)"
+            xLabel="x"
+            yLabel="f(x)"
+            lineClass="chart-line-primary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, maxY_PDF]}
+            type="pdf"
+            showReferenceArea={true}
+          />
+        </div>
+        <div>
+          <StyledLineChart
+            data={dataCDF}
+            title="Distribučná funkcia (CDF)"
+            xLabel="x"
+            yLabel="F(x)"
+            lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={minX}
+            maxX={maxX}
+            yAxisDomain={[0, 1.1]}
+            type="cdf"
+            showReferenceArea={false}
+          />
+        </div>
       </div>
     </div>
   );

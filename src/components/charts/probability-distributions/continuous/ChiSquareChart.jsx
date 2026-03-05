@@ -1,52 +1,55 @@
 // src/components/charts/probability-distributions/continuous/ChiSquareChart.jsx
 import React, { useState, useMemo } from "react";
-import { chiSquarePDF } from "../../../../utils/distributions";
 import StyledLineChart from "../../helpers/StyledLineChart";
+import { chiSquarePDF, chiSquareCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function ChiSquareChart() {
   const [k, setK] = useState(5);
+  const [hoverX, setHoverX] = useState(null);
 
-  const chartData = useMemo(() => {
-    const dataPoints = [];
-    const maxX = k + 4 * Math.sqrt(2 * k);
-    const step = maxX / 200;
+  const { dataPDF, dataCDF, maxX, maxY_PDF } = useMemo(() => {
+    const pdf = [];
+    const cdf = [];
+    // Dynamický rozsah osi X na základe stupňov voľnosti
+    const calculatedMaxX = k + 4 * Math.sqrt(2 * k);
+    const step = calculatedMaxX / 200;
 
-    for (let x = step; x <= maxX; x += step) {
-      const y = chiSquarePDF(x, k);
-      if (!isNaN(y) && isFinite(y)) {
-        dataPoints.push({ x: x, y: y }); // Presná hodnota X
+    for (let i = 1; i <= 200; i++) {
+      const x = i === 200 ? calculatedMaxX : i * step;
+      const yPDF = chiSquarePDF(x, k);
+      const yCDF = chiSquareCDF(x, k);
+
+      if (!isNaN(yPDF) && isFinite(yPDF)) {
+        pdf.push({ x, y: yPDF });
       }
+      cdf.push({ x, y: yCDF });
     }
 
-    if (k > 2 && dataPoints.length > 0 && dataPoints[0].x > step / 2) {
-      dataPoints.unshift({ x: 0, y: 0 });
+    // Pre k > 2 začína hustota presne v bode [0, 0]
+    if (k > 2) {
+      pdf.unshift({ x: 0, y: 0 });
+      cdf.unshift({ x: 0, y: 0 });
+    } else {
+      // Pre k = 1 a k = 2 PDF v nule uteká do nekonečna alebo je 1/2, ale CDF je v nule vždy 0
+      cdf.unshift({ x: 0, y: 0 });
     }
-    return dataPoints;
-  }, [k]);
 
-  const { minY, maxY, minX, maxX } = useMemo(() => {
-    if (!chartData || chartData.length === 0)
-      return { minY: 0, maxY: 1, minX: 0, maxX: 10 };
-
-    const ys = chartData.map((p) => p.y);
-    const xs = chartData.map((p) => p.x);
-    const calculatedMaxY = Math.max(...ys.filter((y) => isFinite(y)), 0);
+    const calculatedMaxY = Math.max(...pdf.map((p) => p.y), 0);
 
     return {
-      minY: 0,
-      maxY: calculatedMaxY > 0 ? calculatedMaxY * 1.1 : 0.5,
-      minX: 0,
-      maxX: Math.max(...xs),
+      dataPDF: pdf,
+      dataCDF: cdf,
+      maxX: calculatedMaxX,
+      maxY_PDF: calculatedMaxY > 0 ? calculatedMaxY * 1.1 : 0.5,
     };
-  }, [chartData]);
-
-  const [hoverX, setHoverX] = useState(null);
+  }, [k]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Ovládacie prvky (Slider) */}
       <div
-        className="controls mb-3"
+        className="controls mb-4"
         style={{ width: "100%", maxWidth: "300px" }}
       >
         <label htmlFor="kRange" className="form-label w-100 text-center">
@@ -64,24 +67,40 @@ function ChiSquareChart() {
         />
       </div>
 
-      <div
-        className="chart-container"
-        style={{ width: "100%", minWidth: "300px", maxWidth: "600px" }}
-      >
-        <StyledLineChart
-          data={chartData}
-          title={`Chí kvadrát rozdelenie (k=${k})`}
-          xLabel="x"
-          yLabel="f(x; k)"
-          lineClass="chart-line-primary"
-          hoverX={hoverX}
-          setHoverX={setHoverX}
-          minX={minX}
-          maxX={maxX}
-          type="pdf"
-          showReferenceArea={false}
-          yAxisDomain={[minY, maxY]}
-        />
+      {/* Prepojené grafy v spoločnom wrapperi */}
+      <div className="charts-wrapper w-100">
+        <div>
+          <StyledLineChart
+            data={dataPDF}
+            title={`Hustota pravdepodobnosti (PDF)`}
+            xLabel="x"
+            yLabel="f(x; k)"
+            lineClass="chart-line-primary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={0}
+            maxX={maxX}
+            yAxisDomain={[0, maxY_PDF]}
+            type="pdf"
+            showReferenceArea={true}
+          />
+        </div>
+        <div>
+          <StyledLineChart
+            data={dataCDF}
+            title={`Distribučná funkcia (CDF)`}
+            xLabel="x"
+            yLabel="F(x; k)"
+            lineClass="chart-line-secondary"
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            minX={0}
+            maxX={maxX}
+            yAxisDomain={[0, 1.1]}
+            type="cdf"
+            showReferenceArea={false}
+          />
+        </div>
       </div>
     </div>
   );
