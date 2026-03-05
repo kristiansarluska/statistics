@@ -1,29 +1,34 @@
 // src/components/charts/probability-distributions/discrete/BinomialChart.jsx
 import React, { useState, useMemo } from "react";
 import StyledBarChart from "../../helpers/StyledBarChart";
+import StyledDiscreteCDFChart from "../../helpers/StyledDiscreteCDFChart";
 import { binomialPMF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function BinomialChart() {
   const [n, setN] = useState(10); // Default number of trials
   const [p, setP] = useState(0.5); // Default probability of success
+  const [hoverX, setHoverX] = useState(null);
 
-  const chartData = useMemo(() => {
-    const data = [];
+  const { pmfData, cdfData } = useMemo(() => {
+    const pmf = [];
+    const cdf = [];
     for (let k = 0; k <= n; k++) {
-      data.push({ x: k, y: binomialPMF(k, n, p) });
+      const prob = binomialPMF(k, n, p);
+      pmf.push({ x: String(k), y: prob }); // String pre zosúladenie osí v BarCharte
+      cdf.push({ x: k, p: prob }); // Číslo pre presné výpočty v šablóne CDF
     }
-    return data;
+    return { pmfData: pmf, cdfData: cdf };
   }, [n, p]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Parameter Controls (Sliders) */}
+      {/* Ovládacie prvky (Sliders) */}
       <div
-        className="controls mb-3 d-flex flex-wrap justify-content-center gap-4"
+        className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
         style={{ width: "100%", maxWidth: "500px" }}
       >
-        {/* Probability of success (p) */}
+        {/* Pravdepodobnosť úspechu (p) */}
         <div style={{ flex: "1 1 200px" }}>
           <label htmlFor="pRangeBinom" className="form-label w-100 text-center">
             Pravdepodobnosť (p): <strong>{p.toFixed(2)}</strong>
@@ -40,7 +45,7 @@ function BinomialChart() {
           />
         </div>
 
-        {/* Number of trials (n) */}
+        {/* Počet pokusov (n) */}
         <div style={{ flex: "1 1 200px" }}>
           <label htmlFor="nRangeBinom" className="form-label w-100 text-center">
             Počet pokusov (n): <strong>{n}</strong>
@@ -58,14 +63,31 @@ function BinomialChart() {
         </div>
       </div>
 
-      {/* Render Chart */}
-      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-        <StyledBarChart
-          data={chartData}
-          xLabel="k"
-          yLabel="P(X=k)"
-          yDomain={[0, "auto"]}
-        />
+      {/* Prepojené grafy v spoločnom wrapperi */}
+      <div className="charts-wrapper w-100">
+        <div>
+          <h6 className="mb-3 text-center">Pravdepodobnostná funkcia (PMF)</h6>
+          <StyledBarChart
+            data={pmfData}
+            xLabel="k"
+            yLabel="P(X=k)"
+            yDomain={[0, "auto"]}
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+            showReferenceArea={true}
+            referenceAreaX1="0"
+            referenceAreaX2={hoverX}
+          />
+        </div>
+
+        <div>
+          <h6 className="mb-3 text-center">Distribučná funkcia (CDF)</h6>
+          <StyledDiscreteCDFChart
+            data={cdfData}
+            hoverX={hoverX}
+            setHoverX={setHoverX}
+          />
+        </div>
       </div>
     </div>
   );

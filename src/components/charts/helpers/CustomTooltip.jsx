@@ -27,10 +27,13 @@ function CustomTooltip({
   overrideY = null,
 }) {
   if (active && payload && payload.length) {
-    // Odstránime z tooltipu záznamy patriace BackgroundArea
-    const validPayload = payload.filter(
-      (entry) => entry.name !== "ignore_tooltip",
-    );
+    // Remove "ignore_tooltip" and deduplicate entries by dataKey
+    const validPayload = payload
+      .filter((entry) => entry.name !== "ignore_tooltip")
+      .filter(
+        (entry, index, self) =>
+          index === self.findIndex((e) => e.dataKey === entry.dataKey),
+      );
 
     if (validPayload.length === 0) return null;
 

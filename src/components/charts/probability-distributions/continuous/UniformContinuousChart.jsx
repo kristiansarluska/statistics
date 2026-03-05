@@ -213,7 +213,9 @@ function UniformContinuousChart() {
                 allowDataOverflow={false}
               />
               <Tooltip
-                content={<CustomTooltip xLabel="x" yLabel="f(x)" />}
+                content={
+                  <CustomTooltip xLabel="x" yLabel="f(x)" overrideY={hoverY} />
+                }
                 cursor={false}
                 animationDuration={50}
               />
