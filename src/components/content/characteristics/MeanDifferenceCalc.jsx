@@ -39,7 +39,6 @@ function MeanDifferenceCalc() {
         const k = pairs.length;
         const delta = sum / k;
 
-        // Vrátený starší breakpoint, viac ako 6 dvojíc sa zabaľuje
         const isExpandable = k > 6;
         let devString = "";
 
@@ -49,13 +48,12 @@ function MeanDifferenceCalc() {
           devString = `${pairs[0]} + \\dots + ${pairs[k - 1]}`;
         }
 
-        const blockMath = `\\begin{gathered} 
-          \\text{Počet unikátnych dvojíc: } k = \\binom{n}{2} = \\frac{${n}(${n}-1)}{2} = ${k} \\\\ 
-          \\Delta = \\frac{1}{k} \\sum_{i<j} |x_i - x_j| = \\frac{${devString}}{${k}} = ${delta.toFixed(3)} 
-        \\end{gathered}`;
-
         return {
-          blockMath,
+          formulaMath: `\\Delta = \\frac{1}{k} \\sum_{i<j} |x_i - x_j| \\quad \\text{kde } k = \\binom{n}{2}`,
+          blockMath: `\\begin{gathered} 
+            k = \\binom{${n}}{2} = \\frac{${n}(${n}-1)}{2} = ${k} \\\\ 
+            \\Delta = \\frac{${devString}}{${k}} = ${delta.toFixed(3)} 
+          \\end{gathered}`,
           inlineMath: `\\Delta = `,
           resultText: `${delta.toFixed(3)} µg/m³`,
           isExpandable,

@@ -3,7 +3,6 @@ import React from "react";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function StandardDeviationCalc() {
-  // Example: Temperatures (°C) measured at various urban sensors (Urban Heat Island analysis)
   const defaultTemperatures = [22.1, 23.5, 21.8, 24.2, 22.9];
 
   const getMathContent = (data, isExpanded) => {
@@ -25,26 +24,21 @@ function StandardDeviationCalc() {
     const variance = sumSquaredDiffs / (n - 1);
     const stdDev = Math.sqrt(variance);
 
-    // Format mean for display
     const meanStr = Number.isInteger(mean) ? mean : mean.toFixed(2);
+    const sumSquaredStr = sumSquaredDiffs.toFixed(4);
 
-    // Build formula string
     let formulaExpanded = "";
     if (isExpanded) {
       const diffsStr = data.map((x) => `(${x} - ${meanStr})^2`).join(" + ");
       formulaExpanded = `s &= \\sqrt{\\frac{${diffsStr}}{${n} - 1}} \\\\[1ex]`;
     }
 
-    const sumSquaredStr = sumSquaredDiffs.toFixed(4);
-
-    const blockMath = `\\begin{aligned}
-      s &= \\sqrt{\\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})^2}{n-1}} \\\\[2ex]
-      ${formulaExpanded}
-      s &= \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
-    \\end{aligned}`;
-
     return {
-      blockMath,
+      formulaMath: `s = \\sqrt{\\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2}`,
+      blockMath: `\\begin{aligned}
+        ${formulaExpanded}
+        s &= \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
+      \\end{aligned}`,
       inlineMath: "s \\approx ",
       resultText: `${stdDev.toFixed(4)} °C`,
       isExpandable: n > 3,

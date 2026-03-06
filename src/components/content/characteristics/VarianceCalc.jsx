@@ -35,7 +35,6 @@ function VarianceCalc() {
         );
         const variance = sumSquaredDev / (n - 1);
 
-        // Vrátené na pôvodný breakpoint (viac ako 4 prvky sa zabaľujú)
         const isExpandable = n > 4;
         let devString = "";
 
@@ -47,13 +46,12 @@ function VarianceCalc() {
           devString = `(${measurements[0]} - ${meanStr})^2 + \\dots + (${measurements[n - 1]} - ${meanStr})^2`;
         }
 
-        const blockMath = `\\begin{gathered} 
-          \\bar{x} = ${meanStr} \\text{ bodov/m}^2 \\\\ 
-          s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
-        \\end{gathered}`;
-
         return {
-          blockMath,
+          formulaMath: `s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2`,
+          blockMath: `\\begin{gathered} 
+            \\bar{x} = ${meanStr} \\text{ bodov/m}^2 \\\\ 
+            s^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
+          \\end{gathered}`,
           inlineMath: `s^2 = `,
           resultText: `${variance.toFixed(3)} (bodov/m²)²`,
           isExpandable,

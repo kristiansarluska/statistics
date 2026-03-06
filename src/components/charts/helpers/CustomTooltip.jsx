@@ -25,9 +25,10 @@ function CustomTooltip({
   xLabel = "x",
   yLabel = "f(x)",
   overrideY = null,
+  areaValue = null, // Nový prop pre plochu/pravdepodobnosť
 }) {
   if (active && payload && payload.length) {
-    // Remove "ignore_tooltip" and deduplicate entries by dataKey
+    // Odstránime z tooltipu záznamy patriace BackgroundArea
     const validPayload = payload
       .filter((entry) => entry.name !== "ignore_tooltip")
       .filter(
@@ -51,6 +52,7 @@ function CustomTooltip({
     return (
       <div className="custom-tooltip">
         <p className="mb-0 fw-bold">{`${xLabel}: ${formattedX}`}</p>
+
         {validPayload.map((entry, index) => {
           const val =
             index === 0 && overrideY !== null
@@ -77,6 +79,19 @@ function CustomTooltip({
             </p>
           );
         })}
+
+        {/* Ak graf odovzdal plochu (areaValue), zobrazíme ju */}
+        {areaValue !== null && (
+          <p
+            className="mb-0 mt-1 pt-1 border-top"
+            style={{ fontSize: "0.85rem", color: "var(--bs-body-color)" }}
+          >
+            <span className="opacity-75">Plocha F(x): </span>
+            <strong style={{ color: "var(--bs-primary)" }}>
+              {(areaValue * 100).toFixed(2)} %
+            </strong>
+          </p>
+        )}
       </div>
     );
   }

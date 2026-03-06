@@ -154,6 +154,42 @@ function StyledLineChart({
     return Math.max(0, Math.min(100, percent));
   }, [hoverX, chartDomainMin, chartDomainMax]);
 
+  const calculatedArea = useMemo(() => {
+    // Vypočítame plochu iba vtedy, ak zobrazujeme referenčnú plochu (Area)
+    if (
+      !showReferenceArea ||
+      type !== "pdf" ||
+      hoverX === null ||
+      !data ||
+      data.length < 2
+    ) {
+      return null;
+    }
+
+    let area = 0;
+    // Zoradíme dáta podľa x pre prípad, že nie sú
+    const sortedData = [...data].sort((a, b) => a.x - b.x);
+
+    for (let i = 1; i < sortedData.length; i++) {
+      const prev = sortedData[i - 1];
+      const curr = sortedData[i];
+
+      if (curr.x <= hoverX) {
+        // Lichobežníkové pravidlo pre integráciu: (x2 - x1) * (y1 + y2) / 2
+        area += (curr.x - prev.x) * ((prev.y + curr.y) / 2);
+      } else if (prev.x < hoverX) {
+        // Interpolácia pre posledný čiastočný úsek
+        const ratio = (hoverX - prev.x) / (curr.x - prev.x);
+        const interpolatedY = prev.y + ratio * (curr.y - prev.y);
+        area += (hoverX - prev.x) * ((prev.y + interpolatedY) / 2);
+        break;
+      }
+    }
+
+    // Zaistíme, aby kvôli odchýlkam numerickej integrácie plocha nepretiekla mimo <0, 1>
+    return Math.max(0, Math.min(1, area));
+  }, [data, hoverX, showReferenceArea, type]);
+
   return (
     <div className="chart-container">
       {title && <div className="chart-title">{title}</div>}
@@ -214,6 +250,7 @@ function StyledLineChart({
                 xLabel={xLabel}
                 yLabel={displayYLabel}
                 overrideY={hoverY}
+                areaValue={calculatedArea}
               />
             }
             cursor={false}

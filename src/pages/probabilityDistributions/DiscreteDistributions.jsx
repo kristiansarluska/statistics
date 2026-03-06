@@ -33,7 +33,10 @@ function DiscreteDistributions() {
 
       <div className="mb-4">
         <BlockMath
-          math={`p(x) = P(X=x) = \\begin{cases} 1-p & \\text{pre } x = 0 \\\\ p & \\text{pre } x = 1 \\\\ 0 & \\text{inak} \\end{cases}`}
+          math={`p(x) = P(X=x) = \\begin{cases} 1-p & \\text x = 0 \\\\ p & \\text x = 1 \\\\ 0 & \\text{inak} \\end{cases}`}
+        />
+        <BlockMath
+          math={`F(x) = \\begin{cases} 0 & \\text x < 0 \\\\ 1-p & \\text 0 \\le x < 1 \\\\ 1 & \\text x \\ge 1 \\end{cases}`}
         />
       </div>
 
@@ -67,6 +70,15 @@ function DiscreteDistributions() {
         hodnoty.
       </p>
 
+      <div className="mb-4">
+        <BlockMath
+          math={`p(x_i) = p(x) = \\frac{1}{n} \\quad \\text x \\in \\{1, 2, \\dots, n\\}`}
+        />
+        <BlockMath
+          math={`F(x) = \\frac{\\lfloor x \\rfloor}{n} \\quad \\text 1 \\le x \\le n`}
+        />
+      </div>
+
       <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           Príklad z praxe: Náhodný výber administratívnej jednotky
@@ -93,12 +105,21 @@ function DiscreteDistributions() {
         Binomické rozdelenie
       </h3>
       <p className="mb-4">
-        Binomické rozdelenie opisuje počet úspechov v postupnosti{" "}
-        <InlineMath math="n" /> nezávislých pokusov, pričom v každom pokuse je
-        rovnaká pravdepodobnosť úspechu <InlineMath math="p" />. Je základom pre
-        modelovanie javov s dvoma možnými výsledkami (áno/nie), ktoré sa
-        opakujú.
+        Binomické rozdelenie určuje počet úspechov v <InlineMath math="n" />{" "}
+        nezávislých pokusoch. Veličina s binomickým rozdelením je súčtom
+        nezávislých veličín s alternatívnym rozdelením, parametre tohto
+        rozdelenia sú <InlineMath math="p" /> (pravdepodobnosť úspechu javu) a
+        počet pokusov <InlineMath math="n" />.
       </p>
+
+      <div className="mb-4">
+        <BlockMath
+          math={`P(X=x) = \\binom{n}{x} p^x (1-p)^{n-x} \\quad \\text x \\in \\{0, 1, \\dots, n\\}`}
+        />
+        <BlockMath
+          math={`F(x) = \\sum_{i=0}^{\\lfloor x \\rfloor} \\binom{n}{i} p^i (1-p)^{n-i}`}
+        />
+      </div>
 
       <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
@@ -130,6 +151,15 @@ function DiscreteDistributions() {
         (lambda), ktorý predstavuje priemerný počet týchto udalostí na danú
         jednotku.
       </p>
+
+      <div className="mb-4">
+        <BlockMath
+          math={`P(X=x) = \\frac{\\lambda^x}{x!} e^{-\\lambda} \\quad \\text x \\in \\{0, 1, 2, \\dots\\}`}
+        />
+        <BlockMath
+          math={`F(x) = e^{-\\lambda} \\sum_{i=0}^{\\lfloor x \\rfloor} \\frac{\\lambda^i}{i!}`}
+        />
+      </div>
 
       <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">

@@ -3,7 +3,6 @@ import React from "react";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function InterquartileRangeCalc() {
-  // Ceny poľnohospodárskej pôdy/záhrad (€/m²), jedna hodnota (145) je jasný extrém
   const defaultPrices = [12, 15, 14, 18, 145, 16, 17];
 
   const getMathContent = (data, isExpanded) => {
@@ -17,10 +16,8 @@ function InterquartileRangeCalc() {
       };
     }
 
-    // Dáta musia byť zoradené
     const sorted = [...data].sort((a, b) => a - b);
 
-    // Výpočet kvartilu (štandardná interpolácia)
     const calcQuantile = (p) => {
       const pos = p * (n - 1);
       const base = Math.floor(pos);
@@ -49,14 +46,12 @@ function InterquartileRangeCalc() {
       `;
     }
 
-    const blockMath = `\\begin{aligned}
-      IQR &= Q_3 - Q_1 \\\\[2ex]
-      ${formulaExpanded}
-      IQR &= ${q3Str} - ${q1Str}
-    \\end{aligned}`;
-
     return {
-      blockMath,
+      formulaMath: `IQR = Q_3 - Q_1`,
+      blockMath: `\\begin{aligned}
+        ${formulaExpanded}
+        IQR &= ${q3Str} - ${q1Str}
+      \\end{aligned}`,
       inlineMath: "IQR = ",
       resultText: `${iqrStr} €/m²`,
       isExpandable: true,
@@ -73,7 +68,7 @@ function InterquartileRangeCalc() {
       max={1000}
       step="1"
       placeholder="Cena"
-      sortData={true} // Template sa postará o to, aby sa inputy pekne zoradili
+      sortData={true}
     />
   );
 }

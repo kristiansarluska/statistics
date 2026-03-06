@@ -8,13 +8,14 @@ function GeometricMeanCalc() {
       title="Priemerný koeficient rastu zastavanej plochy"
       inputLabel="Ročné koeficienty rastu (faktor):"
       defaultData={[1.05, 1.02, 1.08]}
-      onValidate={(val) => !isNaN(val) && val > 0} // Odmocnina vyžaduje kladné čísla
+      onValidate={(val) => !isNaN(val) && val > 0}
       getMathContent={(data) => {
         const n = data.length;
         const product = data.reduce((acc, val) => acc * val, 1);
         const geometricMean = Math.pow(product, 1 / n);
         return {
-          blockMath: `\\bar{x}_G = \\sqrt[n]{ \\prod x_i } = \\sqrt[${n}]{ ${data.join(" \\cdot ")} }`,
+          formulaMath: `\\bar{x}_G = \\sqrt[n]{ \\prod_{i=1}^{n} x_i }`,
+          blockMath: `\\bar{x}_G = \\sqrt[${n}]{ ${data.join(" \\cdot ")} }`,
           inlineMath: `\\bar{x}_G = `,
           resultText: geometricMean.toFixed(3),
         };

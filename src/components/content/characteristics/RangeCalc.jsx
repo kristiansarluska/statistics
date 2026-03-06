@@ -2,7 +2,6 @@
 import React from "react";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
-// Geoinformatics-themed data: Elevations of a ski slope in Malá Morávka (m a.s.l.)
 const DEFAULT_DATA = [695.57, 702.16, 715.84, 728.3, 740.21];
 
 function RangeCalc() {
@@ -19,11 +18,11 @@ function RangeCalc() {
         const maxVal = measurements[n - 1];
         const range = maxVal - minVal;
 
-        // Highlight the minimum (first) and maximum (last) values
         const highlightIndices = n > 1 ? [0, n - 1] : [0];
 
         return {
-          blockMath: `R = x_{\\max} - x_{\\min} = ${maxVal} - ${minVal} = ${range.toFixed(1)}`,
+          formulaMath: `R = x_{\\max} - x_{\\min}`,
+          blockMath: `R = ${maxVal} - ${minVal} = ${range.toFixed(1)}`,
           inlineMath: `R = `,
           resultText: `${range.toFixed(1)} m`,
           highlightIndices,

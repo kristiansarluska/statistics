@@ -13,7 +13,10 @@ function ArithmeticMeanCalc() {
         const sum = data.reduce((acc, val) => acc + val, 0);
         const mean = sum / n;
         return {
-          blockMath: `\\bar{x} = \\frac{ \\sum x_i }{ n } = \\frac{ ${data.join(" + ")} }{ ${n} }`,
+          // Oddelený všeobecný vzorec
+          formulaMath: `\\bar{x} = \\frac{ \\sum_{i=1}^{n} x_i }{ n }`,
+          // Dosadené čísla na samostatnom riadku
+          blockMath: `\\bar{x} = \\frac{ ${data.join(" + ")} }{ ${n} }`,
           inlineMath: `\\bar{x} = `,
           resultText: `${mean.toFixed(3)} m`,
         };

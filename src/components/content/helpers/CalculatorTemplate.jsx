@@ -16,6 +16,7 @@ function CalculatorTemplate({
   placeholder = "Hodnota",
   sortData = false,
   renderExtra,
+  bottomContent, // Pridaný nový prop pre obsah pod kalkulačkou
 }) {
   const initData = sortData
     ? [...defaultData].sort((a, b) => a - b)
@@ -82,9 +83,7 @@ function CalculatorTemplate({
       </div>
 
       {n > 0 && mathContent && (
-        // Odstránené "position-relative" z hlavného div-u
         <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100">
-          {/* Nový flex kontajner pre hlavičku výpočtu */}
           <div className="d-flex justify-content-between align-items-center mb-2">
             <p
               className="mb-0 fw-bold text-muted text-start"
@@ -96,7 +95,6 @@ function CalculatorTemplate({
             {mathContent.isExpandable && (
               <button
                 type="button"
-                // Odstránené "position-absolute top-0 end-0 m-2"
                 className="btn btn-sm btn-outline-secondary rounded-pill px-3"
                 style={{ fontSize: "0.75rem" }}
                 onClick={() => setIsMathExpanded(!isMathExpanded)}
@@ -107,14 +105,20 @@ function CalculatorTemplate({
           </div>
 
           <div
-            className="w-100 text-start"
+            className="w-100 text-center"
             style={{
               fontSize: "1.1rem",
               overflowX: "auto",
               overflowY: "hidden",
             }}
           >
-            <div style={{ paddingTop: "10px", paddingBottom: "15px" }}>
+            {mathContent.formulaMath && (
+              <div style={{ paddingBottom: "10px" }}>
+                <BlockMath math={mathContent.formulaMath} />
+              </div>
+            )}
+
+            <div style={{ paddingBottom: "15px" }}>
               <BlockMath math={mathContent.blockMath} />
             </div>
           </div>
@@ -124,6 +128,11 @@ function CalculatorTemplate({
             <strong className="text-primary">{mathContent.resultText}</strong>
           </div>
         </div>
+      )}
+
+      {/* Dynamický obsah pod kalkulačkou, ktorému preposielame aktuálne dáta */}
+      {bottomContent && n > 0 && (
+        <div className="w-100 mt-3">{bottomContent(measurements)}</div>
       )}
     </div>
   );

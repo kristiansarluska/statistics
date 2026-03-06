@@ -24,7 +24,7 @@ const Distribution = () => {
 
       <div id="pmf-pdf" className="mb-5">
         <h3 className="mb-3">Pravdepodobnostná funkcia a hustota</h3>
-        <p className="mb-4">
+        <p className="mb-3">
           Pri diskrétnych veličinách používame{" "}
           <strong>pravdepodobnostnú funkciu (PMF)</strong>, ktorá priraďuje
           priamu pravdepodobnosť výskytu konkrétnej hodnote (
@@ -40,31 +40,55 @@ const Distribution = () => {
           <strong>plochou pod krivkou hustoty</strong> na danom úseku.
         </p>
 
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        {/* Nový odsek pre Zákon veľkých čísel */}
+        <div className="alert alert-info border-info-subtle shadow-sm mb-5">
+          <h5 className="alert-heading fs-6 fw-bold">
+            Teória vs. Empíria (Zákon veľkých čísel)
+          </h5>
+          <p className="mb-0 text-muted" style={{ fontSize: "0.95rem" }}>
+            Prepojenie medzi teoretickými matematickými modelmi a reálnymi
+            dátami popisuje <strong>Zákon veľkých čísel</strong> (základný
+            limitný teorém). Ten hovorí, že s rastúcim počtom nezávislých
+            opakovaní náhodného pokusu sa relatívna početnosť výskytu javu
+            (empirické rozdelenie) limitne blíži k jeho teoretickej
+            pravdepodobnosti. V nasledujúcich dvoch simuláciách môžete tento
+            fundamentálny jav pozorovať priamo.
+          </p>
+        </div>
+
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Príklad: Počet viditeľných GNSS satelitov (PMF)
           </h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             V mestskom prostredí (tzv. "urban canyons") je počet viditeľných
-            satelitov náhodná premenná. Všimnite si, že graf nižšie netvorí
-            spojitú čiaru, ale <strong>jednotlivé body (stĺpce)</strong>. Je to
-            preto, že nemôžeme vidieť "polovicu" satelitu. Súčet
-            pravdepodobností všetkých možných stĺpcov (napr. od 0 po 12
-            satelitov) sa musí vždy rovnať presne 1 (100 %).
+            satelitov náhodná premenná – v tomto prípade je pravdepodobnosť
+            viditeľnosti každého z nich 45 %. Graf nižšie zobrazuje{" "}
+            <strong>teoretické pravdepodobnosti</strong> pre jednotlivé počty
+            satelitov (od 0 po 12). Pomocou interaktívnej simulácie generujeme
+            umelé merania. Všimnite si spomínaný zákon v praxi: pri nízkom počte
+            meraní sú empirické stĺpce rozkolísané a nemusia zodpovedať
+            teoretickému predpokladu. Akonáhle však necháte simuláciu bežať a
+            počet meraní narastie do tisícov, empirické relatívne početnosti sa
+            stabilizujú a takmer dokonale splynú s teoretickým modelom.
           </p>
           <SimulatedPMFChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Simulácia odchýlky GNSS merania (Hustota pravdepodobnosti)
           </h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
-            Generovanie náhodných chýb GPS prijímača. Teoretické rozdelenie
-            (modrá krivka) má strednú hodnotu <strong>0 m</strong> a smerodajnú
-            odchýlku <strong>2.5 m</strong>. Sledujte, ako sa empirický
-            histogram (sivá plocha) s rastúcim počtom meraní postupne približuje
-            k dokonalým teoretickým krivkám.
+            Tento graf demonštruje hustotu pravdepodobnosti pre normálne
+            rozdelenie chýb GNSS prijímača. Modrá krivka reprezentuje dokonalý{" "}
+            <strong>teoretický model</strong> so strednou hodnotou{" "}
+            <strong>0 m</strong> a smerodajnou odchýlkou <strong>2.5 m</strong>.
+            Sivý histogram pod ňou zobrazuje hustotu nasimulovaných
+            (empirických) dát. Opäť tu platí zákon veľkých čísel – pri spustení
+            generovania hodnôt vizuálne sledujte, ako sa s rastúcim počtom
+            iterácií "hrboľatý" empirický histogram postupne vyhladzuje a jeho
+            tvar konverguje presne k teoretickej Gaussovej krivke.
           </p>
           <div className="mb-4">
             <SimulatedPDFChart />
@@ -84,7 +108,7 @@ const Distribution = () => {
           ukazuje okamžitý stav, distribučná funkcia ponúka súhrnný obraz.
         </p>
 
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">Diskrétny prípad: Dostupnosť družicových dát</h5>
           <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
             Predstavte si, že mesačne očakávate max. 5 preletov družice. Náhodná
@@ -109,7 +133,7 @@ const Distribution = () => {
           <DiscreteDistributionChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Spojitý prípad: Distribúcia chýb GNSS merania
           </h5>
@@ -153,7 +177,7 @@ const Distribution = () => {
         </p>
 
         {/* KVANTILOVÁ FUNKCIA Z REÁLNYCH DÁT */}
-        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Príklad z praxe: Podiel obyvateľstva v hlavnom meste
           </h5>
@@ -179,7 +203,7 @@ const Distribution = () => {
           </div>
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100" style={{ maxWidth: "800px" }}>
           <h5 className="mb-3">
             Empirická kvantilová funkcia: Výška stromov v rezervácii
           </h5>

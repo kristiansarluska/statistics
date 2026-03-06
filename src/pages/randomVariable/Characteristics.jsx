@@ -1,5 +1,6 @@
 // src/pages/randomVariable/Characteristics.jsx
 import React from "react";
+import { InlineMath } from "react-katex"; // Pridaný import pre matematické vzorce
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
 import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
@@ -50,11 +51,11 @@ const Characteristics = () => {
 
         <h4 className="mb-3">Harmonický priemer</h4>
         <p className="mb-4">
-          Harmonický priemer ($x_h$) je vhodný pre veličiny, ktoré sú definované
-          ako pomery (napr. jednotky za čas). Je to prevrátená hodnota
-          aritmetického priemeru prevrátených hodnôt dát. V geografii ho
-          využívame najmä pri výpočtoch priemerných rýchlostí na úsekoch s
-          rovnakou dĺžkou.
+          Harmonický priemer (<InlineMath math="x_h" />) je vhodný pre veličiny,
+          ktoré sú definované ako pomery (napr. jednotky za čas). Je to
+          prevrátená hodnota aritmetického priemeru prevrátených hodnôt dát. V
+          geografii ho využívame najmä pri výpočtoch priemerných rýchlostí na
+          úsekoch s rovnakou dĺžkou.
         </p>
 
         <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
@@ -96,9 +97,10 @@ const Characteristics = () => {
         <h4 className="mb-3">Vážený priemer</h4>
         <p className="mb-4">
           Vážený priemer zohľadňuje nerovnakú dôležitosť alebo presnosť
-          jednotlivých meraní. Každej hodnote priraďujeme váhu ($w_i$), ktorá
-          určuje, akou mierou prispeje k výsledku. Je to kľúčový nástroj pri
-          spájaní dát z rôznych zdrojov.
+          jednotlivých meraní. Každej hodnote priraďujeme váhu (
+          <InlineMath math="w_i" />
+          ), ktorá určuje, akou mierou prispeje k výsledku. Je to kľúčový
+          nástroj pri spájaní dát z rôznych zdrojov.
         </p>
 
         <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
@@ -180,10 +182,10 @@ const Characteristics = () => {
 
         <h4 className="mb-3">Variačné rozpätie (Range)</h4>
         <p className="mb-4">
-          Variačné rozpätie ($R$) je rozdiel medzi maximálnou a minimálnou
-          hodnotou v štatistickom súbore. Je to rýchly ukazovateľ šírky
-          intervalu, v ktorom sa dáta nachádzajú, no pre svoju podstatu je
-          extrémne citlivý na odľahlé (extrémne) hodnoty.
+          Variačné rozpätie (<InlineMath math="R" />) je rozdiel medzi
+          maximálnou a minimálnou hodnotou v štatistickom súbore. Je to rýchly
+          ukazovateľ šírky intervalu, v ktorom sa dáta nachádzajú, no pre svoju
+          podstatu je extrémne citlivý na odľahlé (extrémne) hodnoty.
         </p>
 
         <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
@@ -233,8 +235,8 @@ const Characteristics = () => {
 
         <h4 className="mb-3">Stredná diferencia (Mean Absolute Difference)</h4>
         <p className="mb-4">
-          Stredná diferencia ($\Delta$) nevyjadruje odchýlku hodnôt od ich
-          priemeru, ale priemerný absolútny rozdiel medzi{" "}
+          Stredná diferencia (<InlineMath math="\Delta" />) nevyjadruje odchýlku
+          hodnôt od ich priemeru, ale priemerný absolútny rozdiel medzi{" "}
           <strong>akýmikolvek dvoma hodnotami</strong> navzájom. Počíta sa ako
           súčet absolútnych rozdielov všetkých možných dvojíc vydelený počtom
           týchto dvojíc.
@@ -261,9 +263,10 @@ const Characteristics = () => {
 
         <h4 className="mb-3">Rozptyl (Variance)</h4>
         <p className="mb-4">
-          Rozptyl ($s^2$ pre výberový súbor, $\sigma^2$ pre základný súbor) je
-          priemerná štvorcová odchýlka hodnôt od ich strednej hodnoty. Tým, že
-          sa odchýlky umocňujú na druhú, rozptyl
+          Rozptyl (<InlineMath math="s^2" /> pre výberový súbor,{" "}
+          <InlineMath math="\sigma^2" /> pre základný súbor) je priemerná
+          štvorcová odchýlka hodnôt od ich strednej hodnoty. Tým, že sa odchýlky
+          umocňujú na druhú, rozptyl
           <strong> výrazne penalizuje veľké extrémy</strong>. Nevýhodou je, že
           výsledok vychádza v štvorcových jednotkách (napr. metre štvorcové,
           stupne Celzia na druhú), čo je ťažšie na priamu interpretáciu.
@@ -289,12 +292,12 @@ const Characteristics = () => {
 
         <h4 className="mt-4">Smerodajná odchýlka</h4>
         <p className="mb-4">
-          Smerodajná odchýlka ($s$ alebo $\sigma$) je odmocninou z rozptylu. Jej
-          hlavnou výhodou je, že{" "}
-          <strong>vracia výsledok do pôvodných jednotiek</strong> merania
-          (napríklad stupne Celzia, metre), čo ju robí oveľa intuitívnejšou a
-          ľahšie interpretovateľnou v praxi. Hovorí nám, o koľko sa hodnoty
-          typicky odchyľujú od priemeru.
+          Smerodajná odchýlka (<InlineMath math="s" /> alebo{" "}
+          <InlineMath math="\sigma" />) je odmocninou z rozptylu. Jej hlavnou
+          výhodou je, že <strong>vracia výsledok do pôvodných jednotiek</strong>{" "}
+          merania (napríklad stupne Celzia, metre), čo ju robí oveľa
+          intuitívnejšou a ľahšie interpretovateľnou v praxi. Hovorí nám, o
+          koľko sa hodnoty typicky odchyľujú od priemeru.
         </p>
 
         <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
@@ -318,10 +321,10 @@ const Characteristics = () => {
 
         <h4 className="mt-4">Variačný koeficient (Coefficient of Variation)</h4>
         <p className="mb-4">
-          Variačný koeficient ($v_k$) je bezrozmerná (relatívna) miera
-          variability, najčastejšie vyjadrená v percentách. Počíta sa ako pomer
-          smerodajnej odchýlky k aritmetickému priemeru. Jeho obrovskou výhodou
-          je, že
+          Variačný koeficient (<InlineMath math="v_k" />) je bezrozmerná
+          (relatívna) miera variability, najčastejšie vyjadrená v percentách.
+          Počíta sa ako pomer smerodajnej odchýlky k aritmetickému priemeru.
+          Jeho obrovskou výhodou je, že
           <strong>
             {" "}
             umožňuje porovnávať variabilitu medzi súbormi s rôznymi
@@ -355,12 +358,13 @@ const Characteristics = () => {
           Medzikvartilová odchýlka / rozpätie (Interquartile Range - IQR)
         </h4>
         <p className="mb-4">
-          Medzikvartilové rozpätie ($IQR$) sa zameriava výhradne na{" "}
-          <strong>stredných 50 % dát</strong>. Vypočíta sa ako rozdiel medzi
-          tretím ($Q_3$) a prvým kvartilom ($Q_1$). Keďže do výpočtu vôbec
-          nevstupuje dolných ani horných 25 % hodnôt, táto charakteristika je
-          extrémne odolná voči hrubým chybám a odľahlým hodnotám (tzv.
-          outlierom).
+          Medzikvartilové rozpätie (<InlineMath math="IQR" />) sa zameriava
+          výhradne na <strong>stredných 50 % dát</strong>. Vypočíta sa ako
+          rozdiel medzi tretím (<InlineMath math="Q_3" />) a prvým kvartilom (
+          <InlineMath math="Q_1" />
+          ). Keďže do výpočtu vôbec nevstupuje dolných ani horných 25 % hodnôt,
+          táto charakteristika je extrémne odolná voči hrubým chybám a odľahlým
+          hodnotám (tzv. outlierom).
         </p>
 
         <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
@@ -372,9 +376,10 @@ const Characteristics = () => {
             analýzu cien pozemkov (v €/m²) v jednej záhradkárskej osade. Medzi
             bežnými predajmi sa nachádza jeden extrém (napríklad špekulatívny
             nákup s hodnotou 145 €/m²). Kým obyčajné variačné rozpätie by pre
-            tieto dáta vystrelilo nad 130 €, $IQR$ extrém odignoruje a vráti
-            reálnu variabilitu stredu trhu (rozpätie len cca 3.5 €/m²). Skúste
-            extrém (145) zmazať a všimnite si, že $IQR$ sa takmer nezmení.
+            tieto dáta vystrelilo nad 130 €, <InlineMath math="IQR" /> extrém
+            odignoruje a vráti reálnu variabilitu stredu trhu (rozpätie len cca
+            3.5 €/m²). Skúste extrém (145) zmazať a všimnite si, že{" "}
+            <InlineMath math="IQR" /> sa takmer nezmení.
           </p>
 
           <div className="mb-5">
@@ -451,8 +456,8 @@ const Characteristics = () => {
           Päťčíselná charakteristika predstavuje mimoriadne efektívny spôsob
           zhrnutia dát pomocou piatich kľúčových hodnôt:{" "}
           <strong>
-            Minimum, Dolný kvartil ($Q_1$), Medián, Horný kvartil ($Q_3$) a
-            Maximum
+            Minimum, Dolný kvartil (<InlineMath math="Q_1" />
+            ), Medián, Horný kvartil (<InlineMath math="Q_3" />) a Maximum
           </strong>
           . Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).
         </p>

@@ -27,7 +27,6 @@ function WeightedMeanCalc() {
     setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
   };
 
-  // Nová funkcia pre spracovanie úpravy, ktorú posielame do DataInputControl
   const handleEdit = (idx, newValue) => {
     const newMeasurements = [...measurements];
     newMeasurements[idx] = newValue;
@@ -71,8 +70,8 @@ function WeightedMeanCalc() {
           placeholder="Hodnota (m)"
           isWeighted={true}
           weightPlaceholder="Váha"
-          editable={true} // Zapne overlay ✎ a ✕
-          onEdit={handleEdit} // Spracuje výsledok úpravy
+          editable={true}
+          onEdit={handleEdit}
           formatItem={(item) => (
             <>
               {item.x} m <span className="opacity-75 ms-1">(v: {item.w})</span>
@@ -83,13 +82,25 @@ function WeightedMeanCalc() {
 
       {n > 0 && sumW > 0 && (
         <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center overflow-auto w-100">
-          <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
+          <p
+            className="mb-2 fw-bold text-muted"
+            style={{ fontSize: "0.9rem", textAlign: "left" }}
+          >
             Postup výpočtu:
           </p>
           <div className="mb-2" style={{ fontSize: "1.1rem" }}>
-            <BlockMath
-              math={`\\bar{x}_w = \\frac{ \\sum w_i x_i }{ \\sum w_i } = \\frac{ ${numString} }{ ${denString} }`}
-            />
+            {/* Pridaný abstraktný vzorec pre vážený priemer */}
+            <div style={{ paddingBottom: "10px" }}>
+              <BlockMath
+                math={`\\bar{x}_w = \\frac{ \\sum_{i=1}^{k} w_i x_i }{ \\sum_{i=1}^{k} w_i }`}
+              />
+            </div>
+            {/* Dosadené čísla pod sebou */}
+            <div style={{ paddingBottom: "15px" }}>
+              <BlockMath
+                math={`\\bar{x}_w = \\frac{ ${numString} }{ ${denString} }`}
+              />
+            </div>
           </div>
           <div className="fs-5 mt-3">
             <InlineMath math={`\\bar{x}_w = `} />

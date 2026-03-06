@@ -21,7 +21,6 @@ function MeanDeviationCalc() {
         const sumDeviations = deviations.reduce((acc, val) => acc + val, 0);
         const mad = sumDeviations / n;
 
-        // Vrátené na pôvodný breakpoint
         const isExpandable = n > 4;
         let devString = "";
 
@@ -33,13 +32,12 @@ function MeanDeviationCalc() {
           devString = `|${measurements[0]} - ${meanStr}| + \\dots + |${measurements[n - 1]} - ${meanStr}|`;
         }
 
-        const blockMath = `\\begin{gathered} 
-          \\bar{x} = ${meanStr} \\text{ m} \\\\ 
-          \\text{MD} = \\frac{1}{n} \\sum_{i=1}^{n} |x_i - \\bar{x}| = \\frac{${devString}}{${n}} = ${mad.toFixed(4)} 
-        \\end{gathered}`;
-
         return {
-          blockMath,
+          formulaMath: `\\text{MD} = \\frac{1}{n} \\sum_{i=1}^{n} |x_i - \\bar{x}|`,
+          blockMath: `\\begin{gathered} 
+            \\bar{x} = ${meanStr} \\text{ m} \\\\ 
+            \\text{MD} = \\frac{${devString}}{${n}} = ${mad.toFixed(4)} 
+          \\end{gathered}`,
           inlineMath: `\\text{MD} = `,
           resultText: `${mad.toFixed(4)} m`,
           isExpandable,

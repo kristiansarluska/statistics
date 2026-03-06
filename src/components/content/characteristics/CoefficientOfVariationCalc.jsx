@@ -3,7 +3,6 @@ import React from "react";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function CoefficientOfVariationCalc() {
-  // Example: Annual precipitation totals (mm) at 5 different weather stations
   const defaultPrecipitation = [450, 320, 610, 200, 550];
 
   const getMathContent = (data, isExpanded) => {
@@ -17,7 +16,6 @@ function CoefficientOfVariationCalc() {
       };
     }
 
-    // Calculate mean
     const sum = data.reduce((acc, val) => acc + val, 0);
     const mean = sum / n;
 
@@ -30,15 +28,12 @@ function CoefficientOfVariationCalc() {
       };
     }
 
-    // Calculate sample standard deviation
     const sumSquaredDiffs = data.reduce(
       (acc, val) => acc + Math.pow(val - mean, 2),
       0,
     );
     const variance = sumSquaredDiffs / (n - 1);
     const stdDev = Math.sqrt(variance);
-
-    // Calculate Coefficient of Variation (%)
     const cv = (stdDev / Math.abs(mean)) * 100;
 
     const stdDevStr = stdDev.toFixed(2);
@@ -52,14 +47,12 @@ function CoefficientOfVariationCalc() {
       `;
     }
 
-    const blockMath = `\\begin{aligned}
-      v_k &= \\frac{s}{|\\bar{x}|} \\cdot 100\\% \\\\[2ex]
-      ${formulaExpanded}
-      v_k &= \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
-    \\end{aligned}`;
-
     return {
-      blockMath,
+      formulaMath: `v_k = \\frac{s}{|\\bar{x}|} \\cdot 100\\%`,
+      blockMath: `\\begin{aligned}
+        ${formulaExpanded}
+        v_k &= \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
+      \\end{aligned}`,
       inlineMath: "v_k \\approx ",
       resultText: `${cv.toFixed(2)} %`,
       isExpandable: true,
