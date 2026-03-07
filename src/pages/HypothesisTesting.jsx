@@ -1,7 +1,9 @@
+// src/pages/HypothesisTesting.jsx
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Introduction from "../pages/hypothesisTesting/Introduction";
-import GeneralProcedure from "../pages/hypothesisTesting/GeneralProcedure";
+import Introduction from "./hypothesisTesting/Introduction";
+import GeneralProcedure from "./hypothesisTesting/GeneralProcedure";
+import TTestDashboard from "./hypothesisTesting/TTestDashboard"; // <-- IMPORT
 
 function HypothesisTesting() {
   const { t } = useTranslation();
@@ -9,11 +11,11 @@ function HypothesisTesting() {
   return (
     <div className="container-fluid mb-5">
       <h1 className="mb-4">{t("topics.hypothesisTesting")}</h1>
-
-      {/* Sections rendering */}
       <Introduction />
       <hr className="my-5" />
       <GeneralProcedure />
+      <hr className="my-5" />
+      <TTestDashboard />
     </div>
   );
 }
