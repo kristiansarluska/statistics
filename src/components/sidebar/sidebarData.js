@@ -118,6 +118,16 @@ export const sidebarData = [
   {
     labelKey: "topics.hypothesisTesting",
     path: "/hypothesis-testing",
+    children: [
+      {
+        label: "Úvod do testovania",
+        path: "/hypothesis-testing#introduction",
+      },
+      {
+        label: "Všeobecný postup",
+        path: "/hypothesis-testing#procedure",
+      },
+    ],
   },
   {
     labelKey: "topics.correlation",

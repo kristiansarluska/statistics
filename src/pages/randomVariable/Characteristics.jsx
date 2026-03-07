@@ -22,9 +22,21 @@ const Characteristics = () => {
   return (
     <section id="characteristics">
       <h2 className="mb-4">Charakteristiky náhodnej veličiny</h2>
+      <p className="mb-5">
+        Číselné charakteristiky nám umožňujú zhrnúť komplexné vlastnosti celého
+        rozdelenia pravdepodobnosti do niekoľkých výstižných hodnôt. Namiesto
+        analýzy celého priebehu funkcií tak môžeme súbory rýchlo porovnávať na
+        základe ich polohy, variability či tvaru.
+      </p>
 
       <div id="location" className="mb-5">
         <h3 className="mb-3">Charakteristiky polohy</h3>
+        <p className="mb-4">
+          Tieto miery (často označované ako stredné hodnoty) slúžia na
+          identifikáciu "ťažiska" alebo typickej hodnoty štatistického súboru.
+          Udávajú polohu na osi <InlineMath math="x" />, okolo ktorej sa hodnoty
+          náhodnej veličiny najviac koncentrujú.
+        </p>
 
         <h4 className="mb-3">Aritmetický priemer</h4>
         <p className="mb-4">
@@ -390,6 +402,12 @@ const Characteristics = () => {
 
       <div id="other-measures" className="mb-5">
         <h3 className="mb-3">Iné číselné miery</h3>
+        <p className="mb-4">
+          Okrem polohy a rozptýlenosti dát skúmame aj celkový priebeh a symetriu
+          rozdelenia. Tieto charakteristiky tvaru nám hovoria, či sa dáta
+          sústreďujú k jednej strane, alebo nakoľko je ich špička strmá v
+          porovnaní s teoretickým modelom.
+        </p>
 
         <h4 className="mt-4">Koeficient šikmosti</h4>
         <p className="mb-4">
