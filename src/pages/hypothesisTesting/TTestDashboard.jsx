@@ -1,6 +1,5 @@
 // src/pages/hypothesisTesting/TTestDashboard.jsx
 import React, { useState, useEffect, useMemo } from "react";
-import Papa from "papaparse";
 import {
   ScatterChart,
   Scatter,
@@ -8,85 +7,95 @@ import {
   YAxis,
   Tooltip as RechartsTooltip,
   ReferenceLine,
+  ReferenceDot,
   ResponsiveContainer,
-  ComposedChart,
-  Area,
   ReferenceArea,
   CartesianGrid,
 } from "recharts";
 import { studentTPDF, studentTCDF } from "../../utils/distributions";
+import StyledLineChart from "../../components/charts/helpers/StyledLineChart";
+import ResetButton from "../../components/charts/helpers/ResetButton";
+import ChoroplethMap from "../../components/maps/helpers/ChoroplethMap";
 
-// Pomocná funkcia: Výpočet kritickej hodnoty t (inverzná CDF) pomocou bisekcie
+const DEFAULT_EXPECTED_VALUE = 136;
+
 const getTCritical = (alpha, df) => {
-  const targetCdf = 1 - alpha / 2; // Obojstranný test
-  let low = 0;
-  let high = 30; // Dostatočne veľká horná hranica pre t-hodnotu
-  let mid = 0;
-
-  // 50 iterácií bisekcie pre vysokú presnosť
+  const targetCdf = 1 - alpha / 2;
+  let low = 0,
+    high = 30,
+    mid = 0;
   for (let i = 0; i < 50; i++) {
     mid = (low + high) / 2;
-    const currentCdf = studentTCDF(mid, df);
-    if (currentCdf < targetCdf) {
-      low = mid;
-    } else {
-      high = mid;
-    }
+    studentTCDF(mid, df) < targetCdf ? (low = mid) : (high = mid);
   }
   return mid;
 };
 
 function TTestDashboard() {
   const [data, setData] = useState([]);
+  const [geoJson, setGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // Ovládacie prvky
   const [selectedOkres, setSelectedOkres] = useState("Olomouc");
-  const [expectedValue, setExpectedValue] = useState(136); // Očakávaná hustota (mu_0)
+  const [expectedValue, setExpectedValue] = useState(DEFAULT_EXPECTED_VALUE);
   const [alpha, setAlpha] = useState(0.05);
+  const [hoverX, setHoverX] = useState(null);
+  const [hoveredObec, setHoveredObec] = useState(null);
 
-  // Načítanie dát
   useEffect(() => {
-    const csvUrl = `${import.meta.env.BASE_URL}data/Ol_kraj.csv`;
-    Papa.parse(csvUrl, {
-      download: true,
-      header: true,
-      delimiter: ";",
-      skipEmptyLines: true,
-      complete: (results) => {
-        const parsed = results.data
-          .filter((row) => row.kod && row.okres)
-          .map((row) => {
-            const rawPlocha = String(row.plocha || "0").replace(",", ".");
-            let plochaVal = parseFloat(rawPlocha);
-            if (plochaVal > 10000) plochaVal = plochaVal / 1000000;
-            const pocet = parseInt(row.Poc_obyv_SLDB_2021, 10) || 0;
+    const fetchGeoJSON = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}data/Ol_kraj.json`,
+        );
+        if (!response.ok) throw new Error("Nepodarilo sa načítať GeoJSON");
+        const geojsonData = await response.json();
 
-            return {
-              nazev: row.nazev,
-              okres: row.okres,
-              hustota: plochaVal > 0 ? pocet / plochaVal : 0,
-              jitter: Math.random(), // Náhodná Y hodnota pre rozmiestnenie bodov
-            };
-          })
-          .filter((row) => row.hustota > 0 && row.hustota < 2000); // Odfiltrovanie extrémov pre vizuálnu prehľadnosť
+        const validFeatures = [];
+        const parsed = [];
+
+        geojsonData.features.forEach((feature) => {
+          const props = feature.properties;
+          if (!props.kod || !props.okres) return;
+
+          const plochaVal = props.shape_Area ? props.shape_Area / 1000000 : 0;
+          const pocet = props.Poc_obyv_SLDB_2021 || 0;
+          const hustota = plochaVal > 0 ? pocet / plochaVal : 0;
+
+          if (hustota > 0 && hustota < 2000) {
+            parsed.push({
+              kod: props.kod,
+              nazev: props.nazev,
+              okres: props.okres,
+              hustota: hustota,
+              jitter: Math.random(),
+            });
+
+            feature.properties.hustota = hustota;
+            validFeatures.push(feature);
+          }
+        });
 
         setData(parsed);
+        setGeoJson({ ...geojsonData, features: validFeatures });
         setLoading(false);
-      },
-    });
+      } catch (error) {
+        console.error("Chyba pri spracovaní dát:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchGeoJSON();
   }, []);
 
-  const okresy = useMemo(() => {
-    return [...new Set(data.map((d) => d.okres))].sort();
-  }, [data]);
+  const okresy = useMemo(
+    () => [...new Set(data.map((d) => d.okres))].sort(),
+    [data],
+  );
 
-  // Štatistické výpočty
   const stats = useMemo(() => {
     const districtData = data.filter((d) => d.okres === selectedOkres);
     const n = districtData.length;
     if (n < 2) return null;
-
     const mean = districtData.reduce((acc, curr) => acc + curr.hustota, 0) / n;
     const variance =
       districtData.reduce(
@@ -95,31 +104,26 @@ function TTestDashboard() {
       ) /
       (n - 1);
     const sd = Math.sqrt(variance);
-
     const t = (mean - expectedValue) / (sd / Math.sqrt(n));
     const df = n - 1;
-
-    // Využitie našich utilít
     const pValue = 2 * (1 - studentTCDF(Math.abs(t), df));
     const tCrit = getTCritical(alpha, df);
-
     return { districtData, n, mean, sd, t, df, tCrit, pValue };
   }, [data, selectedOkres, expectedValue, alpha]);
 
-  // Dáta pre graf t-rozdelenia
   const tChartData = useMemo(() => {
     if (!stats) return [];
     const points = [];
     const limit = Math.max(4, Math.abs(stats.t) + 1);
-
     for (let x = -limit; x <= limit; x += 0.05) {
-      points.push({
-        x: parseFloat(x.toFixed(2)),
-        pdf: studentTPDF(x, stats.df), // Využitie existujúcej PDF funkcie
-      });
+      points.push({ x: parseFloat(x.toFixed(2)), y: studentTPDF(x, stats.df) });
     }
     return points;
   }, [stats]);
+
+  const highlightedPoint = useMemo(() => {
+    return stats?.districtData.find((d) => d.kod === hoveredObec) || null;
+  }, [stats, hoveredObec]);
 
   if (loading)
     return (
@@ -130,64 +134,93 @@ function TTestDashboard() {
   if (!stats) return null;
 
   const isSignificant = stats.pValue < alpha;
+  const isDefaultExpected = expectedValue === DEFAULT_EXPECTED_VALUE;
 
   return (
-    <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+    <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
       <section id="interactive-test" className="scroll-mt-4 mt-5">
-        <h2 className="mb-4">Interaktívna ukážka: Jednovýberový t-test</h2>
+        <h2 className="mb-4 text-center">
+          Interaktívna ukážka: Jednovýberový t-test
+        </h2>
 
-        {/* Ovládacie prvky */}
-        <div className="card shadow-sm mb-4 border-0 bg-light">
-          <div className="card-body d-flex flex-wrap gap-4 justify-content-between">
-            <div className="flex-grow-1" style={{ minWidth: "200px" }}>
-              <label className="form-label fw-bold">
-                Výber okresu (Výberový súbor)
-              </label>
-              <select
-                className="form-select shadow-sm"
-                value={selectedOkres}
-                onChange={(e) => setSelectedOkres(e.target.value)}
-              >
-                {okresy.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex-grow-1" style={{ minWidth: "150px" }}>
-              <label className="form-label fw-bold">
-                Hladina významnosti (α)
-              </label>
-              <select
-                className="form-select shadow-sm"
-                value={alpha}
-                onChange={(e) => setAlpha(parseFloat(e.target.value))}
-              >
-                <option value={0.01}>0.01 (1 %)</option>
-                <option value={0.05}>0.05 (5 %)</option>
-                <option value={0.1}>0.10 (10 %)</option>
-              </select>
-            </div>
-            <div className="flex-grow-1" style={{ minWidth: "200px" }}>
-              <label className="form-label fw-bold">
-                Očakávaná hustota (μ₀)
-              </label>
+        {/* Controls */}
+        <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-start gap-5 w-100">
+          <div className="d-flex flex-column align-items-center">
+            <label
+              className="form-label fw-bold mb-2 text-center"
+              style={{ fontSize: "0.9rem" }}
+            >
+              Výber okresu:
+            </label>
+            <select
+              className="form-select text-left shadow-sm"
+              value={selectedOkres}
+              onChange={(e) => setSelectedOkres(e.target.value)}
+              style={{
+                maxWidth: "200px",
+                height: "38px",
+                border: "1px solid var(--bs-border-color)!important",
+                borderRadius: "0.375rem",
+              }}
+            >
+              {okresy.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="d-flex flex-column align-items-center">
+            <label
+              className="form-label fw-bold mb-2 text-center"
+              style={{ fontSize: "0.9rem" }}
+            >
+              Očakávaná hustota (μ₀):
+            </label>
+            <div className="d-flex align-items-center gap-2">
               <input
                 type="number"
-                className="form-control shadow-sm"
+                className="form-control text-center shadow-sm"
                 value={expectedValue}
                 onChange={(e) =>
                   setExpectedValue(parseFloat(e.target.value) || 0)
                 }
+                step="any"
+                style={{ maxWidth: "150px", height: "38px" }}
               />
+              <ResetButton
+                onClick={() => setExpectedValue(DEFAULT_EXPECTED_VALUE)}
+                disabled={isDefaultExpected}
+              />
+            </div>
+          </div>
+
+          <div className="d-flex flex-column align-items-center">
+            <label
+              className="form-label fw-bold mb-2 text-center"
+              style={{ fontSize: "0.9rem" }}
+            >
+              Hladina významnosti (α):
+            </label>
+            <div className="btn-group" role="group">
+              {[0.01, 0.05, 0.1].map((val, index, arr) => (
+                <button
+                  key={val}
+                  type="button"
+                  className={`btn btn-sm px-3 btn-outline-primary ${alpha === val ? "active" : ""} ${index === 0 ? "rounded-start-pill" : index === arr.length - 1 ? "rounded-end-pill" : ""}`}
+                  onClick={() => setAlpha(val)}
+                >
+                  {val}
+                </button>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Vyhodnotenie */}
+        {/* Alert */}
         <div
-          className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-4`}
+          className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-5`}
         >
           <h5 className="alert-heading mb-2">
             Výsledok testovania:{" "}
@@ -203,158 +236,212 @@ function TTestDashboard() {
           </p>
         </div>
 
-        {/* Grafy */}
-        <div className="row g-4 mb-5">
-          {/* Jitter Plot */}
-          <div className="col-12">
-            <div className="card shadow-sm h-100 border">
-              <div className="card-body">
-                <h6 className="card-title text-center mb-0">
-                  Hustota obcí v okrese vs. Očakávaná hodnota
-                </h6>
-                <p className="text-center text-muted small mb-3">
-                  Zobrazenie variability výberového súboru (Jitter plot)
-                </p>
-                <div style={{ height: "180px" }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <ScatterChart
-                      margin={{ top: 20, right: 20, bottom: 20, left: 10 }}
-                    >
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        vertical={false}
-                        opacity={0.3}
-                      />
-                      <XAxis
-                        type="number"
-                        dataKey="hustota"
-                        name="Hustota"
-                        unit=" ob/km²"
-                        domain={["auto", "auto"]}
-                      />
-                      <YAxis
-                        type="number"
-                        dataKey="jitter"
-                        hide={true}
-                        domain={[0, 1]}
-                      />
-                      <RechartsTooltip
-                        cursor={{ strokeDasharray: "3 3" }}
-                        formatter={(val, name) =>
-                          name === "Hustota" ? [val.toFixed(1), name] : []
-                        }
-                      />
-                      <Scatter
-                        name="Obce"
-                        data={stats.districtData}
-                        fill="var(--bs-primary)"
-                        opacity={0.6}
-                      />
+        {/* Charts — side by side on desktop */}
+        <div
+          className="charts-wrapper w-100"
+          style={{ alignItems: "flex-end" }}
+        >
+          <div className="chart-container">
+            <div className="chart-title">Variabilita v okrese</div>
 
-                      {/* Očakávaná a skutočná hodnota priemeru */}
-                      <ReferenceLine
-                        x={expectedValue}
-                        stroke="var(--bs-danger)"
-                        strokeWidth={2}
-                        label={{
-                          value: `μ₀ = ${expectedValue}`,
-                          position: "top",
-                          fill: "var(--bs-danger)",
-                        }}
-                      />
-                      <ReferenceLine
-                        x={stats.mean}
-                        stroke="var(--bs-success)"
-                        strokeDasharray="3 3"
-                        strokeWidth={2}
-                        label={{
-                          value: `x̄ = ${stats.mean.toFixed(1)}`,
-                          position: "bottom",
-                          fill: "var(--bs-success)",
-                        }}
-                      />
-                    </ScatterChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+            <div className="d-flex justify-content-center gap-4 mb-1">
+              <span className="small d-flex align-items-center gap-1">
+                <svg width="18" height="10">
+                  <line
+                    x1="0"
+                    y1="5"
+                    x2="18"
+                    y2="5"
+                    stroke="var(--bs-danger)"
+                    strokeWidth="2"
+                  />
+                </svg>
+                <span style={{ color: "var(--bs-danger)" }}>
+                  μ₀ = {expectedValue}
+                </span>
+              </span>
+              <span className="small d-flex align-items-center gap-1">
+                <svg width="18" height="10">
+                  <line
+                    x1="0"
+                    y1="5"
+                    x2="4"
+                    y2="5"
+                    stroke="var(--bs-success)"
+                    strokeWidth="2"
+                  />
+                  <line
+                    x1="7"
+                    y1="5"
+                    x2="11"
+                    y2="5"
+                    stroke="var(--bs-success)"
+                    strokeWidth="2"
+                  />
+                  <line
+                    x1="14"
+                    y1="5"
+                    x2="18"
+                    y2="5"
+                    stroke="var(--bs-success)"
+                    strokeWidth="2"
+                  />
+                </svg>
+                <span style={{ color: "var(--bs-success)" }}>
+                  x̄ = {stats.mean.toFixed(1)}
+                </span>
+              </span>
             </div>
+
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart
+                margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
+                onMouseMove={(e) => {
+                  if (e && e.activePayload && e.activePayload.length > 0) {
+                    setHoveredObec(e.activePayload[0].payload.kod);
+                  }
+                }}
+                onMouseLeave={() => setHoveredObec(null)}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  type="number"
+                  dataKey="hustota"
+                  name="Hustota"
+                  domain={["auto", "auto"]}
+                  className="chart-axis"
+                  tickFormatter={(v) => `${Math.round(v)}`}
+                  label={{
+                    value: "obyv./km²",
+                    position: "insideBottom",
+                    offset: -15,
+                  }}
+                />
+                <YAxis
+                  type="number"
+                  dataKey="jitter"
+                  domain={[0, 1]}
+                  tick={false}
+                  axisLine={false}
+                  tickLine={false}
+                  width={45}
+                  label={{
+                    value: " ",
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: -10,
+                  }}
+                />
+
+                <RechartsTooltip
+                  cursor={{ strokeDasharray: "3 3" }}
+                  content={({ active, payload }) => {
+                    if (active && payload?.length) {
+                      const d = payload[0].payload;
+                      return (
+                        <div
+                          className="bg-body text-body border rounded shadow-sm p-2"
+                          style={{ fontSize: "0.85rem" }}
+                        >
+                          <div className="fw-bold">{d.nazev}</div>
+                          <div className="text-primary mt-1">
+                            Hustota: {d.hustota.toFixed(1)} ob/km²
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+
+                <Scatter
+                  name="Obce"
+                  data={stats.districtData}
+                  fill="var(--bs-primary)"
+                  opacity={0.6}
+                />
+
+                {/* Zvýraznený biely bod pre hover z mapy */}
+                {highlightedPoint && (
+                  <ReferenceDot
+                    x={highlightedPoint.hustota}
+                    y={highlightedPoint.jitter}
+                    r={6}
+                    fill="#ffffff"
+                    stroke="var(--bs-primary)"
+                    strokeWidth={2}
+                    isFront={true}
+                  />
+                )}
+
+                <ReferenceLine
+                  x={expectedValue}
+                  stroke="var(--bs-danger)"
+                  strokeWidth={2}
+                />
+                <ReferenceLine
+                  x={stats.mean}
+                  stroke="var(--bs-success)"
+                  strokeDasharray="3 3"
+                  strokeWidth={2}
+                />
+              </ScatterChart>
+            </ResponsiveContainer>
           </div>
 
-          {/* Graf Studentovho t-rozdelenia */}
-          <div className="col-12">
-            <div className="card shadow-sm border">
-              <div className="card-body">
-                <h6 className="card-title text-center mb-0">
-                  Studentovo t-rozdelenie (df = {stats.df}) a Kritický obor
-                </h6>
-                <p className="text-center text-muted small mb-3">
-                  T-štatistika = {stats.t.toFixed(2)} | Kritické t = ±
-                  {stats.tCrit.toFixed(2)}
-                </p>
-                <div style={{ height: "300px" }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart
-                      data={tChartData}
-                      margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                      <XAxis dataKey="x" type="number" minTickGap={20} />
-                      <YAxis />
-                      <RechartsTooltip
-                        formatter={(val) => val.toFixed(4)}
-                        labelFormatter={(val) => `t = ${val}`}
-                      />
-
-                      {/* Kritické obory (červené pozadie) */}
-                      <ReferenceArea
-                        x1={tChartData[0]?.x}
-                        x2={-stats.tCrit}
-                        fill="var(--bs-danger)"
-                        fillOpacity={0.15}
-                      />
-                      <ReferenceArea
-                        x1={stats.tCrit}
-                        x2={tChartData[tChartData.length - 1]?.x}
-                        fill="var(--bs-danger)"
-                        fillOpacity={0.15}
-                      />
-
-                      {/* Hustota pravdepodobnosti (Area) */}
-                      <Area
-                        type="monotone"
-                        dataKey="pdf"
-                        stroke="var(--bs-secondary)"
-                        fill="var(--bs-secondary)"
-                        fillOpacity={0.1}
-                        strokeWidth={2}
-                        isAnimationActive={false}
-                      />
-
-                      {/* Čiara pre vypočítanú testovú štatistiku */}
-                      <ReferenceLine
-                        x={stats.t}
-                        stroke={
-                          isSignificant
-                            ? "var(--bs-danger)"
-                            : "var(--bs-success)"
-                        }
-                        strokeWidth={3}
-                        label={{
-                          value: `t = ${stats.t.toFixed(2)}`,
-                          position: "top",
-                          fill: isSignificant
-                            ? "var(--bs-danger)"
-                            : "var(--bs-success)",
-                          fontWeight: "bold",
-                        }}
-                      />
-                    </ComposedChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
+          <div>
+            <StyledLineChart
+              data={tChartData}
+              title={`Studentovo t-rozdelenie (df = ${stats.df})`}
+              xLabel="t"
+              yLabel="f(t)"
+              lineClass="chart-line-secondary"
+              hoverX={hoverX}
+              setHoverX={setHoverX}
+              minX={tChartData[0]?.x}
+              maxX={tChartData[tChartData.length - 1]?.x}
+              type="pdf"
+              showReferenceArea={false}
+            >
+              <ReferenceArea
+                x1={tChartData[0]?.x}
+                x2={-stats.tCrit}
+                fill="var(--bs-danger)"
+                fillOpacity={0.15}
+              />
+              <ReferenceArea
+                x1={stats.tCrit}
+                x2={tChartData[tChartData.length - 1]?.x}
+                fill="var(--bs-danger)"
+                fillOpacity={0.15}
+              />
+              <ReferenceLine
+                x={stats.t}
+                stroke={
+                  isSignificant ? "var(--bs-danger)" : "var(--bs-success)"
+                }
+                strokeWidth={2}
+                label={{
+                  value: `t = ${stats.t.toFixed(2)}`,
+                  position: "top",
+                  fill: isSignificant
+                    ? "var(--bs-danger)"
+                    : "var(--bs-success)",
+                  fontWeight: "bold",
+                }}
+              />
+            </StyledLineChart>
           </div>
         </div>
+
+        <ChoroplethMap
+          geoJsonData={geoJson}
+          attribute="hustota"
+          filterKey="okres"
+          filterValue={selectedOkres}
+          hoveredObec={hoveredObec}
+          setHoveredObec={setHoveredObec}
+        />
       </section>
     </div>
   );

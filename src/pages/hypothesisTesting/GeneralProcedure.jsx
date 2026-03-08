@@ -284,7 +284,7 @@ function GeneralProcedure() {
                           Správne rozhodnutie <br />{" "}
                           <InlineMath math="(1 - \alpha)" />
                         </td>
-                        <td className="text-danger bg-danger-subtle">
+                        <td className="text-danger">
                           <strong>
                             Chyba I. druhu (<InlineMath math="\alpha" />)
                           </strong>
@@ -304,7 +304,7 @@ function GeneralProcedure() {
                             Hustota zaľudnenia sa reálne líši od priemeru ČR.
                           </small>
                         </th>
-                        <td className="text-warning-emphasis bg-warning-subtle">
+                        <td className="text-warning-emphasis">
                           <strong>
                             Chyba II. druhu (<InlineMath math="\beta" />)
                           </strong>
