@@ -5,34 +5,77 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { ThemeContext } from "../../../context/ThemeContext";
 
-// Robustnejší Kvantilový algoritmus pre rovnomerné využitie farieb
-const getQuantileBreaks = (data, numClasses) => {
-  if (!data || data.length === 0) return [];
-  const sorted = [...data].sort((a, b) => a - b);
-  const breaks = [];
-  for (let i = 1; i <= numClasses; i++) {
-    const p = i / numClasses;
-    const idx = Math.floor(p * (sorted.length - 1));
-    breaks.push(sorted[idx]);
-  }
-  return breaks;
+// Divergent quantile breaks anchored at a pivot value.
+// Returns { belowBreaks, aboveBreaks, belowCount, aboveCount }
+const getDivergentBreaks = (vals, pivot, maxClasses = 5) => {
+  const below = vals.filter((v) => v < pivot).sort((a, b) => a - b);
+  const above = vals.filter((v) => v >= pivot).sort((a, b) => a - b);
+
+  const makeBreaks = (arr, n) => {
+    if (arr.length === 0) return [];
+    const classes = Math.min(n, arr.length);
+    const breaks = [];
+    for (let i = 1; i <= classes; i++) {
+      const idx = Math.floor((i / classes) * (arr.length - 1));
+      breaks.push(arr[idx]);
+    }
+    return breaks;
+  };
+
+  // Scale number of classes proportionally, min 1
+  const totalWithData = below.length + above.length;
+  const belowClasses = Math.max(
+    1,
+    Math.round((below.length / totalWithData) * maxClasses),
+  );
+  const aboveClasses = Math.max(
+    1,
+    Math.round((above.length / totalWithData) * maxClasses),
+  );
+
+  return {
+    belowBreaks: makeBreaks(below, belowClasses),
+    aboveBreaks: makeBreaks(above, aboveClasses),
+    belowCount: below.length,
+    aboveCount: above.length,
+  };
 };
 
-// Zabezpečí automatický zoom na aktuálne vybraný okres
+// Red shades (light → dark) for below-pivot
+// Green shades light→dark (above pivot)
+const GREEN_SHADES = ["#f7ffee", "#e7f7cf", "#c2ec8c", "#80d040"];
+// Red shades light→dark (above → below pivot, i.e. closest to pivot = lightest)
+const RED_SHADES = ["#ffecf3", "#ffdad8", "#ffaca9", "#ff8080"];
+
+const getColor = (val, pivot, belowBreaks, aboveBreaks) => {
+  if (val == null) return null; // no-data
+  if (val < pivot) {
+    const idx = belowBreaks.findIndex((b) => val <= b);
+    const i = idx !== -1 ? idx : belowBreaks.length - 1;
+    // Map to available red shades — use last N shades so darkest = closest to pivot
+    const shades = RED_SHADES.slice(RED_SHADES.length - belowBreaks.length);
+    return shades[i] ?? RED_SHADES[RED_SHADES.length - 1];
+  } else {
+    const idx = aboveBreaks.findIndex((b) => val <= b);
+    const i = idx !== -1 ? idx : aboveBreaks.length - 1;
+    const shades = GREEN_SHADES.slice(0, aboveBreaks.length);
+    return shades[i] ?? GREEN_SHADES[GREEN_SHADES.length - 1];
+  }
+};
+
 const MapBoundsFitter = ({ geoJsonData, filterKey, filterValue }) => {
   const map = useMap();
   useEffect(() => {
-    if (geoJsonData) {
-      const filtered = {
-        ...geoJsonData,
-        features: geoJsonData.features.filter(
-          (f) => f.properties[filterKey] === filterValue,
-        ),
-      };
-      if (filtered.features.length > 0) {
-        const layer = L.geoJSON(filtered);
-        map.fitBounds(layer.getBounds(), { padding: [30, 30], animate: true });
-      }
+    if (!geoJsonData) return;
+    const filtered = {
+      ...geoJsonData,
+      features: geoJsonData.features.filter(
+        (f) => f.properties[filterKey] === filterValue,
+      ),
+    };
+    if (filtered.features.length > 0) {
+      const layer = L.geoJSON(filtered);
+      map.fitBounds(layer.getBounds(), { padding: [30, 30], animate: true });
     }
   }, [geoJsonData, filterValue, map]);
   return null;
@@ -45,26 +88,23 @@ function ChoroplethMap({
   filterValue,
   hoveredObec,
   setHoveredObec,
+  pivot, // expectedValue from dashboard
 }) {
   const wrapperRef = useRef(null);
   const geoJsonRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
-  // Napojenie na tvoj globálny ThemeContext
   const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
-    const onFullscreenChange = () =>
-      setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", onFullscreenChange);
-    return () =>
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
+    const onFSChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onFSChange);
+    return () => document.removeEventListener("fullscreenchange", onFSChange);
   }, []);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement && wrapperRef.current) {
       wrapperRef.current.requestFullscreen();
-    } else if (document.fullscreenElement) {
+    } else {
       document.exitFullscreen();
     }
   };
@@ -73,149 +113,259 @@ function ChoroplethMap({
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
-  const colors = ["#feedde", "#fdbe85", "#fd8d3c", "#e6550d", "#a63603"];
-
-  const breaks = useMemo(() => {
-    if (!geoJsonData) return [];
+  // Compute divergent breaks for selected district
+  const { belowBreaks, aboveBreaks } = useMemo(() => {
+    if (!geoJsonData) return { belowBreaks: [], aboveBreaks: [] };
     const vals = geoJsonData.features
       .filter((f) => f.properties[filterKey] === filterValue)
       .map((f) => f.properties[attribute])
-      .filter((v) => v !== undefined && v !== null);
+      .filter((v) => v != null && isFinite(v));
+    return getDivergentBreaks(vals, pivot ?? 136);
+  }, [geoJsonData, filterValue, attribute, filterKey, pivot]);
 
-    return getQuantileBreaks(vals, colors.length);
-  }, [geoJsonData, filterValue, colors.length, attribute, filterKey]);
-
-  // Dynamická štýlovacia funkcia
   const style = (feature) => {
-    const isSelected = feature.properties[filterKey] === filterValue;
+    const isInDistrict = feature.properties[filterKey] === filterValue;
     const isHovered = feature.properties.kod === hoveredObec;
     const val = feature.properties[attribute];
 
-    let fillColor = darkMode ? "#333" : "#e0e0e0";
-    if (isSelected && val != null) {
-      const idx = breaks.findIndex((b) => val <= b);
-      fillColor = idx !== -1 ? colors[idx] : colors[colors.length - 1];
+    let fillColor;
+    if (!isInDistrict) {
+      fillColor = darkMode ? "#2a2a2a" : "#e0e0e0"; // outside
+    } else if (val == null) {
+      fillColor = darkMode ? "#606060" : "#b0b0b0"; // no data — distinct mid-grey
+    } else {
+      fillColor = getColor(val, pivot ?? 136, belowBreaks, aboveBreaks);
     }
 
     return {
       fillColor,
-      weight: isHovered ? 2 : isSelected ? 1 : 0.5,
+      weight: isHovered ? 2 : isInDistrict ? 1 : 0.5,
       opacity: 1,
       color: isHovered
-        ? "#ffffff"
-        : isSelected
+        ? "var(--bs-primary)"
+        : isInDistrict
           ? darkMode
-            ? "#222"
+            ? "#333"
             : "#fff"
           : darkMode
-            ? "#555"
+            ? "#444"
             : "#ccc",
-      fillOpacity: isSelected ? 0.85 : 0.3,
+      fillOpacity: isInDistrict ? 0.85 : 0.25,
     };
   };
 
-  // Efektívna aktualizácia štýlov bez prekresľovania celého DOM stromu (podpora Hoveru z grafu)
   useEffect(() => {
     if (geoJsonRef.current) {
       geoJsonRef.current.setStyle(style);
-      // Vytiahnutie hoverovanej obce do popredia, aby ju neprekrývali okraje susedov
       if (hoveredObec) {
         geoJsonRef.current.eachLayer((layer) => {
-          if (layer.feature.properties.kod === hoveredObec) {
+          if (layer.feature.properties.kod === hoveredObec)
             layer.bringToFront();
-          }
         });
       }
     }
-  }, [hoveredObec, darkMode, filterValue, breaks]);
+  }, [hoveredObec, darkMode, filterValue, belowBreaks, aboveBreaks, pivot]);
 
   const onEachFeature = (feature, layer) => {
-    const isSelected = feature.properties[filterKey] === filterValue;
-    let tooltipContent = `<div class="text-center"><strong>${feature.properties.nazev}</strong><br/>`;
-    if (isSelected && feature.properties[attribute] != null) {
-      tooltipContent += `Hustota: ${feature.properties[attribute].toFixed(1)} ob/km²</div>`;
+    const isInDistrict = feature.properties[filterKey] === filterValue;
+    const val = feature.properties[attribute];
+
+    let valLine;
+    if (!isInDistrict) {
+      valLine = `<small class="text-muted">Mimo vybraný okres</small>`;
+    } else if (val == null) {
+      valLine = `<small class="text-muted">Bez dát</small>`;
     } else {
-      tooltipContent += `<small class="text-muted">Mimo vybraný okres</small></div>`;
+      valLine = `Hustota: ${val.toFixed(1)} ob/km²`;
     }
 
-    layer.bindTooltip(tooltipContent, {
-      sticky: true,
-      className: "shadow-sm border-0 bg-body text-body",
-    });
+    layer.bindTooltip(
+      `<div class="text-center"><strong>${feature.properties.nazev}</strong><br/>${valLine}</div>`,
+      { sticky: false, className: "shadow-sm border-0 bg-body text-body" },
+    );
 
     layer.on({
-      mouseover: () => {
-        if (isSelected) setHoveredObec(feature.properties.kod);
+      mouseover: (e) => {
+        if (geoJsonRef.current)
+          geoJsonRef.current.eachLayer((l) => l.closeTooltip());
+        if (isInDistrict) {
+          setHoveredObec(feature.properties.kod);
+          layer.openTooltip(e.latlng);
+        }
       },
-      mouseout: () => setHoveredObec(null),
+      mousemove: (e) => {
+        if (isInDistrict) layer.openTooltip(e.latlng);
+      },
+      mouseout: () => {
+        layer.closeTooltip();
+        setHoveredObec(null);
+      },
     });
   };
 
-  const maxBounds = [
-    [47.5, 11.0],
-    [52.0, 23.0],
-  ];
+  // Legend rows
+  const legendRows = useMemo(() => {
+    const rows = [];
+
+    // Above pivot — from darkest (highest) down to lightest (closest to pivot)
+    const aboveShades = GREEN_SHADES.slice(0, aboveBreaks.length);
+    aboveBreaks
+      .slice()
+      .reverse()
+      .forEach((breakVal, ri) => {
+        const i = aboveBreaks.length - 1 - ri;
+        const from = i === 0 ? (pivot ?? 136) : aboveBreaks[i - 1];
+        rows.push({
+          color: aboveShades[i],
+          label: `${Math.round(breakVal)} – ${Math.round(from)}`,
+        });
+      });
+
+    // Pivot separator
+    rows.push({ color: null, label: `μ₀ = ${pivot ?? 136}`, isPivot: true });
+
+    // Below pivot — from lightest (closest to pivot) down to darkest (lowest)
+    const belowShades = [...RED_SHADES].slice(0, belowBreaks.length).reverse();
+    belowBreaks
+      .slice()
+      .reverse()
+      .forEach((breakVal, ri) => {
+        const i = belowBreaks.length - 1 - ri;
+        const from = i === 0 ? 0 : belowBreaks[i - 1];
+        rows.push({
+          color: belowShades[ri],
+          label: `${Math.round(breakVal)} – ${Math.round(from)}`,
+        });
+      });
+
+    return rows;
+  }, [belowBreaks, aboveBreaks, pivot]);
 
   return (
-    <div
-      ref={wrapperRef}
-      className={`rounded border overflow-hidden mt-4 shadow-sm position-relative ${isFullscreen ? "bg-body" : ""}`}
-      style={{ height: isFullscreen ? "100vh" : "450px", width: "100%" }}
-    >
-      <button
-        onClick={toggleFullscreen}
-        className={`btn btn-sm ${darkMode ? "btn-dark border-secondary" : "btn-light border"} shadow-sm position-absolute d-flex align-items-center justify-content-center`}
-        style={{
-          top: "10px",
-          right: "10px",
-          zIndex: 1000,
-          width: "32px",
-          height: "32px",
-          padding: 0,
-        }}
-        title="Zobraziť na celú obrazovku"
+    <>
+      <style>{`.leaflet-interactive:focus { outline: none; }`}</style>
+      <div
+        ref={wrapperRef}
+        className={`rounded border overflow-hidden mt-4 shadow-sm position-relative${isFullscreen ? " bg-body" : ""}`}
+        style={{ height: isFullscreen ? "100vh" : "450px", width: "100%" }}
       >
-        {isFullscreen ? (
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h3.5V.5A.5.5 0 0 1 5.5 0zm4 0a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V.5h-3.5a.5.5 0 0 1-.5-.5zm-4 16a.5.5 0 0 1-.5-.5v-4a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1H3.5v3.5a.5.5 0 0 1-.5.5zm4 0a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10.5 16v-4a.5.5 0 0 1 1 0v3.5h3.5a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z" />
-          </svg>
-        ) : (
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-            <path
-              fillRule="evenodd"
-              d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"
-            />
-          </svg>
-        )}
-      </button>
+        {/* Fullscreen button */}
+        <button
+          onClick={toggleFullscreen}
+          className={`btn btn-sm ${darkMode ? "btn-dark border-secondary" : "btn-light border"} shadow-sm position-absolute d-flex align-items-center justify-content-center`}
+          style={{
+            top: 10,
+            right: 10,
+            zIndex: 1000,
+            width: 32,
+            height: 32,
+            padding: 0,
+          }}
+          title="Zobraziť na celú obrazovku"
+        >
+          {isFullscreen ? (
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-14v3h3v2h-5V5h2z" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+            </svg>
+          )}
+        </button>
 
-      <MapContainer
-        center={[49.6, 17.2]}
-        zoom={8}
-        minZoom={6}
-        maxZoom={14}
-        maxBounds={maxBounds}
-        maxBoundsViscosity={0.8}
-        style={{ height: "100%", width: "100%" }}
-        scrollWheelZoom={false}
-      >
-        <TileLayer key={tileUrl} url={tileUrl} attribution="&copy; CartoDB" />
-        {geoJsonData && (
-          <GeoJSON
-            ref={geoJsonRef}
-            key={`${filterValue}-${darkMode ? "dark" : "light"}`} // hoveredObec už tu nie je, aby neblikala mapa
-            data={geoJsonData}
-            style={style}
-            onEachFeature={onEachFeature}
+        {/* Legend */}
+        <div
+          className="position-absolute bg-body border rounded shadow-sm px-2 py-1"
+          style={{
+            bottom: 20,
+            left: 10,
+            zIndex: 1000,
+            fontSize: "0.72rem",
+            minWidth: 140,
+          }}
+        >
+          <div className="fw-bold mb-1" style={{ fontSize: "0.78rem" }}>
+            Hustota (ob/km²)
+          </div>
+          {legendRows.map((row, i) =>
+            row.isPivot ? (
+              <div
+                key={i}
+                className="text-muted my-1"
+                style={{ borderTop: "1px dashed currentColor", paddingTop: 2 }}
+              >
+                {row.label}
+              </div>
+            ) : (
+              <div key={i} className="d-flex align-items-center gap-1 mb-1">
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 13,
+                    height: 13,
+                    background: row.color,
+                    border: "1px solid #aaa",
+                    flexShrink: 0,
+                  }}
+                />
+                <span>{row.label}</span>
+              </div>
+            ),
+          )}
+          {/* No-data */}
+          <div
+            className="d-flex align-items-center gap-1 mt-1"
+            style={{
+              borderTop: "1px solid var(--bs-border-color)",
+              paddingTop: 4,
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                width: 13,
+                height: 13,
+                background: darkMode ? "#606060" : "#b0b0b0",
+                border: "1px solid #aaa",
+                flexShrink: 0,
+              }}
+            />
+            <span className="text-muted">Bez dát</span>
+          </div>
+        </div>
+
+        <MapContainer
+          center={[49.6, 17.2]}
+          zoom={8}
+          minZoom={6}
+          maxZoom={14}
+          maxBounds={[
+            [47.5, 11.0],
+            [52.0, 23.0],
+          ]}
+          maxBoundsViscosity={0.8}
+          style={{ height: "100%", width: "100%" }}
+          scrollWheelZoom={false}
+        >
+          <TileLayer key={tileUrl} url={tileUrl} attribution="&copy; CartoDB" />
+          {geoJsonData && (
+            <GeoJSON
+              ref={geoJsonRef}
+              key={`${filterValue}-${darkMode ? "dark" : "light"}`}
+              data={geoJsonData}
+              style={style}
+              onEachFeature={onEachFeature}
+            />
+          )}
+          <MapBoundsFitter
+            geoJsonData={geoJsonData}
+            filterKey={filterKey}
+            filterValue={filterValue}
           />
-        )}
-        <MapBoundsFitter
-          geoJsonData={geoJsonData}
-          filterKey={filterKey}
-          filterValue={filterValue}
-        />
-      </MapContainer>
-    </div>
+        </MapContainer>
+      </div>
+    </>
   );
 }
 

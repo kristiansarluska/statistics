@@ -57,20 +57,24 @@ function TTestDashboard() {
           const props = feature.properties;
           if (!props.kod || !props.okres) return;
 
-          const plochaVal = props.shape_Area ? props.shape_Area / 1000000 : 0;
-          const pocet = props.Poc_obyv_SLDB_2021 || 0;
-          const hustota = plochaVal > 0 ? pocet / plochaVal : 0;
+          // Replace the hustota computation block:
+          const plochaVal = props.shape_Area ? props.shape_Area / 1_000_000 : 0;
+          const pocet = props.Poc_obyv_SLDB_2021 ?? null; // keep null explicitly
+          const hustota =
+            plochaVal > 0 && pocet != null ? pocet / plochaVal : null;
 
-          if (hustota > 0 && hustota < 2000) {
-            parsed.push({
-              kod: props.kod,
-              nazev: props.nazev,
-              okres: props.okres,
-              hustota: hustota,
-              jitter: Math.random(),
-            });
-
-            feature.properties.hustota = hustota;
+          // Keep feature if it's in a valid district, regardless of hustota
+          if (hustota === null || (hustota > 0 && hustota < 2000)) {
+            if (hustota !== null) {
+              parsed.push({
+                kod: props.kod,
+                nazev: props.nazev,
+                okres: props.okres,
+                hustota,
+                jitter: Math.random(),
+              });
+            }
+            feature.properties.hustota = hustota; // null for Libava
             validFeatures.push(feature);
           }
         });
@@ -296,12 +300,6 @@ function TTestDashboard() {
             <ResponsiveContainer width="100%" height={300}>
               <ScatterChart
                 margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
-                onMouseMove={(e) => {
-                  if (e && e.activePayload && e.activePayload.length > 0) {
-                    setHoveredObec(e.activePayload[0].payload.kod);
-                  }
-                }}
-                onMouseLeave={() => setHoveredObec(null)}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
@@ -359,6 +357,10 @@ function TTestDashboard() {
                   data={stats.districtData}
                   fill="var(--bs-primary)"
                   opacity={0.6}
+                  onMouseOver={(payload) =>
+                    setHoveredObec(payload?.kod ?? null)
+                  }
+                  onMouseLeave={() => setHoveredObec(null)}
                 />
 
                 {/* Zvýraznený biely bod pre hover z mapy */}
@@ -441,6 +443,7 @@ function TTestDashboard() {
           filterValue={selectedOkres}
           hoveredObec={hoveredObec}
           setHoveredObec={setHoveredObec}
+          pivot={expectedValue}
         />
       </section>
     </div>
