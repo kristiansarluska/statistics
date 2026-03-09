@@ -16,6 +16,8 @@ import { studentTPDF, studentTCDF } from "../../utils/distributions";
 import StyledLineChart from "../../components/charts/helpers/StyledLineChart";
 import ResetButton from "../../components/charts/helpers/ResetButton";
 import ChoroplethMap from "../../components/maps/helpers/ChoroplethMap";
+import "katex/dist/katex.min.css";
+import { BlockMath, InlineMath } from "react-katex";
 
 const DEFAULT_EXPECTED_VALUE = 136;
 
@@ -40,6 +42,7 @@ function TTestDashboard() {
   const [alpha, setAlpha] = useState(0.05);
   const [hoverX, setHoverX] = useState(null);
   const [hoveredObec, setHoveredObec] = useState(null);
+  const [calcOpen, setCalcOpen] = useState(false);
 
   useEffect(() => {
     const fetchGeoJSON = async () => {
@@ -143,6 +146,14 @@ function TTestDashboard() {
   return (
     <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
       <section id="interactive-test" className="scroll-mt-4 mt-5">
+        <p className="text-muted mb-5">
+          V predchádzajúcich častiach sme prešli všeobecným postupom testovania
+          hypotéz a formulovali sme konkrétne hypotézy pre hustotu zaľudnenia
+          obcí Olomouckého kraja. Teraz si celý proces môžeš vyskúšať
+          interaktívne — vyber okres, nastav referenčnú hodnotu{" "}
+          <InlineMath math="\mu_0" /> a sleduj, ako sa mení výsledok testu aj
+          vizualizácia rozdelenia.
+        </p>
         <h2 className="mb-4 text-center">
           Interaktívna ukážka: Jednovýberový t-test
         </h2>
@@ -238,6 +249,111 @@ function TTestDashboard() {
               ? `Na hladine významnosti ${alpha} existuje štatisticky významný rozdiel. Priemerná hustota zaľudnenia obcí v okrese ${selectedOkres} (${stats.mean.toFixed(1)} obyv./km²) sa preukázateľne líši od predpokladanej hodnoty ${expectedValue} obyv./km².`
               : `Na hladine významnosti ${alpha} sme nepreukázali štatisticky významný rozdiel. Variabilita v dátach je príliš veľká alebo priemer (${stats.mean.toFixed(1)} obyv./km²) je dostatočne blízko k ${expectedValue} obyv./km².`}
           </p>
+        </div>
+
+        {/* Live calculation breakdown */}
+        <div className="mb-4">
+          <button
+            className="btn btn-outline-secondary btn-sm rounded-pill px-4 mx-auto d-block"
+            type="button"
+            onClick={() => setCalcOpen((v) => !v)}
+          >
+            {calcOpen ? "Skryť výpočet ▲" : "Zobraziť výpočet ▼"}
+          </button>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateRows: calcOpen ? "1fr" : "0fr",
+              transition: "grid-template-rows 0.35s ease",
+            }}
+          >
+            <div style={{ overflow: "hidden" }}>
+              <div
+                className="card shadow-sm border-0 mx-auto mt-3"
+                style={{ maxWidth: "620px" }}
+              >
+                <div className="card-body">
+                  <h6 className="card-subtitle mb-3 text-muted text-center">
+                    Výpočet t-štatistiky pre okres {selectedOkres}
+                  </h6>
+                  <div className="text-center mb-2">
+                    <BlockMath math="t = \frac{\bar{x} - \mu_0}{\dfrac{s}{\sqrt{n}}}" />
+                  </div>
+                  <div className="text-center mb-3">
+                    <BlockMath
+                      math={`t = \\frac{${stats.mean.toFixed(2)} - ${expectedValue}}{\\dfrac{${stats.sd.toFixed(2)}}{\\sqrt{${stats.n}}}} = \\frac{${(stats.mean - expectedValue).toFixed(2)}}{${(stats.sd / Math.sqrt(stats.n)).toFixed(4)}} = ${stats.t.toFixed(4)}`}
+                    />
+                  </div>
+                  <div className="row text-center small text-muted g-2">
+                    {[
+                      {
+                        math: `\\bar{x} = ${stats.mean.toFixed(2)}`,
+                        label: "výb. priemer",
+                      },
+                      {
+                        math: `\\mu_0 = ${expectedValue}`,
+                        label: "ref. hodnota",
+                      },
+                      {
+                        math: `s = ${stats.sd.toFixed(2)}`,
+                        label: "smer. odch.",
+                      },
+                      { math: `n = ${stats.n}`, label: "počet obcí" },
+                    ].map(({ math, label }) => (
+                      <div key={label} className="col-6 col-sm-3">
+                        <InlineMath math={math} />
+                        <div>{label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <hr className="my-3" />
+
+                  <h6 className="card-subtitle mb-2 text-muted text-center">
+                    Výpočet p-hodnoty
+                  </h6>
+                  <div className="text-center mb-2">
+                    <BlockMath math="p = 2 \cdot P(T_{df} > |t|) = 2 \cdot (1 - F_{t}(|t|))" />
+                  </div>
+                  <div className="text-center mb-3">
+                    <BlockMath
+                      math={`p = 2 \\cdot (1 - F_{${stats.df}}(${Math.abs(stats.t).toFixed(4)})) = ${stats.pValue.toFixed(4)}`}
+                    />
+                  </div>
+                  <p className="small text-muted text-center mb-3">
+                    kde <InlineMath math={`F_{${stats.df}}`} /> je distribučná
+                    funkcia Studentovho t-rozdelenia s{" "}
+                    <InlineMath math={`${stats.df}`} /> stupňami voľnosti.
+                  </p>
+
+                  <hr className="my-3" />
+
+                  <div
+                    className={`rounded p-2 text-center small ${isSignificant ? "bg-danger-subtle" : "bg-success-subtle"}`}
+                  >
+                    <div
+                      className={`fw-bold mb-1 ${isSignificant ? "text-danger" : "text-success"}`}
+                    >
+                      {isSignificant
+                        ? `p = ${stats.pValue.toFixed(4)} < α = ${alpha} → zamietame H₀`
+                        : `p = ${stats.pValue.toFixed(4)} ≥ α = ${alpha} → nezamietame H₀`}
+                    </div>
+                    <div className="text-muted">
+                      Ekvivalentne:{" "}
+                      <InlineMath
+                        math={`|t| = ${Math.abs(stats.t).toFixed(4)}`}
+                      />
+                      {isSignificant ? " > " : " ≤ "}
+                      <InlineMath
+                        math={`t_{\\alpha/2} = ${stats.tCrit.toFixed(4)}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Charts — side by side on desktop */}
