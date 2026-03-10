@@ -24,7 +24,7 @@ const ContinuousDiscrete = () => {
                 (zvyčajne celé čísla). Medzi jednotlivými hodnotami sú medzery,
                 neexistujú prechody.
               </p>
-              <ul className="mb-0 text-muted" style={{ fontSize: "0.95rem" }}>
+              <ul className="mb-0 text-muted small">
                 <li>
                   <strong>Proces:</strong> Vzniká rátaním (počítaním výskytov).
                 </li>
@@ -48,7 +48,7 @@ const ContinuousDiscrete = () => {
                 možných hodnôt je nekonečný a obmedzuje ho len presnosť
                 meracieho prístroja.
               </p>
-              <ul className="mb-0 text-muted" style={{ fontSize: "0.95rem" }}>
+              <ul className="mb-0 text-muted small">
                 <li>
                   <strong>Proces:</strong> Vzniká meraním.
                 </li>

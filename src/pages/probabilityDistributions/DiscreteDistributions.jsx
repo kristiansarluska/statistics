@@ -1,3 +1,4 @@
+// src/pages/probabilityDistributions/DiscreteDistributions.jsx
 import React from "react";
 import { BlockMath, InlineMath } from "react-katex";
 import BernoulliChart from "../../components/charts/probability-distributions/discrete/BernoulliChart";
@@ -7,10 +8,8 @@ import PoissonChart from "../../components/charts/probability-distributions/disc
 
 function DiscreteDistributions() {
   return (
-    <>
-      <h2 id="discrete-distributions" className="mb-4">
-        Diskrétne rozdelenia
-      </h2>
+    <section id="discrete-distributions">
+      <h2 className="mb-4">Diskrétne rozdelenia</h2>
       <p className="mb-5">
         Diskrétne pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré
         môžu nadobúdať len spočítateľné množstvo hodnôt (napríklad celé čísla).
@@ -18,14 +17,14 @@ function DiscreteDistributions() {
 
       {/* ALTERNATÍVNE ROZDELENIE */}
       <h3 id="bernoulli" className="mb-3">
-        Alternatívne (Bernoulliho) rozdelenie
+        Alternatívne rozdelenie
       </h3>
       <p className="mb-3">
-        Je to najjednoduchšie diskrétne rozdelenie pre experimenty, ktoré majú
-        iba dva vzájomne sa vylučujúce výsledky: "úspech" (hodnota 1) a
-        "neúspech" (hodnota 0). Množina možných výsledkov je{" "}
-        <InlineMath math="\Omega = \{0, 1\}" />. Pravdepodobnosť úspechu
-        označujeme ako <InlineMath math="p" /> (kde{" "}
+        Alternatívne (Bernoulliho) rozdelenie je najjednoduchšie diskrétne
+        rozdelenie pre experimenty, ktoré majú iba dva vzájomne sa vylučujúce
+        výsledky: "úspech" (hodnota 1) a "neúspech" (hodnota 0). Množina možných
+        výsledkov je <InlineMath math="\Omega = \{0, 1\}" />. Pravdepodobnosť
+        úspechu označujeme ako <InlineMath math="p" /> (kde{" "}
         <InlineMath math="p \in \langle 0, 1 \rangle" />
         ), teda <InlineMath math="P(X=1) = p" />. Pravdepodobnosť neúspechu je
         doplnkom do 1, teda <InlineMath math="P(X=0) = 1 - p" />.
@@ -40,22 +39,21 @@ function DiscreteDistributions() {
         />
       </div>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          Príklad z praxe: Klasifikácia satelitnej snímky
-        </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">Klasifikácia satelitnej snímky</h5>
+        <p className="text-muted mb-4 small">
           Predstavme si, že analyzujeme satelitnú snímku územia, kde 25 %
           rozlohy tvorí vodná plocha. Náhodne vyberieme jeden pixel na snímke.
           Náhodná veličina X nadobúda hodnotu 1 (úspech), ak pixel reprezentuje
           vodu, a 0 (neúspech), ak ide o pevninu. V grafe nižšie môžete meniť
-          parameter <strong>p</strong> (podiel vodnej plochy v území) a sledovať
-          zmenu pravdepodobnostnej funkcie.
+          parameter{" "}
+          <strong>
+            <InlineMath math="p" />
+          </strong>{" "}
+          (podiel vodnej plochy v území) a sledovať zmenu pravdepodobnostnej
+          funkcie.
         </p>
-
-        <div className="mb-5">
-          <BernoulliChart />
-        </div>
+        <BernoulliChart />
       </div>
 
       {/* ROVNOMERNÉ ROZDELENIE */}
@@ -79,28 +77,29 @@ function DiscreteDistributions() {
         />
       </div>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          Príklad z praxe: Náhodný výber administratívnej jednotky
-        </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">Náhodný výber administratívnej jednotky</h5>
+        <p className="text-muted mb-4 small">
           Predstavte si, že chcete vykonať náhodnú kontrolu kvality ovzdušia v
-          jednom vybranom okrese určitého kraja. Parameter <strong>n</strong> tu
-          predstavuje celkový počet okresov v danom kraji. Ak je výber úplne
+          jednom vybranom okrese určitého kraja. Parameter{" "}
+          <strong>
+            <InlineMath math="n" />
+          </strong>{" "}
+          tu predstavuje celkový počet okresov v danom kraji. Ak je výber úplne
           náhodný, každý okres má rovnakú šancu na kontrolu. Zmenou parametra{" "}
-          <strong>n</strong> na posuvníku simulujete prechod do iného kraja s
-          iným počtom okresov (napr. Bratislavský kraj má{" "}
-          <InlineMath math="n=8" />, Trnavský <InlineMath math="n=7" />
+          <strong>
+            <InlineMath math="n" />
+          </strong>{" "}
+          na posuvníku simulujete prechod do iného kraja s iným počtom okresov
+          (napr. Bratislavský kraj má <InlineMath math="n=8" />, Trnavský{" "}
+          <InlineMath math="n=7" />
           ). Všimnite si, že čím viac je okresov, tým nižšia je pravdepodobnosť
           výberu konkrétneho z nich.
         </p>
-
-        <div className="mb-5">
-          <UniformDiscreteChart />
-        </div>
+        <UniformDiscreteChart />
       </div>
 
-      {/* BINOMICKÉ ROZDELENIE (Zatiaľ len placeholder na ďalší krok) */}
+      {/* BINOMICKÉ ROZDELENIE */}
       <h3 id="binomial" className="mb-3 mt-5">
         Binomické rozdelenie
       </h3>
@@ -121,23 +120,29 @@ function DiscreteDistributions() {
         />
       </div>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          Príklad z praxe: Automatická extrakcia objektov (AI detekcia)
-        </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">Automatická extrakcia objektov (AI detekcia)</h5>
+        <p className="text-muted mb-4 small">
           Pri analýze satelitných snímok používame algoritmus na detekciu budov.
-          Parameter <strong>p</strong> predstavuje pravdepodobnosť, že
-          algoritmus správne rozpozná budovu (úspech), a <strong>n</strong> je
-          celkový počet budov na snímke, ktoré má spracovať. Všimnite si, že ak
-          je presnosť algoritmu vysoká (napr. <InlineMath math="p = 0.9" />
+          Parameter{" "}
+          <strong>
+            <InlineMath math="p" />
+          </strong>{" "}
+          predstavuje pravdepodobnosť, že algoritmus správne rozpozná budovu
+          (úspech), a{" "}
+          <strong>
+            <InlineMath math="n" />
+          </strong>{" "}
+          je celkový počet budov na snímke, ktoré má spracovať. Všimnite si, že
+          ak je presnosť algoritmu vysoká (napr. <InlineMath math="p = 0.9" />
           ), najvyššia pravdepodobnosť sa kumuluje pri hodnote blízkej celkovému
-          počtu budov <strong>n</strong>.
+          počtu budov{" "}
+          <strong>
+            <InlineMath math="n" />
+          </strong>
+          .
         </p>
-
-        <div className="mb-5">
-          <BinomialChart />
-        </div>
+        <BinomialChart />
       </div>
 
       {/* POISSONOVO ROZDELENIE */}
@@ -161,27 +166,29 @@ function DiscreteDistributions() {
         />
       </div>
 
-      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
-          Príklad z praxe: Kontrola kvality digitálneho modelu reliéfu (DMR)
+          Kontrola kvality digitálneho modelu reliéfu (DMR)
         </h5>
-        <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <p className="text-muted mb-4 small">
           Pri spracovaní dát z leteckého laserového skenovania môžu vznikať v
           modeli chybné body (tzv. artefakty). Predpokladajme, že pri
           štandardnej kvalite spracovania sa v priemere vyskytuje{" "}
-          <strong>&lambda;</strong> chýb na 100 hektárov plochy. Poissonovo
-          rozdelenie nám povie, aká je pravdepodobnosť, že na nasledujúcej
-          kontrolovanej ploche nenájdeme žiadnu chybu, alebo ich tam bude naopak
-          neprirodzene veľa. Sledujte, ako sa pri zvyšovaní priemerného počtu
-          chýb (<strong>&lambda;</strong>) rozdelenie "rozťahuje" a vrchol sa
-          posúva doprava.
+          <strong>
+            <InlineMath math="\lambda" />
+          </strong>{" "}
+          chýb na 100 hektárov plochy. Poissonovo rozdelenie nám povie, aká je
+          pravdepodobnosť, že na nasledujúcej kontrolovanej ploche nenájdeme
+          žiadnu chybu, alebo ich tam bude naopak neprirodzene veľa. Sledujte,
+          ako sa pri zvyšovaní priemerného počtu chýb (
+          <strong>
+            <InlineMath math="\lambda" />
+          </strong>
+          ) rozdelenie "rozťahuje" a vrchol sa posúva doprava.
         </p>
-
-        <div className="mb-5">
-          <PoissonChart />
-        </div>
+        <PoissonChart />
       </div>
-    </>
+    </section>
   );
 }
 

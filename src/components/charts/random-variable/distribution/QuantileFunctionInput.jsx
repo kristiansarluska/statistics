@@ -100,9 +100,9 @@ const QuantileFunctionInput = () => {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
-      <h5 className="mb-4 text-center">
+      <h6 className="mb-4 text-center">
         Interaktívna kvantilová funkcia z vlastných dát (výška stromov v m)
-      </h5>
+      </h6>
 
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
         <div className="btn-group shadow-sm" role="group">

@@ -1,25 +1,16 @@
 // src/pages/hypothesisTesting/TTestDashboard.jsx
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  ScatterChart,
-  Scatter,
-  XAxis,
-  YAxis,
-  Tooltip as RechartsTooltip,
-  ReferenceLine,
-  ReferenceDot,
-  ResponsiveContainer,
-  ReferenceArea,
-  CartesianGrid,
-} from "recharts";
 import { studentTPDF, studentTCDF } from "../../utils/distributions";
-import StyledLineChart from "../../components/charts/helpers/StyledLineChart";
 import ResetButton from "../../components/charts/helpers/ResetButton";
 import ChoroplethMap from "../../components/maps/helpers/ChoroplethMap";
+import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
-import { BlockMath, InlineMath } from "react-katex";
 
-// CZ national mean for podiel_nad65 (computed from SLDB 2021, ArcČR 4.3)
+// Sub-components
+import VariabilityScatterChart from "../../components/charts/hypothesis-testing/VariabilityScatterChart";
+import TDistributionChart from "../../components/charts/hypothesis-testing/TDistributionChart";
+import TTestCalculation from "../../components/content/hypothesis-testing/TTestCalculation";
+
 const DEFAULT_EXPECTED_VALUE = 20.56;
 
 const getTCritical = (alpha, df) => {
@@ -41,7 +32,6 @@ function TTestDashboard() {
   const [selectedOkres, setSelectedOkres] = useState("Bruntál");
   const [expectedValue, setExpectedValue] = useState(DEFAULT_EXPECTED_VALUE);
   const [alpha, setAlpha] = useState(0.05);
-  const [hoverX, setHoverX] = useState(null);
   const [hoveredObec, setHoveredObec] = useState(null);
   const [calcOpen, setCalcOpen] = useState(false);
 
@@ -126,23 +116,20 @@ function TTestDashboard() {
     return points;
   }, [stats]);
 
-  const highlightedPoint = useMemo(() => {
-    return stats?.districtData.find((d) => d.kod === hoveredObec) || null;
-  }, [stats, hoveredObec]);
-
-  if (loading)
+  if (loading) {
     return (
       <div className="text-center py-5">
         <div className="spinner-border text-primary" />
       </div>
     );
+  }
   if (!stats) return null;
 
   const isSignificant = stats.pValue < alpha;
   const isDefaultExpected = expectedValue === DEFAULT_EXPECTED_VALUE;
 
   return (
-    <section id="interactive-test" className="scroll-mt-4 mt-5">
+    <section id="interactive-test" className="mb-5">
       <h2 className="mb-4">Interaktívna ukážka</h2>
 
       <p className="mb-4">
@@ -157,22 +144,14 @@ function TTestDashboard() {
       {/* Controls */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-start gap-5 w-100">
         <div className="d-flex flex-column align-items-center">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
+          <label className="form-label fw-bold mb-2 text-center small">
             Výber okresu:
           </label>
           <select
             className="form-select text-left shadow-sm"
             value={selectedOkres}
             onChange={(e) => setSelectedOkres(e.target.value)}
-            style={{
-              maxWidth: "200px",
-              height: "38px",
-              border: "1px solid var(--bs-border-color)!important",
-              borderRadius: "0.375rem",
-            }}
+            style={{ maxWidth: "200px", height: "38px" }}
           >
             {okresy.map((o) => (
               <option key={o} value={o}>
@@ -183,10 +162,7 @@ function TTestDashboard() {
         </div>
 
         <div className="d-flex flex-column align-items-center">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
+          <label className="form-label fw-bold mb-2 text-center small">
             Očakávaný podiel nad 65 rokov (μ₀):
           </label>
           <div className="d-flex align-items-center gap-2">
@@ -208,10 +184,7 @@ function TTestDashboard() {
         </div>
 
         <div className="d-flex flex-column align-items-center">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
+          <label className="form-label fw-bold mb-2 text-center small">
             Hladina významnosti (α):
           </label>
           <div className="btn-group" role="group">
@@ -265,318 +238,33 @@ function TTestDashboard() {
           }}
         >
           <div style={{ overflow: "hidden" }}>
-            <div
-              className="card shadow-sm border-0 mx-auto mt-3"
-              style={{ maxWidth: "620px" }}
-            >
-              <div className="card-body">
-                <h6 className="card-subtitle mb-3 text-muted text-center">
-                  Výpočet t-štatistiky pre okres {selectedOkres}
-                </h6>
-                <div className="text-center mb-2">
-                  <BlockMath math="t = \frac{\bar{x} - \mu_0}{\dfrac{s}{\sqrt{n}}}" />
-                </div>
-                <div className="text-center mb-3">
-                  <BlockMath
-                    math={`t = \\frac{${stats.mean.toFixed(2)} - ${expectedValue}}{\\dfrac{${stats.sd.toFixed(2)}}{\\sqrt{${stats.n}}}} = \\frac{${(stats.mean - expectedValue).toFixed(2)}}{${(stats.sd / Math.sqrt(stats.n)).toFixed(4)}} = ${stats.t.toFixed(4)}`}
-                  />
-                </div>
-                <div className="row text-center small text-muted g-2">
-                  {[
-                    {
-                      math: `\\bar{x} = ${stats.mean.toFixed(2)}`,
-                      label: "výb. priemer (%)",
-                    },
-                    {
-                      math: `\\mu_0 = ${expectedValue}`,
-                      label: "ref. hodnota (%)",
-                    },
-                    {
-                      math: `s = ${stats.sd.toFixed(2)}`,
-                      label: "smer. odch.",
-                    },
-                    { math: `n = ${stats.n}`, label: "počet obcí" },
-                  ].map(({ math, label }) => (
-                    <div key={label} className="col-6 col-sm-3">
-                      <InlineMath math={math} />
-                      <div>{label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <hr className="my-3" />
-
-                <h6 className="card-subtitle mb-2 text-muted text-center">
-                  Výpočet p-hodnoty
-                </h6>
-                <div className="text-center mb-2">
-                  <BlockMath math="p = 2 \cdot P(T_{df} > |t|) = 2 \cdot (1 - F_{t}(|t|))" />
-                </div>
-                <div className="text-center mb-3">
-                  <BlockMath
-                    math={`p = 2 \\cdot (1 - F_{${stats.df}}(${Math.abs(stats.t).toFixed(4)})) = ${stats.pValue.toFixed(4)}`}
-                  />
-                </div>
-                <p className="small text-muted text-center mb-3">
-                  kde <InlineMath math={`F_{${stats.df}}`} /> je distribučná
-                  funkcia Studentovho t-rozdelenia s{" "}
-                  <InlineMath math={`${stats.df}`} /> stupňami voľnosti.
-                </p>
-
-                <hr className="my-3" />
-
-                <div
-                  className={`rounded p-2 text-center small ${isSignificant ? "bg-danger-subtle" : "bg-success-subtle"}`}
-                >
-                  <div
-                    className={`fw-bold mb-1 ${isSignificant ? "text-danger" : "text-success"}`}
-                  >
-                    {isSignificant
-                      ? `p = ${stats.pValue.toFixed(4)} < α = ${alpha} → zamietame H₀`
-                      : `p = ${stats.pValue.toFixed(4)} ≥ α = ${alpha} → nezamietame H₀`}
-                  </div>
-                  <div className="text-muted">
-                    Ekvivalentne:{" "}
-                    <InlineMath
-                      math={`|t| = ${Math.abs(stats.t).toFixed(4)}`}
-                    />
-                    {isSignificant ? " > " : " ≤ "}
-                    <InlineMath
-                      math={`t_{\\alpha/2} = ${stats.tCrit.toFixed(4)}`}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TTestCalculation
+              stats={stats}
+              expectedValue={expectedValue}
+              alpha={alpha}
+              selectedOkres={selectedOkres}
+              isSignificant={isSignificant}
+            />
           </div>
         </div>
       </div>
 
-      {/* Charts — side by side on desktop */}
+      {/* Charts */}
       <div className="charts-wrapper w-100" style={{ alignItems: "flex-end" }}>
-        <div className="chart-container">
-          <div className="chart-title">Variabilita v okrese</div>
-
-          <div className="d-flex justify-content-center gap-4 mb-1">
-            <span className="small d-flex align-items-center gap-1">
-              <svg width="18" height="10">
-                <line
-                  x1="0"
-                  y1="5"
-                  x2="18"
-                  y2="5"
-                  stroke="var(--bs-danger)"
-                  strokeWidth="2"
-                />
-              </svg>
-              <span style={{ color: "var(--bs-danger)" }}>
-                μ₀ = {expectedValue} %
-              </span>
-            </span>
-            <span className="small d-flex align-items-center gap-1">
-              <svg width="18" height="10">
-                <line
-                  x1="0"
-                  y1="5"
-                  x2="4"
-                  y2="5"
-                  stroke="var(--bs-success)"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="7"
-                  y1="5"
-                  x2="11"
-                  y2="5"
-                  stroke="var(--bs-success)"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="14"
-                  y1="5"
-                  x2="18"
-                  y2="5"
-                  stroke="var(--bs-success)"
-                  strokeWidth="2"
-                />
-              </svg>
-              <span style={{ color: "var(--bs-success)" }}>
-                x̄ = {stats.mean.toFixed(2)} %
-              </span>
-            </span>
-          </div>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <ScatterChart
-              margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
-              onMouseLeave={() => setHoveredObec(null)}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                type="number"
-                dataKey="podiel_nad65"
-                name="Podiel nad 65"
-                domain={["auto", "auto"]}
-                className="chart-axis"
-                tickFormatter={(v) => `${v.toFixed(1)} %`}
-                label={{
-                  value: "podiel obyv. nad 65 (%)",
-                  position: "insideBottom",
-                  offset: -15,
-                }}
-              />
-              <YAxis
-                type="number"
-                dataKey="jitter"
-                domain={[0, 1]}
-                tick={false}
-                axisLine={false}
-                tickLine={false}
-                width={45}
-                label={{
-                  value: " ",
-                  angle: -90,
-                  position: "insideLeft",
-                  offset: -10,
-                }}
-              />
-
-              <RechartsTooltip
-                cursor={false}
-                content={({ active, payload }) => {
-                  if (active && payload?.length) {
-                    const d = payload[0].payload;
-                    return (
-                      <div
-                        className="bg-body text-body border rounded shadow-sm p-2"
-                        style={{ fontSize: "0.85rem" }}
-                      >
-                        <div className="fw-bold">{d.nazev}</div>
-                        <div className="text-primary mt-1">
-                          Podiel nad 65: {d.podiel_nad65.toFixed(2)} %
-                        </div>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              <Scatter
-                name="Obce"
-                data={stats.districtData}
-                fill="var(--bs-primary)"
-                opacity={0.6}
-                onMouseOver={(payload) => setHoveredObec(payload?.kod ?? null)}
-              />
-
-              {/* Zvýraznený biely bod pre hover z mapy */}
-              {highlightedPoint && (
-                <ReferenceDot
-                  x={highlightedPoint.podiel_nad65}
-                  y={highlightedPoint.jitter}
-                  r={6}
-                  fill="#ffffff"
-                  stroke="var(--bs-primary)"
-                  strokeWidth={2}
-                  isFront={true}
-                />
-              )}
-
-              <ReferenceLine
-                x={expectedValue}
-                stroke="var(--bs-danger)"
-                strokeWidth={2}
-              />
-              <ReferenceLine
-                x={stats.mean}
-                stroke="var(--bs-success)"
-                strokeDasharray="3 3"
-                strokeWidth={2}
-              />
-            </ScatterChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div>
-          <div className="chart-title">{`Studentovo t-rozdelenie (df = ${stats.df})`}</div>
-
-          <div className="d-flex justify-content-center gap-4 mb-1">
-            <span className="small d-flex align-items-center gap-1">
-              <svg width="18" height="10">
-                <line
-                  x1="0"
-                  y1="5"
-                  x2="18"
-                  y2="5"
-                  stroke={
-                    isSignificant ? "var(--bs-danger)" : "var(--bs-success)"
-                  }
-                  strokeWidth="2"
-                />
-              </svg>
-              <span
-                style={{
-                  color: isSignificant
-                    ? "var(--bs-danger)"
-                    : "var(--bs-success)",
-                }}
-              >
-                t = {stats.t.toFixed(2)}
-              </span>
-            </span>
-            <span className="small d-flex align-items-center gap-1">
-              <svg width="18" height="10">
-                <rect
-                  x="0"
-                  y="0"
-                  width="18"
-                  height="10"
-                  fill="var(--bs-danger)"
-                  fillOpacity="0.15"
-                />
-              </svg>
-              <span className="text-muted">kritická oblasť (α/2)</span>
-            </span>
-          </div>
-
-          <StyledLineChart
-            data={tChartData}
-            title=""
-            xLabel="t"
-            yLabel="f(t)"
-            lineClass="chart-line-secondary"
-            hoverX={hoverX}
-            setHoverX={setHoverX}
-            minX={tChartData[0]?.x}
-            maxX={tChartData[tChartData.length - 1]?.x}
-            type="pdf"
-            showReferenceArea={false}
-          >
-            <ReferenceArea
-              x1={tChartData[0]?.x}
-              x2={-stats.tCrit}
-              fill="var(--bs-danger)"
-              fillOpacity={0.15}
-            />
-            <ReferenceArea
-              x1={stats.tCrit}
-              x2={tChartData[tChartData.length - 1]?.x}
-              fill="var(--bs-danger)"
-              fillOpacity={0.15}
-            />
-            <ReferenceLine
-              x={stats.t}
-              stroke={isSignificant ? "var(--bs-danger)" : "var(--bs-success)"}
-              strokeWidth={2}
-              label={{
-                value: `t = ${stats.t.toFixed(2)}`,
-                position: "top",
-                fill: isSignificant ? "var(--bs-danger)" : "var(--bs-success)",
-                fontWeight: "bold",
-              }}
-            />
-          </StyledLineChart>
-        </div>
+        <VariabilityScatterChart
+          data={stats.districtData}
+          expectedValue={expectedValue}
+          mean={stats.mean}
+          hoveredObec={hoveredObec}
+          setHoveredObec={setHoveredObec}
+        />
+        <TDistributionChart
+          data={tChartData}
+          tValue={stats.t}
+          tCrit={stats.tCrit}
+          df={stats.df}
+          isSignificant={isSignificant}
+        />
       </div>
 
       <ChoroplethMap

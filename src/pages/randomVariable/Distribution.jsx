@@ -13,7 +13,6 @@ const Distribution = () => {
     <section id="distribution">
       <h2 className="mb-4">Rozdelenie náhodnej veličiny</h2>
 
-      {/* Úvod k funkciám popisujúcim rozdelenie */}
       <p className="mb-5">
         Rozdelenie pravdepodobnosti nám hovorí, ako sú pravdepodobnosti
         "rozdelené" medzi jednotlivé možné hodnoty náhodnej veličiny. Na jeho
@@ -23,7 +22,9 @@ const Distribution = () => {
       </p>
 
       <div id="pmf-pdf" className="mb-5">
-        <h3 className="mb-3">Pravdepodobnostná funkcia a hustota</h3>
+        <h3 className="mb-3">
+          Pravdepodobnostná funkcia a hustota pravdepodobnosti
+        </h3>
         <p className="mb-3">
           Pri diskrétnych veličinách používame{" "}
           <strong>pravdepodobnostnú funkciu (PMF)</strong>, ktorá priraďuje
@@ -33,19 +34,21 @@ const Distribution = () => {
           <br />
           <br />
           Pri spojitých veličinách definujeme{" "}
-          <strong>hustoty pravdepodobnosti (PDF)</strong>. Keďže spojitá
-          veličina má nekonečne veľa hodnôt, pravdepodobnosť jedného konkrétneho
-          bodu je nulová. Namiesto toho určujeme pravdepodobnosť, že hodnota
-          padne do určitého intervalu — táto pravdepodobnosť je reprezentovaná{" "}
+          <strong>
+            hustotu pravdepodobnosti (<InlineMath math="f(x)" />)
+          </strong>
+          . Keďže spojitá veličina má nekonečne veľa hodnôt, pravdepodobnosť
+          jedného konkrétneho bodu je nulová. Namiesto toho určujeme
+          pravdepodobnosť, že hodnota padne do určitého intervalu — táto
+          pravdepodobnosť je reprezentovaná{" "}
           <strong>plochou pod krivkou hustoty</strong> na danom úseku.
         </p>
 
-        {/* Nový odsek pre Zákon veľkých čísel */}
         <div className="alert alert-info border-info-subtle shadow-sm mb-5">
           <h5 className="alert-heading fs-6 fw-bold">
             Teória vs. Empíria (Zákon veľkých čísel)
           </h5>
-          <p className="mb-0 text-muted" style={{ fontSize: "0.95rem" }}>
+          <p className="mb-0 text-muted small">
             Prepojenie medzi teoretickými matematickými modelmi a reálnymi
             dátami popisuje <strong>Zákon veľkých čísel</strong> (základný
             limitný teorém). Ten hovorí, že s rastúcim počtom nezávislých
@@ -58,9 +61,10 @@ const Distribution = () => {
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            Príklad: Počet viditeľných GNSS satelitov (PMF)
+            <span className="text-primary">Pravdepodobnostná funkcia:</span>{" "}
+            Počet viditeľných GNSS satelitov
           </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             V mestskom prostredí (tzv. "urban canyons") je počet viditeľných
             satelitov náhodná premenná – v tomto prípade je pravdepodobnosť
             viditeľnosti každého z nich 45 %. Graf nižšie zobrazuje{" "}
@@ -75,11 +79,12 @@ const Distribution = () => {
           <SimulatedPMFChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            Simulácia odchýlky GNSS merania (Hustota pravdepodobnosti)
+            <span className="text-primary">Hustota pravdepodobnosti: </span>
+            Simulácia odchýlky GNSS merania
           </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Tento graf demonštruje hustotu pravdepodobnosti pre normálne
             rozdelenie chýb GNSS prijímača. Modrá krivka reprezentuje dokonalý{" "}
             <strong>teoretický model</strong> so strednou hodnotou{" "}
@@ -90,9 +95,7 @@ const Distribution = () => {
             iterácií "hrboľatý" empirický histogram postupne vyhladzuje a jeho
             tvar konverguje presne k teoretickej Gaussovej krivke.
           </p>
-          <div className="mb-4">
-            <SimulatedPDFChart />
-          </div>
+          <SimulatedPDFChart />
         </div>
       </div>
 
@@ -109,8 +112,11 @@ const Distribution = () => {
         </p>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">Diskrétny prípad: Dostupnosť družicových dát</h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <h5 className="mb-3">
+            <span className="text-primary">Diskrétny prípad:</span> Dostupnosť
+            družicových dát
+          </h5>
+          <p className="text-muted mb-4 small">
             Predstavte si, že mesačne očakávate max. 5 preletov družice. Náhodná
             veličina <strong>X</strong> predstavuje počet snímok, ktoré sú
             reálne použiteľné (bez oblačnosti).
@@ -133,11 +139,12 @@ const Distribution = () => {
           <DiscreteDistributionChart />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            Spojitý prípad: Distribúcia chýb GNSS merania
+            <span className="text-primary">Spojitý prípad:</span> Distribúcia
+            chýb GNSS merania
           </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Na rozdiel od diskrétnych veličín je distribučná funkcia spojitej
             premennej reprezentovaná <strong>hladkou krivkou</strong> bez
             skokov. Tento model je kľúčový pri analýze presnosti meracích
@@ -176,12 +183,12 @@ const Distribution = () => {
           ), ďalšími dôležitými míľnikmi sú kvartily a decily.
         </p>
 
-        {/* KVANTILOVÁ FUNKCIA Z REÁLNYCH DÁT */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            Príklad z praxe: Podiel obyvateľstva v hlavnom meste
+            <span className="text-primary">Príklad z praxe:</span> Podiel
+            obyvateľstva v hlavnom meste
           </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             V nasledujúcom grafe vidíte empirickú kvantilovú funkciu vytvorenú z
             reálnych dát o tom, koľko percent obyvateľstva jednotlivých
             európskych krajín žije v ich hlavnom meste (rok 2024). Na osi{" "}
@@ -198,16 +205,15 @@ const Distribution = () => {
             do poľa zadajte konkrétny podiel (napr. 25 %) a zistite, koľko
             percent krajín sa pod túto hranicu zmestí.
           </p>
-          <div className="mb-4">
-            <QuantileFunctionSlider />
-          </div>
+          <QuantileFunctionSlider />
         </div>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            Empirická kvantilová funkcia: Výška stromov v rezervácii
+            <span className="text-primary">Empirická kvantilová funkcia:</span>{" "}
+            Výška stromov v rezervácii
           </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Predvolené dáta reprezentujú zoradené výšky stromov (v metroch)
             namerané v malej prírodnej rezervácii (napr. z dát leteckého
             laserového skenovania - LiDAR). Vyskúšajte si zobraziť{" "}
@@ -216,9 +222,6 @@ const Distribution = () => {
             hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta
             môžete interaktívne mazať a dopĺňať vlastnými hodnotami.
           </p>
-        </div>
-
-        <div>
           <QuantileFunctionInput />
         </div>
       </div>

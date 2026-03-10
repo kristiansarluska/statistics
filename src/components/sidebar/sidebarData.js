@@ -54,7 +54,6 @@ export const sidebarData = [
     labelKey: "topics.probabilityDistributions",
     path: "/probability-distributions",
     children: [
-      { label: "Motivácia", path: "/probability-distributions#motivation" },
       {
         label: "Diskrétne rozdelenia",
         path: "/probability-distributions#discrete-distributions",
@@ -119,10 +118,6 @@ export const sidebarData = [
     labelKey: "topics.hypothesisTesting",
     path: "/hypothesis-testing",
     children: [
-      {
-        label: "Úvod do testovania",
-        path: "/hypothesis-testing#introduction",
-      },
       {
         label: "Všeobecný postup",
         path: "/hypothesis-testing#procedure",

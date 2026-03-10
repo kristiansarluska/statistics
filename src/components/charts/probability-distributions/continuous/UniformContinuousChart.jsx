@@ -156,7 +156,7 @@ function UniformContinuousChart() {
         className="controls mb-4"
         style={{ width: "100%", maxWidth: "400px" }}
       >
-        <div className="d-flex justify-content-between mb-2">
+        <div className="d-flex justify-content-between w-100 mb-2">
           <span>
             Dolná (a): <strong>{a}</strong>
           </span>
@@ -164,7 +164,6 @@ function UniformContinuousChart() {
             Horná (b): <strong>{b}</strong>
           </span>
         </div>
-
         <div className="dual-slider-container">
           <input
             type="range"

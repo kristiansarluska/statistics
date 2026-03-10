@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import "../styles/charts.css";
 
 // Pod-komponenty
-import Motivation from "./probabilityDistributions/Motivation";
+import Introduction from "./probabilityDistributions/Introduction";
 import DiscreteDistributions from "./probabilityDistributions/DiscreteDistributions";
 import ContinuousDistributions from "./probabilityDistributions/ContinuousDistributions";
 
@@ -33,12 +33,21 @@ function ProbabilityDistributions() {
   }, [location.pathname, location.hash]);
 
   return (
-    <>
-      <h1 id="page-title">{t("topics.probabilityDistributions")}</h1>
-      <Motivation />
+    <div className="container-fluid mb-5">
+      <h1 id="page-title" className="mb-4">
+        {t("topics.probabilityDistributions")}
+      </h1>
+
+      <Introduction />
+
+      <hr className="my-5" />
+
       <DiscreteDistributions />
+
+      <hr className="my-5" />
+
       <ContinuousDistributions />
-    </>
+    </div>
   );
 }
 

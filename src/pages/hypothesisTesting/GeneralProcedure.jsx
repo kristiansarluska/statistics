@@ -77,7 +77,7 @@ function GeneralProcedure() {
   ];
 
   return (
-    <section id="procedure" className="scroll-mt-4">
+    <section id="procedure" className="mb-5">
       <h2 className="mb-4">Všeobecný postup testovania</h2>
       <p>
         Testovanie hypotéz vždy prebieha v niekoľkých štandardizovaných krokoch.
@@ -87,8 +87,8 @@ function GeneralProcedure() {
       </p>
 
       {/* Data Preview Section */}
-      <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-        <div className="card shadow-sm mb-5 mt-4">
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <div className="card shadow-sm mt-4">
           <div className="card-body">
             <h6 className="card-subtitle mb-3 text-muted">
               Vstupné dáta pre náš príklad
@@ -128,8 +128,8 @@ function GeneralProcedure() {
           významného rozdielu. V dátach vždy hľadáme dôkazy pre zamietnutie{" "}
           <InlineMath math="H_0" />.
         </p>
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <div className="card shadow-sm mb-4 mt-3">
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <div className="card shadow-sm mt-3">
             <div className="card-body">
               <h6 className="card-subtitle mb-2 text-muted">
                 Aplikácia na dáta
@@ -169,8 +169,8 @@ function GeneralProcedure() {
           chyba I. druhu). Najčastejšie sa v štatistike volí hodnota 0,05, čo
           zodpovedá 5 % pravdepodobnosti omylu.
         </p>
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <div className="card shadow-sm mb-4 mt-3">
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <div className="card shadow-sm mt-3">
             <div className="card-body">
               <h6 className="card-subtitle mb-2 text-muted">
                 Aplikácia na dáta
@@ -199,8 +199,8 @@ function GeneralProcedure() {
           t-rozdelenie), s ktorým ju následne porovnávame, aby sme určili, či
           padne do kritického oboru.
         </p>
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <div className="card shadow-sm mb-4 mt-3">
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <div className="card shadow-sm mt-3">
             <div className="card-body">
               <h6 className="card-subtitle mb-2 text-muted">
                 Aplikácia na dáta
@@ -235,8 +235,8 @@ function GeneralProcedure() {
           je p-hodnota menšia ako <InlineMath math="\alpha" />, nulovú hypotézu
           zamietame. Pri každom rozhodnutí však hrozí riziko štatistickej chyby.
         </p>
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <div className="card shadow-sm mb-4 mt-3">
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <div className="card shadow-sm mt-3">
             <div className="card-body">
               <h6 className="card-subtitle mb-2 text-muted">
                 Aplikácia na dáta (Možné závery)

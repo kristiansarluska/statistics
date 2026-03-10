@@ -1,10 +1,10 @@
+// src/pages/probabilityDistributions/Introduction.jsx
 import React from "react";
 
-function Motivation() {
+function Introduction() {
   return (
-    <>
-      <h2 id="motivation">Motivácia</h2>
-      <p>
+    <section id="introduction" className="mb-5">
+      <p className="lead">
         V geoinformatike často pracujeme s údajmi, ktoré majú náhodný charakter
         — napríklad chybou merania, odchýlkami v polohách bodov alebo
         variabilitou v dátach získaných z terénu. Aby sme tieto javy vedeli
@@ -16,14 +16,8 @@ function Motivation() {
         nielen analyzovať minulé dáta, ale aj predpovedať správanie systému do
         budúcnosti.
       </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed nisl
-        dapibus, suscipit nulla et, bibendum mi. Nullam sit amet erat euismod,
-        pulvinar risus nec, facilisis lectus. Vestibulum ante ipsum primis in
-        faucibus orci luctus et ultrices posuere cubilia curae.
-      </p>
-    </>
+    </section>
   );
 }
 
-export default Motivation;
+export default Introduction;

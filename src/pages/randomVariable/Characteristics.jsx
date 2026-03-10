@@ -1,6 +1,6 @@
 // src/pages/randomVariable/Characteristics.jsx
 import React from "react";
-import { InlineMath } from "react-katex"; // Pridaný import pre matematické vzorce
+import { InlineMath } from "react-katex";
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
 import GeometricMeanCalc from "../../components/content/characteristics/GeometricMeanCalc";
@@ -40,15 +40,17 @@ const Characteristics = () => {
 
         <h4 className="mb-3">Aritmetický priemer</h4>
         <p className="mb-4">
-          Aritmetický priemer je najbežnejším odhadom strednej hodnoty. Vypočíta
-          sa ako súčet všetkých nameraných hodnôt vydelený ich počtom. V
-          geoinformatike ho často využívame pri spracovaní opakovaných meraní na
-          tom istom mieste, aby sme eliminovali náhodné chyby.
+          Aritmetický priemer (<InlineMath math="\bar{x}" /> pre výberový súbor,{" "}
+          <InlineMath math="\mu" /> pre základný súbor) je najbežnejším odhadom
+          strednej hodnoty. Vypočíta sa ako súčet všetkých nameraných hodnôt
+          vydelený ich počtom. V geoinformatike ho často využívame pri
+          spracovaní opakovaných meraní na tom istom mieste, aby sme eliminovali
+          náhodné chyby.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Určenie nadmorskej výšky bodu</h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Pri presnom určovaní nadmorskej výšky bodu vykonávame sériu
             nezávislých meraní (napr. GNSS aparatúrou). Aritmetický priemer nám
             poskytne výslednú hodnotu výšky. Vyskúšajte do kalkulačky zadať
@@ -56,92 +58,83 @@ const Characteristics = () => {
             (napr. 480 m kvôli odrazu signálu), uvidíte, ako priemer citlivo
             zareaguje na tento extrém.
           </p>
-          <div className="mb-5">
-            <ArithmeticMeanCalc />
-          </div>
+          <ArithmeticMeanCalc />
         </div>
 
         <h4 className="mb-3">Harmonický priemer</h4>
         <p className="mb-4">
-          Harmonický priemer (<InlineMath math="x_h" />) je vhodný pre veličiny,
-          ktoré sú definované ako pomery (napr. jednotky za čas). Je to
-          prevrátená hodnota aritmetického priemeru prevrátených hodnôt dát. V
-          geografii ho využívame najmä pri výpočtoch priemerných rýchlostí na
+          Harmonický priemer (<InlineMath math="\bar{x}_h" />) je vhodný pre
+          veličiny, ktoré sú definované ako pomery (napr. jednotky za čas). Je
+          to prevrátená hodnota aritmetického priemeru prevrátených hodnôt dát.
+          V geografii ho využívame najmä pri výpočtoch priemerných rýchlostí na
           úsekoch s rovnakou dĺžkou.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Priemerná rýchlosť letu dronu pri snímkovaní</h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Predstavte si, že dron letí nad územím po dvoch rovnako dlhých
             trasách. Prvú preletí rýchlosťou 12,5 m/s (proti vetru) a druhú
             rýchlosťou 18 m/s (po vetre). Ak chceme vedieť priemernú rýchlosť za
             celú misiu, aritmetický priemer by nás oklamal. Harmonický priemer
             správne zohľadní, že dron strávil viac času na pomalšom úseku.
           </p>
-          <div className="mb-5">
-            <HarmonicMeanCalc />
-          </div>
+          <HarmonicMeanCalc />
         </div>
 
         <h4 className="mb-3">Geometrický priemer</h4>
         <p className="mb-4">
-          Používa sa pre hodnoty, ktoré majú charakter mier rastu alebo indexov.
-          Na rozdiel od aritmetického priemeru pracuje súčinom hodnôt a n-tou
-          odmocninou, čím lepšie zachytáva <strong>kumulatívne zmeny</strong>.
+          Geometrický priemer (<InlineMath math="\bar{x}_g" />) sa používa pre
+          hodnoty, ktoré majú charakter mier rastu alebo indexov. Na rozdiel od
+          aritmetického priemeru pracuje súčinom hodnôt a n-tou odmocninou, čím
+          lepšie zachytáva <strong>kumulatívne zmeny</strong>.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Analýza urbanizácie: Miera rastu zastavaného územia
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Miera rastu zastavaného územia</h5>
+          <p className="text-muted mb-4 small">
             Ak sledujeme, o koľko percent sa rozrástlo mesto v desiatich po sebe
             idúcich rokoch, geometrický priemer nám povie skutočnú priemernú
             ročnú mieru rastu. Je ideálny pre dáta, kde každá ďalšia hodnota
             nadväzuje na predchádzajúcu (reťazové indexy).
           </p>
-          <div className="mb-5">
-            <GeometricMeanCalc />
-          </div>
+          <GeometricMeanCalc />
         </div>
 
         <h4 className="mb-3">Vážený priemer</h4>
         <p className="mb-4">
-          Vážený priemer zohľadňuje nerovnakú dôležitosť alebo presnosť
-          jednotlivých meraní. Každej hodnote priraďujeme váhu (
+          Vážený priemer (<InlineMath math="\bar{x}_w" />) zohľadňuje nerovnakú
+          dôležitosť alebo presnosť jednotlivých meraní. Každej hodnote
+          priraďujeme váhu (
           <InlineMath math="w_i" />
           ), ktorá určuje, akou mierou prispeje k výsledku. Je to kľúčový
           nástroj pri spájaní dát z rôznych zdrojov.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">Kombinované meranie nadmorskej výšky</h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Ak meriame nadmorskú výšku toho istého bodu dvoma rôznymi prístrojmi
             — profesionálnou GNSS stanicou a smartfónom — nemôžeme ich brať
             rovnocenne. Profesionálnemu prístroju priradíme vyššiu váhu (napr.
             podľa prevrátenej hodnoty chyby merania). Vážený priemer tak
             "pritiahne" výsledok bližšie k spoľahlivejšiemu meraniu.
           </p>
-          <div className="mb-5">
-            <WeightedMeanCalc />
-          </div>
+          <WeightedMeanCalc />
         </div>
 
         <h3 className="mb-3">Modus</h3>
         <p className="mb-4">
-          Modus je hodnota, ktorá sa v štatistickom súbore vyskytuje
-          najčastejšie. Pri spojitých dátach (napríklad presné GNSS merania) sa
-          určuje ťažšie a hľadáme skôr interval s najväčšou hustotou. Pre
-          diskrétne dáta je to však priama, konkrétna hodnota.
+          Modus (<InlineMath math="\hat{x}" />) je hodnota, ktorá sa v
+          štatistickom súbore vyskytuje najčastejšie. Pri spojitých dátach
+          (napríklad presné GNSS merania) sa určuje ťažšie a hľadáme skôr
+          interval s najväčšou hustotou. Pre diskrétne dáta je to však priama,
+          konkrétna hodnota.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirický modus: Počet poschodí v mestskej zástavbe
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Počet poschodí v mestskej zástavbe</h5>
+          <p className="text-muted mb-4 small">
             V nasledovnom príklade analyzujeme podlažnosť budov vo vybranej
             mestskej štvrti. Modusom bude typ budovy, ktorý sa v danej oblasti
             vyskytuje najviac (napr. dvojposchodové rodinné domy). Na grafe si
@@ -150,24 +143,19 @@ const Characteristics = () => {
             Pridávaním alebo odoberaním budov môžete sledovať, ako sa mení
             najčastejšie sa vyskytujúca hodnota.
           </p>
-
-          <div className="mb-5">
-            <ModeCalc />
-          </div>
+          <ModeCalc />
         </div>
 
         <h3 className="mb-3">Medián</h3>
         <p className="mb-4">
-          Medián rozdeľuje štatistický súbor na dve rovnako veľké polovice.
-          Polovina hodnôt je menšia alebo rovná mediánu a druhá polovina je
-          väčšia alebo rovná mediánu.
+          Medián (<InlineMath math="\tilde{x}" />) rozdeľuje štatistický súbor
+          na dve rovnako veľké polovice. Polovina hodnôt je menšia alebo rovná
+          mediánu a druhá polovina je väčšia alebo rovná mediánu.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirický medián: Výška budov a rezistencia voči extrémom
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Výška budov a rezistencia voči extrémom</h5>
+          <p className="text-muted mb-4 small">
             Hlavnou výhodou mediánu oproti aritmetickému priemeru je jeho{" "}
             <strong>odolnosť (rezistentnosť) voči odľahlým hodnotám</strong>.
             Predstavme si, že analyzujeme výšky budov v bežnej zástavbe.
@@ -177,22 +165,19 @@ const Characteristics = () => {
             na takmer dvojnásobok), medián sa posunie len minimálne, pretože
             zohľadňuje výhradne fyzický stred zoradeného radu.
           </p>
-
-          <div className="mb-5">
-            <MedianCalc />
-          </div>
+          <MedianCalc />
         </div>
       </div>
 
       <div id="variability" className="mb-5">
-        <h3 className="mb-3">Charakteristiky variability (rozptýlenosti)</h3>
+        <h3 className="mb-3">Charakteristiky variability</h3>
         <p className="mb-4">
           Kým miery polohy nám hovoria, kde sa dáta sústreďujú, miery
           variability nám prezrádzajú, ako veľmi sú od seba rozptýlené.
           Najjednoduchšou mierou je variačné rozpätie.
         </p>
 
-        <h4 className="mb-3">Variačné rozpätie (Range)</h4>
+        <h4 className="mb-3">Variačné rozpätie</h4>
         <p className="mb-4">
           Variačné rozpätie (<InlineMath math="R" />) je rozdiel medzi
           maximálnou a minimálnou hodnotou v štatistickom súbore. Je to rýchly
@@ -200,11 +185,9 @@ const Characteristics = () => {
           podstatu je extrémne citlivý na odľahlé (extrémne) hodnoty.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirické variačné rozpätie: Prevýšenie lyžiarskeho svahu
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Prevýšenie lyžiarskeho svahu</h5>
+          <p className="text-muted mb-4 small">
             Predstavte si, že analyzujeme výškový profil lyžiarskeho svahu na
             Malej Morávke. Získali sme niekoľko výškových bodov (v metroch nad
             morom). Variačné rozpätie nám v tomto prípade udáva celkové
@@ -212,26 +195,21 @@ const Characteristics = () => {
             (napríklad blízky vrchol Praděd s výškou 1492 m n. m.) a sledujte,
             ako sa variačné rozpätie okamžite skreslí.
           </p>
-
-          <div className="mb-5">
-            <RangeCalc />
-          </div>
+          <RangeCalc />
         </div>
 
-        <h4 className="mb-3">Priemerná odchýlka (Mean Absolute Deviation)</h4>
+        <h4 className="mb-3">Priemerná odchýlka</h4>
         <p className="mb-4">
-          Priemerná odchýlka vyjadruje, o koľko sa v priemere jednotlivé hodnoty
-          štatistického súboru odchyľujú od ich aritmetického priemeru. Počíta
-          sa ako aritmetický priemer absolútnych hodnôt odchýlok od strednej
-          hodnoty. Oproti variačnému rozpätiu využíva informácie zo všetkých
-          meraní, nielen z extrémov.
+          Priemerná odchýlka (<InlineMath math="\bar{d}" />) vyjadruje, o koľko
+          sa v priemere jednotlivé hodnoty štatistického súboru odchyľujú od ich
+          aritmetického priemeru. Počíta sa ako aritmetický priemer absolútnych
+          hodnôt odchýlok od strednej hodnoty. Oproti variačnému rozpätiu
+          využíva informácie zo všetkých meraní, nielen z extrémov.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirická priemerná odchýlka: Opakované meranie dĺžky
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Opakované meranie dĺžky</h5>
+          <p className="text-muted mb-4 small">
             V geodézii nikdy nezmeriame rovnakú vzdialenosť dvakrát s absolútne
             identickým výsledkom. Nasledujúce dáta predstavujú päť nezávislých
             meraní dĺžky hranice parcely v metroch. Priemerná odchýlka nám v
@@ -239,13 +217,10 @@ const Characteristics = () => {
             voči strednej hodnote. Vyskúšajte pridať meranie so zjavnou hrubou
             chybou (napr. 51.5) a sledujte zmenu odchýlky.
           </p>
-
-          <div className="mb-5">
-            <MeanDeviationCalc />
-          </div>
+          <MeanDeviationCalc />
         </div>
 
-        <h4 className="mb-3">Stredná diferencia (Mean Absolute Difference)</h4>
+        <h4 className="mb-3">Stredná diferencia</h4>
         <p className="mb-4">
           Stredná diferencia (<InlineMath math="\Delta" />) nevyjadruje odchýlku
           hodnôt od ich priemeru, ale priemerný absolútny rozdiel medzi{" "}
@@ -254,11 +229,9 @@ const Characteristics = () => {
           týchto dvojíc.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirická stredná diferencia: Heterogenita znečistenia ovzdušia
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Heterogenita znečistenia ovzdušia</h5>
+          <p className="text-muted mb-4 small">
             V geoinformatike často pracujeme so senzorovými sieťami. Predstavme
             si meracie stanice, ktoré sledujú koncentráciu prachových častíc
             PM10 (v µg/m³) vo veľkomeste. Stredná diferencia nám priamo povie,
@@ -267,13 +240,10 @@ const Characteristics = () => {
             pridať stanicu ležiacu pri rušnej križovatke (napríklad s hodnotou
             85.0) a sledujte, ako vzrastie priemerný rozdiel v sieti.
           </p>
-
-          <div className="mb-5">
-            <MeanDifferenceCalc />
-          </div>
+          <MeanDifferenceCalc />
         </div>
 
-        <h4 className="mb-3">Rozptyl (Variance)</h4>
+        <h4 className="mb-3">Rozptyl</h4>
         <p className="mb-4">
           Rozptyl (<InlineMath math="s^2" /> pre výberový súbor,{" "}
           <InlineMath math="\sigma^2" /> pre základný súbor) je priemerná
@@ -284,11 +254,9 @@ const Characteristics = () => {
           stupne Celzia na druhú), čo je ťažšie na priamu interpretáciu.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirický rozptyl: Heterogenita mračna bodov (LiDAR)
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Heterogenita mračna bodov (LiDAR)</h5>
+          <p className="text-muted mb-4 small">
             Pri leteckom laserovom skenovaní lesa nás zaujíma nielen priemerná
             hustota bodov, ale aj jej variabilita. Nasledujúce dáta reprezentujú
             počet odrazov (bodov) na meter štvorcový vo vybraných testovacích
@@ -296,10 +264,7 @@ const Characteristics = () => {
             50 bodov/m²) a všimnite si, ako hodnota rozptylu kvôli umocňovaniu
             rapídne narastie.
           </p>
-
-          <div className="mb-5">
-            <VarianceCalc />
-          </div>
+          <VarianceCalc />
         </div>
 
         <h4 className="mt-4">Smerodajná odchýlka</h4>
@@ -312,11 +277,9 @@ const Characteristics = () => {
           koľko sa hodnoty typicky odchyľujú od priemeru.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirická smerodajná odchýlka: Mestský ostrov tepla (UHI)
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Mestský ostrov tepla</h5>
+          <p className="text-muted mb-4 small">
             Fenomén mestského ostrova tepla spôsobuje, že centrá miest sú
             výrazne teplejšie ako ich okolie. Predstavme si sieť piatich
             teplotných senzorov rozmiestnených v rôznych zónach mesta.
@@ -325,13 +288,10 @@ const Characteristics = () => {
             chladnejšieho prímestského parku (napr. 18.5 °C) a sledujte, ako sa
             odchýlka v systéme zväčší.
           </p>
-
-          <div className="mb-5">
-            <StandardDeviationCalc />
-          </div>
+          <StandardDeviationCalc />
         </div>
 
-        <h4 className="mt-4">Variačný koeficient (Coefficient of Variation)</h4>
+        <h4 className="mt-4">Variačný koeficient</h4>
         <p className="mb-4">
           Variačný koeficient (<InlineMath math="v_k" />) je bezrozmerná
           (relatívna) miera variability, najčastejšie vyjadrená v percentách.
@@ -346,11 +306,9 @@ const Characteristics = () => {
           vs. hrúbky ich kmeňov).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirický variačný koeficient: Priestorová nestálosť zrážok
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Priestorová nestálosť zrážok</h5>
+          <p className="text-muted mb-4 small">
             V hydrológii a klimatológii sa variačný koeficient často využíva na
             zhodnotenie stabilitu zrážok. Nasledujúce dáta predstavujú ročné
             úhrny zrážok (v mm) na piatich rôznych zrážkomerných staniciach v
@@ -360,15 +318,10 @@ const Characteristics = () => {
             boli zrážky vyrovnanejšie (napríklad všetkým staniciam nastavte
             hodnoty okolo 500 mm) a sledujte pokles percentuálnej variability.
           </p>
-
-          <div className="mb-5">
-            <CoefficientOfVariationCalc />
-          </div>
+          <CoefficientOfVariationCalc />
         </div>
 
-        <h4 className="mt-4">
-          Medzikvartilová odchýlka / rozpätie (Interquartile Range - IQR)
-        </h4>
+        <h4 className="mt-4">Medzikvartilové rozpätie</h4>
         <p className="mb-4">
           Medzikvartilové rozpätie (<InlineMath math="IQR" />) sa zameriava
           výhradne na <strong>stredných 50 % dát</strong>. Vypočíta sa ako
@@ -379,11 +332,9 @@ const Characteristics = () => {
           hodnotám (tzv. outlierom).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Empirické IQR: Trhové ceny pozemkov a vplyv extrémov
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Trhové ceny pozemkov a vplyv extrémov</h5>
+          <p className="text-muted mb-4 small">
             Katastrálne a cenové mapy často obsahujú anomálie. Predstavme si
             analýzu cien pozemkov (v €/m²) v jednej záhradkárskej osade. Medzi
             bežnými predajmi sa nachádza jeden extrém (napríklad špekulatívny
@@ -393,10 +344,7 @@ const Characteristics = () => {
             3.5 €/m²). Skúste extrém (145) zmazať a všimnite si, že{" "}
             <InlineMath math="IQR" /> sa takmer nezmení.
           </p>
-
-          <div className="mb-5">
-            <InterquartileRangeCalc />
-          </div>
+          <InterquartileRangeCalc />
         </div>
       </div>
 
@@ -411,16 +359,17 @@ const Characteristics = () => {
 
         <h4 className="mt-4">Koeficient šikmosti</h4>
         <p className="mb-4">
-          Koeficient šikmosti hodnotí <strong>asymetriu</strong> rozdelenia dát
-          okolo ich strednej hodnoty. Ak má rozdelenie dlhší chvost smerom k
-          vyšším hodnotám, ide o <strong>kladnú šikmosť</strong>
+          Koeficient šikmosti (<InlineMath math="\gamma_1" />) hodnotí{" "}
+          <strong>asymetriu</strong> rozdelenia dát okolo ich strednej hodnoty.
+          Ak má rozdelenie dlhší chvost smerom k vyšším hodnotám, ide o{" "}
+          <strong>kladnú šikmosť</strong>
           (extrémne veľké hodnoty ťahajú priemer nahor). Ak má dlhší chvost
           smerom k nižším hodnotám, ide o <strong>zápornú šikmosť</strong>.
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">Interaktívna ukážka: Veková štruktúra lesa</h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Veková štruktúra lesa</h5>
+          <p className="text-muted mb-4 small">
             Presuňte bežec pre zmenu šikmosti rozdelenia veku stromov v lese.
             <strong>Kladná šikmosť</strong> predstavuje napríklad zmladený les
             po ťažbe (drvivá väčšina stromov je mladá, starých je minimum -
@@ -428,27 +377,22 @@ const Characteristics = () => {
             starý neprestupný prales (väčšina stromov je stará, prežije len málo
             mladých kvôli nedostatku svetla - chvost vľavo).
           </p>
-
-          <div className="mb-5">
-            <SkewnessChart />
-          </div>
+          <SkewnessChart />
         </div>
 
-        <h4 className="mt-4">Koeficient špicatosti (Kurtosis)</h4>
+        <h4 className="mt-4">Koeficient špicatosti</h4>
         <p className="mb-4">
-          Koeficient špicatosti opisuje koncentráciu hodnôt okolo strednej
-          hodnoty v porovnaní s normálnym rozdelením. Zatiaľ čo laický pohľad sa
-          často upriamuje len na "výšku špicu", v štatistike je dôležitejším
-          prejavom špicatosti tzv.
+          Koeficient špicatosti (<InlineMath math="\gamma_2" />) opisuje
+          koncentráciu hodnôt okolo strednej hodnoty v porovnaní s normálnym
+          rozdelením. Zatiaľ čo laický pohľad sa často upriamuje len na "výšku
+          špicu", v štatistike je dôležitejším prejavom špicatosti tzv.
           <strong> hrúbka chvostov</strong> (či sa v dátach vyskytujú extrémne
           odľahlé hodnoty).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Interaktívna ukážka: Režim prietokov a bleskové povodne
-          </h5>
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Režim prietokov a bleskové povodne</h5>
+          <p className="text-muted mb-4 small">
             V hydrológii je tvar rozdelenia kľúčový pre predikciu extrémov.
             <strong> Špicaté rozdelenie (Leptokurtické)</strong> s tučnými
             chvostmi modeluje napríklad neskrotenú horskú bystrinu alebo vádí v
@@ -460,10 +404,7 @@ const Characteristics = () => {
             rovnomerne kolíše v širšom strednom pásme, no k anomálnym extrémnym
             povodniam takmer nedochádza (tenké chvosty).
           </p>
-
-          <div className="mb-5">
-            <KurtosisChart />
-          </div>
+          <KurtosisChart />
         </div>
       </div>
 
@@ -480,12 +421,10 @@ const Characteristics = () => {
           . Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).
         </p>
 
-        <div className="mx-auto w-100" style={{ maxWidth: "1000px" }}>
-          <h5 className="mb-3">
-            Interaktívna ukážka: Index atraktivity regiónov (AI_2016)
-          </h5>
+        <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+          <h5 className="mb-3">Index atraktivity regiónov (AI_2016)</h5>
 
-          <p className="text-muted mb-4" style={{ fontSize: "0.95rem" }}>
+          <p className="text-muted mb-4 small">
             Boxploty sú najsilnejšie vtedy, keď potrebujeme rýchlo porovnať
             viacero skupín v čase. Nasledujúce dáta pochádzajú z reálneho
             geoinformatického výskumu, kde hodnotíme Index atraktivity (AI)
@@ -495,10 +434,7 @@ const Characteristics = () => {
             uvidíte, či sa stredná trieda (krabica) posúva nahor alebo nadol a
             či pribúdajú extrémne anomálie.
           </p>
-
-          <div className="mb-5">
-            <FiveNumberSummaryBoxplot />
-          </div>
+          <FiveNumberSummaryBoxplot />
         </div>
       </div>
     </section>
