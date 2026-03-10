@@ -182,6 +182,8 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
           dot={false}
           activeDot={false}
           connectNulls={false}
+          isAnimationActive={true}
+          animationDuration={700}
         />
         <Line
           data={openCircleData}
@@ -189,6 +191,8 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
           dataKey="y"
           stroke="none"
           activeDot={false}
+          isAnimationActive={true}
+          animationDuration={700}
           dot={(props) => {
             const { cx, cy, index } = props;
             if (cx == null || cy == null) return null;
@@ -211,6 +215,8 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
           dataKey="y"
           stroke="none"
           activeDot={false}
+          isAnimationActive={true}
+          animationDuration={700}
           dot={(props) => {
             const { cx, cy, index, payload } = props;
             if (cx == null || cy == null) return null;

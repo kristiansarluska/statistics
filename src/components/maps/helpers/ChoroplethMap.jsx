@@ -176,7 +176,7 @@ function ChoroplethMap({
     } else if (val == null) {
       valLine = `<small class="text-muted">Bez dát</small>`;
     } else {
-      valLine = `Hustota: ${val.toFixed(1)} ob/km²`;
+      valLine = `Podiel: ${val.toFixed(1)} %`;
     }
 
     layer.bindTooltip(
@@ -286,7 +286,7 @@ function ChoroplethMap({
           }}
         >
           <div className="fw-bold mb-1" style={{ fontSize: "0.78rem" }}>
-            Hustota (ob/km²)
+            Podiel [%]
           </div>
           {legendRows.map((row, i) =>
             row.isPivot ? (
@@ -313,7 +313,7 @@ function ChoroplethMap({
               </div>
             ),
           )}
-          {/* No-data */}
+          {/* No-data 
           <div
             className="d-flex align-items-center gap-1 mt-1"
             style={{
@@ -333,6 +333,7 @@ function ChoroplethMap({
             />
             <span className="text-muted">Bez dát</span>
           </div>
+          */}
         </div>
 
         <MapContainer

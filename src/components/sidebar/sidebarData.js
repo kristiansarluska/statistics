@@ -127,6 +127,10 @@ export const sidebarData = [
         label: "Všeobecný postup",
         path: "/hypothesis-testing#procedure",
       },
+      {
+        label: "Interaktívna ukážka",
+        path: "/hypothesis-testing#interactive-test",
+      },
     ],
   },
   {
