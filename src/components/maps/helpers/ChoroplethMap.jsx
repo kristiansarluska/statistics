@@ -41,25 +41,23 @@ const getDivergentBreaks = (vals, pivot, maxClasses = 5) => {
   };
 };
 
-// Red shades (light → dark) for below-pivot
-// Green shades light→dark (above pivot)
-const GREEN_SHADES = ["#f7ffee", "#e7f7cf", "#c2ec8c", "#80d040"];
-// Red shades light→dark (above → below pivot, i.e. closest to pivot = lightest)
-const RED_SHADES = ["#ffecf3", "#ffdad8", "#ffaca9", "#ff8080"];
+// Green shades light→dark — for below-pivot values
+const BELOW_SHADES = ["#f7ffee", "#e7f7cf", "#c2ec8c", "#80d040"];
+// Red shades light→dark — for above-pivot values
+const ABOVE_SHADES = ["#ffecf3", "#ffdad8", "#ffaca9", "#ff8080"];
 
 const getColor = (val, pivot, belowBreaks, aboveBreaks) => {
-  if (val == null) return null; // no-data
+  if (val == null) return null;
   if (val < pivot) {
     const idx = belowBreaks.findIndex((b) => val <= b);
     const i = idx !== -1 ? idx : belowBreaks.length - 1;
-    // Map to available red shades — use last N shades so darkest = closest to pivot
-    const shades = RED_SHADES.slice(RED_SHADES.length - belowBreaks.length);
-    return shades[i] ?? RED_SHADES[RED_SHADES.length - 1];
+    const shades = BELOW_SHADES.slice(BELOW_SHADES.length - belowBreaks.length);
+    return shades[i] ?? BELOW_SHADES[BELOW_SHADES.length - 1];
   } else {
     const idx = aboveBreaks.findIndex((b) => val <= b);
     const i = idx !== -1 ? idx : aboveBreaks.length - 1;
-    const shades = GREEN_SHADES.slice(0, aboveBreaks.length);
-    return shades[i] ?? GREEN_SHADES[GREEN_SHADES.length - 1];
+    const shades = ABOVE_SHADES.slice(0, aboveBreaks.length);
+    return shades[i] ?? ABOVE_SHADES[ABOVE_SHADES.length - 1];
   }
 };
 
@@ -208,7 +206,7 @@ function ChoroplethMap({
     const rows = [];
 
     // Above pivot — from darkest (highest) down to lightest (closest to pivot)
-    const aboveShades = GREEN_SHADES.slice(0, aboveBreaks.length);
+    const aboveShades = ABOVE_SHADES.slice(0, aboveBreaks.length);
     aboveBreaks
       .slice()
       .reverse()
@@ -225,7 +223,9 @@ function ChoroplethMap({
     rows.push({ color: null, label: `μ₀ = ${pivot ?? 136}`, isPivot: true });
 
     // Below pivot — from lightest (closest to pivot) down to darkest (lowest)
-    const belowShades = [...RED_SHADES].slice(0, belowBreaks.length).reverse();
+    const belowShades = [...BELOW_SHADES]
+      .slice(0, belowBreaks.length)
+      .reverse();
     belowBreaks
       .slice()
       .reverse()
@@ -249,17 +249,24 @@ function ChoroplethMap({
         className={`rounded border overflow-hidden mt-4 shadow-sm position-relative${isFullscreen ? " bg-body" : ""}`}
         style={{ height: isFullscreen ? "100vh" : "450px", width: "100%" }}
       >
-        {/* Fullscreen button */}
+        {/* Fullscreen button — styled to match Leaflet zoom controls */}
         <button
           onClick={toggleFullscreen}
-          className={`btn btn-sm ${darkMode ? "btn-dark border-secondary" : "btn-light border"} shadow-sm position-absolute d-flex align-items-center justify-content-center`}
+          className="d-flex align-items-center justify-content-center"
           style={{
+            position: "absolute",
             top: 10,
             right: 10,
             zIndex: 1000,
-            width: 32,
-            height: 32,
+            width: 26,
+            height: 26,
             padding: 0,
+            background: "#fff",
+            border: "2px solid rgba(0,0,0,0.25)",
+            borderRadius: 4,
+            cursor: "pointer",
+            color: "#333",
+            boxShadow: "none",
           }}
           title="Zobraziť na celú obrazovku"
         >
