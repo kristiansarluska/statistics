@@ -1,16 +1,20 @@
 // src/components/charts/hypothesis-testing/TDistributionChart.jsx
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ReferenceLine, ReferenceArea } from "recharts";
 import StyledLineChart from "../helpers/StyledLineChart";
 
 const TDistributionChart = ({ data, tValue, tCrit, df, isSignificant }) => {
+  const { t } = useTranslation();
   const [hoverX, setHoverX] = useState(null);
 
   if (!data || data.length === 0) return null;
 
   return (
     <div>
-      <div className="chart-title">{`Studentovo t-rozdelenie (df = ${df})`}</div>
+      <div className="chart-title">
+        {t("hypothesisTesting.tTestDashboard.charts.tChartTitle", { df })}
+      </div>
 
       <div className="d-flex justify-content-center gap-4 mb-1">
         <span className="small d-flex align-items-center gap-1">
@@ -43,7 +47,9 @@ const TDistributionChart = ({ data, tValue, tCrit, df, isSignificant }) => {
               fillOpacity="0.15"
             />
           </svg>
-          <span className="text-muted">kritická oblasť (α/2)</span>
+          <span className="text-muted">
+            {t("hypothesisTesting.tTestDashboard.charts.tChartCritArea")}
+          </span>
         </span>
       </div>
 

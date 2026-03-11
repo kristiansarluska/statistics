@@ -1,5 +1,6 @@
 // src/components/content/hypothesis-testing/TTestCalculation.jsx
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
 
@@ -10,6 +11,8 @@ const TTestCalculation = ({
   selectedOkres,
   isSignificant,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div
       className="card shadow-sm border-0 mx-auto mt-3"
@@ -17,7 +20,9 @@ const TTestCalculation = ({
     >
       <div className="card-body">
         <h6 className="card-subtitle mb-3 text-muted text-center">
-          Výpočet t-štatistiky pre okres {selectedOkres}
+          {t("hypothesisTesting.tTestDashboard.calculation.tStatTitle", {
+            district: selectedOkres,
+          })}
         </h6>
         <div className="text-center mb-2">
           <BlockMath math="t = \frac{\bar{x} - \mu_0}{\dfrac{s}{\sqrt{n}}}" />
@@ -31,11 +36,24 @@ const TTestCalculation = ({
           {[
             {
               math: `\\bar{x} = ${stats.mean.toFixed(2)}`,
-              label: "výb. priemer (%)",
+              label: t(
+                "hypothesisTesting.tTestDashboard.calculation.meanLabel",
+              ),
             },
-            { math: `\\mu_0 = ${expectedValue}`, label: "ref. hodnota (%)" },
-            { math: `s = ${stats.sd.toFixed(2)}`, label: "smer. odch." },
-            { math: `n = ${stats.n}`, label: "počet obcí" },
+            {
+              math: `\\mu_0 = ${expectedValue}`,
+              label: t(
+                "hypothesisTesting.tTestDashboard.calculation.expectedLabel",
+              ),
+            },
+            {
+              math: `s = ${stats.sd.toFixed(2)}`,
+              label: t("hypothesisTesting.tTestDashboard.calculation.sdLabel"),
+            },
+            {
+              math: `n = ${stats.n}`,
+              label: t("hypothesisTesting.tTestDashboard.calculation.nLabel"),
+            },
           ].map(({ math, label }) => (
             <div key={label} className="col-6 col-sm-3">
               <InlineMath math={math} />
@@ -47,7 +65,7 @@ const TTestCalculation = ({
         <hr className="my-3" />
 
         <h6 className="card-subtitle mb-2 text-muted text-center">
-          Výpočet p-hodnoty
+          {t("hypothesisTesting.tTestDashboard.calculation.pValTitle")}
         </h6>
         <div className="text-center mb-2">
           <BlockMath math="p = 2 \cdot P(T_{df} > |t|) = 2 \cdot (1 - F_{t}(|t|))" />
@@ -58,9 +76,13 @@ const TTestCalculation = ({
           />
         </div>
         <p className="small text-muted text-center mb-3">
-          kde <InlineMath math={`F_{${stats.df}}`} /> je distribučná funkcia
-          Studentovho t-rozdelenia s <InlineMath math={`${stats.df}`} />{" "}
-          stupňami voľnosti.
+          <Trans
+            i18nKey="hypothesisTesting.tTestDashboard.calculation.pValDesc"
+            components={{
+              fdf: <InlineMath math={`F_{${stats.df}}`} />,
+              df: <InlineMath math={`${stats.df}`} />,
+            }}
+          />
         </p>
 
         <hr className="my-3" />
@@ -72,11 +94,11 @@ const TTestCalculation = ({
             className={`fw-bold mb-1 ${isSignificant ? "text-danger" : "text-success"}`}
           >
             {isSignificant
-              ? `p = ${stats.pValue.toFixed(4)} < α = ${alpha} → zamietame H₀`
-              : `p = ${stats.pValue.toFixed(4)} ≥ α = ${alpha} → nezamietame H₀`}
+              ? `p = ${stats.pValue.toFixed(4)} < α = ${alpha} → ${t("hypothesisTesting.tTestDashboard.calculation.rejectSummary")}`
+              : `p = ${stats.pValue.toFixed(4)} ≥ α = ${alpha} → ${t("hypothesisTesting.tTestDashboard.calculation.acceptSummary")}`}
           </div>
           <div className="text-muted">
-            Ekvivalentne:{" "}
+            {t("hypothesisTesting.tTestDashboard.calculation.equivalent")}{" "}
             <InlineMath math={`|t| = ${Math.abs(stats.t).toFixed(4)}`} />
             {isSignificant ? " > " : " ≤ "}
             <InlineMath math={`t_{\\alpha/2} = ${stats.tCrit.toFixed(4)}`} />

@@ -33,5 +33,245 @@
     "regression.description": "Regrese",
 
     "statisticalMethods": "Štatistické metódy v geoinformatike"
+  },
+
+  "probabilityDistributions": {
+    "introduction": {
+      "p1": "V geoinformatike často pracujeme s údajmi, ktoré majú náhodný charakter — napríklad chybou merania, odchýlkami v polohách bodov alebo variabilitou v dátach získaných z terénu. Aby sme tieto javy vedeli modelovať, používame <bold>pravdepodobnostné rozdelenia</bold>.",
+      "p2": "Ich cieľom je matematicky opísať, s akou pravdepodobnosťou sa jednotlivé hodnoty náhodnej veličiny vyskytujú. Na základe takého popisu môžeme nielen analyzovať minulé dáta, ale aj predpovedať správanie systému do budúcnosti."
+    },
+    "discrete": {
+      "title": "Diskrétne rozdelenia",
+      "description": "Diskrétne pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré môžu nadobúdať len spočítateľné množstvo hodnôt (napríklad celé čísla).",
+      "bernoulli": {
+        "title": "Alternatívne rozdelenie",
+        "description": "Alternatívne (Bernoulliho) rozdelenie je najjednoduchšie diskrétne rozdelenie pre experimenty, ktoré majú iba dva vzájomne sa vylučujúce výsledky: \"úspech\" (hodnota 1) a \"neúspech\" (hodnota 0). Množina možných výsledkov je <m1/>. Pravdepodobnosť úspechu označujeme ako <m2/> (kde <m3/>), teda <m4/>. Pravdepodobnosť neúspechu je doplnkom do 1, teda <m5/>.",
+        "otherwise": "inak",
+        "exampleTitle": "Klasifikácia satelitnej snímky",
+        "exampleDesc": "Predstavme si, že analyzujeme satelitnú snímku územia, kde 25 % rozlohy tvorí vodná plocha. Náhodne vyberieme jeden pixel na snímke. Náhodná veličina X nadobúda hodnotu 1 (úspech), ak pixel reprezentuje vodu, a 0 (neúspech), ak ide o pevninu. V grafe nižšie môžete meniť parameter <bold><m/></bold> (podiel vodnej plochy v území) a sledovať zmenu pravdepodobnostnej funkcie."
+      },
+      "uniform": {
+        "title": "Rovnomerné rozdelenie",
+        "description": "Diskrétne rovnomerné rozdelenie opisuje náhodnú veličinu, pri ktorej má každý z konečného počtu <m1/> možných výsledkov rovnakú pravdepodobnosť výskytu. Pravdepodobnostná funkcia je konštantná: <m2/> pre všetky možné hodnoty.",
+        "exampleTitle": "Náhodný výber administratívnej jednotky",
+        "exampleDesc": "Predstavte si, že chcete vykonať náhodnú kontrolu kvality ovzdušia v jednom vybranom okrese určitého kraja. Parameter <bold><m1/></bold> tu predstavuje celkový počet okresov v danom kraji. Ak je výber úplne náhodný, každý okres má rovnakú šancu na kontrolu. Zmenou parametra <bold><m2/></bold> na posuvníku simulujete prechod do iného kraja s iným počtom okresov (napr. Olomoucký kraj má <m3/>, Juhomoravský <m4/>). Všimnite si, že čím viac je okresov, tým nižšia je pravdepodobnosť výberu konkrétneho z nich."
+      },
+      "binomial": {
+        "title": "Binomické rozdelenie",
+        "description": "Binomické rozdelenie určuje počet úspechov v <m1/> nezávislých pokusoch. Veličina s binomickým rozdelením je súčtom nezávislých veličín s alternatívnym rozdelením, parametre tohto rozdelenia sú <m2/> (pravdepodobnosť úspechu javu) a počet pokusov <m3/>.",
+        "exampleTitle": "Automatická extrakcia objektov (AI detekcia)",
+        "exampleDesc": "Pri analýze satelitných snímok používame algoritmus na detekciu budov. Parameter <bold><m1/></bold> predstavuje pravdepodobnosť, že algoritmus správne rozpozná budovu (úspech), a <bold><m2/></bold> je celkový počet budov na snímke, ktoré má spracovať. Všimnite si, že ak je presnosť algoritmu vysoká (napr. <m3/>), najvyššia pravdepodobnosť sa kumuluje pri hodnote blízkej celkovému počtu budov <bold><m4/></bold>."
+      },
+      "poisson": {
+        "title": "Poissonovo rozdelenie",
+        "description": "Poissonovo rozdelenie opisuje pravdepodobnosť výskytu určitého počtu náhodných udalostí v pevne stanovenom časovom alebo priestorovom intervale. Kľúčovým parametrom je <m1/> (lambda), ktorý predstavuje priemerný počet týchto udalostí na danú jednotku.",
+        "exampleTitle": "Kontrola kvality digitálneho modelu reliéfu (DMR)",
+        "exampleDesc": "Pri spracovaní dát z leteckého laserového skenovania môžu vznikať v modeli chybné body (tzv. artefakty). Predpokladajme, že pri štandardnej kvalite spracovania sa v priemere vyskytuje <bold><m1/></bold> chýb na 100 hektárov plochy. Poissonovo rozdelenie nám povie, aká je pravdepodobnosť, že na nasledujúcej kontrolovanej ploche nenájdeme žiadnu chybu, alebo ich tam bude naopak neprirodzene veľa. Sledujte, ako sa pri zvyšovaní priemerného počtu chýb (<bold><m2/></bold>) rozdelenie \"rozťahuje\" a vrchol sa posúva doprava."
+      }
+    },
+
+    "continuous": {
+      "title": "Spojité rozdelenia",
+      "description": "Spojité pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré môžu nadobúdať akúkoľvek hodnotu v rámci určitého intervalu. Na rozdiel od diskrétnych rozdelení, pravdepodobnosť, že spojitá veličina nadobudne konkrétnu hodnotu (napr. presne <m/>), je vždy nulová. Namiesto toho počítame pravdepodobnosť, že hodnota padne do určitého intervalu.",
+      "uniform": {
+        "title": "Rovnomerné rozdelenie",
+        "description": "Spojité rovnomerné rozdelenie definuje náhodnú veličinu, ktorá môže nadobudnúť akúkoľvek hodnotu v uzavretom intervale <m/>. Hustota pravdepodobnosti je v celom tomto intervale konštantná, čo znamená, že všetky podintervaly rovnakej dĺžky sú rovnako pravdepodobné.",
+        "exampleTitle": "Čakanie na prírodný úkaz",
+        "exampleDesc": "Predstavte si, že sledujete gejzír, o ktorom je známe, že vybuchuje náhodne v intervale od <bold><m1/></bold> do <bold><m2/></bold> minút od poslednej erupcie. Ak nemáme žiadnu ďalšiu informáciu, predpokladáme, že pravdepodobnosť výbuchu v 14. minúte je rovnaká ako v 18. minúte. Na grafe nižšie vidíte, že hustota pravdepodobnosti tvorí obdĺžnik – jeho plocha musí byť vždy rovná 1, preto sa so zväčšovaním intervalu výška obdĺžnika znižuje."
+      },
+      "exponential": {
+        "title": "Exponenciálne rozdelenie",
+        "description": "Exponenciálne rozdelenie sa často používa na modelovanie času medzi náhodnými udalosťami v Poissonovom procese. Je to rozdelenie s \"krátkou pamäťou\" – pravdepodobnosť, že udalosť nastane v najbližšom momente, nezávisí od toho, ako dlho už čakáme.",
+        "exampleTitle": "Spoľahlivosť monitorovacej siete",
+        "exampleDesc": "Predstavte si automatickú meteostanicu v teréne. Exponenciálne rozdelenie modeluje <bold>čas medzi dvoma výpadkami</bold> odosielania dát. Parameter <bold><m1/></bold> (lambda) predstavuje intenzitu porúch – čím je vyššia, tým častejšie k výpadkom dochádza a tým kratšie sú intervaly medzi nimi. Všimnite si, že krivka začína vysoko (krátke intervaly sú najpravdepodobnejšie) a smerom doprava k dlhým časom čakania prudko klesá."
+      },
+      "normal": {
+        "title": "Normálne rozdelenie",
+        "description": "Normálne (Gaussovo) rozdelenie je najdôležitejším rozdelením v štatistike. Je symetrické okolo strednej hodnoty <m1/> a jeho tvar \"zvonu\" je určený smerodajnou odchýlkou <m2/>. V prírode a technike sa ním riadi väčšina náhodných chýb merania.",
+        "exampleTitle": "Kalibrácia a presnosť GNSS prijímača",
+        "exampleDesc": "Predstavte si meranie polohy stacionárneho bodu pomocou GNSS. Parameter <bold><m1/> (stredná hodnota)</bold> predstavuje systematickú chybu (napr. ak je prístroj zle kalibrovaný a vždy posúva výsledok o 1 meter). Parameter <bold><m2/> (smerodajná odchýlka)</bold> určuje presnosť prístroja — čím je menšia, tým sú merania tesnejšie okolo stredu a prístroj je kvalitnejší. Všimnite si, že pri zmenšení <bold><m3/></bold> sa graf zúži a jeho vrchol prudko narastie, pretože celková plocha pod krivkou musí ostať rovná 1."
+      },
+      "chiSquare": {
+        "title": "Chí-kvadrát rozdelenie",
+        "description": "Chí-kvadrát rozdelenie (<m1/>) je asymetrické a nadobúda len nezáporné hodnoty. Je definované parametrom <bold><m2/> (stupne voľnosti)</bold>, kde <m3/>. Hrá kľúčovú úlohu pri testovaní hypotéz o rozptyle a pri testoch dobrej zhody.",
+        "exampleTitle": "Kontrola stability presnosti merania",
+        "exampleDesc": "Predstavte si, že testujete presnosť nového laserového diaľkomera. Nevyhodnocujete priemernú dĺžku, ale <bold>variabilitu (rozptyl)</bold> opakovaných meraní na známu vzdialenosť. <m1/> rozdelenie modeluje súčet štvorcov týchto chýb. Parameter <bold>df (stupne voľnosti)</bold> závisí od počtu vykonaných meraní (<m2/>). Sledujte, ako sa pri nízkom <bold><m3/></bold> pravdepodobnosť koncentruje blízko nuly a so zvyšujúcim sa počtom meraní sa rozdelenie začína podobať na normálne."
+      },
+      "studentT": {
+        "title": "Studentovo t-rozdelenie",
+        "description": "Studentovo t-rozdelenie sa používa na odhad strednej hodnoty populácie v prípadoch, keď je veľkosť vzorky malá a smerodajná odchýlka populácie nie je známa. Je podobné normálnemu rozdeleniu, ale má \"ťažšie konce\". Veľkosť vzorky je zohľadnená parametrom <bold><m1/> (stupne voľnosti)</bold>.",
+        "exampleTitle": "Overenie presnosti nového meracieho prístroja",
+        "exampleDesc": "Predstavte si, že testujete presnosť nového laserového skenera, ale stihli ste vykonať len 5 kontrolných meraní (malá vzorka). Kvôli malému počtu dát máme vyššiu neistotu, čo t-rozdelenie vyjadruje širšími koncami krivky. Parameter <bold>df (stupne voľnosti)</bold> priamo súvisí s počtom meraní. Všimnite si, že so zvyšujúcim sa <bold><m1/></bold> sa t-rozdelenie postupne približuje k normálnemu rozdeleniu (čierna prerušovaná čiara v grafe)."
+      },
+      "fisherF": {
+        "title": "Fisherovo F-rozdelenie",
+        "description": "Fisherovo rozdelenie popisuje variabilitu dvoch výberových rozptylov odvodených z normálneho rozdelenia. Je kľúčové pre analýzu rozptylu (ANOVA). Je definované dvoma parametrami stupňov voľnosti: <m1/> (pre čitateľa) a <m2/> (pre menovateľa).",
+        "exampleTitle": "Porovnanie kvality ovzdušia v rôznych zónach mesta",
+        "exampleDesc": "Predstavte si, že porovnávate priemerné koncentrácie prachu <m1/> v priemyselnej, rezidenčnej a parkovej zóne. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi týmito zónami <bold>štatisticky významné</bold> vzhľadom na prirodzené kolísanie hodnôt vnútri každej zóny. Sledujte, ako zmena kombinácie stupňov voľnosti <bold><m2/></bold> a <bold><m3/></bold> mení asymetriu a \"špičatosť\" rozdelenia."
+      }
+    }
+  },
+
+  "hypothesisTesting": {
+    "introduction": {
+      "leadText": "Testovanie hypotéz je základná metóda induktívnej štatistiky, ktorá umožňuje rozhodovať o vlastnostiach základného súboru na základe dát získaných z výberového súboru. V praxi často potrebujeme zistiť, či pozorovaný rozdiel v dátach predstavuje skutočný jav, alebo je len dôsledkom náhodnej variability výberu.",
+      "basicHypothesesTitle": "Základné hypotézy",
+      "nullHypothesis": "<bold>Nulová hypotéza (<h0/>):</bold> Očakávaný stav, ktorý predpokladáme, že platí. Zvyčajne vyjadruje \"nulový efekt\" (napr. neexistuje rozdiel, stredná hodnota sa rovná očakávanej).",
+      "alternativeHypothesis": "<bold>Alternatívna hypotéza (<ha/>):</bold> Logický opak <h0/>. Tvrdí, že existuje rozdiel, závislosť alebo zmena. V dátach hľadáme dôkaz práve pre zamietnutie <h0/> a prijatie <ha/>."
+    },
+
+    "generalProcedure": {
+      "title": "Všeobecný postup testovania",
+      "description": "Testovanie hypotéz vždy prebieha v niekoľkých štandardizovaných krokoch. Na demonštráciu využijeme dáta obcí Moravskosliezskeho kraja (zdroj: ArcČR 4.3). Budeme testovať, či je podiel obyvateľov nad 65 rokov v týchto obciach porovnateľný s celorepublikovým priemerom.",
+      "dataPreview": {
+        "subtitle": "Vstupné dáta pre náš príklad",
+        "description": "Náhľad načítaných dát z Moravskosliezskeho kraja. Podiel obyvateľov nad 65 rokov sme vypočítali z atribútov <c1>Poc_obyv_SLDB_2021</c1> a <c2>poc_obyv_nad_65</c2>.",
+        "error": "Nepodarilo sa stiahnuť alebo spracovať JSON súbor.",
+        "tableTitle": "Obce Moravskosliezskeho kraja",
+        "columns": {
+          "code": "Kód obce",
+          "name": "Názov obce",
+          "district": "Okres",
+          "population": "Počet obyvateľov",
+          "pop65": "Obyv. nad 65 r.",
+          "share65": "Podiel nad 65 (%)"
+        }
+      },
+      "step1": {
+        "title": "1. Formulácia hypotéz",
+        "description": "Základom je stanovenie nulovej hypotézy (<h0/>), ktorá zvyčajne vyjadruje očakávaný stav, neexistenciu rozdielu alebo rovnosť parametrov. Oproti nej stoji alternatívna hypotéza (<ha/>), ktorá predstavuje logický opak a potvrdzuje existenciu štatisticky významného rozdielu. V dátach vždy hľadáme dôkazy pre zamietnutie <h0/>.",
+        "appTitle": "Aplikácia na dáta",
+        "appDesc": "Priemerný podiel obyvateľov nad 65 rokov v obciach ČR je 20,56 %. Stanovíme si hypotézy pre náš vybraný okres:",
+        "h0Item": "<bold><m/></bold> (Priemerný podiel seniorov v obciach okresu sa štatisticky nelíši od priemeru ČR)",
+        "haItem": "<bold><m/></bold> (Priemerný podiel seniorov sa líši - obojstranná hypotéza)"
+      },
+      "step2": {
+        "title": "2. Voľba hladiny významnosti (<alpha/>)",
+        "description": "Hladina významnosti predstavuje maximálne prijateľné riziko, že nesprávne zamietneme nulovú hypotézu, hoci v skutočnosti platí (tzv. chyba I. druhu). Najčastejšie sa v štatistike volí hodnota 0,05, čo zodpovedá 5 % pravdepodobnosti omylu.",
+        "appTitle": "Aplikácia na dáta",
+        "appDesc": "Pre náš test zvolíme štandardnú hladinu <bold><alpha/></bold>. Ak výsledná pravdepodobnosť (p-value) klesne pod túto hranicu, rozdiel v podiele seniorov budeme považovať za štatisticky významný a <h0/> zamietneme."
+      },
+      "step3": {
+        "title": "3. Výpočet testovacieho kritéria",
+        "description": "Testovacie kritérium je vzorec, pomocou ktorého z výberových dát získame konkrétnu číselnú hodnotu (testovú štatistiku). Táto štatistika sa riadi známym rozdelením pravdepodobnosti (napr. t-rozdelenie), s ktorým ju následne porovnávame, aby sme určili, či padne do kritického oboru.",
+        "appTitle": "Aplikácia na dáta",
+        "appDesc": "Keďže porovnávame priemer jedného výberu (obce v okrese) so známou konštantou (20,56 %), použijeme <bold>Jednovýberový Studentov t-test</bold>. Vzorec pre testovú štatistiku je:",
+        "formulaDesc": "Kde <xbar/> je výberový priemer (podiel v okrese), <mu0/> je referenčná hodnota (20,56), <s/> je smerodajná odchýlka výberu a <n/> je počet obcí."
+      },
+      "step4": {
+        "title": "4. Vyhodnotenie hypotézy a P-hodnota",
+        "description": "Na základe hodnoty testovacieho kritéria získame <bold>p-hodnotu (p-value)</bold>. Predstavuje najmenšiu hladinu významnosti, na ktorej môžeme <h0/> zamietnuť. Ak je p-hodnota menšia ako <alpha/>, nulovú hypotézu zamietame. Pri každom rozhodnutí však hrozí riziko štatistickej chyby.",
+        "appTitle": "Aplikácia na dáta (Možné závery)",
+        "table": {
+          "col1": "Skutočnosť v populácii",
+          "col2": "Rozhodnutie testu (výsledok z dát)",
+          "col2a": "Nezamietame <h0/>",
+          "col2b": "Zamietame <h0/>",
+          "row1Title": "Platí <h0/> <br/> <small>Podiel seniorov sa reálne nelíši od priemeru ČR.</small>",
+          "row1a": "Správne rozhodnutie <br/> <m/>",
+          "row1b": "<bold>Chyba I. druhu (<alpha/>)</bold><br/><small>Falošný poplach. My nesprávne tvrdíme, že okres má významne odlišný podiel seniorov, hoci v skutočnosti je rovnaký ako celorepublikový priemer (rozdiel v dátach bol len náhodný).</small>",
+          "row2Title": "Platí <ha/> <br/> <small>Podiel seniorov sa reálne líši od priemeru ČR.</small>",
+          "row2a": "<bold>Chyba II. druhu (<beta/>)</bold><br/><small>Prehliadnutie rozdielu. Z výberu dát sa nám nepodarilo dokázať rozdiel, a preto nesprávne tvrdíme, že okres má priemerný podiel seniorov, hoci sa v skutočnosti významne líši.</small>",
+          "row2b": "Správne rozhodnutie <br/> (Sila testu <m/>)"
+        }
+      }
+    },
+
+    "tTestDashboard": {
+      "title": "Interaktívna ukážka",
+      "description": "V predchádzajúcich častiach sme prešli všeobecným postupom testovania hypotéz a formulovali sme konkrétne hypotézy pre podiel obyvateľov nad 65 rokov v obciach Moravskoslezského kraja. Teraz si celý proces môžeš vyskúšať interaktívne — vyber okres, nastav referenčnú hodnotu <m/> a sleduj, ako sa mení výsledok testu aj vizualizácia rozdelenia.",
+      "controls": {
+        "district": "Výber okresu:",
+        "expectedValue": "Očakávaný podiel nad 65 rokov (μ₀):",
+        "alpha": "Hladina významnosti (α):"
+      },
+      "alert": {
+        "title": "Výsledok testovania:",
+        "reject": "Zamietame H₀",
+        "failToReject": "Nezamietame H₀",
+        "pValue": "<bold>P-hodnota: {{value}}</bold> <sign/> α ({{alpha}}).",
+        "significantText": "Na hladine významnosti {{alpha}} existuje štatisticky významný rozdiel. Priemerný podiel obyvateľov nad 65 rokov v obciach okresu {{district}} ({{mean}} %) sa preukázateľne líši od celoštátnej referenčnej hodnoty {{expected}} %.",
+        "insignificantText": "Na hladine významnosti {{alpha}} sme nepreukázali štatisticky významný rozdiel. Variabilita v dátach je príliš veľká alebo priemer ({{mean}} %) je dostatočne blízko k referenčnej hodnote {{expected}} %."
+      },
+      "calcToggle": {
+        "show": "Zobraziť výpočet ▼",
+        "hide": "Skryť výpočet ▲"
+      },
+      "calculation": {
+        "tStatTitle": "Výpočet t-štatistiky pre okres {{district}}",
+        "meanLabel": "výb. priemer (%)",
+        "expectedLabel": "ref. hodnota (%)",
+        "sdLabel": "smer. odch.",
+        "nLabel": "počet obcí",
+        "pValTitle": "Výpočet p-hodnoty",
+        "pValDesc": "kde <fdf/> je distribučná funkcia Studentovho t-rozdelenia s <df/> stupňami voľnosti.",
+        "rejectSummary": "zamietame H₀",
+        "acceptSummary": "nezamietame H₀",
+        "equivalent": "Ekvivalentne:"
+      },
+      "charts": {
+        "scatterTitle": "Variabilita v okrese",
+        "scatterXAxis": "podiel obyv. nad 65 (%)",
+        "scatterTooltip": "Podiel nad 65: {{value}} %",
+        "tChartTitle": "Studentovo t-rozdelenie (df = {{df}})",
+        "tChartCritArea": "kritická oblasť (α/2)"
+      }
+    }
+  },
+  "components": {
+    "dataPreviewTable": {
+      "records": "{{count}} záznamov",
+      "downloadTitle": "Stiahnuť dáta ako CSV",
+      "downloadBtn": "Stiahnuť CSV",
+      "showLess": "Zobraziť menej ▲",
+      "showAll": "Zobraziť všetky ▼",
+      "showingRows": "Zobrazených {{shown}} z {{total}} riadkov"
+    },
+    "choroplethMap": {
+      "fullscreenTitle": "Zobraziť na celú obrazovku",
+      "legendTitle": "Podiel [%]",
+      "tooltip": {
+        "outsideDistrict": "Mimo vybraný okres",
+        "noData": "Bez dát",
+        "share": "Podiel: {{value}} %"
+      }
+    },
+    "probabilityCharts": {
+      "pmfTitle": "Pravdepodobnostná funkcia (PMF)",
+      "cdfTitle": "Distribučná funkcia (CDF)",
+      "bernoulli": {
+        "paramP": "Parameter (p):"
+      },
+      "uniform": {
+        "outcomes": "Počet možných výsledkov (n):",
+        "probCalc": "P(X=x) = 1/{{n}} ≈ {{p}}"
+      },
+      "binomial": {
+        "probP": "Pravdepodobnosť (p):",
+        "trialsN": "Počet pokusov (n):"
+      },
+      "poisson": {
+        "paramLambda": "Parameter (λ):"
+      },
+      "pdfTitle": "Hustota pravdepodobnosti (PDF)",
+      "uniformContinuous": {
+        "lowerA": "Dolná (a):",
+        "upperB": "Horná (b):"
+      },
+      "normal": {
+        "mean": "Stredná hodnota (μ):",
+        "sd": "Smerodajná odchýlka (σ):"
+      },
+      "studentT": {
+        "df": "Stupne voľnosti (k):"
+      },
+      "fisherF": {
+        "d1": "Stupne voľnosti (d₁):",
+        "d2": "Stupne voľnosti (d₂):"
+      },
+      "chiSquare": {
+        "df": "Stupne voľnosti (k):"
+      }
+    }
   }
 }

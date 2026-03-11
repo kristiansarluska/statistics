@@ -1,5 +1,6 @@
 // src/pages/hypothesisTesting/TTestDashboard.jsx
 import React, { useState, useEffect, useMemo } from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { studentTPDF, studentTCDF } from "../../utils/distributions";
 import ResetButton from "../../components/charts/helpers/ResetButton";
 import ChoroplethMap from "../../components/maps/helpers/ChoroplethMap";
@@ -26,6 +27,7 @@ const getTCritical = (alpha, df) => {
 };
 
 function TTestDashboard() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [geoJson, setGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,11 +101,11 @@ function TTestDashboard() {
       ) /
       (n - 1);
     const sd = Math.sqrt(variance);
-    const t = (mean - expectedValue) / (sd / Math.sqrt(n));
+    const tVal = (mean - expectedValue) / (sd / Math.sqrt(n));
     const df = n - 1;
-    const pValue = 2 * (1 - studentTCDF(Math.abs(t), df));
+    const pValue = 2 * (1 - studentTCDF(Math.abs(tVal), df));
     const tCrit = getTCritical(alpha, df);
-    return { districtData, n, mean, sd, t, df, tCrit, pValue };
+    return { districtData, n, mean, sd, t: tVal, df, tCrit, pValue };
   }, [data, selectedOkres, expectedValue, alpha]);
 
   const tChartData = useMemo(() => {
@@ -130,22 +132,20 @@ function TTestDashboard() {
 
   return (
     <section id="interactive-test" className="mb-5">
-      <h2 className="mb-4">Interaktívna ukážka</h2>
+      <h2 className="mb-4">{t("hypothesisTesting.tTestDashboard.title")}</h2>
 
       <p className="mb-4">
-        V predchádzajúcich častiach sme prešli všeobecným postupom testovania
-        hypotéz a formulovali sme konkrétne hypotézy pre podiel obyvateľov nad
-        65 rokov v obciach Moravskoslezského kraja. Teraz si celý proces môžeš
-        vyskúšať interaktívne — vyber okres, nastav referenčnú hodnotu{" "}
-        <InlineMath math="\mu_0" /> a sleduj, ako sa mení výsledok testu aj
-        vizualizácia rozdelenia.
+        <Trans
+          i18nKey="hypothesisTesting.tTestDashboard.description"
+          components={{ m: <InlineMath math="\mu_0" /> }}
+        />
       </p>
 
       {/* Controls */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-start gap-5 w-100">
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
-            Výber okresu:
+            {t("hypothesisTesting.tTestDashboard.controls.district")}
           </label>
           <select
             className="form-select text-left shadow-sm"
@@ -163,7 +163,7 @@ function TTestDashboard() {
 
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
-            Očakávaný podiel nad 65 rokov (μ₀):
+            {t("hypothesisTesting.tTestDashboard.controls.expectedValue")}
           </label>
           <div className="d-flex align-items-center gap-2">
             <input
@@ -185,7 +185,7 @@ function TTestDashboard() {
 
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
-            Hladina významnosti (α):
+            {t("hypothesisTesting.tTestDashboard.controls.alpha")}
           </label>
           <div className="btn-group" role="group">
             {[0.01, 0.05, 0.1].map((val, index, arr) => (
@@ -207,16 +207,33 @@ function TTestDashboard() {
         className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-5`}
       >
         <h5 className="alert-heading mb-2">
-          Výsledok testovania:{" "}
-          {isSignificant ? "Zamietame H₀" : "Nezamietame H₀"}
+          {t("hypothesisTesting.tTestDashboard.alert.title")}{" "}
+          {isSignificant
+            ? t("hypothesisTesting.tTestDashboard.alert.reject")
+            : t("hypothesisTesting.tTestDashboard.alert.failToReject")}
         </h5>
         <p className="mb-0">
-          <strong>P-hodnota: {stats.pValue.toFixed(4)}</strong>{" "}
-          {isSignificant ? "<" : "≥"} α ({alpha}).
+          <Trans
+            i18nKey="hypothesisTesting.tTestDashboard.alert.pValue"
+            values={{ value: stats.pValue.toFixed(4), alpha }}
+            components={{
+              bold: <strong />,
+              sign: <>{isSignificant ? "<" : "≥"}</>,
+            }}
+          />
           <br />
           {isSignificant
-            ? `Na hladine významnosti ${alpha} existuje štatisticky významný rozdiel. Priemerný podiel obyvateľov nad 65 rokov v obciach okresu ${selectedOkres} (${stats.mean.toFixed(2)} %) sa preukázateľne líši od celoštátnej referenčnej hodnoty ${expectedValue} %.`
-            : `Na hladine významnosti ${alpha} sme nepreukázali štatisticky významný rozdiel. Variabilita v dátach je príliš veľká alebo priemer (${stats.mean.toFixed(2)} %) je dostatočne blízko k referenčnej hodnote ${expectedValue} %.`}
+            ? t("hypothesisTesting.tTestDashboard.alert.significantText", {
+                alpha,
+                district: selectedOkres,
+                mean: stats.mean.toFixed(2),
+                expected: expectedValue,
+              })
+            : t("hypothesisTesting.tTestDashboard.alert.insignificantText", {
+                alpha,
+                mean: stats.mean.toFixed(2),
+                expected: expectedValue,
+              })}
         </p>
       </div>
 
@@ -227,7 +244,9 @@ function TTestDashboard() {
           type="button"
           onClick={() => setCalcOpen((v) => !v)}
         >
-          {calcOpen ? "Skryť výpočet ▲" : "Zobraziť výpočet ▼"}
+          {calcOpen
+            ? t("hypothesisTesting.tTestDashboard.calcToggle.hide")
+            : t("hypothesisTesting.tTestDashboard.calcToggle.show")}
         </button>
 
         <div

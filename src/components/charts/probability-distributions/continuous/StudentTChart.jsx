@@ -1,14 +1,15 @@
 // src/components/charts/probability-distributions/continuous/StudentTChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import { studentTPDF, studentTCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function StudentTChart() {
-  const [k, setK] = useState(5); // Stupne voľnosti (štandardne začneme na 5)
+  const { t } = useTranslation();
+  const [k, setK] = useState(5);
   const [hoverX, setHoverX] = useState(null);
 
-  // Fixný rozsah pre stabilnú os X (zameranie na stred a ťažké chvosty)
   const minX = -5;
   const maxX = 5;
 
@@ -25,18 +26,31 @@ function StudentTChart() {
     return { dataPDF: pdf, dataCDF: cdf };
   }, [k]);
 
-  // Pevný strop osi Y pre perfektné zobrazenie toho, ako vrchol rastie s k
   const maxY_PDF = 0.5;
+
+  const currentArea = useMemo(() => {
+    if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
+    let closest = dataCDF[0];
+    let minDiff = Math.abs(dataCDF[0].x - hoverX);
+    for (let i = 1; i < dataCDF.length; i++) {
+      const diff = Math.abs(dataCDF[i].x - hoverX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = dataCDF[i];
+      }
+    }
+    return closest.y;
+  }, [hoverX, dataCDF]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládacie prvky (Slider) */}
       <div
         className="controls mb-4"
         style={{ width: "100%", maxWidth: "400px" }}
       >
         <label htmlFor="kRangeStudent" className="form-label w-100 text-center">
-          Stupne voľnosti (k): <strong>{k}</strong>
+          {t("components.probabilityCharts.studentT.df")}{" "}
+          <span className="parameter-value">{k}</span>
         </label>
         <input
           type="range"
@@ -50,12 +64,12 @@ function StudentTChart() {
         />
       </div>
 
-      {/* Prepojené grafy v spoločnom wrapperi */}
       <div className="charts-wrapper w-100">
         <div>
           <StyledLineChart
             data={dataPDF}
-            title={`Hustota pravdepodobnosti (PDF)`}
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.pdfTitle")}
             xLabel="t"
             yLabel="f(t; k)"
             lineClass="chart-line-primary"
@@ -63,7 +77,7 @@ function StudentTChart() {
             setHoverX={setHoverX}
             minX={minX}
             maxX={maxX}
-            yAxisDomain={[0, maxY_PDF]} // Fixná os Y
+            yAxisDomain={[0, maxY_PDF]}
             type="pdf"
             showReferenceArea={true}
           />
@@ -71,7 +85,8 @@ function StudentTChart() {
         <div>
           <StyledLineChart
             data={dataCDF}
-            title={`Distribučná funkcia (CDF)`}
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.cdfTitle")}
             xLabel="t"
             yLabel="F(t; k)"
             lineClass="chart-line-secondary"

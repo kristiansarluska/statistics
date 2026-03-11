@@ -1,40 +1,39 @@
 // src/pages/hypothesisTesting/Introduction.jsx
 import React from "react";
 import { InlineMath } from "react-katex";
+import { useTranslation, Trans } from "react-i18next";
 
 function Introduction() {
+  const { t } = useTranslation();
+
   return (
     <section id="introduction" className="mb-5">
-      <p className="lead">
-        Testovanie hypotéz je základná metóda induktívnej štatistiky, ktorá
-        umožňuje rozhodovať o vlastnostiach základného súboru na základe dát
-        získaných z výberového súboru. V praxi často potrebujeme zistiť, či
-        pozorovaný rozdiel v dátach predstavuje skutočný jav, alebo je len
-        dôsledkom náhodnej variability výberu.
-      </p>
+      <p className="lead">{t("hypothesisTesting.introduction.leadText")}</p>
 
       <div className="card shadow-sm mt-4">
         <div className="card-body">
-          <h5 className="card-title">Základné hypotézy</h5>
+          <h5 className="card-title">
+            {t("hypothesisTesting.introduction.basicHypothesesTitle")}
+          </h5>
           <ul className="mb-0">
             <li>
-              <strong>
-                Nulová hypotéza (<InlineMath math="H_0" />
-                ):
-              </strong>{" "}
-              Očakávaný stav, ktorý predpokladáme, že platí. Zvyčajne vyjadruje
-              "nulový efekt" (napr. neexistuje rozdiel, stredná hodnota sa rovná
-              očakávanej).
+              <Trans
+                i18nKey="hypothesisTesting.introduction.nullHypothesis"
+                components={{
+                  bold: <strong />,
+                  h0: <InlineMath math="H_0" />,
+                }}
+              />
             </li>
             <li className="mt-2">
-              <strong>
-                Alternatívna hypotéza (<InlineMath math="H_A" />
-                ):
-              </strong>{" "}
-              Logický opak <InlineMath math="H_0" />. Tvrdí, že existuje
-              rozdiel, závislosť alebo zmena. V dátach hľadáme dôkaz práve pre
-              zamietnutie <InlineMath math="H_0" /> a prijatie{" "}
-              <InlineMath math="H_A" />.
+              <Trans
+                i18nKey="hypothesisTesting.introduction.alternativeHypothesis"
+                components={{
+                  bold: <strong />,
+                  ha: <InlineMath math="H_A" />,
+                  h0: <InlineMath math="H_0" />,
+                }}
+              />
             </li>
           </ul>
         </div>

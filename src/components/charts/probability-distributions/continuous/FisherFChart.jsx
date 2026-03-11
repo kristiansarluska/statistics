@@ -1,10 +1,12 @@
 // src/components/charts/probability-distributions/continuous/FisherFChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import { fisherFPDF, fisherFCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function FisherFChart() {
+  const { t } = useTranslation();
   const [d1, setD1] = useState(5);
   const [d2, setD2] = useState(5);
   const [hoverX, setHoverX] = useState(null);
@@ -23,7 +25,6 @@ function FisherFChart() {
 
       let yPDF = fisherFPDF(safeX, d1, d2);
 
-      // We clip y to 2.5 only to prevent the asymptote at d1=1 from ruining the scale
       if (yPDF > 2.5) yPDF = 2.5;
 
       pdf.push({ x, y: yPDF });
@@ -32,29 +33,38 @@ function FisherFChart() {
     return { dataPDF: pdf, dataCDF: cdf };
   }, [d1, d2]);
 
-  // Dynamic calculation for Y-axis maximum on PDF chart
   const maxY_PDF = useMemo(() => {
-    // Find the peak, ignoring early values (x < 0.1) so d1=1 asymptote doesn't trigger it
     const peak = Math.max(...dataPDF.filter((d) => d.x >= 0.1).map((d) => d.y));
-
-    // If peak gets close to 1, raise axis to 1.2
     if (peak > 0.85) {
       return 1.2;
     }
-
     return 1.0;
   }, [dataPDF]);
 
+  const currentArea = useMemo(() => {
+    if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
+    let closest = dataCDF[0];
+    let minDiff = Math.abs(dataCDF[0].x - hoverX);
+    for (let i = 1; i < dataCDF.length; i++) {
+      const diff = Math.abs(dataCDF[i].x - hoverX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = dataCDF[i];
+      }
+    }
+    return closest.y;
+  }, [hoverX, dataCDF]);
+
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Controls (Sliders) */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
         style={{ width: "100%", maxWidth: "500px" }}
       >
         <div style={{ flex: "1 1 200px" }}>
           <label htmlFor="d1Range" className="form-label w-100 text-center">
-            Stupne voľnosti (d₁): <strong>{d1}</strong>
+            {t("components.probabilityCharts.fisherF.d1")}{" "}
+            <span className="parameter-value">{d1}</span>
           </label>
           <input
             type="range"
@@ -70,7 +80,8 @@ function FisherFChart() {
 
         <div style={{ flex: "1 1 200px" }}>
           <label htmlFor="d2Range" className="form-label w-100 text-center">
-            Stupne voľnosti (d₂): <strong>{d2}</strong>
+            {t("components.probabilityCharts.fisherF.d2")}{" "}
+            <span className="parameter-value">{d2}</span>
           </label>
           <input
             type="range"
@@ -85,12 +96,12 @@ function FisherFChart() {
         </div>
       </div>
 
-      {/* Linked Charts in wrapper */}
       <div className="charts-wrapper w-100">
         <div>
           <StyledLineChart
             data={dataPDF}
-            title={`Hustota pravdepodobnosti (PDF)`}
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
             yLabel="f(x; d₁, d₂)"
             lineClass="chart-line-primary"
@@ -98,7 +109,7 @@ function FisherFChart() {
             setHoverX={setHoverX}
             minX={minX}
             maxX={maxX}
-            yAxisDomain={[0, maxY_PDF]} // Will be 1.0 or 1.2
+            yAxisDomain={[0, maxY_PDF]}
             type="pdf"
             showReferenceArea={true}
           />
@@ -106,7 +117,8 @@ function FisherFChart() {
         <div>
           <StyledLineChart
             data={dataCDF}
-            title={`Distribučná funkcia (CDF)`}
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
             yLabel="F(x; d₁, d₂)"
             lineClass="chart-line-secondary"

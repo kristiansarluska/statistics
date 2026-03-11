@@ -1,21 +1,13 @@
 // src/components/charts/helpers/CustomTooltip.jsx
 import React from "react";
 
-// Vylepšená formatter funkcia pre inteligentné zaokrúhľovanie
 export const formatNumberSmart = (value) => {
   if (value === null || value === undefined) return "";
-
   const num = Number(value);
   if (isNaN(num)) return value;
-
   if (num === 0) return 0;
-
   const absNum = Math.abs(num);
-
-  if (absNum < 0.01) {
-    return Number(num.toPrecision(2));
-  }
-
+  if (absNum < 0.01) return Number(num.toPrecision(2));
   return Number(num.toFixed(2));
 };
 
@@ -25,10 +17,9 @@ function CustomTooltip({
   xLabel = "x",
   yLabel = "f(x)",
   overrideY = null,
-  areaValue = null, // Nový prop pre plochu/pravdepodobnosť
+  areaValue = null,
 }) {
   if (active && payload && payload.length) {
-    // Odstránime z tooltipu záznamy patriace BackgroundArea
     const validPayload = payload
       .filter((entry) => entry.name !== "ignore_tooltip")
       .filter(
@@ -50,7 +41,10 @@ function CustomTooltip({
       typeof xVal === "number" ? formatNumberSmart(xVal) : xVal;
 
     return (
-      <div className="custom-tooltip">
+      <div
+        className="custom-tooltip bg-body border rounded shadow-sm p-2"
+        style={{ fontSize: "0.9rem" }}
+      >
         <p className="mb-0 fw-bold">{`${xLabel}: ${formattedX}`}</p>
 
         {validPayload.map((entry, index) => {
@@ -80,13 +74,12 @@ function CustomTooltip({
           );
         })}
 
-        {/* Ak graf odovzdal plochu (areaValue), zobrazíme ju */}
         {areaValue !== null && (
           <p
             className="mb-0 mt-1 pt-1 border-top"
             style={{ fontSize: "0.85rem", color: "var(--bs-body-color)" }}
           >
-            <span className="opacity-75">Plocha F(x): </span>
+            <span className="opacity-75">F(x): </span>
             <strong style={{ color: "var(--bs-primary)" }}>
               {(areaValue * 100).toFixed(2)} %
             </strong>

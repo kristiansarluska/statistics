@@ -1,10 +1,12 @@
 // src/components/charts/probability-distributions/discrete/BernoulliChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledBarChart from "../../helpers/StyledBarChart";
 import StyledDiscreteCDFChart from "../../helpers/StyledDiscreteCDFChart";
 import "../../../../styles/charts.css";
 
 function BernoulliChart() {
+  const { t } = useTranslation();
   const [bernoulliP, setBernoulliP] = useState(0.25);
   const [hoverX, setHoverX] = useState(null);
 
@@ -18,16 +20,14 @@ function BernoulliChart() {
   const pVal = Number(bernoulliP);
   const qVal = 1 - pVal;
 
-  // Dáta pre pravdepodobnostnú funkciu (PMF)
   const pmfData = useMemo(
     () => [
-      { x: "0", probability: qVal, fill: "var(--bs-info)" },
-      { x: "1", probability: pVal, fill: "var(--bs-primary)" },
+      { x: "0", "P(x)": qVal, fill: "var(--bs-info)" },
+      { x: "1", "P(x)": pVal, fill: "var(--bs-primary)" },
     ],
     [pVal, qVal],
   );
 
-  // Dáta pre distribučnú funkciu (CDF) - šablóna očakáva pole objektov { x, p }
   const cdfData = useMemo(
     () => [
       { x: 0, p: qVal },
@@ -38,10 +38,9 @@ function BernoulliChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládanie (slider) */}
       <div className="controls mb-4">
         <label className="d-flex align-items-center">
-          Parameter p:
+          {t("components.probabilityCharts.bernoulli.paramP")}
           <input
             type="range"
             className="form-range"
@@ -53,24 +52,22 @@ function BernoulliChart() {
             style={{ width: "200px", cursor: "pointer", margin: "0 10px" }}
           />
           <span
-            style={{
-              fontFamily: "monospace",
-              minWidth: "40px",
-              textAlign: "right",
-            }}
+            style={{ minWidth: "40px", textAlign: "right" }}
+            className="ms-2 fw-bold"
           >
             {bernoulliP.toFixed(2)}
           </span>
         </label>
       </div>
 
-      {/* Prepojené grafy PMF a CDF */}
       <div className="charts-wrapper w-100">
         <div>
-          <h6 className="mb-3 text-center">Pravdepodobnostná funkcia (PMF)</h6>
+          <h6 className="mb-3 text-center">
+            {t("components.probabilityCharts.pmfTitle")}
+          </h6>
           <StyledBarChart
             data={pmfData}
-            barDataKey="probability"
+            barDataKey="P(x)"
             xLabel="x"
             yLabel="P(X=x)"
             yDomain={[0, 1]}
@@ -83,7 +80,9 @@ function BernoulliChart() {
         </div>
 
         <div>
-          <h6 className="mb-3 text-center">Distribučná funkcia (CDF)</h6>
+          <h6 className="mb-3 text-center">
+            {t("components.probabilityCharts.cdfTitle")}
+          </h6>
           <StyledDiscreteCDFChart
             data={cdfData}
             hoverX={hoverX}

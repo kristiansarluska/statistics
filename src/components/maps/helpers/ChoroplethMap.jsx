@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 // Divergent quantile breaks anchored at a pivot value.
 // Returns { belowBreaks, aboveBreaks, belowCount, aboveCount }
@@ -88,6 +89,7 @@ function ChoroplethMap({
   setHoveredObec,
   pivot, // expectedValue from dashboard
 }) {
+  const { t, i18n } = useTranslation();
   const wrapperRef = useRef(null);
   const geoJsonRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -170,11 +172,13 @@ function ChoroplethMap({
 
     let valLine;
     if (!isInDistrict) {
-      valLine = `<small class="text-muted">Mimo vybraný okres</small>`;
+      valLine = `<small class="text-muted">${t("components.choroplethMap.tooltip.outsideDistrict")}</small>`;
     } else if (val == null) {
-      valLine = `<small class="text-muted">Bez dát</small>`;
+      valLine = `<small class="text-muted">${t("components.choroplethMap.tooltip.noData")}</small>`;
     } else {
-      valLine = `Podiel: ${val.toFixed(1)} %`;
+      valLine = t("components.choroplethMap.tooltip.share", {
+        value: val.toFixed(1),
+      });
     }
 
     layer.bindTooltip(
@@ -268,7 +272,7 @@ function ChoroplethMap({
             color: "#333",
             boxShadow: "none",
           }}
-          title="Zobraziť na celú obrazovku"
+          title={t("components.choroplethMap.fullscreenTitle")}
         >
           {isFullscreen ? (
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -293,7 +297,7 @@ function ChoroplethMap({
           }}
         >
           <div className="fw-bold mb-1" style={{ fontSize: "0.78rem" }}>
-            Podiel [%]
+            {t("components.choroplethMap.legendTitle")}
           </div>
           {legendRows.map((row, i) =>
             row.isPivot ? (
@@ -320,27 +324,6 @@ function ChoroplethMap({
               </div>
             ),
           )}
-          {/* No-data 
-          <div
-            className="d-flex align-items-center gap-1 mt-1"
-            style={{
-              borderTop: "1px solid var(--bs-border-color)",
-              paddingTop: 4,
-            }}
-          >
-            <span
-              style={{
-                display: "inline-block",
-                width: 13,
-                height: 13,
-                background: darkMode ? "#606060" : "#b0b0b0",
-                border: "1px solid #aaa",
-                flexShrink: 0,
-              }}
-            />
-            <span className="text-muted">Bez dát</span>
-          </div>
-          */}
         </div>
 
         <MapContainer
@@ -360,7 +343,7 @@ function ChoroplethMap({
           {geoJsonData && (
             <GeoJSON
               ref={geoJsonRef}
-              key={`${filterValue}-${darkMode ? "dark" : "light"}`}
+              key={`${filterValue}-${darkMode ? "dark" : "light"}-${i18n.language}`}
               data={geoJsonData}
               style={style}
               onEachFeature={onEachFeature}

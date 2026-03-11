@@ -5,10 +5,13 @@ import React, {
   useCallback,
   useEffect,
   useRef,
+  useId,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ComposedChart,
   Line,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -23,11 +26,15 @@ import { getAxisConfig } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function UniformContinuousChart() {
+  const { t } = useTranslation();
   const [a, setA] = useState(12);
   const [b, setB] = useState(20);
   const [hoverX, setHoverX] = useState(null);
   const [animated, setAnimated] = useState(true);
+
   const prevDataRef = useRef([]);
+  const sliderRef = useRef(null); // Ref pre zachytenie kliknutí na slider
+  const gradientId = useId();
 
   const minX = 0;
   const maxX = 30;
@@ -43,61 +50,115 @@ function UniformContinuousChart() {
     setB(value);
   };
 
+  // Spracovanie kliknutia priamo na dráhu slidera
+  const handleTrackClick = (e) => {
+    if (!sliderRef.current) return;
+
+    // Ignorujeme kliknutie, ak užívateľ klikol priamo na bežca (input)
+    // aby sme nenarušili plynulé ťahanie
+    if (e.target.tagName.toLowerCase() === "input") return;
+
+    const rect = sliderRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = clickX / rect.width;
+
+    // Výpočet kliknutej hodnoty z percenta
+    const clickedValue = Math.round(minX + percent * (maxX - minX));
+    const safeValue = Math.max(minX, Math.min(maxX, clickedValue));
+
+    const distA = Math.abs(safeValue - a);
+    const distB = Math.abs(safeValue - b);
+
+    // Posunieme toho bežca, ktorý je bližšie ku kliknutiu
+    if (distA < distB) {
+      setA(Math.min(safeValue, b - step));
+    } else if (distB < distA) {
+      setB(Math.max(safeValue, a + step));
+    } else {
+      if (safeValue < a) setA(Math.min(safeValue, b - step));
+      else setB(Math.max(safeValue, a + step));
+    }
+  };
+
   const getPercent = useCallback(
     (value) => Math.round(((value - minX) / (maxX - minX)) * 100),
     [minX, maxX],
   );
 
-  const { chartData, openCircleData, closedCircleData, cdfData } =
-    useMemo(() => {
-      const height = 1 / (b - a);
-      const epsilon = 1e-7;
+  const hoverPercent = useMemo(() => {
+    if (hoverX === null) return 0;
+    if (maxX <= minX) return 0;
+    const percent = ((hoverX - minX) / (maxX - minX)) * 100;
+    return Math.max(0, Math.min(100, percent));
+  }, [hoverX, minX, maxX]);
 
-      // --- Dáta pre PDF (Hustota) ---
-      const lData = [
-        { x: minX, y: 0 },
-        { x: a - epsilon, y: 0 },
-        { x: a, y: null },
-        { x: a, y: height },
-        { x: b, y: height },
-        { x: b, y: null },
-        { x: b + epsilon, y: 0 },
-        { x: maxX, y: 0 },
-      ];
+  const {
+    chartData,
+    areaData,
+    openCircleData,
+    closedCircleData,
+    dataCDF,
+    hoverData,
+  } = useMemo(() => {
+    const height = 1 / (b - a);
+    const epsilon = 1e-7;
 
-      const cData = [
-        { x: a, y: height },
-        { x: b, y: height },
-      ];
+    const lData = [
+      { x: minX, y: 0 },
+      { x: a - epsilon, y: 0 },
+      { x: a, y: null },
+      { x: a, y: height },
+      { x: b, y: height },
+      { x: b, y: null },
+      { x: b + epsilon, y: 0 },
+      { x: maxX, y: 0 },
+    ];
 
-      const oData = [
-        { x: a, y: 0 },
-        { x: b, y: 0 },
-      ];
+    const aData = [
+      { x: minX, y: 0 },
+      { x: a, y: 0 },
+      { x: a, y: height },
+      { x: b, y: height },
+      { x: b, y: 0 },
+      { x: maxX, y: 0 },
+    ];
 
-      // --- Dáta pre CDF (Distribučná funkcia) ---
-      const cdf = [];
-      const numPoints = 300; // Dostatočne hustá sieť pre hladký hover
-      const stepSize = (maxX - minX) / numPoints;
+    const cData = [
+      { x: a, y: height },
+      { x: b, y: height },
+    ];
 
-      for (let i = 0; i <= numPoints; i++) {
-        const x = i === numPoints ? maxX : minX + i * stepSize;
-        let y = 0;
-        if (x >= b) {
-          y = 1;
-        } else if (x > a) {
-          y = (x - a) / (b - a);
-        }
-        cdf.push({ x, y });
+    const oData = [
+      { x: a, y: 0 },
+      { x: b, y: 0 },
+    ];
+
+    const cdf = [];
+    const hData = [];
+    const numPoints = 300;
+    const stepSize = (maxX - minX) / numPoints;
+
+    for (let i = 0; i <= numPoints; i++) {
+      const x = i === numPoints ? maxX : minX + i * stepSize;
+      let y = 0;
+      if (x >= b) {
+        y = 1;
+      } else if (x > a) {
+        y = (x - a) / (b - a);
       }
+      cdf.push({ x, y });
+      hData.push({ x, y: 0 });
+    }
 
-      return {
-        chartData: lData,
-        openCircleData: oData,
-        closedCircleData: cData,
-        cdfData: cdf,
-      };
-    }, [a, b, minX, maxX]);
+    return {
+      chartData: lData,
+      areaData: aData,
+      openCircleData: oData,
+      closedCircleData: cData,
+      dataCDF: cdf,
+      hoverData: hData,
+    };
+  }, [a, b, minX, maxX]);
 
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(chartData)) {
@@ -132,39 +193,48 @@ function UniformContinuousChart() {
 
   const hoverY = useMemo(() => {
     if (hoverX === null) return null;
-    let closestPoint = chartData[0];
-    let minDiff = Math.abs(chartData[0].x - hoverX);
-    for (let i = 1; i < chartData.length; i++) {
-      if (chartData[i].y === null) continue;
-      const diff = Math.abs(chartData[i].x - hoverX);
+    if (hoverX >= a && hoverX <= b) {
+      return 1 / (b - a);
+    }
+    return 0;
+  }, [hoverX, a, b]);
+
+  const currentArea = useMemo(() => {
+    if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
+    let closest = dataCDF[0];
+    let minDiff = Math.abs(dataCDF[0].x - hoverX);
+    for (let i = 1; i < dataCDF.length; i++) {
+      const diff = Math.abs(dataCDF[i].x - hoverX);
       if (diff < minDiff) {
         minDiff = diff;
-        closestPoint = chartData[i];
-      } else if (diff === minDiff) {
-        if (chartData[i].y > closestPoint.y) {
-          closestPoint = chartData[i];
-        }
+        closest = dataCDF[i];
       }
     }
-    return closestPoint.y;
-  }, [chartData, hoverX]);
+    return closest.y;
+  }, [hoverX, dataCDF]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládacie prvky (Slidre) */}
       <div
         className="controls mb-4"
         style={{ width: "100%", maxWidth: "400px" }}
       >
         <div className="d-flex justify-content-between w-100 mb-2">
           <span>
-            Dolná (a): <strong>{a}</strong>
+            {t("components.probabilityCharts.uniformContinuous.lowerA")}{" "}
+            <span className="parameter-value">{a}</span>
           </span>
           <span>
-            Horná (b): <strong>{b}</strong>
+            {t("components.probabilityCharts.uniformContinuous.upperB")}{" "}
+            <span className="parameter-value">{b}</span>
           </span>
         </div>
-        <div className="dual-slider-container">
+        <div
+          className="dual-slider-container"
+          ref={sliderRef}
+          onClick={handleTrackClick}
+          style={{ cursor: "pointer" }}
+        >
           <input
             type="range"
             min={minX}
@@ -185,13 +255,16 @@ function UniformContinuousChart() {
             className="dual-slider-input"
             style={{ zIndex: "4" }}
           />
-
-          <div className="dual-slider-track"></div>
+          <div
+            className="dual-slider-track"
+            style={{ pointerEvents: "none" }}
+          ></div>
           <div
             className="dual-slider-range"
             style={{
               left: `${getPercent(a)}%`,
               width: `${getPercent(b) - getPercent(a)}%`,
+              pointerEvents: "none",
             }}
           ></div>
         </div>
@@ -201,15 +274,11 @@ function UniformContinuousChart() {
         </div>
       </div>
 
-      <h5 className="mb-4 text-center fw-bold">
-        Spojité rovnomerné rozdelenie U({a}, {b})
-      </h5>
-
-      {/* Prepojené grafy */}
       <div className="charts-wrapper w-100">
-        {/* PDF Graf (Zložitý Custom Chart kvôli zlomom a bodom) */}
         <div>
-          <h6 className="mb-3 text-center">Hustota pravdepodobnosti (PDF)</h6>
+          <h6 className="mb-3 text-center">
+            {t("components.probabilityCharts.pdfTitle")}
+          </h6>
           <ResponsiveContainer width="100%" height={300}>
             <ComposedChart
               margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
@@ -219,6 +288,21 @@ function UniformContinuousChart() {
               onClick={handleChartInteraction}
               onMouseLeave={() => setHoverX(null)}
             >
+              <defs>
+                <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
+                  <stop
+                    offset={`${hoverPercent}%`}
+                    stopColor="var(--bs-primary)"
+                    stopOpacity={0.25}
+                  />
+                  <stop
+                    offset={`${hoverPercent}%`}
+                    stopColor="transparent"
+                    stopOpacity={0}
+                  />
+                </linearGradient>
+              </defs>
+
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis
                 dataKey="x"
@@ -244,11 +328,39 @@ function UniformContinuousChart() {
               />
               <Tooltip
                 content={
-                  <CustomTooltip xLabel="x" yLabel="f(x)" overrideY={hoverY} />
+                  <CustomTooltip
+                    xLabel="x"
+                    yLabel="f(x)"
+                    overrideY={hoverY}
+                    areaValue={currentArea}
+                  />
                 }
                 cursor={false}
                 animationDuration={50}
               />
+
+              <Line
+                data={hoverData}
+                type="linear"
+                dataKey="y"
+                stroke="none"
+                dot={false}
+                activeDot={false}
+                isAnimationActive={false}
+              />
+
+              {hoverX !== null && (
+                <Area
+                  data={areaData}
+                  type="linear"
+                  dataKey="y"
+                  fill={`url(#${gradientId})`}
+                  stroke="none"
+                  isAnimationActive={false}
+                  activeDot={false}
+                  style={{ pointerEvents: "none" }}
+                />
+              )}
 
               {hoverX !== null && (
                 <ReferenceLine
@@ -343,11 +455,13 @@ function UniformContinuousChart() {
           </ResponsiveContainer>
         </div>
 
-        {/* CDF Graf (Pomocou šablóny StyledLineChart) */}
         <div>
-          <h6 className="mb-3 text-center">Distribučná funkcia (CDF)</h6>
+          <h6 className="mb-3 text-center">
+            {t("components.probabilityCharts.cdfTitle")}
+          </h6>
           <StyledLineChart
-            data={cdfData}
+            data={dataCDF}
+            areaValue={currentArea}
             xLabel="x"
             yLabel="F(x)"
             lineClass="chart-line-secondary"

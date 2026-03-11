@@ -1,5 +1,6 @@
 // src/pages/probabilityDistributions/ContinuousDistributions.jsx
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 import { BlockMath, InlineMath } from "react-katex";
 import UniformContinuousChart from "../../components/charts/probability-distributions/continuous/UniformContinuousChart";
 import ExponentialChart from "../../components/charts/probability-distributions/continuous/ExponentialChart";
@@ -9,28 +10,27 @@ import StudentTChart from "../../components/charts/probability-distributions/con
 import FisherFChart from "../../components/charts/probability-distributions/continuous/FisherFChart";
 
 function ContinuousDistributions() {
+  const { t } = useTranslation();
+
   return (
     <section id="continuous-distributions">
-      <h2 className="mb-4">Spojité rozdelenia</h2>
+      <h2 className="mb-4">{t("probabilityDistributions.continuous.title")}</h2>
       <p className="mb-5">
-        Spojité pravdepodobnostné rozdelenia opisujú náhodné veličiny, ktoré
-        môžu nadobúdať akúkoľvek hodnotu v rámci určitého intervalu. Na rozdiel
-        od diskrétnych rozdelení, pravdepodobnosť, že spojitá veličina nadobudne
-        konkrétnu hodnotu (napr. presne <InlineMath math="x = 2.0000" />
-        ), je vždy nulová. Namiesto toho počítame pravdepodobnosť, že hodnota
-        padne do určitého intervalu.
+        <Trans
+          i18nKey="probabilityDistributions.continuous.description"
+          components={{ m: <InlineMath math="x = 2.0000" /> }}
+        />
       </p>
 
       {/* ROVNOMERNÉ SPOJITÉ ROZDELENIE */}
       <h3 id="uniform-continuous" className="mb-3 mt-5">
-        Rovnomerné rozdelenie
+        {t("probabilityDistributions.continuous.uniform.title")}
       </h3>
       <p className="mb-4">
-        Spojité rovnomerné rozdelenie definuje náhodnú veličinu, ktorá môže
-        nadobudnúť akúkoľvek hodnotu v uzavretom intervale{" "}
-        <InlineMath math="[a, b]" />. Hustota pravdepodobnosti je v celom tomto
-        intervale konštantná, čo znamená, že všetky podintervaly rovnakej dĺžky
-        sú rovnako pravdepodobné.
+        <Trans
+          i18nKey="probabilityDistributions.continuous.uniform.description"
+          components={{ m: <InlineMath math="[a, b]" /> }}
+        />
       </p>
 
       <div className="mb-4">
@@ -43,35 +43,28 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Čakanie na prírodný úkaz</h5>
+        <h5 className="mb-3">
+          {t("probabilityDistributions.continuous.uniform.exampleTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si, že sledujete gejzír, o ktorom je známe, že vybuchuje
-          náhodne v intervale od{" "}
-          <strong>
-            <InlineMath math="a" />
-          </strong>{" "}
-          do{" "}
-          <strong>
-            <InlineMath math="b" />
-          </strong>{" "}
-          minút od poslednej erupcie. Ak nemáme žiadnu ďalšiu informáciu,
-          predpokladáme, že pravdepodobnosť výbuchu v 14. minúte je rovnaká ako
-          v 18. minúte. Na grafe nižšie vidíte, že hustota pravdepodobnosti
-          tvorí obdĺžnik – jeho plocha musí byť vždy rovná 1, preto sa so
-          zväčšovaním intervalu výška obdĺžnika znižuje.
+          <Trans
+            i18nKey="probabilityDistributions.continuous.uniform.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="a" />,
+              m2: <InlineMath math="b" />,
+            }}
+          />
         </p>
         <UniformContinuousChart />
       </div>
 
       {/* EXPONENCIÁLNE ROZDELENIE */}
       <h3 id="exponential" className="mb-3 mt-5">
-        Exponenciálne rozdelenie
+        {t("probabilityDistributions.continuous.exponential.title")}
       </h3>
       <p className="mb-4">
-        Exponenciálne rozdelenie sa často používa na modelovanie času medzi
-        náhodnými udalosťami v Poissonovom procese. Je to rozdelenie s "krátkou
-        pamäťou" – pravdepodobnosť, že udalosť nastane v najbližšom momente,
-        nezávisí od toho, ako dlho už čakáme.
+        {t("probabilityDistributions.continuous.exponential.description")}
       </p>
 
       <div className="mb-4">
@@ -84,32 +77,33 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Spoľahlivosť monitorovacej siete</h5>
+        <h5 className="mb-3">
+          {t("probabilityDistributions.continuous.exponential.exampleTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si automatickú meteostanicu v teréne. Exponenciálne
-          rozdelenie modeluje <strong>čas medzi dvoma výpadkami</strong>{" "}
-          odosielania dát. Parameter{" "}
-          <strong>
-            <InlineMath math="\lambda" />
-          </strong>{" "}
-          (lambda) predstavuje intenzitu porúch – čím je vyššia, tým častejšie k
-          výpadkom dochádza a tým kratšie sú intervaly medzi nimi. Všimnite si,
-          že krivka začína vysoko (krátke intervaly sú najpravdepodobnejšie) a
-          smerom doprava k dlhým časom čakania prudko klesá.
+          <Trans
+            i18nKey="probabilityDistributions.continuous.exponential.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="\lambda" />,
+            }}
+          />
         </p>
         <ExponentialChart />
       </div>
 
       {/* NORMÁLNE ROZDELENIE */}
       <h3 id="normal" className="mb-3 mt-5">
-        Normálne rozdelenie
+        {t("probabilityDistributions.continuous.normal.title")}
       </h3>
       <p className="mb-4">
-        Normálne (Gaussovo) rozdelenie je najdôležitejším rozdelením v
-        štatistike. Je symetrické okolo strednej hodnoty{" "}
-        <InlineMath math="\mu" /> a jeho tvar "zvonu" je určený smerodajnou
-        odchýlkou <InlineMath math="\sigma" />. V prírode a technike sa ním
-        riadi väčšina náhodných chýb merania.
+        <Trans
+          i18nKey="probabilityDistributions.continuous.normal.description"
+          components={{
+            m1: <InlineMath math="\mu" />,
+            m2: <InlineMath math="\sigma" />,
+          }}
+        />
       </p>
 
       <div className="mb-4">
@@ -122,41 +116,36 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Kalibrácia a presnosť GNSS prijímača</h5>
+        <h5 className="mb-3">
+          {t("probabilityDistributions.continuous.normal.exampleTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si meranie polohy stacionárneho bodu pomocou GNSS.
-          Parameter{" "}
-          <strong>
-            <InlineMath math="\mu" /> (stredná hodnota)
-          </strong>{" "}
-          predstavuje systematickú chybu (napr. ak je prístroj zle kalibrovaný a
-          vždy posúva výsledok o 1 meter). Parameter{" "}
-          <strong>
-            <InlineMath math="\sigma" /> (smerodajná odchýlka)
-          </strong>{" "}
-          určuje presnosť prístroja — čím je menšia, tým sú merania tesnejšie
-          okolo stredu a prístroj je kvalitnejší. Všimnite si, že pri zmenšení{" "}
-          <strong>
-            <InlineMath math="\sigma" />
-          </strong>{" "}
-          sa graf zúži a jeho vrchol prudko narastie, pretože celková plocha pod
-          krivkou musí ostať rovná 1.
+          <Trans
+            i18nKey="probabilityDistributions.continuous.normal.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="\mu" />,
+              m2: <InlineMath math="\sigma" />,
+              m3: <InlineMath math="\sigma" />,
+            }}
+          />
         </p>
         <NormalChart />
       </div>
 
       {/* CHÍ-KVADRÁT ROZDELENIE */}
       <h3 id="chi-square" className="mb-3 mt-5">
-        Chí-kvadrát rozdelenie
+        {t("probabilityDistributions.continuous.chiSquare.title")}
       </h3>
       <p className="mb-4">
-        Chí-kvadrát rozdelenie (<InlineMath math="\chi^2" />) je asymetrické a
-        nadobúda len nezáporné hodnoty. Je definované parametrom{" "}
-        <strong>
-          <InlineMath math="\nu" /> (stupne voľnosti)
-        </strong>
-        , kde <InlineMath math="\nu = n-1" />. Hrá kľúčovú úlohu pri testovaní
-        hypotéz o rozptyle a pri testoch dobrej zhody.
+        <Trans
+          i18nKey="probabilityDistributions.continuous.chiSquare.description"
+          components={{
+            m1: <InlineMath math="\chi^2" />,
+            m2: <InlineMath math="\nu" />,
+            m3: <InlineMath math="\nu = n-1" />,
+          }}
+        />
       </p>
 
       <div className="mb-4">
@@ -167,38 +156,32 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Kontrola stability presnosti merania</h5>
+        <h5 className="mb-3">
+          {t("probabilityDistributions.continuous.chiSquare.exampleTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si, že testujete presnosť nového laserového diaľkomera.
-          Nevyhodnocujete priemernú dĺžku, ale{" "}
-          <strong>variabilitu (rozptyl)</strong>
-          opakovaných meraní na známu vzdialenosť. <InlineMath math="\chi^2" />{" "}
-          rozdelenie modeluje súčet štvorcov týchto chýb. Parameter{" "}
-          <strong>df (stupne voľnosti)</strong> závisí od počtu vykonaných
-          meraní (<InlineMath math="n-1" />
-          ). Sledujte, ako sa pri nízkom{" "}
-          <strong>
-            <InlineMath math="\nu" />
-          </strong>{" "}
-          pravdepodobnosť koncentruje blízko nuly a so zvyšujúcim sa počtom
-          meraní sa rozdelenie začína podobať na normálne.
+          <Trans
+            i18nKey="probabilityDistributions.continuous.chiSquare.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="\chi^2" />,
+              m2: <InlineMath math="n-1" />,
+              m3: <InlineMath math="\nu" />,
+            }}
+          />
         </p>
         <ChiSquareChart />
       </div>
 
       {/* STUDENTOVO T-ROZDELENIE */}
       <h3 id="student-t" className="mb-3 mt-5">
-        Studentovo t-rozdelenie
+        {t("probabilityDistributions.continuous.studentT.title")}
       </h3>
       <p className="mb-4">
-        Studentovo t-rozdelenie sa používa na odhad strednej hodnoty populácie v
-        prípadoch, keď je veľkosť vzorky malá a smerodajná odchýlka populácie
-        nie je známa. Je podobné normálnemu rozdeleniu, ale má "ťažšie konce".
-        Veľkosť vzorky je zohľadnená parametrom{" "}
-        <strong>
-          <InlineMath math="n" /> (stupne voľnosti)
-        </strong>
-        .
+        <Trans
+          i18nKey="probabilityDistributions.continuous.studentT.description"
+          components={{ m1: <InlineMath math="n" /> }}
+        />
       </p>
 
       <div className="mb-4">
@@ -209,33 +192,33 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Overenie presnosti nového meracieho prístroja</h5>
+        <h5 className="mb-3">
+          {t("probabilityDistributions.continuous.studentT.exampleTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si, že testujete presnosť nového laserového skenera, ale
-          stihli ste vykonať len 5 kontrolných meraní (malá vzorka). Kvôli
-          malému počtu dát máme vyššiu neistotu, čo t-rozdelenie vyjadruje
-          širšími koncami krivky. Parameter{" "}
-          <strong>df (stupne voľnosti)</strong> priamo súvisí s počtom meraní.
-          Všimnite si, že so zvyšujúcim sa{" "}
-          <strong>
-            <InlineMath math="n" />
-          </strong>{" "}
-          sa t-rozdelenie postupne približuje k normálnemu rozdeleniu (čierna
-          prerušovaná čiara v grafe).
+          <Trans
+            i18nKey="probabilityDistributions.continuous.studentT.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="n" />,
+            }}
+          />
         </p>
         <StudentTChart />
       </div>
 
       {/* FISHEROVO F-ROZDELENIE */}
       <h3 id="fisher-f" className="mb-3 mt-5">
-        Fisherovo F-rozdelenie
+        {t("probabilityDistributions.continuous.fisherF.title")}
       </h3>
       <p className="mb-4">
-        Fisherovo rozdelenie popisuje variabilitu dvoch výberových rozptylov
-        odvodených z normálneho rozdelenia. Je kľúčové pre analýzu rozptylu
-        (ANOVA). Je definované dvoma parametrami stupňov voľnosti:{" "}
-        <InlineMath math="v_1" /> (pre čitateľa) a <InlineMath math="v_2" />{" "}
-        (pre menovateľa).
+        <Trans
+          i18nKey="probabilityDistributions.continuous.fisherF.description"
+          components={{
+            m1: <InlineMath math="v_1" />,
+            m2: <InlineMath math="v_2" />,
+          }}
+        />
       </p>
 
       <div className="mb-4">
@@ -247,23 +230,18 @@ function ContinuousDistributions() {
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
-          Porovnanie kvality ovzdušia v rôznych zónach mesta
+          {t("probabilityDistributions.continuous.fisherF.exampleTitle")}
         </h5>
         <p className="text-muted mb-4 small">
-          Predstavte si, že porovnávate priemerné koncentrácie prachu{" "}
-          <InlineMath math="PM_{10}" /> v priemyselnej, rezidenčnej a parkovej
-          zóne. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi týmito
-          zónami <strong>štatisticky významné</strong> vzhľadom na prirodzené
-          kolísanie hodnôt vnútri každej zóny. Sledujte, ako zmena kombinácie
-          stupňov voľnosti{" "}
-          <strong>
-            <InlineMath math="v_1" />
-          </strong>{" "}
-          a{" "}
-          <strong>
-            <InlineMath math="v_2" />
-          </strong>{" "}
-          mení asymetriu a "špičatosť" rozdelenia.
+          <Trans
+            i18nKey="probabilityDistributions.continuous.fisherF.exampleDesc"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="PM_{10}" />,
+              m2: <InlineMath math="v_1" />,
+              m3: <InlineMath math="v_2" />,
+            }}
+          />
         </p>
         <FisherFChart />
       </div>

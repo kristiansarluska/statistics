@@ -1,10 +1,12 @@
 // src/components/charts/probability-distributions/continuous/NormalChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import { normalPDF, normalCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
 function NormalChart() {
+  const { t } = useTranslation();
   const [mean, setMean] = useState(0);
   const [sd, setSd] = useState(1);
   const [hoverX, setHoverX] = useState(null);
@@ -12,13 +14,10 @@ function NormalChart() {
   const m = Number(mean);
   const s = Number(sd);
 
-  // Zafixujeme os X ("kamera" stojí na mieste)
-  // Rozsah -20 až 20 bezpečne pokryje posuny meanu od -10 do 10 a všetky šírky
   const minX = -15;
   const maxX = 15;
 
   const { dataPDF, dataCDF } = useMemo(() => {
-    // Zvýšime počet bodov na 500, aby sme nevynechali ostrý vrchol pri malej odchýlke
     const step = (maxX - minX) / 500;
     const pdf = [];
     const cdf = [];
@@ -30,7 +29,7 @@ function NormalChart() {
     }
 
     return { dataPDF: pdf, dataCDF: cdf };
-  }, [m, s, minX, maxX]); // odstránili sme minX a maxX zo závislostí pre slider, lebo sú to konštanty
+  }, [m, s, minX, maxX]);
 
   const maxY_PDF = useMemo(() => {
     if (!dataPDF || dataPDF.length === 0) return 1;
@@ -38,9 +37,22 @@ function NormalChart() {
     return (Math.floor(maxVal * 1.1 * 10) + 1) / 10;
   }, [dataPDF]);
 
+  const currentArea = useMemo(() => {
+    if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
+    let closest = dataCDF[0];
+    let minDiff = Math.abs(dataCDF[0].x - hoverX);
+    for (let i = 1; i < dataCDF.length; i++) {
+      const diff = Math.abs(dataCDF[i].x - hoverX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = dataCDF[i];
+      }
+    }
+    return closest.y;
+  }, [hoverX, dataCDF]);
+
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládacie prvky (Slidery) */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
         style={{ width: "100%", maxWidth: "600px" }}
@@ -50,7 +62,8 @@ function NormalChart() {
             htmlFor="meanRangeNormal"
             className="form-label w-100 text-center"
           >
-            Stredná hodnota (μ): <strong>{m.toFixed(1)}</strong>
+            {t("components.probabilityCharts.normal.mean")}{" "}
+            <span className="parameter-value">{m.toFixed(1)}</span>
           </label>
           <input
             type="range"
@@ -69,7 +82,8 @@ function NormalChart() {
             htmlFor="sdRangeNormal"
             className="form-label w-100 text-center"
           >
-            Smerodajná odchýlka (σ): <strong>{s.toFixed(1)}</strong>
+            {t("components.probabilityCharts.normal.sd")}{" "}
+            <span className="parameter-value">{s.toFixed(1)}</span>
           </label>
           <input
             type="range"
@@ -84,12 +98,12 @@ function NormalChart() {
         </div>
       </div>
 
-      {/* Prepojené grafy */}
       <div className="charts-wrapper w-100">
         <div>
           <StyledLineChart
             data={dataPDF}
-            title="Hustota pravdepodobnosti (PDF)"
+            areaValue={currentArea} //
+            title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
             yLabel="f(x)"
             lineClass="chart-line-primary"
@@ -105,7 +119,8 @@ function NormalChart() {
         <div>
           <StyledLineChart
             data={dataCDF}
-            title="Distribučná funkcia (CDF)"
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
             yLabel="F(x)"
             lineClass="chart-line-secondary"

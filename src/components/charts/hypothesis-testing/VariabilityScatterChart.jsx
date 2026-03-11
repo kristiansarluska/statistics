@@ -1,5 +1,6 @@
 // src/components/charts/hypothesis-testing/VariabilityScatterChart.jsx
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ScatterChart,
   Scatter,
@@ -19,14 +20,17 @@ const VariabilityScatterChart = ({
   hoveredObec,
   setHoveredObec,
 }) => {
-  // Find highlighted point for hover effect synchronized with map
+  const { t } = useTranslation();
+
   const highlightedPoint = useMemo(() => {
     return data.find((d) => d.kod === hoveredObec) || null;
   }, [data, hoveredObec]);
 
   return (
     <div className="chart-container">
-      <div className="chart-title">Variabilita v okrese</div>
+      <div className="chart-title">
+        {t("hypothesisTesting.tTestDashboard.charts.scatterTitle")}
+      </div>
 
       <div className="d-flex justify-content-center gap-4 mb-1">
         <span className="small d-flex align-items-center gap-1">
@@ -86,12 +90,11 @@ const VariabilityScatterChart = ({
           <XAxis
             type="number"
             dataKey="podiel_nad65"
-            name="Podiel nad 65"
             domain={["auto", "auto"]}
             className="chart-axis"
             tickFormatter={(v) => `${v.toFixed(1)} %`}
             label={{
-              value: "podiel obyv. nad 65 (%)",
+              value: t("hypothesisTesting.tTestDashboard.charts.scatterXAxis"),
               position: "insideBottom",
               offset: -15,
             }}
@@ -124,7 +127,10 @@ const VariabilityScatterChart = ({
                   >
                     <div className="fw-bold">{d.nazev}</div>
                     <div className="text-primary mt-1">
-                      Podiel nad 65: {d.podiel_nad65.toFixed(2)} %
+                      {t(
+                        "hypothesisTesting.tTestDashboard.charts.scatterTooltip",
+                        { value: d.podiel_nad65.toFixed(2) },
+                      )}
                     </div>
                   </div>
                 );

@@ -30,7 +30,8 @@ function StyledLineChart({
   maxX = null,
   showReferenceArea = false,
   lineType = "monotone",
-  hoverLineType = "segment", // "segment" (po krivku) alebo "full" (cez celý graf)
+  hoverLineType = "segment",
+  areaValue = null,
   children,
 }) {
   const [animated, setAnimated] = useState(true);
@@ -190,6 +191,8 @@ function StyledLineChart({
     return Math.max(0, Math.min(1, area));
   }, [data, hoverX, showReferenceArea, type]);
 
+  const finalAreaValue = areaValue !== null ? areaValue : calculatedArea;
+
   return (
     <div className="chart-container">
       {title && <div className="chart-title">{title}</div>}
@@ -250,7 +253,7 @@ function StyledLineChart({
                 xLabel={xLabel}
                 yLabel={displayYLabel}
                 overrideY={hoverY}
-                areaValue={calculatedArea}
+                areaValue={finalAreaValue}
               />
             }
             cursor={false}

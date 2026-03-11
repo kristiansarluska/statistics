@@ -1,5 +1,6 @@
 // src/components/charts/probability-distributions/continuous/ExponentialChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import {
   exponentialPDF,
@@ -8,10 +9,10 @@ import {
 import "../../../../styles/charts.css";
 
 function ExponentialChart() {
+  const { t } = useTranslation();
   const [lambda, setLambda] = useState(1);
   const [hoverX, setHoverX] = useState(null);
 
-  // Fixný rozsah pre os X, aby študenti videli reálnu zmenu tvaru krivky
   const minX = 0;
   const maxX = 10;
 
@@ -29,14 +30,25 @@ function ExponentialChart() {
   }, [lambda]);
 
   const maxY_PDF = useMemo(() => {
-    // Krivka vždy začína v bode y = lambda.
-    // Pridáme 10 % rezervu a zaokrúhlime na desatiny pre pekný vzhľad.
     return (Math.floor(lambda * 1.1 * 10) + 1) / 10;
   }, [lambda]);
 
+  const currentArea = useMemo(() => {
+    if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
+    let closest = dataCDF[0];
+    let minDiff = Math.abs(dataCDF[0].x - hoverX);
+    for (let i = 1; i < dataCDF.length; i++) {
+      const diff = Math.abs(dataCDF[i].x - hoverX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = dataCDF[i];
+      }
+    }
+    return closest.y;
+  }, [hoverX, dataCDF]);
+
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      {/* Ovládacie prvky (Slider) */}
       <div
         className="controls mb-4"
         style={{ width: "100%", maxWidth: "300px" }}
@@ -45,7 +57,8 @@ function ExponentialChart() {
           htmlFor="lambdaRangeExp"
           className="form-label w-100 text-center"
         >
-          Parameter (λ): <strong>{lambda.toFixed(1)}</strong>
+          {t("components.probabilityCharts.poisson.paramLambda")}{" "}
+          <span className="parameter-value">{lambda.toFixed(1)}</span>
         </label>
         <input
           type="range"
@@ -59,12 +72,12 @@ function ExponentialChart() {
         />
       </div>
 
-      {/* Prepojené grafy v spoločnom wrapperi */}
       <div className="charts-wrapper w-100">
         <div>
           <StyledLineChart
             data={dataPDF}
-            title="Hustota pravdepodobnosti (PDF)"
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
             yLabel="f(x)"
             lineClass="chart-line-primary"
@@ -80,7 +93,8 @@ function ExponentialChart() {
         <div>
           <StyledLineChart
             data={dataCDF}
-            title="Distribučná funkcia (CDF)"
+            areaValue={currentArea}
+            title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
             yLabel="F(x)"
             lineClass="chart-line-secondary"

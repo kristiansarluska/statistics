@@ -1,5 +1,6 @@
 // src/components/charts/helpers/DataPreviewTable.jsx
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Reusable paginated data preview table.
@@ -11,6 +12,7 @@ import React, { useState } from "react";
  * title       — optional string in the header
  */
 function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
   const visibleRows = expanded ? data : data.slice(0, previewRows);
@@ -58,7 +60,7 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
             className="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle"
             style={{ fontSize: "0.75rem" }}
           >
-            {data.length} záznamov
+            {t("components.dataPreviewTable.records", { count: data.length })}
           </span>
         </div>
 
@@ -68,7 +70,7 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
             type="button"
             className="btn btn-sm btn-outline-primary rounded-pill d-flex align-items-center gap-1"
             onClick={handleDownloadCSV}
-            title="Stiahnuť dáta ako CSV"
+            title={t("components.dataPreviewTable.downloadTitle")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +82,7 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
               <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
               <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
             </svg>
-            Stiahnuť CSV
+            {t("components.dataPreviewTable.downloadBtn")}
           </button>
 
           {hiddenCount > 0 && (
@@ -90,9 +92,11 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
               onClick={() => setExpanded((v) => !v)}
               style={{
                 minWidth: "145px",
-              }} /* Fixná šírka zabraňuje horizontálnemu posunu okolia */
+              }}
             >
-              {expanded ? "Zobraziť menej ▲" : "Zobraziť všetky ▼"}
+              {expanded
+                ? t("components.dataPreviewTable.showLess")
+                : t("components.dataPreviewTable.showAll")}
             </button>
           )}
         </div>
@@ -103,7 +107,7 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
         className="table-responsive rounded-3 border"
         style={{
           maxHeight: expanded ? "420px" : undefined,
-          overflowY: expanded ? "scroll" : "hidden", // Zmena z auto na scroll pre pevnejší layout v kombinácii so stable
+          overflowY: expanded ? "scroll" : "hidden",
           scrollbarGutter: "stable",
         }}
       >
@@ -141,7 +145,10 @@ function DataPreviewTable({ data = [], columns = [], previewRows = 5, title }) {
       {/* ── Collapsed hint ── */}
       {!expanded && hiddenCount > 0 && (
         <p className="text-muted small text-center mt-1 mb-0">
-          Zobrazených {previewRows} z {data.length} riadkov
+          {t("components.dataPreviewTable.showingRows", {
+            shown: previewRows,
+            total: data.length,
+          })}
         </p>
       )}
     </div>
