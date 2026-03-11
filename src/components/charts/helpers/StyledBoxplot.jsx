@@ -1,5 +1,6 @@
 // src/components/charts/helpers/StyledBoxplot.jsx
 import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ComposedChart,
   Bar,
@@ -165,6 +166,8 @@ const DefaultTooltip = ({
   categoryLabels = {},
   series = [],
 }) => {
+  const { t } = useTranslation();
+
   if (!active || !payload?.length) return null;
   const entry = payload[0]?.payload;
   if (!entry) return null;
@@ -186,25 +189,32 @@ const DefaultTooltip = ({
           >
             <div style={{ color, fontWeight: 700, marginBottom: 2 }}>{id}</div>
             <div>
-              Maximum: <strong>{fmt(s.max)}</strong>
+              {t("components.styledBoxplot.tooltip.max")}:{" "}
+              <strong>{fmt(s.max)}</strong>
             </div>
             <div className="text-muted" style={{ fontSize: "0.78rem" }}>
-              Horný fúz: {fmt(s.whiskerMax)}
+              {t("components.styledBoxplot.tooltip.upperWhisker")}:{" "}
+              {fmt(s.whiskerMax)}
             </div>
             <div style={{ color }}>
-              Q3: <strong>{fmt(s.q3)}</strong>
+              {t("components.styledBoxplot.tooltip.q3")}:{" "}
+              <strong>{fmt(s.q3)}</strong>
             </div>
             <div className="text-danger">
-              Medián: <strong>{fmt(s.median)}</strong>
+              {t("components.styledBoxplot.tooltip.median")}:{" "}
+              <strong>{fmt(s.median)}</strong>
             </div>
             <div style={{ color }}>
-              Q1: <strong>{fmt(s.q1)}</strong>
+              {t("components.styledBoxplot.tooltip.q1")}:{" "}
+              <strong>{fmt(s.q1)}</strong>
             </div>
             <div className="text-muted" style={{ fontSize: "0.78rem" }}>
-              Dolný fúz: {fmt(s.whiskerMin)}
+              {t("components.styledBoxplot.tooltip.lowerWhisker")}:{" "}
+              {fmt(s.whiskerMin)}
             </div>
             <div>
-              Minimum: <strong>{fmt(s.min)}</strong>
+              {t("components.styledBoxplot.tooltip.min")}:{" "}
+              <strong>{fmt(s.min)}</strong>
             </div>
           </div>
         );
@@ -218,15 +228,15 @@ const DefaultTooltip = ({
  * Reusable boxplot chart. Analogous to StyledBarChart / StyledLineChart.
  *
  * Props:
- *   chartData      — recharts-ready array; each entry has stacked bar keys
- *                    e.g. min_invisible_<id>, whisker_bottom_<id>, ...
- *                    and stats_<id> object for the tooltip
- *   scatterData    — outlier points: [{ label, outlierValue, seriesId, color }]
- *   series         — [{ id: "2012", color: "var(--bs-info)" }]
- *   categoryLabels — { low: "Nízka", ... }  – X axis tick formatter
- *   tooltipContent — optional custom tooltip component
- *   height         — CSS height string (default "clamp(260px, 50vw, 400px)")
- *   maxBarSize     — max bar width in px (default 60)
+ * chartData      — recharts-ready array; each entry has stacked bar keys
+ * e.g. min_invisible_<id>, whisker_bottom_<id>, ...
+ * and stats_<id> object for the tooltip
+ * scatterData    — outlier points: [{ label, outlierValue, seriesId, color }]
+ * series         — [{ id: "2012", color: "var(--bs-info)" }]
+ * categoryLabels — { low: "Nízka", ... }  – X axis tick formatter
+ * tooltipContent — optional custom tooltip component
+ * height         — CSS height string (default "clamp(260px, 50vw, 400px)")
+ * maxBarSize     — max bar width in px (default 60)
  */
 function StyledBoxplot({
   chartData = [],

@@ -1,6 +1,7 @@
 // src/pages/randomVariable/Distribution.jsx
 import React from "react";
 import { InlineMath } from "react-katex";
+import { useTranslation, Trans } from "react-i18next";
 import DiscreteDistributionChart from "../../components/charts/random-variable/distribution/DiscreteDistributionChart";
 import SimulatedPMFChart from "../../components/charts/random-variable/distribution/SimulatedPMFChart";
 import SimulatedPDFChart from "../../components/charts/random-variable/distribution/SimulatedPDFChart";
@@ -9,218 +10,177 @@ import QuantileFunctionInput from "../../components/charts/random-variable/distr
 import NormalChart from "../../components/charts/probability-distributions/continuous/NormalChart";
 
 const Distribution = () => {
+  const { t } = useTranslation();
+
   return (
     <section id="distribution">
-      <h2 className="mb-4">Rozdelenie náhodnej veličiny</h2>
+      <h2 className="mb-4">{t("randomVariable.distribution.title")}</h2>
 
-      <p className="mb-5">
-        Rozdelenie pravdepodobnosti nám hovorí, ako sú pravdepodobnosti
-        "rozdelené" medzi jednotlivé možné hodnoty náhodnej veličiny. Na jeho
-        komplexný matematický a vizuálny popis využívame tri základné funkcie:
-        pravdepodobnostnú (pre spojité veličiny hustotu), distribučnú a
-        kvantilovú funkciu.
-      </p>
+      <p className="mb-5">{t("randomVariable.distribution.description")}</p>
 
       <div id="pmf-pdf" className="mb-5">
         <h3 className="mb-3">
-          Pravdepodobnostná funkcia a hustota pravdepodobnosti
+          {t("randomVariable.distribution.pmfPdf.title")}
         </h3>
         <p className="mb-3">
-          Pri diskrétnych veličinách používame{" "}
-          <strong>pravdepodobnostnú funkciu (PMF)</strong>, ktorá priraďuje
-          priamu pravdepodobnosť výskytu konkrétnej hodnote (
-          <InlineMath math="P(X=x)" />
-          ).
-          <br />
-          <br />
-          Pri spojitých veličinách definujeme{" "}
-          <strong>
-            hustotu pravdepodobnosti (<InlineMath math="f(x)" />)
-          </strong>
-          . Keďže spojitá veličina má nekonečne veľa hodnôt, pravdepodobnosť
-          jedného konkrétneho bodu je nulová. Namiesto toho určujeme
-          pravdepodobnosť, že hodnota padne do určitého intervalu — táto
-          pravdepodobnosť je reprezentovaná{" "}
-          <strong>plochou pod krivkou hustoty</strong> na danom úseku.
+          <Trans
+            i18nKey="randomVariable.distribution.pmfPdf.desc1"
+            components={{
+              bold: <strong />,
+              m1: <InlineMath math="P(X=x)" />,
+              br: <br />,
+              m2: <InlineMath math="f(x)" />,
+            }}
+          />
         </p>
 
         <div className="alert alert-info border-info-subtle shadow-sm mb-5">
           <h5 className="alert-heading fs-6 fw-bold">
-            Teória vs. Empíria (Zákon veľkých čísel)
+            {t("randomVariable.distribution.pmfPdf.alertTitle")}
           </h5>
           <p className="mb-0 text-muted small">
-            Prepojenie medzi teoretickými matematickými modelmi a reálnymi
-            dátami popisuje <strong>Zákon veľkých čísel</strong> (základný
-            limitný teorém). Ten hovorí, že s rastúcim počtom nezávislých
-            opakovaní náhodného pokusu sa relatívna početnosť výskytu javu
-            (empirické rozdelenie) limitne blíži k jeho teoretickej
-            pravdepodobnosti. V nasledujúcich dvoch simuláciách môžete tento
-            fundamentálny jav pozorovať priamo.
+            <Trans
+              i18nKey="randomVariable.distribution.pmfPdf.alertDesc"
+              components={{ bold: <strong /> }}
+            />
           </p>
         </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Pravdepodobnostná funkcia:</span>{" "}
-            Počet viditeľných GNSS satelitov
+            <Trans
+              i18nKey="randomVariable.distribution.pmfPdf.chart1Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            V mestskom prostredí (tzv. "urban canyons") je počet viditeľných
-            satelitov náhodná premenná – v tomto prípade je pravdepodobnosť
-            viditeľnosti každého z nich 45 %. Graf nižšie zobrazuje{" "}
-            <strong>teoretické pravdepodobnosti</strong> pre jednotlivé počty
-            satelitov (od 0 po 12). Pomocou interaktívnej simulácie generujeme
-            umelé merania. Všimnite si spomínaný zákon v praxi: pri nízkom počte
-            meraní sú empirické stĺpce rozkolísané a nemusia zodpovedať
-            teoretickému predpokladu. Akonáhle však necháte simuláciu bežať a
-            počet meraní narastie do tisícov, empirické relatívne početnosti sa
-            stabilizujú a takmer dokonale splynú s teoretickým modelom.
+            <Trans
+              i18nKey="randomVariable.distribution.pmfPdf.chart1Desc"
+              components={{ bold: <strong /> }}
+            />
           </p>
           <SimulatedPMFChart />
         </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Hustota pravdepodobnosti: </span>
-            Simulácia odchýlky GNSS merania
+            <Trans
+              i18nKey="randomVariable.distribution.pmfPdf.chart2Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            Tento graf demonštruje hustotu pravdepodobnosti pre normálne
-            rozdelenie chýb GNSS prijímača. Modrá krivka reprezentuje dokonalý{" "}
-            <strong>teoretický model</strong> so strednou hodnotou{" "}
-            <strong>0 m</strong> a smerodajnou odchýlkou <strong>2.5 m</strong>.
-            Sivý histogram pod ňou zobrazuje hustotu nasimulovaných
-            (empirických) dát. Opäť tu platí zákon veľkých čísel – pri spustení
-            generovania hodnôt vizuálne sledujte, ako sa s rastúcim počtom
-            iterácií "hrboľatý" empirický histogram postupne vyhladzuje a jeho
-            tvar konverguje presne k teoretickej Gaussovej krivke.
+            <Trans
+              i18nKey="randomVariable.distribution.pmfPdf.chart2Desc"
+              components={{ bold: <strong /> }}
+            />
           </p>
           <SimulatedPDFChart />
         </div>
       </div>
 
       <div id="cdf" className="mb-5">
-        <h3 className="mb-3">Distribučná funkcia</h3>
+        <h3 className="mb-3">{t("randomVariable.distribution.cdf.title")}</h3>
         <p className="mb-4">
-          Distribučná funkcia (<InlineMath math="F(x)" />) plní kumulatívnu
-          úlohu. Udáva celkovú pravdepodobnosť, že náhodná veličina nadobudne
-          hodnotu menšiu alebo rovnú konkrétnemu číslu <InlineMath math="x" /> (
-          <InlineMath math="F(x) = P(X \le x)" />
-          ). Je to neklesajúca funkcia, ktorá začína v nule (0 %) a postupne
-          rastie alebo skokovito stúpa k hodnote 1 (100 %). Zatiaľ čo hustota
-          ukazuje okamžitý stav, distribučná funkcia ponúka súhrnný obraz.
+          <Trans
+            i18nKey="randomVariable.distribution.cdf.desc"
+            components={{
+              m1: <InlineMath math="F(x)" />,
+              m2: <InlineMath math="x" />,
+              m3: <InlineMath math="F(x) = P(X \le x)" />,
+            }}
+          />
         </p>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Diskrétny prípad:</span> Dostupnosť
-            družicových dát
+            <Trans
+              i18nKey="randomVariable.distribution.cdf.chart1Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            Predstavte si, že mesačne očakávate max. 5 preletov družice. Náhodná
-            veličina <strong>X</strong> predstavuje počet snímok, ktoré sú
-            reálne použiteľné (bez oblačnosti).
-            <br />
-            <br />
-            Hodnoty v políčkach nižšie nepredstavujú fixné percentá, ale{" "}
-            <strong>
-              početnosť výskytu (napr. počet mesiacov z historických záznamov)
-            </strong>
-            , kedy nastal daný scenár. Graf všetky hodnoty sčíta a automaticky
-            ich premení na pravdepodobnosť (súčet vždy 100 %).
-            <br />
-            <br />
-            <strong>Vyskúšajte si to:</strong> Do políčka pre{" "}
-            <strong>x = 0</strong> zadajte vysoké číslo (napr. 80). Nasimulujete
-            tak oblasť s častou oblačnosťou. Všimnite si, ako distribučná
-            funkcia (schodíky) okamžite strmo narastie, čo znamená vysoké riziko
-            nedostatku dát.
+            <Trans
+              i18nKey="randomVariable.distribution.cdf.chart1Desc"
+              components={{
+                bold: <strong />,
+                br: <br />,
+              }}
+            />
           </p>
           <DiscreteDistributionChart />
         </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Spojitý prípad:</span> Distribúcia
-            chýb GNSS merania
+            <Trans
+              i18nKey="randomVariable.distribution.cdf.chart2Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            Na rozdiel od diskrétnych veličín je distribučná funkcia spojitej
-            premennej reprezentovaná <strong>hladkou krivkou</strong> bez
-            skokov. Tento model je kľúčový pri analýze presnosti meracích
-            prístrojov v teréne.
-            <br />
-            <br />
-            Tvar tejto krivky určujú v prípade normálneho rozdelenia dva typy
-            chýb: <strong>systematická chyba (parameter &mu;)</strong>, ktorá
-            predstavuje konštantný posun merania (napr. o 1 meter kvôli zlej
-            kalibrácii), a <strong>náhodná chyba (parameter &sigma;)</strong>,
-            ktorá vyjadruje samotnú presnosť prístroja.
-            <br />
-            <br />
-            Distribučná funkcia v každom bode udáva pravdepodobnosť, že chyba
-            merania neprekročí zvolenú hodnotu. Všimnite si, že v bode{" "}
-            <strong>&mu;</strong> (stred rozdelenia) nadobúda funkcia vždy
-            hodnotu <strong>0.5</strong>. To znamená, že je presne 50 % šanca,
-            že nameraná odchýlka bude menšia alebo rovná systémovému posunu
-            prístroja.
+            <Trans
+              i18nKey="randomVariable.distribution.cdf.chart2Desc"
+              components={{
+                bold: <strong />,
+                br: <br />,
+              }}
+            />
           </p>
           <NormalChart />
         </div>
       </div>
 
       <div id="quantile" className="mb-5">
-        <h3 className="mb-3">Kvantilová funkcia</h3>
+        <h3 className="mb-3">
+          {t("randomVariable.distribution.quantile.title")}
+        </h3>
         <p className="mb-4">
-          Kvantilová funkcia je inverznou (opačnou) k distribučnej funkcii.
-          Namiesto otázky "Aká je pravdepodobnosť, že nameriame hodnotu pod{" "}
-          <InlineMath math="x" />
-          ?" ju otáčame: "Aká je hraničná hodnota (<InlineMath math="x_p" />
-          ), pod ktorou sa nachádza presne určené percento dát (
-          <InlineMath math="p" />
-          )?" Najznámejším kvantilom je <strong>medián</strong> (
-          <InlineMath math="p = 0.5" />
-          ), ďalšími dôležitými míľnikmi sú kvartily a decily.
+          <Trans
+            i18nKey="randomVariable.distribution.quantile.desc"
+            components={{
+              m1: <InlineMath math="x" />,
+              m2: <InlineMath math="x_p" />,
+              m3: <InlineMath math="p" />,
+              bold: <strong />,
+              m4: <InlineMath math="p = 0.5" />,
+            }}
+          />
         </p>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Príklad z praxe:</span> Podiel
-            obyvateľstva v hlavnom meste
+            <Trans
+              i18nKey="randomVariable.distribution.quantile.chart1Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            V nasledujúcom grafe vidíte empirickú kvantilovú funkciu vytvorenú z
-            reálnych dát o tom, koľko percent obyvateľstva jednotlivých
-            európskych krajín žije v ich hlavnom meste (rok 2024). Na osi{" "}
-            <strong>x</strong> volíme percentil (<InlineMath math="p" /> v %) a
-            na osi
-            <strong>y</strong> odčítavame príslušný kvantil{" "}
-            <InlineMath math="x_p" /> (samotný podiel obyvateľstva v %).
-            <br />
-            <br />
-            <strong>Ako to čítať?</strong> Posuňte slider na pravdepodobnosť{" "}
-            <strong>50 % (medián)</strong>. Kvantil, ktorý získate, predstavuje
-            hraničnú hodnotu — presne polovica európskych krajín má podiel
-            obyvateľov hlavného mesta menší (alebo rovný) tomuto číslu. Prípadne
-            do poľa zadajte konkrétny podiel (napr. 25 %) a zistite, koľko
-            percent krajín sa pod túto hranicu zmestí.
+            <Trans
+              i18nKey="randomVariable.distribution.quantile.chart1Desc"
+              components={{
+                bold: <strong />,
+                m1: <InlineMath math="p" />,
+                m2: <InlineMath math="x_p" />,
+                br: <br />,
+              }}
+            />
           </p>
           <QuantileFunctionSlider />
         </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            <span className="text-primary">Empirická kvantilová funkcia:</span>{" "}
-            Výška stromov v rezervácii
+            <Trans
+              i18nKey="randomVariable.distribution.quantile.chart2Title"
+              components={{ color: <span className="text-primary" /> }}
+            />
           </h5>
           <p className="text-muted mb-4 small">
-            Predvolené dáta reprezentujú zoradené výšky stromov (v metroch)
-            namerané v malej prírodnej rezervácii (napr. z dát leteckého
-            laserového skenovania - LiDAR). Vyskúšajte si zobraziť{" "}
-            <strong>medián</strong> (50 % stromov je nižších alebo rovnako
-            vysokých) alebo <strong>decily</strong> (napr. 9. decil ukáže
-            hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta
-            môžete interaktívne mazať a dopĺňať vlastnými hodnotami.
+            <Trans
+              i18nKey="randomVariable.distribution.quantile.chart2Desc"
+              components={{ bold: <strong /> }}
+            />
           </p>
           <QuantileFunctionInput />
         </div>

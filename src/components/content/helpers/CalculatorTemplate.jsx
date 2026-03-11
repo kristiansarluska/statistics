@@ -1,5 +1,6 @@
 // src/components/content/helpers/CalculatorTemplate.jsx
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import DataInputControl from "./DataInputControl";
 import "katex/dist/katex.min.css";
@@ -13,11 +14,12 @@ function CalculatorTemplate({
   min,
   max,
   step = "any",
-  placeholder = "Hodnota",
+  placeholder,
   sortData = false,
   renderExtra,
-  bottomContent, // Pridaný nový prop pre obsah pod kalkulačkou
+  bottomContent,
 }) {
+  const { t } = useTranslation();
   const initData = sortData
     ? [...defaultData].sort((a, b) => a - b)
     : defaultData;
@@ -89,7 +91,7 @@ function CalculatorTemplate({
               className="mb-0 fw-bold text-muted text-start"
               style={{ fontSize: "0.9rem" }}
             >
-              Postup výpočtu:
+              {t("components.calculatorTemplate.calcSteps")}
             </p>
 
             {mathContent.isExpandable && (
@@ -99,7 +101,9 @@ function CalculatorTemplate({
                 style={{ fontSize: "0.75rem" }}
                 onClick={() => setIsMathExpanded(!isMathExpanded)}
               >
-                {isMathExpanded ? "Skrátiť zápis" : "Rozbaliť celý zápis"}
+                {isMathExpanded
+                  ? t("components.calculatorTemplate.collapse")
+                  : t("components.calculatorTemplate.expand")}
               </button>
             )}
           </div>
@@ -130,7 +134,6 @@ function CalculatorTemplate({
         </div>
       )}
 
-      {/* Dynamický obsah pod kalkulačkou, ktorému preposielame aktuálne dáta */}
       {bottomContent && n > 0 && (
         <div className="w-100 mt-3">{bottomContent(measurements)}</div>
       )}

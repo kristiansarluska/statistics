@@ -1,23 +1,26 @@
 // src/components/content/characteristics/MeanDifferenceCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 const DEFAULT_DATA = [25.4, 32.1, 18.9, 41.5];
 
 function MeanDifferenceCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Výpočet strednej diferencie: Rozdiely v znečistení ovzdušia"
-      inputLabel="Namerané koncentrácie PM10 (µg/m³):"
+      title={t("components.characteristics.meanDifference.title")}
+      inputLabel={t("components.characteristics.meanDifference.inputLabel")}
       defaultData={DEFAULT_DATA}
-      placeholder="Nová hodnota"
+      placeholder={t("components.characteristics.meanDifference.placeholder")}
       min="0"
       getMathContent={(measurements, isExpanded) => {
         const n = measurements.length;
 
         if (n < 2) {
           return {
-            blockMath: `\\text{Pre výpočet sú potrebné aspoň 2 hodnoty.}`,
+            blockMath: `\\text{${t("components.characteristics.meanDifference.errorMin2")}}`,
             inlineMath: `\\Delta = `,
             resultText: `N/A`,
           };
@@ -49,7 +52,7 @@ function MeanDifferenceCalc() {
         }
 
         return {
-          formulaMath: `\\Delta = \\frac{1}{k} \\sum_{i<j} |x_i - x_j| \\quad \\text{kde } k = \\binom{n}{2}`,
+          formulaMath: `\\Delta = \\frac{1}{k} \\sum_{i<j} |x_i - x_j| \\quad \\text{${t("components.characteristics.meanDifference.where")} } k = \\binom{n}{2}`,
           blockMath: `\\begin{gathered} 
             k = \\binom{${n}}{2} = \\frac{${n}(${n}-1)}{2} = ${k} \\\\ 
             \\Delta = \\frac{${devString}}{${k}} = ${delta.toFixed(3)} 

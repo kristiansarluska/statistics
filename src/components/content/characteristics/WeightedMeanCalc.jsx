@@ -1,5 +1,6 @@
 // src/components/content/characteristics/WeightedMeanCalc.jsx
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import DataInputControl from "../helpers/DataInputControl";
 import "katex/dist/katex.min.css";
@@ -11,6 +12,7 @@ const DEFAULT_DATA = [
 ];
 
 function WeightedMeanCalc() {
+  const { t } = useTranslation();
   const [measurements, setMeasurements] = useState(DEFAULT_DATA);
 
   const isDefault =
@@ -53,12 +55,12 @@ function WeightedMeanCalc() {
       style={{ maxWidth: "800px" }}
     >
       <h6 className="mb-4 text-center">
-        Vážený priemer nadmorskej výšky (podľa presnosti)
+        {t("components.characteristics.weighted.title")}
       </h6>
 
       <div className="w-100 mb-4">
         <h6 className="mb-3" style={{ fontSize: "0.95rem" }}>
-          Namerané hodnoty a ich váhy:
+          {t("components.characteristics.weighted.inputValuesLabel")}
         </h6>
 
         <DataInputControl
@@ -67,14 +69,20 @@ function WeightedMeanCalc() {
           onRemove={handleRemove}
           onReset={handleReset}
           isDefault={isDefault}
-          placeholder="Hodnota (m)"
+          placeholder={t("components.characteristics.weighted.placeholder")}
           isWeighted={true}
-          weightPlaceholder="Váha"
+          weightPlaceholder={t(
+            "components.characteristics.weighted.weightPlaceholder",
+          )}
           editable={true}
           onEdit={handleEdit}
           formatItem={(item) => (
             <>
-              {item.x} m <span className="opacity-75 ms-1">(v: {item.w})</span>
+              {item.x} m{" "}
+              <span className="opacity-75 ms-1">
+                ({t("components.characteristics.weighted.weightLabel")} {item.w}
+                )
+              </span>
             </>
           )}
         />
@@ -86,16 +94,14 @@ function WeightedMeanCalc() {
             className="mb-2 fw-bold text-muted"
             style={{ fontSize: "0.9rem", textAlign: "left" }}
           >
-            Postup výpočtu:
+            {t("components.calculatorTemplate.calcSteps")}
           </p>
           <div className="mb-2" style={{ fontSize: "1.1rem" }}>
-            {/* Pridaný abstraktný vzorec pre vážený priemer */}
             <div style={{ paddingBottom: "10px" }}>
               <BlockMath
                 math={`\\bar{x}_w = \\frac{ \\sum_{i=1}^{k} w_i x_i }{ \\sum_{i=1}^{k} w_i }`}
               />
             </div>
-            {/* Dosadené čísla pod sebou */}
             <div style={{ paddingBottom: "15px" }}>
               <BlockMath
                 math={`\\bar{x}_w = \\frac{ ${numString} }{ ${denString} }`}

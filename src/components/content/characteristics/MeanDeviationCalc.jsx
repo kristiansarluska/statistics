@@ -1,16 +1,19 @@
 // src/components/content/characteristics/MeanDeviationCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 const DEFAULT_DATA = [50.12, 50.15, 50.08, 50.11, 50.14];
 
 function MeanDeviationCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Výpočet priemernej odchýlky: Presnosť opakovaného merania dĺžky"
-      inputLabel="Namerané dĺžky (m):"
+      title={t("components.characteristics.meanDeviation.title")}
+      inputLabel={t("components.characteristics.meanDeviation.inputLabel")}
       defaultData={DEFAULT_DATA}
-      placeholder="Nová dĺžka"
+      placeholder={t("components.characteristics.meanDeviation.placeholder")}
       getMathContent={(measurements, isExpanded) => {
         const n = measurements.length;
         const sum = measurements.reduce((acc, val) => acc + val, 0);

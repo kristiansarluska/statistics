@@ -1,8 +1,10 @@
 // src/components/content/characteristics/StandardDeviationCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function StandardDeviationCalc() {
+  const { t } = useTranslation();
   const defaultTemperatures = [22.1, 23.5, 21.8, 24.2, 22.9];
 
   const getMathContent = (data, isExpanded) => {
@@ -11,7 +13,7 @@ function StandardDeviationCalc() {
       return {
         blockMath: "s = ?",
         inlineMath: "s = ",
-        resultText: "Nedostatok dát (n > 1)",
+        resultText: t("components.characteristics.standardDeviation.errorMin2"),
         isExpandable: false,
       };
     }
@@ -47,14 +49,16 @@ function StandardDeviationCalc() {
 
   return (
     <CalculatorTemplate
-      title="Výpočet smerodajnej odchýlky (Teploty senzorov)"
-      inputLabel="Namerané teploty (°C):"
+      title={t("components.characteristics.standardDeviation.title")}
+      inputLabel={t("components.characteristics.standardDeviation.inputLabel")}
       defaultData={defaultTemperatures}
       getMathContent={getMathContent}
       min={-50}
       max={60}
       step="0.1"
-      placeholder="Teplota"
+      placeholder={t(
+        "components.characteristics.standardDeviation.placeholder",
+      )}
     />
   );
 }

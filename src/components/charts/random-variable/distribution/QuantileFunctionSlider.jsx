@@ -1,13 +1,17 @@
-// src/components/charts/random-variable/quantile-function/QuantileFunctionSlider.jsx
+// src/components/charts/random-variable/distribution/QuantileFunctionSlider.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 import { ReferenceLine } from "recharts";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import BackgroundArea from "../../helpers/BackgroundArea";
+import DataPreviewTable from "../../helpers/DataPreviewTable";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
 const QuantileFunctionSlider = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
+  const [rawRows, setRawRows] = useState([]);
   const [error, setError] = useState(null);
 
   const [activeMode, setActiveMode] = useState("slider");
@@ -16,14 +20,15 @@ const QuantileFunctionSlider = () => {
   const [inputX, debouncedInputX, setInputX] = useDebouncedValue("", 0);
   const [hoverX, setHoverX] = useState(null);
 
-  useEffect(() => {
-    const csvUrl = `${import.meta.env.BASE_URL}data/CapitalPopulationShare.csv`;
+  const csvUrl = `${import.meta.env.BASE_URL}data/CapitalPopulationShare.csv`;
 
+  useEffect(() => {
     Papa.parse(csvUrl, {
       download: true,
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
+        // Extrakcia číselných hodnôt pre výpočty grafu
         const values = results.data
           .map((row) => parseFloat(row["2024"]))
           .filter((val) => !isNaN(val))
@@ -31,20 +36,42 @@ const QuantileFunctionSlider = () => {
 
         if (values.length > 0) {
           setData(values);
+          // Uložíme si riadky, pričom ich zoradíme podľa hodnoty podielu (vzostupne)
+          const sortedRows = [...results.data]
+            .filter((row) => !isNaN(parseFloat(row["2024"])))
+            .sort((a, b) => parseFloat(a["2024"]) - parseFloat(b["2024"]));
+          setRawRows(sortedRows);
         } else {
           setError(
-            "CSV sa načítalo, ale nenašli sa v ňom platné číselné dáta pre stĺpec '2024'.",
+            t("components.randomVariableCharts.quantileSlider.errorNoData"),
           );
         }
       },
       error: (err) => {
         console.error("PapaParse chyba:", err);
-        setError("Nepodarilo sa stiahnuť alebo spracovať CSV súbor.");
+        setError(
+          t("components.randomVariableCharts.quantileSlider.errorFetch"),
+        );
       },
     });
-  }, []);
+  }, [t, csvUrl]);
 
-  // Opravená zjednotená logika z predchádzajúcich úprav pre bezproblémový hover
+  // Definícia stĺpcov pre tabuľku - upravený kľúč na Country_Name
+  const tableColumns = useMemo(
+    () => [
+      {
+        key: "Country_Name",
+        label: t("components.randomVariableCharts.quantileSlider.countryCol"),
+      },
+      {
+        key: "2024",
+        label: t("components.randomVariableCharts.quantileSlider.shareCol"),
+        render: (val) => <strong>{parseFloat(val).toFixed(2)} %</strong>,
+      },
+    ],
+    [t],
+  );
+
   const { chartData, n, minX, maxX } = useMemo(() => {
     const length = data.length;
     if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
@@ -117,13 +144,19 @@ const QuantileFunctionSlider = () => {
         return {
           p: null,
           x: null,
-          msg: `Zadaná hodnota (${val}) je nižšia ako minimum v dátach (${minX.toFixed(2)}).`,
+          msg: t("components.randomVariableCharts.quantileSlider.errorMin", {
+            val,
+            min: minX.toFixed(2),
+          }),
         };
       if (val > maxX)
         return {
           p: null,
           x: null,
-          msg: `Zadaná hodnota (${val}) prekračuje maximum v dátach (${maxX.toFixed(2)}).`,
+          msg: t("components.randomVariableCharts.quantileSlider.errorMax", {
+            val,
+            max: maxX.toFixed(2),
+          }),
         };
 
       let count = 0;
@@ -134,7 +167,7 @@ const QuantileFunctionSlider = () => {
       const p = count / n;
       return { p, x: val, msg: null };
     }
-  }, [n, activeMode, sliderP, debouncedInputX, data, minX, maxX]);
+  }, [n, activeMode, sliderP, debouncedInputX, data, minX, maxX, t]);
 
   const currentSliderValue =
     activeMode === "slider"
@@ -149,11 +182,14 @@ const QuantileFunctionSlider = () => {
 
   if (error) return <div className="alert alert-danger p-4 mb-4">{error}</div>;
   if (n === 0)
-    return <div className="p-4 text-center">Načítavam dáta z CSV...</div>;
+    return (
+      <div className="p-4 text-center">
+        {t("components.randomVariableCharts.quantileSlider.loading")}
+      </div>
+    );
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
-      {/* Ovládacie prvky pre slider a input (pôvodný flex layout) */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-5 w-100"
         style={{ maxWidth: "800px" }}
@@ -163,8 +199,7 @@ const QuantileFunctionSlider = () => {
             className="form-label fw-bold mb-2 text-center"
             style={{ fontSize: "0.9rem" }}
           >
-            Zobraziť podľa kvantilu (p):
-            {/* Pridaná fixná šírka, aby slider neskákal */}
+            {t("components.randomVariableCharts.quantileSlider.labelP")}
             <span
               className="text-primary d-inline-block text-start ms-1"
               style={{ width: "45px" }}
@@ -193,30 +228,22 @@ const QuantileFunctionSlider = () => {
             className="form-label fw-bold mb-2 text-center"
             style={{ fontSize: "0.9rem" }}
           >
-            Alebo zadaj konkrétnu hodnotu (x):
+            {t("components.randomVariableCharts.quantileSlider.labelX")}
           </label>
           <input
             type="number"
             className="form-control text-center shadow-sm"
             value={inputX}
             onChange={(e) => {
-              let val = e.target.value;
-              if (
-                inputX === "" &&
-                target?.x != null &&
-                e.nativeEvent.data == null &&
-                val !== ""
-              ) {
-                const direction = parseFloat(val) > 0 ? 1 : -1;
-                val = String((target.x + direction).toFixed(2));
-              }
-              setInputX(val);
+              setInputX(e.target.value);
               setActiveMode("input");
             }}
             placeholder={
               target?.x != null
                 ? target.x.toFixed(2).replace(".", ",")
-                : "napr. 25,5"
+                : t(
+                    "components.randomVariableCharts.quantileSlider.placeholder",
+                  )
             }
             step="any"
             style={{ maxWidth: "150px" }}
@@ -224,7 +251,6 @@ const QuantileFunctionSlider = () => {
         </div>
       </div>
 
-      {/* Zobrazenie výsledku s fixnou šírkou pre čísla */}
       <div
         className="w-100 mb-4 text-center"
         style={{ maxWidth: "800px", minHeight: "40px" }}
@@ -239,15 +265,19 @@ const QuantileFunctionSlider = () => {
             className="px-4 py-2 rounded-pill bg-body-tertiary border shadow-sm d-inline-block text-nowrap"
             style={{ fontSize: "0.95rem" }}
           >
-            <span className="text-muted me-2">Výsledok:</span>
-            Pravdepodobnosti
+            <span className="text-muted me-2">
+              {t("components.randomVariableCharts.quantileSlider.resultLabel")}
+            </span>
+            {t("components.randomVariableCharts.quantileSlider.resultProb")}
             <strong
               className="text-primary d-inline-block text-start ms-1 text-nowrap"
               style={{ width: "85px" }}
             >
               p = {(target.p * 100).toFixed(1)} %
             </strong>{" "}
-            zodpovedá hodnota
+            {t(
+              "components.randomVariableCharts.quantileSlider.resultCorresponds",
+            )}
             <strong
               className="text-primary d-inline-block text-start ms-1 text-nowrap"
               style={{ width: "100px" }}
@@ -259,12 +289,11 @@ const QuantileFunctionSlider = () => {
       </div>
 
       <h6 className="mb-3 text-center">
-        Kvantilová funkcia: Podiel populácie hlavného mesta
+        {t("components.randomVariableCharts.quantileSlider.title")}
       </h6>
 
-      {/* Graf */}
       <div
-        className="charts-wrapper w-100 mx-auto"
+        className="charts-wrapper w-100 mx-auto mb-5"
         style={{ maxWidth: "800px" }}
       >
         <StyledLineChart
@@ -295,7 +324,6 @@ const QuantileFunctionSlider = () => {
             fillOpacity={0.05}
             strokeWidth={1}
           />
-
           {target && !target.msg && (
             <>
               <ReferenceLine
@@ -313,6 +341,19 @@ const QuantileFunctionSlider = () => {
             </>
           )}
         </StyledLineChart>
+      </div>
+
+      <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
+        <DataPreviewTable
+          data={rawRows}
+          columns={tableColumns}
+          title={t(
+            "components.randomVariableCharts.quantileSlider.dataTableTitle",
+          )}
+          previewRows={5}
+          downloadUrl={csvUrl}
+          downloadFilename="CapitalPopulationShare.csv"
+        />
       </div>
     </div>
   );

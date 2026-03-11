@@ -1,8 +1,10 @@
 // src/components/content/characteristics/CoefficientOfVariationCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function CoefficientOfVariationCalc() {
+  const { t } = useTranslation();
   const defaultPrecipitation = [450, 320, 610, 200, 550];
 
   const getMathContent = (data, isExpanded) => {
@@ -11,7 +13,9 @@ function CoefficientOfVariationCalc() {
       return {
         blockMath: "v_k = ?",
         inlineMath: "v_k = ",
-        resultText: "Nedostatok dát (n > 1)",
+        resultText: t(
+          "components.characteristics.coefficientOfVariation.errorMin2",
+        ),
         isExpandable: false,
       };
     }
@@ -21,9 +25,13 @@ function CoefficientOfVariationCalc() {
 
     if (mean === 0) {
       return {
-        blockMath: "\\bar{x} = 0 \\implies \\text{Delenie nulou}",
+        blockMath: t(
+          "components.characteristics.coefficientOfVariation.errorDivZeroMath",
+        ),
         inlineMath: "v_k = ",
-        resultText: "Nedefinované (priemer je 0)",
+        resultText: t(
+          "components.characteristics.coefficientOfVariation.errorDivZero",
+        ),
         isExpandable: false,
       };
     }
@@ -61,14 +69,18 @@ function CoefficientOfVariationCalc() {
 
   return (
     <CalculatorTemplate
-      title="Výpočet variačného koeficientu (Zrážkové úhrny)"
-      inputLabel="Ročný úhrn zrážok (mm):"
+      title={t("components.characteristics.coefficientOfVariation.title")}
+      inputLabel={t(
+        "components.characteristics.coefficientOfVariation.inputLabel",
+      )}
       defaultData={defaultPrecipitation}
       getMathContent={getMathContent}
       min={0}
       max={3000}
       step="1"
-      placeholder="Úhrn (mm)"
+      placeholder={t(
+        "components.characteristics.coefficientOfVariation.placeholder",
+      )}
     />
   );
 }

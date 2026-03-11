@@ -1,19 +1,18 @@
 // src/components/charts/random-variable/distribution/QuantileFunctionInput.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { ReferenceLine } from "recharts";
 import StyledLineChart from "../../helpers/StyledLineChart";
-import ResetButton from "../../helpers/ResetButton";
-import DataInputControl from "../../../content/helpers/DataInputControl"; // Dôležitý import
+import DataInputControl from "../../../content/helpers/DataInputControl";
 
-// Geoinformatics-themed data: Tree heights (in meters) measured in a nature reserve
 const DEFAULT_DATA = [
   12.5, 14.1, 14.8, 15.2, 16.0, 16.5, 17.3, 18.1, 18.5, 19.2, 20.4, 21.0, 21.5,
   22.8, 23.4, 24.1, 25.6, 26.2, 27.5, 29.8,
 ];
 
 const QuantileFunctionInput = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState(DEFAULT_DATA);
-  const [inputValue, setInputValue] = useState("");
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
 
@@ -37,7 +36,6 @@ const QuantileFunctionInput = () => {
 
     const fullPoints =
       length > 0 ? [{ x: 0, y: sorted[0], index: -1 }, ...points] : [];
-
     return { sortedData: sorted, chartData: fullPoints, n: length };
   }, [data]);
 
@@ -66,7 +64,6 @@ const QuantileFunctionInput = () => {
       if (isIntegerK && k > 0 && k < n) {
         const rawValue = (sortedData[k - 1] + sortedData[k]) / 2;
         value = Math.round(rawValue * 1000) / 1000;
-
         activeIndices.push(k - 1, k);
         injectedValues.push({ p, value, insertAfterIdx: k - 1 });
       } else {
@@ -74,7 +71,6 @@ const QuantileFunctionInput = () => {
         value = sortedData[idx];
         activeIndices.push(idx);
       }
-
       lines.push({ x: p, y: value });
     });
 
@@ -101,7 +97,7 @@ const QuantileFunctionInput = () => {
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
       <h6 className="mb-4 text-center">
-        Interaktívna kvantilová funkcia z vlastných dát (výška stromov v m)
+        {t("components.randomVariableCharts.quantileInput.title")}
       </h6>
 
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
@@ -123,13 +119,7 @@ const QuantileFunctionInput = () => {
                   className={`btn btn-sm px-3 btn-outline-primary ${isActive ? "active" : ""} ${roundingClass}`}
                   onClick={() => setActiveQuantile(qType)}
                 >
-                  {qType === "none"
-                    ? "Bez zvýraznenia"
-                    : qType === "median"
-                      ? "Medián"
-                      : qType === "quartiles"
-                        ? "Kvartily"
-                        : "Decily"}
+                  {t(`components.randomVariableCharts.quantileInput.${qType}`)}
                 </button>
               );
             },
@@ -153,7 +143,7 @@ const QuantileFunctionInput = () => {
 
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
-          Vstupné dáta (zoradené):
+          {t("components.randomVariableCharts.quantileInput.inputDataLabel")}
         </h6>
         <DataInputControl
           data={sortedData}
@@ -163,7 +153,9 @@ const QuantileFunctionInput = () => {
           }}
           onReset={handleReset}
           isDefault={isDefault}
-          placeholder="Nová hodnota"
+          placeholder={t(
+            "components.randomVariableCharts.quantileInput.placeholder",
+          )}
           itemClassName={(_, idx) =>
             quantileData.activeIndices.includes(idx)
               ? "btn-success"
@@ -178,7 +170,10 @@ const QuantileFunctionInput = () => {
                 key={`inj-${i}`}
                 className="badge rounded-pill border border-success bg-success-subtle text-success"
                 style={{ fontSize: "0.8rem", userSelect: "none" }}
-                title={`Vypočítaný kvantil (${q.p})`}
+                title={t(
+                  "components.randomVariableCharts.quantileInput.calculatedTitle",
+                  { p: q.p },
+                )}
               >
                 ={q.value.toLocaleString("sk-SK", { maximumFractionDigits: 2 })}
               </span>

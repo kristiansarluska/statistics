@@ -1,8 +1,10 @@
 // src/components/charts/random-variable/characteristics/SkewnessChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 
 function SkewnessChart() {
+  const { t } = useTranslation();
   const [skewValue, setSkewValue] = useState(0);
   const [hoverX, setHoverX] = useState(null);
 
@@ -14,10 +16,8 @@ function SkewnessChart() {
     const rawData = [];
 
     for (let x = 0; x <= 100; x += 2) {
-      // Ošetrenie presnosti floatu v JS
       const t = Math.max(0, Math.min(1, x / 100));
 
-      // Výpočet Y s ochranou proti NaN
       let y = Math.pow(t, alpha - 1) * Math.pow(1 - t, beta - 1);
       if (isNaN(y) || !isFinite(y)) y = 0;
 
@@ -31,20 +31,21 @@ function SkewnessChart() {
     }));
   }, [skewValue]);
 
-  let skewText = "Symetrické rozdelenie";
+  let skewText = t("components.randomVariableCharts.skewness.symmetric");
   let skewColor = "text-success";
   if (skewValue > 0.2) {
-    skewText = "Kladná šikmosť";
+    skewText = t("components.randomVariableCharts.skewness.positive");
     skewColor = "text-primary";
   } else if (skewValue < -0.2) {
-    skewText = "Záporná šikmosť";
+    skewText = t("components.randomVariableCharts.skewness.negative");
     skewColor = "text-danger";
   }
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center w-100 mt-2">
       <h6 className="mb-4 text-center">
-        Tvar rozdelenia: <span className={skewColor}>{skewText}</span>
+        {t("components.randomVariableCharts.skewness.title")}{" "}
+        <span className={skewColor}>{skewText}</span>
       </h6>
 
       <div
@@ -56,7 +57,7 @@ function SkewnessChart() {
             htmlFor="skewSlider"
             className="form-label w-100 text-center mb-2"
           >
-            Hodnota šikmosti:{" "}
+            {t("components.randomVariableCharts.skewness.sliderLabel")}{" "}
             <strong>{skewValue > 0 ? `+${skewValue}` : skewValue}</strong>
           </label>
           <input
@@ -73,8 +74,12 @@ function SkewnessChart() {
             className="d-flex justify-content-between text-muted small mt-1"
             style={{ fontSize: "0.8rem" }}
           >
-            <span>Záporná</span>
-            <span>Kladná</span>
+            <span>
+              {t("components.randomVariableCharts.skewness.sliderMin")}
+            </span>
+            <span>
+              {t("components.randomVariableCharts.skewness.sliderMax")}
+            </span>
           </div>
         </div>
       </div>
@@ -82,15 +87,15 @@ function SkewnessChart() {
       <div className="charts-wrapper w-100">
         <StyledLineChart
           data={chartData}
-          xLabel="Vek stromov (roky)"
-          yLabel="Početnosť (%)"
+          xLabel={t("components.randomVariableCharts.skewness.xLabel")}
+          yLabel={t("components.randomVariableCharts.skewness.yLabel")}
           lineClass="chart-line-primary"
           hoverX={hoverX}
           setHoverX={setHoverX}
           type="line"
           showReferenceArea={false}
-          minX={0} // FIXED: Pevné uzamknutie začiatku osi X
-          maxX={100} // FIXED: Pevné uzamknutie konca osi X
+          minX={0}
+          maxX={100}
         />
       </div>
     </div>

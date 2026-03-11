@@ -1,5 +1,6 @@
 // src/components/charts/random-variable/distribution/SimulatedPMFChart.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Bar, Legend } from "recharts";
 import StyledBarChart from "../../helpers/StyledBarChart";
 import ResetButton from "../../helpers/ResetButton";
@@ -12,11 +13,12 @@ const combinations = (n, k) => {
 };
 
 function SimulatedPMFChart() {
+  const { t } = useTranslation();
   const [measurements, setMeasurements] = useState([]);
   const [hoverX, setHoverX] = useState(null);
 
-  const n = 12; // celkový počet satelitov
-  const p = 0.45; // pravdepodobnosť fixu
+  const n = 12;
+  const p = 0.45;
 
   const addMeasurements = (count) => {
     const newMeasurements = [];
@@ -31,6 +33,13 @@ function SimulatedPMFChart() {
   };
 
   const handleReset = () => setMeasurements([]);
+
+  const theoreticalKey = t(
+    "components.randomVariableCharts.simulatedPMF.theoretical",
+  );
+  const empiricalKey = t(
+    "components.randomVariableCharts.simulatedPMF.empirical",
+  );
 
   const { chartData, customMaxY } = useMemo(() => {
     const total = measurements.length;
@@ -49,19 +58,18 @@ function SimulatedPMFChart() {
 
       data.push({
         x: String(i),
-        Teoretická: Number(prob.toFixed(4)),
-        Empirická: Number(empiricalProb.toFixed(4)),
+        [theoreticalKey]: Number(prob.toFixed(4)),
+        [empiricalKey]: Number(empiricalProb.toFixed(4)),
       });
     }
 
-    // Zvýšime maximum pre os Y o 10%, aby sa legenda na vrchu neprekrývala so stĺpcami
     return { chartData: data, customMaxY: maxY * 1.1 };
-  }, [measurements, n, p]);
+  }, [measurements, n, p, theoreticalKey, empiricalKey]);
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
       <h6 className="mb-4 text-center">
-        Simulácia počtu zachytených satelitov (Binomické rozdelenie)
+        {t("components.randomVariableCharts.simulatedPMF.title")}
       </h6>
 
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3 w-100">
@@ -92,7 +100,9 @@ function SimulatedPMFChart() {
           className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill shadow-sm text-nowrap"
           style={{ fontSize: "0.9rem" }}
         >
-          Merania: {measurements.length}
+          {t("components.randomVariableCharts.measurements", {
+            count: measurements.length,
+          })}
         </div>
 
         <ResetButton
@@ -101,30 +111,28 @@ function SimulatedPMFChart() {
         />
       </div>
 
-      {/* Odstránená kolízna trieda charts-wrapper */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledBarChart
           data={chartData}
-          xLabel="Počet satelitov (k)"
-          yLabel="P(X=k)"
+          xLabel={t("components.randomVariableCharts.simulatedPMF.xLabel")}
+          yLabel={t("components.randomVariableCharts.simulatedPMF.yLabel")}
           customMaxY={customMaxY}
           hoverX={hoverX}
           setHoverX={setHoverX}
         >
-          {/* Pridaný wrapperStyle pre oddelenie legendy od grafu */}
           <Legend
             verticalAlign="top"
             wrapperStyle={{ paddingBottom: "20px" }}
             height={40}
           />
           <Bar
-            dataKey="Teoretická"
+            dataKey={theoreticalKey}
             fill="var(--bs-primary)"
             radius={[4, 4, 0, 0]}
             animationDuration={500}
           />
           <Bar
-            dataKey="Empirická"
+            dataKey={empiricalKey}
             fill="var(--bs-gray-400)"
             radius={[4, 4, 0, 0]}
             animationDuration={500}

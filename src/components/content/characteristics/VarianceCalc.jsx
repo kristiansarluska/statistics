@@ -1,22 +1,25 @@
 // src/components/content/characteristics/VarianceCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 const DEFAULT_DATA = [12, 15, 18, 14, 21];
 
 function VarianceCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Výpočet rozptylu: Variabilita hustoty LiDARových dát"
-      inputLabel="Nameraná hustota bodov (body/m²):"
+      title={t("components.characteristics.variance.title")}
+      inputLabel={t("components.characteristics.variance.inputLabel")}
       defaultData={DEFAULT_DATA}
-      placeholder="Nová hodnota"
+      placeholder={t("components.characteristics.variance.placeholder")}
       getMathContent={(measurements, isExpanded) => {
         const n = measurements.length;
 
         if (n < 2) {
           return {
-            blockMath: `\\text{Pre výpočet výberového rozptylu sú potrebné aspoň 2 hodnoty.}`,
+            blockMath: `\\text{${t("components.characteristics.variance.errorMin2")}}`,
             inlineMath: `s^2 = `,
             resultText: `N/A`,
           };
@@ -49,7 +52,7 @@ function VarianceCalc() {
         return {
           formulaMath: `s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2`,
           blockMath: `\\begin{gathered} 
-            \\bar{x} = ${meanStr} \\text{ bodov/m}^2 \\\\ 
+            \\bar{x} = ${meanStr} \\\\ 
             s^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
           \\end{gathered}`,
           inlineMath: `s^2 = `,

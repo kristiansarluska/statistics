@@ -1,22 +1,20 @@
 // src/components/charts/random-variable/characteristics/FiveNumberSummaryBoxplot.jsx
 import React, { useState, useMemo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import StyledBoxplot from "../../helpers/StyledBoxplot";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
-import { formatNumberSmart } from "../../helpers/CustomTooltip";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
 const categoryOrder = ["low", "medium", "high"];
-const categoryLabels = { low: "Nízka", medium: "Stredná", high: "Vysoká" };
 const yearColors = (id) =>
   id === "2012" ? "var(--bs-info)" : "var(--bs-primary)";
 
-const translate = {
+const translateInput = {
   nizka: "low",
   nizky: "low",
   stredni: "medium",
   vysoka: "high",
 };
-const normalise = (v) => translate[v] ?? v;
+const normalise = (v) => translateInput[v] ?? v;
 
 const categoryTextClass = {
   low: "text-danger",
@@ -24,17 +22,6 @@ const categoryTextClass = {
   high: "text-success",
 };
 
-const groupOptions = [
-  { value: "geo", label: "GEO oblasť" },
-  { value: "qol", label: "Kvalita života" },
-];
-const yearOptions = [
-  { value: "both", label: "2012 / 2016" },
-  { value: "2012", label: "2012" },
-  { value: "2016", label: "2016" },
-];
-
-// ─── Stats helpers ────────────────────────────────────────────────────────────
 const calculateStats = (values) => {
   if (!values?.length) return null;
   const sorted = [...values].sort((a, b) => a - b);
@@ -78,14 +65,50 @@ const buildEntry = (stats, id) =>
         [`whisker_top_${id}`]: stats.whiskerMax - stats.q3,
       };
 
-// ─── Main component ───────────────────────────────────────────────────────────
 function FiveNumberSummaryBoxplot() {
+  const { t } = useTranslation();
   const [groupBy, setGroupBy] = useState("geo");
   const [year, setYear] = useState("both");
-  const [rawData, setRawData] = useState([]); // parsed structured rows
-  const [rawRows, setRawRows] = useState([]); // all original CSV columns
-  const [csvHeaders, setCsvHeaders] = useState([]); // original header names
+  const [rawData, setRawData] = useState([]);
+  const [rawRows, setRawRows] = useState([]);
+  const [csvHeaders, setCsvHeaders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Dynamic translated labels
+  const categoryLabels = useMemo(
+    () => ({
+      low: t("components.randomVariableCharts.boxplot.categories.low"),
+      medium: t("components.randomVariableCharts.boxplot.categories.medium"),
+      high: t("components.randomVariableCharts.boxplot.categories.high"),
+    }),
+    [t],
+  );
+
+  const groupOptions = useMemo(
+    () => [
+      {
+        value: "geo",
+        label: t("components.randomVariableCharts.boxplot.geoRegion"),
+      },
+      {
+        value: "qol",
+        label: t("components.randomVariableCharts.boxplot.qualityOfLife"),
+      },
+    ],
+    [t],
+  );
+
+  const yearOptions = useMemo(
+    () => [
+      {
+        value: "both",
+        label: t("components.randomVariableCharts.boxplot.bothYears"),
+      },
+      { value: "2012", label: "2012" },
+      { value: "2016", label: "2016" },
+    ],
+    [t],
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,14 +133,12 @@ function FiveNumberSummaryBoxplot() {
           const cols = line.split(";");
           if (cols.length <= maxIdx) return;
 
-          // Full row object for DataPreviewTable (all columns)
           const fullRow = {};
           headers.forEach((h, i) => {
             fullRow[h] = cols[i]?.trim() ?? "";
           });
           allRows.push(fullRow);
 
-          // Structured row for chart logic
           const ai2012 = parseFloat(cols[ai2012Idx].replace(",", "."));
           const ai2016 = parseFloat(cols[ai2016Idx].replace(",", "."));
           if (isNaN(ai2012) || isNaN(ai2016)) return;
@@ -172,14 +193,12 @@ function FiveNumberSummaryBoxplot() {
     return { chartData: cData, scatterData: sData };
   }, [rawData, groupBy, activeSeries]);
 
-  // Column definitions for DataPreviewTable — all CSV headers
   const tableColumns = useMemo(
     () =>
       csvHeaders.map((h) => {
-        // Apply label formatting for known columns
         const knownLabels = {
-          GEO_oblast: "GEO oblasť",
-          QoL: "Kvalita života",
+          GEO_oblast: t("components.randomVariableCharts.boxplot.geoRegion"),
+          QoL: t("components.randomVariableCharts.boxplot.qualityOfLife"),
           AI_2012: "AI 2012",
           AI_2016: "AI 2016",
         };
@@ -201,22 +220,27 @@ function FiveNumberSummaryBoxplot() {
             : undefined,
         };
       }),
-    [csvHeaders],
+    [csvHeaders, categoryLabels, t],
   );
 
   if (isLoading)
-    return <div className="p-4 text-center text-muted">Načítavam dáta…</div>;
+    return (
+      <div className="p-4 text-center text-muted">
+        {t("components.randomVariableCharts.boxplot.loading")}
+      </div>
+    );
 
   return (
     <div className="p-3 p-md-4 rounded-3 shadow-sm border w-100">
-      {/* ── Controls ── */}
       <div className="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-3">
         <h6 className="mb-0 text-nowrap">
-          Päťčíselná charakteristika (Boxplot)
+          {t("components.randomVariableCharts.boxplot.title")}
         </h6>
         <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2 gap-sm-3 flex-wrap">
           <div className="d-flex align-items-center gap-2">
-            <span className="small text-muted text-nowrap">Zoskupiť:</span>
+            <span className="small text-muted text-nowrap">
+              {t("components.randomVariableCharts.boxplot.groupLabel")}
+            </span>
             <div className="btn-group shadow-sm" role="group">
               {groupOptions.map(({ value, label }, i, arr) => {
                 const roundClass =
@@ -240,7 +264,9 @@ function FiveNumberSummaryBoxplot() {
           </div>
 
           <div className="d-flex align-items-center gap-2">
-            <span className="small text-muted text-nowrap">Rok:</span>
+            <span className="small text-muted text-nowrap">
+              {t("components.randomVariableCharts.boxplot.yearLabel")}
+            </span>
             <div className="d-flex gap-1" role="group">
               {yearOptions.map(({ value, label }) => (
                 <button
@@ -257,7 +283,6 @@ function FiveNumberSummaryBoxplot() {
         </div>
       </div>
 
-      {/* ── Legend ── */}
       <div className="d-flex gap-4 mb-3 ps-1 flex-wrap">
         {activeSeries.map(({ id, color }) => (
           <span key={id} className="small d-flex align-items-center gap-1">
@@ -283,11 +308,10 @@ function FiveNumberSummaryBoxplot() {
               marginTop: 1,
             }}
           />
-          Medián
+          {t("components.randomVariableCharts.boxplot.legendMedian")}
         </span>
       </div>
 
-      {/* ── Chart ── */}
       <StyledBoxplot
         chartData={chartData}
         scatterData={scatterData}
@@ -296,16 +320,16 @@ function FiveNumberSummaryBoxplot() {
       />
 
       <p className="text-muted small mt-2 mb-0 text-center">
-        * Červená čiara = Medián · Krabica = stredných 50 % dát · Body = odľahlé
-        hodnoty · Pre presné hodnoty prejdite myšou na graf
+        {t("components.randomVariableCharts.boxplot.legendNote")}
       </p>
 
-      {/* ── Data preview table (all CSV columns) ── */}
       <DataPreviewTable
         data={rawRows}
         columns={tableColumns}
-        title="Vstupné dáta"
+        title={t("components.randomVariableCharts.boxplot.dataTableTitle")}
         previewRows={5}
+        downloadUrl={`${import.meta.env.BASE_URL}data/QoL.csv`}
+        downloadFilename="QoL.csv"
       />
     </div>
   );

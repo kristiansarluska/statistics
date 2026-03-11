@@ -1,19 +1,18 @@
 // src/components/content/characteristics/ModeCalc.jsx
 import React, { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Bar, Cell } from "recharts";
 import StyledBarChart from "../../charts/helpers/StyledBarChart";
 import DataInputControl from "../../content/helpers/DataInputControl";
 
-// Geoinformatics-themed data: Number of floors in urban buildings
 const DEFAULT_DATA = [
   1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 7, 7, 7, 7, 7, 7,
   8, 8, 12,
 ];
 
 const ModeCalc = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState(DEFAULT_DATA);
-  const [inputValue, setInputValue] = useState("");
-  const [hoveredRemoveIdx, setHoveredRemoveIdx] = useState(null);
 
   const isDefault =
     data.length === DEFAULT_DATA.length &&
@@ -23,20 +22,6 @@ const ModeCalc = () => {
     setData([...DEFAULT_DATA]);
   };
 
-  const handleAddNumber = (e) => {
-    e.preventDefault();
-    const num = parseInt(inputValue, 10);
-    if (!isNaN(num) && num > 0) {
-      setData([...data, num]);
-      setInputValue("");
-    }
-  };
-
-  const handleRemoveNumber = (indexToRemove) => {
-    setData(data.filter((_, idx) => idx !== indexToRemove));
-  };
-
-  // Výpočet frekvencií a identifikácia modusu (alebo modusov, ak je ich viac)
   const { chartData, modes, sortedData } = useMemo(() => {
     const counts = {};
     data.forEach((val) => {
@@ -64,16 +49,15 @@ const ModeCalc = () => {
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
       <h5 className="mb-4 text-center">
-        Interaktívny výpočet modusu: Počet poschodí budov
+        {t("components.characteristics.mode.title")}
       </h5>
 
-      {/* Box so zobrazením aktuálneho modusu umiestnený nad grafom */}
       <div
         className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100 mb-4"
         style={{ maxWidth: "800px" }}
       >
         <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
-          Aktuálny modus:
+          {t("components.characteristics.mode.currentMode")}
         </p>
         <div className="fs-5 mt-2">
           {modes.length > 0 ? (
@@ -84,24 +68,25 @@ const ModeCalc = () => {
               >
                 {m}{" "}
                 {m === 1
-                  ? "poschodie"
+                  ? t("components.characteristics.mode.floor_1")
                   : m >= 2 && m <= 4
-                    ? "poschodia"
-                    : "poschodí"}
+                    ? t("components.characteristics.mode.floors_2_4")
+                    : t("components.characteristics.mode.floors_many")}
               </span>
             ))
           ) : (
-            <span className="text-muted text-body">Žiadne dáta</span>
+            <span className="text-muted text-body">
+              {t("components.characteristics.mode.noData")}
+            </span>
           )}
         </div>
       </div>
 
-      {/* Graf zohľadňujúci podmienené formátovanie farieb stĺpcov */}
       <div className="w-100 mb-4" style={{ maxWidth: "800px" }}>
         <StyledBarChart
           data={chartData}
-          xLabel="Počet poschodí"
-          yLabel="Počet budov (frekvencia)"
+          xLabel={t("components.characteristics.mode.chartXLabel")}
+          yLabel={t("components.characteristics.mode.chartYLabel")}
         >
           <Bar
             dataKey="y"
@@ -123,22 +108,20 @@ const ModeCalc = () => {
         </StyledBarChart>
       </div>
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
-        {/* Nahradiť starý formulár a tlačidlá v ModeCalc.jsx */}
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
-          Namerané dáta (zoradené podľa poschodí):
+          {t("components.characteristics.mode.inputLabel")}
         </h6>
         <DataInputControl
           data={sortedData}
           onAdd={(val) => setData([...data, val])}
           onRemove={(idxToRemove) => {
-            // Odstraňujeme nad už zoradenými dátami (sortedData) pre konzistentnosť indexov
             setData(sortedData.filter((_, idx) => idx !== idxToRemove));
           }}
           onReset={handleReset}
           isDefault={isDefault}
           min="1"
           step="1"
-          placeholder="Nová budova"
+          placeholder={t("components.characteristics.mode.placeholder")}
           itemClassName={(val) =>
             modes.includes(val) ? "btn-info" : "btn-outline-secondary text-body"
           }

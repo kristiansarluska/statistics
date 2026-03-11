@@ -1,8 +1,10 @@
 // src/components/content/characteristics/InterquartileRangeCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function InterquartileRangeCalc() {
+  const { t } = useTranslation();
   const defaultPrices = [12, 15, 14, 18, 145, 16, 17];
 
   const getMathContent = (data, isExpanded) => {
@@ -11,7 +13,7 @@ function InterquartileRangeCalc() {
       return {
         blockMath: "IQR = ?",
         inlineMath: "IQR = ",
-        resultText: "Nedostatok dát (n ≥ 4)",
+        resultText: t("components.characteristics.iqr.errorMin4"),
         isExpandable: false,
       };
     }
@@ -40,7 +42,7 @@ function InterquartileRangeCalc() {
     if (isExpanded) {
       const sortedStr = sorted.join(", ");
       formulaExpanded = `
-        \\text{Zoradené dáta: } & ${sortedStr} \\\\[1ex]
+        \\text{${t("components.characteristics.iqr.sortedData")}} & ${sortedStr} \\\\[1ex]
         Q_1 (25\\%) &= ${q1Str} \\\\[1ex]
         Q_3 (75\\%) &= ${q3Str} \\\\[2ex]
       `;
@@ -60,14 +62,14 @@ function InterquartileRangeCalc() {
 
   return (
     <CalculatorTemplate
-      title="Výpočet medzikvartilového rozpätia (Ceny pozemkov)"
-      inputLabel="Jednotkové ceny (€/m²):"
+      title={t("components.characteristics.iqr.title")}
+      inputLabel={t("components.characteristics.iqr.inputLabel")}
       defaultData={defaultPrices}
       getMathContent={getMathContent}
       min={0}
       max={1000}
       step="1"
-      placeholder="Cena"
+      placeholder={t("components.characteristics.iqr.placeholder")}
       sortData={true}
     />
   );

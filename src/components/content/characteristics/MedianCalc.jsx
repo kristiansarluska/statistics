@@ -1,18 +1,21 @@
 // src/components/content/characteristics/MedianCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 const DEFAULT_DATA = [12, 15, 15, 18, 21, 24, 72];
 
 function MedianCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Výpočet mediánu: Výška budov v mestskej zástavbe"
-      inputLabel="Namerané výšky budov (m) – zoradené:"
+      title={t("components.characteristics.median.title")}
+      inputLabel={t("components.characteristics.median.inputLabel")}
       defaultData={DEFAULT_DATA}
       sortData={true}
       min="0"
-      placeholder="Nová budova"
+      placeholder={t("components.characteristics.median.placeholder")}
       getMathContent={(measurements) => {
         const n = measurements.length;
         const sortedStr = measurements.join(", ");
@@ -26,7 +29,7 @@ function MedianCalc() {
           const m = Math.floor(n / 2);
           median = measurements[m];
           highlightIndices = [m];
-          formulaMath = `\\tilde{x} = x_{\\frac{n+1}{2}} \\quad \\text{(pre nepárny počet dát)}`;
+          formulaMath = `\\tilde{x} = x_{\\frac{n+1}{2}} \\quad \\text{${t("components.characteristics.median.oddCount")}}`;
           blockMath += `\\tilde{x} = x_{${m + 1}} = ${median} \\end{gathered}`;
         } else {
           const m1 = n / 2 - 1;
@@ -34,7 +37,7 @@ function MedianCalc() {
           median = (measurements[m1] + measurements[m2]) / 2;
           highlightIndices = [m1, m2];
           injectedMedian = { value: median, insertAfterIdx: m1 };
-          formulaMath = `\\tilde{x} = \\frac{x_{\\frac{n}{2}} + x_{\\frac{n}{2}+1}}{2} \\quad \\text{(pre párny počet dát)}`;
+          formulaMath = `\\tilde{x} = \\frac{x_{\\frac{n}{2}} + x_{\\frac{n}{2}+1}}{2} \\quad \\text{${t("components.characteristics.median.evenCount")}}`;
           blockMath += `\\tilde{x} = \\frac{${measurements[m1]} + ${measurements[m2]}}{2} = ${median} \\end{gathered}`;
         }
 
@@ -54,7 +57,7 @@ function MedianCalc() {
               key={`inj-${idx}`}
               className="badge rounded-pill border border-info bg-info-subtle text-info"
               style={{ fontSize: "0.85rem", userSelect: "none", zIndex: 1 }}
-              title="Vypočítaný medián"
+              title={t("components.characteristics.median.tooltip")}
             >
               =
               {mathContent.injectedMedian.value.toLocaleString("sk-SK", {
@@ -65,19 +68,19 @@ function MedianCalc() {
         }
         return null;
       }}
-      // Informačný panel s priemerom pre porovnanie
       bottomContent={(measurements) => {
         if (measurements.length === 0) return null;
         const sum = measurements.reduce((a, b) => a + b, 0);
         const mean = sum / measurements.length;
         return (
           <div className="alert alert-secondary text-center shadow-sm py-2 mb-0 border-secondary-subtle">
-            <span className="fw-bold">Pre porovnanie:</span> Aritmetický priemer
-            týchto dát je{" "}
+            <span className="fw-bold">
+              {t("components.characteristics.median.comparisonTitle")}
+            </span>{" "}
+            {t("components.characteristics.median.comparisonMean")}{" "}
             <strong className="text-primary">{mean.toFixed(2)} m</strong>.
             <div className="small mt-1 text-muted">
-              Vyskúšajte pridať extrémnu hodnotu a sledujte, ako masívne sa
-              zmení priemer v porovnaní s mediánom.
+              {t("components.characteristics.median.comparisonDesc")}
             </div>
           </div>
         );

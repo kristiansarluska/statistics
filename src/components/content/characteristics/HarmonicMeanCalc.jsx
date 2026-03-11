@@ -1,12 +1,15 @@
 // src/components/content/characteristics/HarmonicMeanCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 function HarmonicMeanCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Priemerná rýchlosť letu na zhodných úsekoch"
-      inputLabel="Rýchlosti dronu (m/s):"
+      title={t("components.characteristics.harmonic.title")}
+      inputLabel={t("components.characteristics.harmonic.inputLabel")}
       defaultData={[15.2, 12.5, 18.0]}
       onValidate={(val) => !isNaN(val) && val > 0}
       getMathContent={(data) => {

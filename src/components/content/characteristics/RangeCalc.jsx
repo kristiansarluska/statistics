@@ -1,17 +1,20 @@
 // src/components/content/characteristics/RangeCalc.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
 const DEFAULT_DATA = [695.57, 702.16, 715.84, 728.3, 740.21];
 
 function RangeCalc() {
+  const { t } = useTranslation();
+
   return (
     <CalculatorTemplate
-      title="Výpočet variačného rozpätia: Výškový profil lyžiarskeho svahu"
-      inputLabel="Namerané nadmorské výšky (m n. m.) – Zoradené:"
+      title={t("components.characteristics.range.title")}
+      inputLabel={t("components.characteristics.range.inputLabel")}
       defaultData={DEFAULT_DATA}
       sortData={true}
-      placeholder="Nová výška"
+      placeholder={t("components.characteristics.range.placeholder")}
       getMathContent={(measurements) => {
         const n = measurements.length;
         const minVal = measurements[0];

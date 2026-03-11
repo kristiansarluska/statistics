@@ -1,5 +1,6 @@
 // src/components/content/helpers/DataInputControl.jsx
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import ResetButton from "../../charts/helpers/ResetButton";
 
 function DataInputControl({
@@ -8,23 +9,24 @@ function DataInputControl({
   onRemove,
   onReset,
   isDefault,
-  placeholder = "Hodnota",
-  step = "any",
+  placeholder,
+  isWeighted = false,
+  weightPlaceholder,
+  formatItem = (val) => val,
+  editable = false,
+  onEdit,
+  // Added missing props that were causing ReferenceErrors
   min,
   max,
+  step = "any",
   itemClassName,
   renderExtra,
-  isWeighted = false,
-  weightPlaceholder = "Váha",
-  formatItem = (val) => val,
-  editable = false, // Zapnutie pokročilej editácie (overlay s úpravou/zmazaním)
-  onEdit, // Funkcia (idx, newValue) => void
 }) {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
   const [weightValue, setWeightValue] = useState(isWeighted ? "1" : "");
   const [hoveredRemoveIdx, setHoveredRemoveIdx] = useState(null);
 
-  // Stavy pre režim editácie
   const [activeActionIdx, setActiveActionIdx] = useState(null);
   const [editingIdx, setEditingIdx] = useState(null);
   const [editX, setEditX] = useState("");
@@ -98,6 +100,12 @@ function DataInputControl({
     }
   };
 
+  // Logic for translated defaults if props are not provided
+  const finalPlaceholder =
+    placeholder || t("components.dataInputControl.value");
+  const finalWeightPlaceholder =
+    weightPlaceholder || t("components.dataInputControl.weight");
+
   return (
     <div className="w-100">
       <div
@@ -149,6 +157,7 @@ function DataInputControl({
                         fontSize: "0.85rem",
                         height: "28px",
                       }}
+                      placeholder={finalPlaceholder}
                       value={editX}
                       onChange={(e) => setEditX(e.target.value)}
                       required
@@ -171,6 +180,7 @@ function DataInputControl({
                             fontSize: "0.85rem",
                             height: "28px",
                           }}
+                          placeholder={finalWeightPlaceholder}
                           value={editW}
                           onChange={(e) => setEditW(e.target.value)}
                           required
@@ -181,7 +191,7 @@ function DataInputControl({
                       type="submit"
                       className="btn btn-sm btn-success rounded-circle p-0 ms-1 d-flex align-items-center justify-content-center"
                       style={{ width: "24px", height: "24px" }}
-                      title="Uložiť"
+                      title={t("components.dataInputControl.save")}
                     >
                       <span style={{ fontSize: "0.75rem" }}>✓</span>
                     </button>
@@ -190,7 +200,7 @@ function DataInputControl({
                       className="btn btn-sm btn-secondary rounded-circle p-0 d-flex align-items-center justify-content-center"
                       style={{ width: "24px", height: "24px" }}
                       onClick={() => setEditingIdx(null)}
-                      title="Zrušiť"
+                      title={t("components.dataInputControl.cancel")}
                     >
                       <span style={{ fontSize: "0.75rem" }}>✕</span>
                     </button>
@@ -204,7 +214,7 @@ function DataInputControl({
                         fontSize: "0.85rem",
                         transition: "all 0.2s",
                         textDecoration: isHovered ? "line-through" : "none",
-                        opacity: isActiveAction ? 0 : 1, // Skryje základné tlačidlo pod overlayom
+                        opacity: isActiveAction ? 0 : 1,
                       }}
                       onClick={() => {
                         if (!editable) onRemove(idx);
@@ -213,9 +223,9 @@ function DataInputControl({
                       }}
                       title={
                         isTouchDevice && editable
-                          ? "Kliknutím zobrazíš možnosti"
+                          ? t("components.dataInputControl.clickToOptions")
                           : !editable
-                            ? "Kliknutím odstrániš"
+                            ? t("components.dataInputControl.clickToRemove")
                             : ""
                       }
                     >
@@ -236,7 +246,7 @@ function DataInputControl({
                             if (isWeighted) setEditW(String(item.w));
                             setActiveActionIdx(null);
                           }}
-                          title="Editovať"
+                          title={t("components.dataInputControl.edit")}
                         >
                           ✎
                         </button>
@@ -247,7 +257,7 @@ function DataInputControl({
                             onRemove(idx);
                             setActiveActionIdx(null);
                           }}
-                          title="Zmazať"
+                          title={t("components.dataInputControl.delete")}
                         >
                           ✕
                         </button>
@@ -261,7 +271,9 @@ function DataInputControl({
           );
         })}
         {data.length === 0 && (
-          <span className="text-muted small">Žiadne dáta...</span>
+          <span className="text-muted small">
+            {t("components.dataInputControl.noData")}
+          </span>
         )}
       </div>
 
@@ -276,7 +288,8 @@ function DataInputControl({
           max={max}
           className="form-control"
           style={{ width: "135px" }}
-          placeholder={placeholder}
+          // Fixed: use calculated finalPlaceholder
+          placeholder={finalPlaceholder}
           required
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -288,9 +301,10 @@ function DataInputControl({
             min="0.1"
             className="form-control"
             style={{ width: "90px" }}
-            placeholder={weightPlaceholder}
+            // Fixed: use calculated finalWeightPlaceholder
+            placeholder={finalWeightPlaceholder}
             required
-            title="Váha (musí byť > 0)"
+            title={t("components.dataInputControl.weightTitle")}
             value={weightValue}
             onChange={(e) => setWeightValue(e.target.value)}
           />
@@ -300,7 +314,7 @@ function DataInputControl({
           className="btn btn-info fw-bold rounded-pill text-nowrap px-3 shadow-sm"
           style={{ color: "var(--bs-body-bg)" }}
         >
-          Pridať
+          {t("components.dataInputControl.add")}
         </button>
         <ResetButton onClick={onReset} disabled={isDefault} />
       </form>

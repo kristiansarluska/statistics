@@ -123,10 +123,12 @@ function GeneralProcedure() {
               <DataPreviewTable
                 data={data}
                 columns={tableColumns}
-                previewRows={4}
                 title={t(
                   "hypothesisTesting.generalProcedure.dataPreview.tableTitle",
                 )}
+                downloadUrl={`${import.meta.env.BASE_URL}data/MS_kraj.json`}
+                downloadFilename="MS_kraj.json"
+                downloadBtnLabel="Stiahnuť GeoJSON"
               />
             )}
           </div>

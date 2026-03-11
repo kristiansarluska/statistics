@@ -35,6 +35,178 @@
     "statisticalMethods": "Štatistické metódy v geoinformatike"
   },
 
+  "randomVariable": {
+    "introduction": {
+      "p1": "V reálnom svete, a obzvlášť v geoinformatike, sú naše merania a pozorovania takmer vždy zaťažené určitou mierou neistoty. Či už ide o meranie nadmorskej výšky GNSS prijímačom, počítanie výskytu dopravných nehôd na križovatke, alebo analýzu teploty, výsledky týchto procesov závisia od náhody.",
+      "p2": "Aby sme mohli tieto náhodné javy matematicky a štatisticky spracovať, zavádzame pojem <bold>náhodná veličina</bold>. Ide o funkciu, ktorá každému možnému výsledku náhodného pokusu (elementárnemu javu) priradí konkrétne reálne číslo. Vďaka tomu vieme s neistotou pracovať exaktne – vieme modelovať rozdelenie pravdepodobnosti, odhadovať stredné hodnoty a analyzovať variabilitu našich dát."
+    },
+
+    "continuousDiscrete": {
+      "title": "Spojitá a diskrétna náhodná veličina",
+      "description": "Náhodná veličina je funkcia, ktorá každému elementárnemu javu priraďuje reálne číslo. Zjednodušene povedané, \"prekladá\" náhodné výsledky rôznych javov do reči čísel, s ktorými vieme ďalej štatisticky pracovať. Podľa toho, aké hodnoty môže veličina nadobúdať, ju delíme na dva základné typy:",
+      "discrete": {
+        "title": "Diskrétna veličina",
+        "description": "Nadobúda len <bold>spočítateľné množstvo hodnôt</bold> (zvyčajne celé čísla). Medzi jednotlivými hodnotami sú medzery, neexistujú prechody.",
+        "process": "Proces:",
+        "processDesc": "Vzniká rátaním (počítaním výskytov).",
+        "examples": "Príklady:",
+        "examplesDesc": "Počet zemetrasení za rok, počet budov v bloku, počet dopravných nehôd na križovatke."
+      },
+      "continuous": {
+        "title": "Spojitá veličina",
+        "description": "Môže nadobúdať <bold>akúkoľvek hodnotu z určitého intervalu</bold>. Počet možných hodnôt je nekonečný a obmedzuje ho len presnosť meracieho prístroja.",
+        "process": "Proces:",
+        "processDesc": "Vzniká meraním.",
+        "examples": "Príklady:",
+        "examplesDesc": "Nadmorská výška bodu, priemerná ročná teplota, vzdialenosť budovy od rieky."
+      }
+    },
+
+    "distribution": {
+      "title": "Rozdelenie náhodnej veličiny",
+      "description": "Rozdelenie pravdepodobnosti nám hovorí, ako sú pravdepodobnosti \"rozdelené\" medzi jednotlivé možné hodnoty náhodnej veličiny. Na jeho komplexný matematický a vizuálny popis využívame tri základné funkcie: pravdepodobnostnú (pre spojité veličiny hustotu), distribučnú a kvantilovú funkciu.",
+      "pmfPdf": {
+        "title": "Pravdepodobnostná funkcia a hustota pravdepodobnosti",
+        "desc1": "Pri diskrétnych veličinách používame <bold>pravdepodobnostnú funkciu (PMF)</bold>, ktorá priraďuje priamu pravdepodobnosť výskytu konkrétnej hodnote (<m1/>).<br/><br/>Pri spojitých veličinách definujeme <bold>hustotu pravdepodobnosti (<m2/>)</bold>. Keďže spojitá veličina má nekonečne veľa hodnôt, pravdepodobnosť jedného konkrétneho bodu je nulová. Namiesto toho určujeme pravdepodobnosť, že hodnota padne do určitého intervalu — táto pravdepodobnosť je reprezentovaná <bold>plochou pod krivkou hustoty</bold> na danom úseku.",
+        "alertTitle": "Teória vs. Empíria (Zákon veľkých čísel)",
+        "alertDesc": "Prepojenie medzi teoretickými matematickými modelmi a reálnymi dátami popisuje <bold>Zákon veľkých čísel</bold> (základný limitný teorém). Ten hovorí, že s rastúcim počtom nezávislých opakovaní náhodného pokusu sa relatívna početnosť výskytu javu (empirické rozdelenie) limitne blíži k jeho teoretickej pravdepodobnosti. V nasledujúcich dvoch simuláciách môžete tento fundamentálny jav pozorovať priamo.",
+        "chart1Title": "<color>Pravdepodobnostná funkcia:</color> Počet viditeľných GNSS satelitov",
+        "chart1Desc": "V mestskom prostredí (tzv. \"urban canyons\") je počet viditeľných satelitov náhodná premenná – v tomto prípade je pravdepodobnosť viditeľnosti každého z nich 45 %. Graf nižšie zobrazuje <bold>teoretické pravdepodobnosti</bold> pre jednotlivé počty satelitov (od 0 po 12). Pomocou interaktívnej simulácie generujeme umelé merania. Všimnite si spomínaný zákon v praxi: pri nízkom počte meraní sú empirické stĺpce rozkolísané a nemusia zodpovedať teoretickému predpokladu. Akonáhle však necháte simuláciu bežať a počet meraní narastie do tisícov, empirické relatívne početnosti sa stabilizujú a takmer dokonale splynú s teoretickým modelom.",
+        "chart2Title": "<color>Hustota pravdepodobnosti:</color> Simulácia odchýlky GNSS merania",
+        "chart2Desc": "Tento graf demonštruje hustotu pravdepodobnosti pre normálne rozdelenie chýb GNSS prijímača. Modrá krivka reprezentuje dokonalý <bold>teoretický model</bold> so strednou hodnotou <bold>0 m</bold> a smerodajnou odchýlkou <bold>2.5 m</bold>. Sivý histogram pod ňou zobrazuje hustotu nasimulovaných (empirických) dát. Opäť tu platí zákon veľkých čísel – pri spustení generovania hodnôt vizuálne sledujte, ako sa s rastúcim počtom iterácií \"hrboľatý\" empirický histogram postupne vyhladzuje a jeho tvar konverguje presne k teoretickej Gaussovej krivke."
+      },
+      "cdf": {
+        "title": "Distribučná funkcia",
+        "desc": "Distribučná funkcia (<m1/>) plní kumulatívnu úlohu. Udáva celkovú pravdepodobnosť, že náhodná veličina nadobudne hodnotu menšiu alebo rovnú konkrétnemu číslu <m2/> (<m3/>). Je to neklesajúca funkcia, ktorá začína v nule (0 %) a postupne rastie alebo skokovito stúpa k hodnote 1 (100 %). Zatiaľ čo hustota ukazuje okamžitý stav, distribučná funkcia ponúka súhrnný obraz.",
+        "chart1Title": "<color>Diskrétny prípad:</color> Dostupnosť družicových dát",
+        "chart1Desc": "Predstavte si, že mesačne očakávate max. 5 preletov družice. Náhodná veličina <bold>X</bold> predstavuje počet snímok, ktoré sú reálne použiteľné (bez oblačnosti).<br/><br/>Hodnoty v políčkach nižšie nepredstavujú fixné percentá, ale <bold>početnosť výskytu (napr. počet mesiacov z historických záznamov)</bold>, kedy nastal daný scenár. Graf všetky hodnoty sčíta a automaticky ich premení na pravdepodobnosť (súčet vždy 100 %).<br/><br/><bold>Vyskúšajte si to:</bold> Do políčka pre <bold>x = 0</bold> zadajte vysoké číslo (napr. 80). Nasimulujete tak oblasť s častou oblačnosťou. Všimnite si, ako distribučná funkcia (schodíky) okamžite strmo narastie, čo znamená vysoké riziko nedostatku dát.",
+        "chart2Title": "<color>Spojitý prípad:</color> Distribúcia chýb GNSS merania",
+        "chart2Desc": "Na rozdiel od diskrétnych veličín je distribučná funkcia spojitej premennej reprezentovaná <bold>hladkou krivkou</bold> bez skokov. Tento model je kľúčový pri analýze presnosti meracích prístrojov v teréne.<br/><br/>Tvar tejto krivky určujú v prípade normálneho rozdelenia dva typy chýb: <bold>systematická chyba (parameter μ)</bold>, ktorá predstavuje konštantný posun merania (napr. o 1 meter kvôli zlej kalibrácii), a <bold>náhodná chyba (parameter σ)</bold>, ktorá vyjadruje samotnú presnosť prístroja.<br/><br/>Distribučná funkcia v každom bode udáva pravdepodobnosť, že chyba merania neprekročí zvolenú hodnotu. Všimnite si, že v bode <bold>μ</bold> (stred rozdelenia) nadobúda funkcia vždy hodnotu <bold>0.5</bold>. To znamená, že je presne 50 % šanca, že nameraná odchýlka bude menšia alebo rovná systémovému posunu prístroja."
+      },
+      "quantile": {
+        "title": "Kvantilová funkcia",
+        "desc": "Kvantilová funkcia je inverznou (opačnou) k distribučnej funkcii. Namiesto otázky \"Aká je pravdepodobnosť, že nameriame hodnotu pod <m1/>?\" ju otáčame: \"Aká je hraničná hodnota (<m2/>), pod ktorou sa nachádza presne určené percento dát (<m3/>)?\" Najznámejším kvantilom je <bold>medián</bold> (<m4/>), ďalšími dôležitými míľnikmi sú kvartily a decily.",
+        "chart1Title": "<color>Príklad z praxe:</color> Podiel obyvateľstva v hlavnom meste",
+        "chart1Desc": "V nasledujúcom grafe vidíte empirickú kvantilovú funkciu vytvorenú z reálnych dát o tom, koľko percent obyvateľstva jednotlivých európskych krajín žije v ich hlavnom meste (rok 2024). Na osi <bold>x</bold> volíme percentil (<m1/> v %) a na osi <bold>y</bold> odčítavame príslušný kvantil <m2/> (samotný podiel obyvateľstva v %).<br/><br/><bold>Ako to čítať?</bold> Posuňte slider na pravdepodobnosť <bold>50 % (medián)</bold>. Kvantil, ktorý získate, predstavuje hraničnú hodnotu — presne polovica európskych krajín má podiel obyvateľov hlavného mesta menší (alebo rovný) tomuto číslu. Prípadne do poľa zadajte konkrétny podiel (napr. 25 %) a zistite, koľko percent krajín sa pod túto hranicu zmestí.",
+        "chart2Title": "<color>Empirická kvantilová funkcia:</color> Výška stromov v rezervácii",
+        "chart2Desc": "Predvolené dáta reprezentujú zoradené výšky stromov (v metroch) namerané v malej prírodnej rezervácii (napr. z dát leteckého laserového skenovania - LiDAR). Vyskúšajte si zobraziť <bold>medián</bold> (50 % stromov je nižších alebo rovnako vysokých) alebo <bold>decily</bold> (napr. 9. decil ukáže hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta môžete interaktívne mazať a dopĺňať vlastnými hodnotami."
+      }
+    },
+
+    "characteristics": {
+      "title": "Charakteristiky náhodnej veličiny",
+      "description": "Číselné charakteristiky nám umožňujú zhrnúť komplexné vlastnosti celého rozdelenia pravdepodobnosti do niekoľkých výstižných hodnôt. Namiesto analýzy celého priebehu funkcií tak môžeme súbory rýchlo porovnávať na základe ich polohy, variability či tvaru.",
+      "location": {
+        "title": "Charakteristiky polohy",
+        "description": "Tieto miery (často označované ako stredné hodnoty) slúžia na identifikáciu \"ťažiska\" alebo typickej hodnoty štatistického súboru. Udávajú polohu na osi <m/>, okolo ktorej sa hodnoty náhodnej veličiny najviac koncentrujú.",
+        "arithmeticMean": {
+          "title": "Aritmetický priemer",
+          "description": "Aritmetický priemer (<m1/> pre výberový súbor, <m2/> pre základný súbor) je najbežnejším odhadom strednej hodnoty. Vypočíta sa ako súčet všetkých nameraných hodnôt vydelený ich počtom. V geoinformatike ho často využívame pri spracovaní opakovaných meraní na tom istom mieste, aby sme eliminovali náhodné chyby.",
+          "exampleTitle": "Určenie nadmorskej výšky bodu",
+          "exampleDesc": "Pri presnom určovaní nadmorskej výšky bodu vykonávame sériu nezávislých meraní (napr. GNSS aparatúrou). Aritmetický priemer nám poskytne výslednú hodnotu výšky. Vyskúšajte do kalkulačky zadať niekoľko hodnôt blízkych 420 m. Ak pridáte jednu chybnú hodnotu (napr. 480 m kvôli odrazu signálu), uvidíte, ako priemer citlivo zareaguje na tento extrém."
+        },
+        "harmonicMean": {
+          "title": "Harmonický priemer",
+          "description": "Harmonický priemer (<m/>) je vhodný pre veličiny, ktoré sú definované ako pomery (napr. jednotky za čas). Je to prevrátená hodnota aritmetického priemeru prevrátených hodnôt dát. V geografii ho využívame najmä pri výpočtoch priemerných rýchlostí na úsekoch s rovnakou dĺžkou.",
+          "exampleTitle": "Priemerná rýchlosť letu dronu pri snímkovaní",
+          "exampleDesc": "Predstavte si, že dron letí nad územím po dvoch rovnako dlhých trasách. Prvú preletí rýchlosťou 12,5 m/s (proti vetru) a druhú rýchlosťou 18 m/s (po vetre). Ak chceme vedieť priemernú rýchlosť za celú misiu, aritmetický priemer by nás oklamal. Harmonický priemer správne zohľadní, že dron strávil viac času na pomalšom úseku."
+        },
+        "geometricMean": {
+          "title": "Geometrický priemer",
+          "description": "Geometrický priemer (<m/>) sa používa pre hodnoty, ktoré majú charakter mier rastu alebo indexov. Na rozdiel od aritmetického priemeru pracuje súčinom hodnôt a n-tou odmocninou, čím lepšie zachytáva <bold>kumulatívne zmeny</bold>.",
+          "exampleTitle": "Miera rastu zastavaného územia",
+          "exampleDesc": "Ak sledujeme, o koľko percent sa rozrástlo mesto v desiatich po sebe idúcich rokoch, geometrický priemer nám povie skutočnú priemernú ročná mieru rastu. Je ideálny pre dáta, kde každá ďalšia hodnota nadväzuje na predchádzajúcu (reťazové indexy)."
+        },
+        "weightedMean": {
+          "title": "Vážený priemer",
+          "description": "Vážený priemer (<m1/>) zohľadňuje nerovnakú dôležitosť alebo presnosť jednotlivých meraní. Každej hodnote priraďujeme váhu (<m2/>), ktorá určuje, akou mierou prispeje k výsledku. Je to kľúčový nástroj pri spájaní dát z rôznych zdrojov.",
+          "exampleTitle": "Kombinované meranie nadmorskej výšky",
+          "exampleDesc": "Ak meriame nadmorskú výšku toho istého bodu dvoma rôznymi prístrojmi — profesionálnou GNSS stanicou a smartfónom — nemôžeme ich brať rovnocenne. Profesionálnemu prístroju priradíme vyššiu váhu (napr. podľa prevrátenej hodnoty chyby merania). Vážený priemer tak \"pritiahne\" výsledok bližšie k spoľahlivejšiemu meraniu."
+        },
+        "mode": {
+          "title": "Modus",
+          "description": "Modus (<m/>) je hodnota, ktorá sa v štatistickom súbore vyskytuje najčastejšie. Pri spojitých dátach (napríklad presné GNSS merania) sa určuje ťažšie a hľadáme skôr interval s najväčšou hustotou. Pre diskrétne dáta je to však priama, konkrétna hodnota.",
+          "exampleTitle": "Počet poschodí v mestskej zástavbe",
+          "exampleDesc": "V nasledovnom príklade analyzujeme podlažnosť budov vo vybranej mestskej štvrti. Modusom bude typ budovy, ktorý sa v danej oblasti vyskytuje najviac (napr. dvojposchodové rodinné domy). Na grafe si môžete všimnúť aj sekundárny lokálny vrchol (tzv. lokálny modus) reprezentujúci napríklad zhluk sedemposchodových panelákov. Pridávaním alebo odoberaním budov môžete sledovať, ako sa mení najčastejšie sa vyskytujúca hodnota."
+        },
+        "median": {
+          "title": "Medián",
+          "description": "Medián (<m/>) rozdeľuje štatistický súbor na dve rovnako veľké polovice. Polovina hodnôt je menšia alebo rovná mediánu a druhá polovina je väčšia alebo rovná mediánu.",
+          "exampleTitle": "Výška budov a rezistencia voči extrémom",
+          "exampleDesc": "Hlavnou výhodou mediánu oproti aritmetickému priemeru je jeho <bold>odolnosť (rezistentnosť) voči odľahlým hodnotám</bold>. Predstavme si, že analyzujeme výšky budov v bežnej zástavbe. Vyskúšajte si do dát pridať extrémnu hodnotu – napríklad nový <bold>150-metrový mrakodrap</bold>. Všimnite si, že kým aritmetický priemer by táto stavba radikálne skreslila (vystrelil by na takmer dvojnásobok), medián sa posunie len minimálne, pretože zohľadňuje výhradne fyzický stred zoradeného radu."
+        }
+      },
+      "variability": {
+        "title": "Charakteristiky variability",
+        "description": "Kým miery polohy nám hovoria, kde sa dáta sústreďujú, miery variability nám prezrádzajú, ako veľmi sú od seba rozptýlené. Najjednoduchšou mierou je variačné rozpätie.",
+        "range": {
+          "title": "Variačné rozpätie",
+          "description": "Variačné rozpätie (<m/>) je rozdiel medzi maximálnou a minimálnou hodnotou v štatistickom súbore. Je to rýchly ukazovateľ šírky intervalu, v ktorom sa dáta nachádzajú, no pre svoju podstatu je extrémne citlivý na odľahlé (extrémne) hodnoty.",
+          "exampleTitle": "Prevýšenie lyžiarskeho svahu",
+          "exampleDesc": "Predstavte si, že analyzujeme výškový profil lyžiarskeho svahu na Malej Morávke. Získali sme niekoľko výškových bodov (v metroch nad morom). Variačné rozpätie nám v tomto prípade udáva celkové prevýšenie zjazdovky. Pridajte do výpočtu extrémnu hodnotu (napríklad blízky vrchol Praděd s výškou 1492 m n. m.) a sledujte, ako sa variačné rozpätie okamžite skreslí."
+        },
+        "meanDeviation": {
+          "title": "Priemerná odchýlka",
+          "description": "Priemerná odchýlka (<m/>) vyjadruje, o koľko sa v priemere jednotlivé hodnoty štatistického súboru odchyľujú od ich aritmetického priemeru. Počíta sa ako aritmetický priemer absolútnych hodnôt odchýlok od strednej hodnoty. Oproti variačnému rozpätiu využíva informácie zo všetkých meraní, nielen z extrémov.",
+          "exampleTitle": "Opakované meranie dĺžky",
+          "exampleDesc": "V geodézii nikdy nezmeriame rovnakú vzdialenosť dvakrát s absolútne identickým výsledkom. Nasledujúce dáta predstavujú päť nezávislých meraní dĺžky hranice parcely v metroch. Priemerná odchýlka nám v tomto prípade udáva priemernú absolútnu chybu jednotlivého merania voči strednej hodnote. Vyskúšajte pridať meranie so zjavnou hrubou chybou (napr. 51.5) a sledujte zmenu odchýlky."
+        },
+        "meanDifference": {
+          "title": "Stredná diferencia",
+          "description": "Stredná diferencia (<m/>) nevyjadruje odchýlku hodnôt od ich priemeru, ale priemerný absolútny rozdiel medzi <bold>akýmikolvek dvoma hodnotami</bold> navzájom. Počíta sa ako súčet absolútnych rozdielov všetkých možných dvojíc vydelený počtom týchto dvojíc.",
+          "exampleTitle": "Heterogenita znečistenia ovzdušia",
+          "exampleDesc": "V geoinformatike často pracujeme so senzorovými sieťami. Predstavme si meracie stanice, ktoré sledujú koncentráciu prachových častíc PM10 (v µg/m³) vo veľkomeste. Stredná diferencia nám priamo povie, aký priemerný rozdiel v znečistení môžeme očakávať, ak sa presunieme z okolia jednej ľubovoľnej stanice k inej. Vyskúšajte do siete pridať stanicu ležiacu pri rušnej križovatke (napríklad s hodnotou 85.0) a sledujte, ako vzrastie priemerný rozdiel v sieti."
+        },
+        "variance": {
+          "title": "Rozptyl",
+          "description": "Rozptyl (<m1/> pre výberový súbor, <m2/> pre základný súbor) je priemerná štvorcová odchýlka hodnôt od ich strednej hodnoty. Tým, že sa odchýlky umocňujú na druhú, rozptyl <bold>výrazne penalizuje veľké extrémy</bold>. Nevýhodou je, že výsledok vychádza v štvorcových jednotkách (napr. metre štvorcové, stupne Celzia na druhú), čo je ťažšie na priamu interpretáciu.",
+          "exampleTitle": "Heterogenita mračna bodov (LiDAR)",
+          "exampleDesc": "Pri leteckom laserovom skenovaní lesa nás zaujíma nielen priemerná hustota bodov, ale aj jej variabilita. Nasledujúce dáta reprezentujú počet odrazov (bodov) na meter štvorcový vo vybraných testovacích plochách. Vyskúšajte pridať plochu s extrémne hustým pokrytím (napr. 50 bodov/m²) a všimnite si, ako hodnota rozptylu kvôli umocňovaniu rapídne narastie."
+        },
+        "standardDeviation": {
+          "title": "Smerodajná odchýlka",
+          "description": "Smerodajná odchýlka (<m1/> alebo <m2/>) je odmocninou z rozptylu. Jej hlavnou výhodou je, že <bold>vracia výsledok do pôvodných jednotiek</bold> merania (napríklad stupne Celzia, metre), čo ju robí oveľa intuitívnejšou a ľahšie interpretovateľnou v praxi. Hovorí nám, o koľko sa hodnoty typicky odchyľujú od priemeru.",
+          "exampleTitle": "Mestský ostrov tepla",
+          "exampleDesc": "Fenomén mestského ostrova tepla spôsobuje, že centrá miest sú výrazne teplejšie ako ich okolie. Predstavme si sieť piatich teplotných senzorov rozmiestnených v rôznych zónach mesta. Smerodajná odchýlka nám v tomto prípade hovorí, aké výrazné sú teplotné rozdiely v rámci tohto územia. Skúste pridať senzor z chladnejšieho prímestského parku (napr. 18.5 °C) a sledujte, ako sa odchýlka v systéme zväčší."
+        },
+        "coefficientOfVariation": {
+          "title": "Variačný koeficient",
+          "description": "Variačný koeficient (<m/>) je bezrozmerná (relatívna) miera variability, najčastejšie vyjadrená v percentách. Počíta sa ako pomer smerodajnej odchýlky k aritmetickému priemeru. Jeho obrovskou výhodou je, že <bold>umožňuje porovnávať variabilitu medzi súbormi s rôznymi jednotkami</bold> alebo diametrálne odlišnými priemermi (napr. variabilitu výšky stromov vs. hrúbky ich kmeňov).",
+          "exampleTitle": "Priestorová nestálosť zrážok",
+          "exampleDesc": "V hydrológii a klimatológii sa variačný koeficient často využíva na zhodnotenie stabilitu zrážok. Nasledujúce dáta predstavujú ročné úhrny zrážok (v mm) na piatich rôznych zrážkomerných staniciach v sledovanej oblasti. Ak je výsledný koeficient vysoký (napr. nad 30 %), hovorí nám to, že zrážky sú v území priestorovo veľmi nevyrovnané a nepredvídateľné. Vyskúšajte zmeniť hodnoty tak, aby boli zrážky vyrovnanejšie (napríklad všetkým staniciam nastavte hodnoty okolo 500 mm) a sledujte pokles percentuálnej variability."
+        },
+        "iqr": {
+          "title": "Medzikvartilové rozpätie",
+          "description": "Medzikvartilové rozpätie (<m1/>) sa zameriava výhradne na <bold>stredných 50 % dát</bold>. Vypočíta sa ako rozdiel medzi tretím (<m2/>) a prvým kvartilom (<m3/>). Keďže do výpočtu vôbec nevstupuje dolných ani horných 25 % hodnôt, táto charakteristika je extrémne odolná voči hrubým chybám a odľahlým hodnotám (tzv. outlierom).",
+          "exampleTitle": "Trhové ceny pozemkov a vplyv extrémov",
+          "exampleDesc": "Katastrálne a cenové mapy často obsahujú anomálie. Predstavme si analýzu cien pozemkov (v €/m²) v jednej záhradkárskej osade. Medzi bežnými predajmi sa nachádza jeden extrém (napríklad špekulatívny nákup s hodnotou 145 €/m²). Kým obyčajné variačné rozpätie by pre tieto dáta vystrelilo nad 130 €, <m1/> extrém odignoruje a vráti reálnu variabilitu stredu trhu (rozpätie len cca 3.5 €/m²). Skúste extrém (145) zmazať a všimnite si, že <m2/> sa takmer nezmení."
+        }
+      },
+      "otherMeasures": {
+        "title": "Iné číselné miery",
+        "description": "Okrem polohy a rozptýlenosti dát skúmame aj celkový priebeh a symetriu rozdelenia. Tieto charakteristiky tvaru nám hovoria, či sa dáta sústreďujú k jednej strane, alebo nakoľko je ich špička strmá v porovnaní s teoretickým modelom.",
+        "skewness": {
+          "title": "Koeficient šikmosti",
+          "description": "Koeficient šikmosti (<m/>) hodnotí <bold>asymetriu</bold> rozdelenia dát okolo ich strednej hodnoty. Ak má rozdelenie dlhší chvost smerom k vyšším hodnotám, ide o <bold>kladnú šikmosť</bold> (extrémne veľké hodnoty ťahajú priemer nahor). Ak má dlhší chvost smerom k nižším hodnotám, ide o <bold>zápornú šikmosť</bold>.",
+          "exampleTitle": "Veková štruktúra lesa",
+          "exampleDesc": "Presuňte bežec pre zmenu šikmosti rozdelenia veku stromov v lese. <bold>Kladná šikmosť</bold> predstavuje napríklad zmladený les po ťažbe (drvivá väčšina stromov je mladá, starých je minimum - chvost vpravo). <bold>Záporná šikmosť</bold> naopak modeluje starý neprestupný prales (väčšina stromov je stará, prežije len málo mladých kvôli nedostatku svetla - chvost vľavo)."
+        },
+        "kurtosis": {
+          "title": "Koeficient špicatosti",
+          "description": "Koeficient špicatosti (<m/>) opisuje koncentráciu hodnôt okolo strednej hodnoty v porovnaní s normálnym rozdelením. Zatiaľ čo laický pohľad sa často upriamuje len na \"výšku špicu\", v štatistike je dôležitejším prejavom špicatosti tzv. <bold>hrúbka chvostov</bold> (či sa v dátach vyskytujú extrémne odľahlé hodnoty).",
+          "exampleTitle": "Režim prietokov a bleskové povodne",
+          "exampleDesc": "V hydrológii je tvar rozdelenia kľúčový pre predikciu extrémov. <bold>Špicaté rozdelenie (Leptokurtické)</bold> s tučnými chvostmi modeluje napríklad neskrotenú horskú bystrinu alebo vádí v púšti. Drvivú väčšinu roka je prietok stabilne minimálny (vysoký špic v strede), no ak príde silná búrka, nastane nečakaná extrémna blesková povodeň (hrubé chvosty ďaleko od stredu). Naopak, <bold>ploché rozdelenie (Platykurtické)</bold> predstavuje veľkú rieku regulovanú priehradou. Prietok tu predvídateľne a rovnomerne kolíše v širšom strednom pásme, no k anomálnym extrémnym povodniam takmer nedochádza (tenké chvosty)."
+        }
+      },
+      "fiveNumber": {
+        "title": "Päťčíselná charakteristika a Boxplot",
+        "description": "Päťčíselná charakteristika predstavuje mimoriadne efektívny spôsob zhrnutia dát pomocou piatich kľúčových hodnôt: <bold>Minimum, Dolný kvartil (<m1/>), Medián, Horný kvartil (<m2/>) a Maximum</bold>. Jej vizuálnou reprezentáciou je škatuľový graf (Boxplot).",
+        "exampleTitle": "Index atraktivity regiónov (AI_2016)",
+        "exampleDesc": "Boxploty sú najsilnejšie vtedy, keď potrebujeme rýchlo porovnať viacero skupín v čase. Nasledujúce dáta pochádzajú z reálneho geoinformatického výskumu, kde hodnotíme Index atraktivity (AI) európskych regiónov. Vyskúšajte si v pravom hornom rohu rozdeliť regióny podľa <bold>Kvality života (QoL)</bold> alebo si zapnite <bold>porovnanie oboch rokov vedľa seba</bold>. Krásne tak uvidíte, či sa stredná trieda (krabica) posúva nahor alebo nadol a či pribúdajú extrémne anomálie."
+      }
+    }
+  },
+
   "probabilityDistributions": {
     "introduction": {
       "p1": "V geoinformatike často pracujeme s údajmi, ktoré majú náhodný charakter — napríklad chybou merania, odchýlkami v polohách bodov alebo variabilitou v dátach získaných z terénu. Aby sme tieto javy vedeli modelovať, používame <bold>pravdepodobnostné rozdelenia</bold>.",
@@ -221,8 +393,8 @@
   "components": {
     "dataPreviewTable": {
       "records": "{{count}} záznamov",
-      "downloadTitle": "Stiahnuť dáta ako CSV",
-      "downloadBtn": "Stiahnuť CSV",
+      "downloadTitle": "Stiahnuť dáta",
+      "downloadBtn": "Stiahnuť",
       "showLess": "Zobraziť menej ▲",
       "showAll": "Zobraziť všetky ▼",
       "showingRows": "Zobrazených {{shown}} z {{total}} riadkov"
@@ -236,6 +408,100 @@
         "share": "Podiel: {{value}} %"
       }
     },
+    "styledBoxplot": {
+      "tooltip": {
+        "max": "Maximum",
+        "upperWhisker": "Horný fúz",
+        "q3": "Q3",
+        "median": "Medián",
+        "q1": "Q1",
+        "lowerWhisker": "Dolný fúz",
+        "min": "Minimum"
+      }
+    },
+
+    "randomVariableCharts": {
+      "measurements": "Merania: {{count}}",
+      "simulatedPMF": {
+        "title": "Simulácia počtu zachytených satelitov (Binomické rozdelenie)",
+        "xLabel": "Počet satelitov (k)",
+        "yLabel": "P(X=k)",
+        "theoretical": "Teoretická",
+        "empirical": "Empirická"
+      },
+      "simulatedPDF": {
+        "title": "Simulácia GNSS odchýlok: f(x)",
+        "xLabel": "Odchýlka (m)",
+        "yLabel": "f(x)"
+      },
+      "quantileSlider": {
+        "title": "Kvantilová funkcia: Podiel populácie hlavného mesta",
+        "labelP": "Zobraziť podľa kvantilu (p):",
+        "labelX": "Alebo zadaj konkrétnu hodnotu (x):",
+        "placeholder": "napr. 25,5",
+        "resultLabel": "Výsledok:",
+        "resultProb": "Pravdepodobnosti",
+        "resultCorresponds": "zodpovedá hodnota",
+        "loading": "Načítavam dáta z CSV...",
+        "errorNoData": "CSV sa načítalo, ale nenašli sa v ňom platné číselné dáta pre stĺpec '2024'.",
+        "errorFetch": "Nepodarilo sa stiahnuť alebo spracovať CSV súbor.",
+        "errorMin": "Zadaná hodnota ({{val}}) je nižšia ako minimum v dátach ({{min}}).",
+        "errorMax": "Zadaná hodnota ({{val}}) prekračuje maximum v dátach ({{max}}).",
+        "dataTableTitle": "Vstupné dáta (Podiel populácie v hlavnom meste)",
+        "countryCol": "Krajina",
+        "shareCol": "Podiel v % (2024)"
+      },
+      "quantileInput": {
+        "title": "Interaktívna kvantilová funkcia z vlastných dát (výška stromov v m)",
+        "none": "Bez zvýraznenia",
+        "median": "Medián",
+        "quartiles": "Kvartily",
+        "deciles": "Decily",
+        "inputDataLabel": "Vstupné dáta (zoradené):",
+        "placeholder": "Nová hodnota",
+        "calculatedTitle": "Vypočítaný kvantil ({{p}})"
+      },
+      "skewness": {
+        "title": "Tvar rozdelenia:",
+        "symmetric": "Symetrické rozdelenie",
+        "positive": "Kladná šikmosť",
+        "negative": "Záporná šikmosť",
+        "sliderLabel": "Hodnota šikmosti:",
+        "sliderMin": "Záporná",
+        "sliderMax": "Kladná",
+        "xLabel": "Vek stromov (roky)",
+        "yLabel": "Početnosť (%)"
+      },
+      "kurtosis": {
+        "title": "Tvar rozdelenia:",
+        "mesokurtic": "Normálne rozdelenie (Mezokurtické)",
+        "leptokurtic": "Špicaté rozdelenie (Leptokurtické)",
+        "platykurtic": "Ploché rozdelenie (Platykurtické)",
+        "sliderLabel": "Hodnota excesu:",
+        "sliderMin": "Ploché (Regulovaná)",
+        "sliderMax": "Špicaté (Bystrina)",
+        "xLabel": "Odchýlka od bežného stavu",
+        "yLabel": "Pravdepodobnosť (%)"
+      },
+      "boxplot": {
+        "title": "Päťčíselná charakteristika (Boxplot)",
+        "loading": "Načítavam dáta…",
+        "groupLabel": "Zoskupiť:",
+        "yearLabel": "Rok:",
+        "legendMedian": "Medián",
+        "legendNote": "* Červená čiara = Medián · Krabica = stredných 50 % dát · Body = odľahlé hodnoty · Pre presné hodnoty prejdite myšou na graf",
+        "dataTableTitle": "Vstupné dáta",
+        "geoRegion": "GEO oblasť",
+        "qualityOfLife": "Kvalita života",
+        "bothYears": "2012 / 2016",
+        "categories": {
+          "low": "Nízka",
+          "medium": "Stredná",
+          "high": "Vysoká"
+        }
+      }
+    },
+
     "probabilityCharts": {
       "pmfTitle": "Pravdepodobnostná funkcia (PMF)",
       "cdfTitle": "Distribučná funkcia (CDF)",
@@ -271,6 +537,113 @@
       },
       "chiSquare": {
         "df": "Stupne voľnosti (k):"
+      }
+    },
+
+    "dataInputControl": {
+      "value": "Hodnota",
+      "weight": "Váha",
+      "save": "Uložiť",
+      "cancel": "Zrušiť",
+      "edit": "Editovať",
+      "delete": "Zmazať",
+      "clickToOptions": "Kliknutím zobrazíš možnosti",
+      "clickToRemove": "Kliknutím odstrániš",
+      "noData": "Žiadne dáta...",
+      "add": "Pridať",
+      "weightTitle": "Váha (musí byť > 0)"
+    },
+    "calculatorTemplate": {
+      "calcSteps": "Postup výpočtu:",
+      "collapse": "Skrátiť zápis",
+      "expand": "Rozbaliť celý zápis"
+    },
+    "characteristics": {
+      "arithmetic": {
+        "title": "Výpočet priemernej nadmorskej výšky bodu",
+        "inputLabel": "Namerané hodnoty (m):"
+      },
+      "harmonic": {
+        "title": "Priemerná rýchlosť letu na zhodných úsekoch",
+        "inputLabel": "Rýchlosti dronu (m/s):"
+      },
+      "geometric": {
+        "title": "Priemerný koeficient rastu zastavanej plochy",
+        "inputLabel": "Ročné koeficienty rastu (faktor):"
+      },
+      "weighted": {
+        "title": "Vážený priemer nadmorskej výšky (podľa presnosti)",
+        "inputValuesLabel": "Namerané hodnoty a ich váhy:",
+        "placeholder": "Hodnota (m)",
+        "weightPlaceholder": "Váha",
+        "weightLabel": "v:"
+      },
+      "mode": {
+        "title": "Interaktívny výpočet modusu: Počet poschodí budov",
+        "currentMode": "Aktuálny modus:",
+        "floor_1": "poschodie",
+        "floors_2_4": "poschodia",
+        "floors_many": "poschodí",
+        "noData": "Žiadne dáta",
+        "chartXLabel": "Počet poschodí",
+        "chartYLabel": "Počet budov (frekvencia)",
+        "inputLabel": "Namerané dáta (zoradené podľa poschodí):",
+        "placeholder": "Nová budova"
+      },
+      "median": {
+        "title": "Výpočet mediánu: Výška budov v mestskej zástavbe",
+        "inputLabel": "Namerané výšky budov (m) – zoradené:",
+        "placeholder": "Nová budova",
+        "oddCount": "(pre nepárny počet dát)",
+        "evenCount": "(pre párny počet dát)",
+        "tooltip": "Vypočítaný medián",
+        "comparisonTitle": "Pre porovnanie:",
+        "comparisonMean": "Aritmetický priemer týchto dát je",
+        "comparisonDesc": "Vyskúšajte pridať extrémnu hodnotu a sledujte, ako masívne sa zmení priemer v porovnaní s mediánom."
+      },
+      "range": {
+        "title": "Výpočet variačného rozpätia: Výškový profil lyžiarskeho svahu",
+        "inputLabel": "Namerané nadmorské výšky (m n. m.) – Zoradené:",
+        "placeholder": "Nová výška"
+      },
+      "meanDeviation": {
+        "title": "Výpočet priemernej odchýlky: Presnosť opakovaného merania dĺžky",
+        "inputLabel": "Namerané dĺžky (m):",
+        "placeholder": "Nová dĺžka"
+      },
+      "meanDifference": {
+        "title": "Výpočet strednej diferencie: Rozdiely v znečistení ovzdušia",
+        "inputLabel": "Namerané koncentrácie PM10 (µg/m³):",
+        "placeholder": "Nová hodnota",
+        "errorMin2": "Pre výpočet sú potrebné aspoň 2 hodnoty.",
+        "where": "kde"
+      },
+      "variance": {
+        "title": "Výpočet rozptylu: Variabilita hustoty LiDARových dát",
+        "inputLabel": "Nameraná hustota bodov (body/m²):",
+        "placeholder": "Nová hodnota",
+        "errorMin2": "Pre výpočet výberového rozptylu sú potrebné aspoň 2 hodnoty."
+      },
+      "standardDeviation": {
+        "title": "Výpočet smerodajnej odchýlky (Teploty senzorov)",
+        "inputLabel": "Namerané teploty (°C):",
+        "placeholder": "Teplota",
+        "errorMin2": "Nedostatok dát (n > 1)"
+      },
+      "coefficientOfVariation": {
+        "title": "Výpočet variačného koeficientu (Zrážkové úhrny)",
+        "inputLabel": "Ročný úhrn zrážok (mm):",
+        "placeholder": "Úhrn (mm)",
+        "errorMin2": "Nedostatok dát (n > 1)",
+        "errorDivZero": "Nedefinované (priemer je 0)",
+        "errorDivZeroMath": "Delenie nulou"
+      },
+      "iqr": {
+        "title": "Výpočet medzikvartilového rozpätia (Ceny pozemkov)",
+        "inputLabel": "Jednotkové ceny (€/m²):",
+        "placeholder": "Cena",
+        "errorMin4": "Nedostatok dát (n ≥ 4)",
+        "sortedData": "Zoradené dáta:"
       }
     }
   }
