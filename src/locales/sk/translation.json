@@ -35,6 +35,43 @@
     "statisticalMethods": "Štatistické metódy v geoinformatike"
   },
 
+  "sidebar": {
+    "randomVariable": {
+      "continuousDiscrete": "Spojitá a diskrétna náhodná veličina",
+      "distribution": "Rozdelenie náhodnej veličiny",
+      "pmfPdf": "Pravdepodobnostná funkcia",
+      "cdf": "Distribučná funkcia",
+      "quantile": "Kvantilová funkcia",
+      "characteristics": "Charakteristiky náhodnej veličiny",
+      "location": "Charakteristiky polohy",
+      "variability": "Charakteristiky variability",
+      "otherMeasures": "Iné číselné miery",
+      "fiveNumber": "Päťčíselná charakteristika"
+    },
+    "probabilityDistributions": {
+      "discrete": "Diskrétne rozdelenia",
+      "bernoulli": "Alternatívne rozdelenie",
+      "uniformDiscrete": "Rovnomerné rozdelenie",
+      "binomial": "Binomické rozdelenie",
+      "poisson": "Poissonovo rozdelenie",
+      "continuous": "Spojité rozdelenia",
+      "uniformContinuous": "Rovnomerné rozdelenie",
+      "exponential": "Exponenciálne rozdelenie",
+      "normal": "Normálne rozdelenie",
+      "chiSquare": "Chí kvadrát rozdelenie",
+      "studentT": "Studentovo t rozdelenie",
+      "fisherF": "Fisherovo F rozdelenie"
+    },
+    "parameterEstimation": {
+      "pointEstimation": "Bodový odhad",
+      "intervalEstimation": "Intervalový odhad"
+    },
+    "hypothesisTesting": {
+      "procedure": "Všeobecný postup",
+      "interactiveTest": "Interaktívna ukážka"
+    }
+  },
+
   "randomVariable": {
     "introduction": {
       "p1": "V reálnom svete, a obzvlášť v geoinformatike, sú naše merania a pozorovania takmer vždy zaťažené určitou mierou neistoty. Či už ide o meranie nadmorskej výšky GNSS prijímačom, počítanie výskytu dopravných nehôd na križovatke, alebo analýzu teploty, výsledky týchto procesov závisia od náhody.",
@@ -281,6 +318,36 @@
         "exampleTitle": "Porovnanie kvality ovzdušia v rôznych zónach mesta",
         "exampleDesc": "Predstavte si, že porovnávate priemerné koncentrácie prachu <m1/> v priemyselnej, rezidenčnej a parkovej zóne. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi týmito zónami <bold>štatisticky významné</bold> vzhľadom na prirodzené kolísanie hodnôt vnútri každej zóny. Sledujte, ako zmena kombinácie stupňov voľnosti <bold><m2/></bold> a <bold><m3/></bold> mení asymetriu a \"špičatosť\" rozdelenia."
       }
+    }
+  },
+
+  "parameterEstimation": {
+    "intro": {
+      "p1": "Obvyklým prípadom pri spracovaní hromadných javov je, že máme relatívne malý počet pozorovaní (výberový súbor) a chceme urobiť závery o tom, čo by sme obdržali, keby sme mali k dispozícii celý základný súbor.",
+      "p2": "Hľadanie „všeobecnej pravdy“ o populácii pomocou náhodného výberu nazývame štatistická indukcia. Na základe hodnôt z výberového súboru odhadujeme neznáme hodnoty populácie, pričom vždy musíme akceptovať určitú mieru chyby (náš odhad má pravdepodobnostný charakter).",
+      "populationTitle": "Základný súbor (Populácia)",
+      "populationDesc": "Základný súbor charakterizujeme pomocou parametrov. Ide o konštantné hodnoty závislé od rozdelenia pravdepodobnosti populácie, ktoré sú pre nás zväčša neznáme.",
+      "sampleTitle": "Výberový súbor (Vzorka)",
+      "sampleDesc": "Vo výberovom súbore sledujeme výberové charakteristiky (napr. priemer, rozptyl). Nie sú to konštanty, ale majú skôr charakter náhodnej veličiny, ktorá sa mení v závislosti od konkrétneho výberu.",
+      "p3": "Aby sme v teórii odhadov exaktne rozlíšili, či hovoríme o neznámej hodnote celej populácie, alebo o hodnote zistenej z našej vzorky, používa štatistika striktne oddelené značenie.",
+      "tableTitle": "Základný vs. výberový súbor",
+      "table": {
+        "col1": "Výberová štatistika → bodový odhad",
+        "col2": "Neznámy parameter základného súboru",
+        "row1_stat": "výberový priemer",
+        "row1_param": "stredná hodnota",
+        "row2_stat": "výberová smerodajná odchýlka",
+        "row2_param": "smerodajná odchýlka",
+        "row3_stat": "veľkosť výberového súboru",
+        "row3_param": "veľkosť populácie"
+      },
+      "p4": "Výpočet výberových charakteristík z konkrétnej vzorky nám poskytuje tzv. bodový odhad hľadaného parametra (napr. výberový priemer odhaduje strednú hodnotu). Bodový odhad však nie je nikdy perfektný a sám o sebe nám nehovorí nič o svojej presnosti."
+    },
+    "pointEstimation": {
+      "title": "Bodový odhad a Stredná chyba priemeru"
+    },
+    "intervalEstimation": {
+      "title": "Intervalový odhad"
     }
   },
 

@@ -5,45 +5,45 @@ export const sidebarData = [
     path: "/random-variable",
     children: [
       {
-        label: "Spojitá a diskrétna náhodná veličina",
+        labelKey: "sidebar.randomVariable.continuousDiscrete",
         path: "/random-variable#continuous-discrete",
       },
       {
-        label: "Rozdelenie náhodnej veličiny",
+        labelKey: "sidebar.randomVariable.distribution",
         path: "/random-variable#distribution",
         children: [
           {
-            label: "Pravdepodobnostná funkcia",
+            labelKey: "sidebar.randomVariable.pmfPdf",
             path: "/random-variable#pmf-pdf",
           },
           {
-            label: "Distribučná funkcia",
+            labelKey: "sidebar.randomVariable.cdf",
             path: "/random-variable#cdf",
           },
           {
-            label: "Kvantilová funkcia",
+            labelKey: "sidebar.randomVariable.quantile",
             path: "/random-variable#quantile",
           },
         ],
       },
       {
-        label: "Charakteristiky náhodnej veličiny",
+        labelKey: "sidebar.randomVariable.characteristics",
         path: "/random-variable#characteristics",
         children: [
           {
-            label: "Charakteristiky polohy",
+            labelKey: "sidebar.randomVariable.location",
             path: "/random-variable#location",
           },
           {
-            label: "Charakteristiky variability",
+            labelKey: "sidebar.randomVariable.variability",
             path: "/random-variable#variability",
           },
           {
-            label: "Iné číselné miery",
+            labelKey: "sidebar.randomVariable.otherMeasures",
             path: "/random-variable#other-measures",
           },
           {
-            label: "Päťčíselná charakteristika",
+            labelKey: "sidebar.randomVariable.fiveNumber",
             path: "/random-variable#five-number",
           },
         ],
@@ -55,53 +55,53 @@ export const sidebarData = [
     path: "/probability-distributions",
     children: [
       {
-        label: "Diskrétne rozdelenia",
+        labelKey: "sidebar.probabilityDistributions.discrete",
         path: "/probability-distributions#discrete-distributions",
         children: [
           {
-            label: "Alternatívne rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.bernoulli",
             path: "/probability-distributions#bernoulli",
           },
           {
-            label: "Rovnomerné rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.uniformDiscrete",
             path: "/probability-distributions#uniform-discrete",
           },
           {
-            label: "Binomické rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.binomial",
             path: "/probability-distributions#binomial",
           },
           {
-            label: "Poissonovo rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.poisson",
             path: "/probability-distributions#poisson",
           },
         ],
       },
       {
-        label: "Spojité rozdelenia",
+        labelKey: "sidebar.probabilityDistributions.continuous",
         path: "/probability-distributions#continuous-distributions",
         children: [
           {
-            label: "Rovnomerné rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.uniformContinuous",
             path: "/probability-distributions#uniform-continuous",
           },
           {
-            label: "Exponenciálne rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.exponential",
             path: "/probability-distributions#exponential",
           },
           {
-            label: "Normálne rozdelenie",
+            labelKey: "sidebar.probabilityDistributions.normal",
             path: "/probability-distributions#normal",
             children: [
               {
-                label: "Chí kvadrát rozdelenie",
+                labelKey: "sidebar.probabilityDistributions.chiSquare",
                 path: "/probability-distributions#chi-square",
               },
               {
-                label: "Studentovo t rozdelenie",
+                labelKey: "sidebar.probabilityDistributions.studentT",
                 path: "/probability-distributions#student-t",
               },
               {
-                label: "Fisherovo F rozdelenie",
+                labelKey: "sidebar.probabilityDistributions.fisherF",
                 path: "/probability-distributions#fisher-f",
               },
             ],
@@ -113,31 +113,35 @@ export const sidebarData = [
   {
     labelKey: "topics.parameterEstimation",
     path: "/parameter-estimation",
+    children: [
+      {
+        labelKey: "sidebar.parameterEstimation.pointEstimation",
+        path: "/parameter-estimation#point-estimation",
+      },
+      {
+        labelKey: "sidebar.parameterEstimation.intervalEstimation",
+        path: "/parameter-estimation#interval-estimation",
+      },
+    ],
   },
   {
     labelKey: "topics.hypothesisTesting",
     path: "/hypothesis-testing",
     children: [
       {
-        label: "Všeobecný postup",
+        labelKey: "sidebar.hypothesisTesting.procedure",
         path: "/hypothesis-testing#procedure",
       },
       {
-        label: "Interaktívna ukážka",
+        labelKey: "sidebar.hypothesisTesting.interactiveTest",
         path: "/hypothesis-testing#interactive-test",
       },
     ],
   },
-  {
-    labelKey: "topics.correlation",
-    path: "/correlation",
-  },
+  { labelKey: "topics.correlation", path: "/correlation" },
   {
     labelKey: "topics.spatialAutocorrelation",
     path: "/spatial-autocorrelation",
   },
-  {
-    labelKey: "topics.regression",
-    path: "/regression",
-  },
+  { labelKey: "topics.regression", path: "/regression" },
 ];
