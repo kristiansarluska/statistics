@@ -32,6 +32,7 @@ function StyledLineChart({
   lineType = "monotone",
   hoverLineType = "segment",
   areaValue = null,
+  extraRows = [],
   children,
 }) {
   const [animated, setAnimated] = useState(true);
@@ -254,6 +255,7 @@ function StyledLineChart({
                 yLabel={displayYLabel}
                 overrideY={hoverY}
                 areaValue={finalAreaValue}
+                extraRows={extraRows}
               />
             }
             cursor={false}

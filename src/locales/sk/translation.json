@@ -344,7 +344,37 @@
       "p4": "Výpočet výberových charakteristík z konkrétnej vzorky nám poskytuje tzv. bodový odhad hľadaného parametra (napr. výberový priemer odhaduje strednú hodnotu). Bodový odhad však nie je nikdy perfektný a sám o sebe nám nehovorí nič o svojej presnosti."
     },
     "pointEstimation": {
-      "title": "Bodový odhad a Stredná chyba priemeru"
+      "title": "Bodový odhad",
+      "p1": "Základným cieľom bodového odhadu je aproximovať neznámy parameter populácie pomocou jediného čísla – výberovej štatistiky. Najtypickejším príkladom je <bold>výberový priemer</bold> (<xbar/>), ktorým odhadujeme skutočnú strednú hodnotu (<mu/>) celého základného súboru.",
+      "p2": "Tento odhad však nikdy nie je stopercentne presný. Keďže vychádza iba z jednej konkrétnej vzorky prvkov, je vždy zaťažený určitou <bold>chybou odhadu</bold>. Ak by sme urobili nový, rovnako veľký náhodný výber, získali by sme mierne odlišný výberový priemer.",
+      "semTitle": "Stredná chyba priemeru",
+      "semDesc": "Chybovosť tohto odhadu – teda to, ako veľmi sa získaný výberový priemer zvyčajne líši od skutočnej strednej hodnoty populácie – vyjadruje tzv. <bold>stredná chyba priemeru</bold> (Standard Error of the Mean, SEM).",
+      "semFormulaDesc": "Zodpovedá smerodajnej odchýlke samotného rozdelenia výberových priemerov. Vypočítame ju zo smerodajnej odchýlky celej populácie (<sigma/>) a veľkosti výberového súboru (<n/>):",
+      "semEffect": "Z tohto vzťahu logicky vyplýva, že s rastúcou veľkosťou vzorky sa stredná chyba znižuje. Čím viac pozorovaní máme, tým menej kolíše výberový priemer okolo skutočnej strednej hodnoty a náš odhad je presnejší.",
+      "simulation": {
+        "title": "Simulátor bodového odhadu a SEM",
+        "exampleTitle": "Určenie nadmorskej výšky bodu GNSS meraním",
+        "exampleDesc": "Geodet opakovane meria nadmorskú výšku toho istého bodu pomocou GNSS prijímača. Každé meranie je mierne odlišné — prístroj pracuje s určitou <bold>presnosťou (σ)</bold>. Skutočná výška bodu (parameter <bold>μ</bold>) je neznáma, odhadujeme ju výberovým priemerom <bold>x̄</bold> z <bold>n</bold> meraní. Čím viac opakovaní vykonáme, tým menšia je stredná chyba priemeru (SEM) a tým spoľahlivejší je náš odhad. Sledujte, ako sa s rastúcim <bold>n</bold> zužuje rozptyl výberových priemerov okolo skutočnej hodnoty.",
+        "desc": "Nastavte parametre populácie a veľkosť vzorky. Modrá krivka zobrazuje teoretické rozdelenie populácie, modrá plocha empirické rozdelenie vzorky.",
+        "controls": {
+          "target": "Odhadovaný parameter:",
+          "targetMean": "Stredná hodnota (μ)",
+          "targetStd": "Smerodajná odchýlka (σ)",
+          "popMean": "Skutočná stredná hodnota (μ):",
+          "popStd": "Skutočná smer. odchýlka (σ):",
+          "sampleSize": "Veľkosť vzorky (n):",
+          "generateBtn": "Vygenerovať nový výber"
+        },
+        "results": {
+          "sampleMean": "Výberový priemer",
+          "sampleStd": "Výberová smer. odchýlka",
+          "sem": "Stredná chyba (SEM)"
+        },
+        "chart": {
+          "histogram": "Histogram (vzorka)",
+          "pdf": "Teoretické rozdelenie (populácia)"
+        }
+      }
     },
     "intervalEstimation": {
       "title": "Intervalový odhad"

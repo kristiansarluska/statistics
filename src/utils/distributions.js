@@ -303,3 +303,22 @@ export const fisherFCDF = (x, d1, d2) => {
   // Clamp to 1 to prevent floating point inaccuracies from exceeding 100%
   return Math.min(result, 1);
 };
+
+// Pridaj do src/utils/distributions.js
+
+// Generovanie náhodného čísla z normálneho rozdelenia (Box-Muller)
+export const randomNormal = (mean, stdDev) => {
+  let u = 1 - Math.random();
+  let v = Math.random();
+  let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  return z * stdDev + mean;
+};
+
+// Hustota pravdepodobnosti normálneho rozdelenia (PDF)
+export const normalPdf = (x, mean, stdDev) => {
+  const variance = stdDev * stdDev;
+  return (
+    (1 / Math.sqrt(2 * Math.PI * variance)) *
+    Math.exp(-Math.pow(x - mean, 2) / (2 * variance))
+  );
+};

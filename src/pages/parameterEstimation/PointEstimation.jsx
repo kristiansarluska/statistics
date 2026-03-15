@@ -1,6 +1,9 @@
 // src/pages/parameterEstimation/PointEstimation.jsx
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+import { InlineMath } from "react-katex";
+import PointEstimationSimulation from "../../components/content/parameterEstimation/PointEstimationSimulation";
+import "katex/dist/katex.min.css";
 
 function PointEstimation() {
   const { t } = useTranslation();
@@ -8,22 +11,58 @@ function PointEstimation() {
   return (
     <section id="point-estimation" className="mb-5">
       <h2 className="mb-4">{t("parameterEstimation.pointEstimation.title")}</h2>
-      <div className="row">
-        <div className="col-12">
-          <p>
-            {/* TODO: Add theoretical text about point estimation and SEM here */}
-          </p>
 
-          {/* Interactive Component Placeholder */}
-          <div className="card shadow-sm mt-4">
-            <div className="card-body bg-light text-center py-5">
-              <p className="text-muted mb-0">
-                Interaktívny prvok: Simulátor výberu a stredná chyba priemeru
-                (SEM) - pripravuje sa
-              </p>
-            </div>
-          </div>
-        </div>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.p1"
+          components={{
+            bold: <strong />,
+            xbar: <InlineMath math="\bar{x}" />,
+            mu: <InlineMath math="\mu" />,
+          }}
+        />
+      </p>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.p2"
+          components={{ bold: <strong /> }}
+        />
+      </p>
+
+      <h4 className="mt-5 mb-3">
+        {t("parameterEstimation.pointEstimation.semTitle")}
+      </h4>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.semDesc"
+          components={{ bold: <strong /> }}
+        />
+      </p>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.semFormulaDesc"
+          components={{
+            sigma: <InlineMath math="\sigma" />,
+            n: <InlineMath math="n" />,
+          }}
+        />
+      </p>
+
+      <p>{t("parameterEstimation.pointEstimation.semEffect")}</p>
+
+      {/* Interaktívny simulátor s dynamickým vzorcom */}
+
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">
+          {t("parameterEstimation.pointEstimation.simulation.exampleTitle")}
+        </h5>
+        <p className="text-muted mb-4 small">
+          <Trans
+            i18nKey="parameterEstimation.pointEstimation.simulation.exampleDesc"
+            components={{ bold: <strong /> }}
+          />
+        </p>
+        <PointEstimationSimulation />
       </div>
     </section>
   );

@@ -18,6 +18,8 @@ function CustomTooltip({
   yLabel = "f(x)",
   overrideY = null,
   areaValue = null,
+  // Array of { label, value, color } — injected externally (e.g. empirical histogram density)
+  extraRows = [],
 }) {
   if (active && payload && payload.length) {
     const validPayload = payload
@@ -73,6 +75,17 @@ function CustomTooltip({
             </p>
           );
         })}
+
+        {/* Extra rows injected from parent (e.g. empirical histogram density snapped to bin) */}
+        {extraRows.map(({ label, value, color }, i) => (
+          <p
+            key={`extra-${i}`}
+            className="mb-0"
+            style={{ color: color || "var(--bs-secondary)", opacity: 0.85 }}
+          >
+            {`${label}: ${formatNumberSmart(value)}`}
+          </p>
+        ))}
 
         {areaValue !== null && (
           <p
