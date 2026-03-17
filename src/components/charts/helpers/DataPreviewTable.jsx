@@ -22,6 +22,10 @@ function DataPreviewTable({
   downloadUrl,
   downloadFilename,
   downloadBtnLabel,
+  // Hover sync: key field name (e.g. "nuts_id") and controlled hover state
+  rowKey = null,
+  hoveredRowKey = null,
+  onRowHover = null,
 }) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
@@ -150,16 +154,35 @@ function DataPreviewTable({
             </tr>
           </thead>
           <tbody>
-            {visibleRows.map((row, i) => (
-              <tr key={i}>
-                <td className="text-muted ps-3">{i + 1}</td>
-                {columns.map(({ key, render }) => (
-                  <td key={key}>
-                    {render ? render(row[key], row) : (row[key] ?? "—")}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {visibleRows.map((row, i) => {
+              const isHovered =
+                rowKey && hoveredRowKey && row[rowKey] === hoveredRowKey;
+              return (
+                <tr
+                  key={i}
+                  style={{
+                    backgroundColor: isHovered
+                      ? "var(--bs-primary-bg-subtle)"
+                      : undefined,
+                    cursor: onRowHover ? "pointer" : undefined,
+                    transition: "background-color 0.15s",
+                  }}
+                  onMouseEnter={
+                    onRowHover && rowKey
+                      ? () => onRowHover(row[rowKey])
+                      : undefined
+                  }
+                  onMouseLeave={onRowHover ? () => onRowHover(null) : undefined}
+                >
+                  <td className="text-muted ps-3">{i + 1}</td>
+                  {columns.map(({ key, render }) => (
+                    <td key={key}>
+                      {render ? render(row[key], row) : (row[key] ?? "—")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

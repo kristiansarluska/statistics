@@ -354,7 +354,7 @@
       "simulation": {
         "title": "Simulátor bodového odhadu a SEM",
         "exampleTitle": "Určenie nadmorskej výšky bodu GNSS meraním",
-        "exampleDesc": "Geodet opakovane meria nadmorskú výšku toho istého bodu pomocou GNSS prijímača. Každé meranie je mierne odlišné — prístroj pracuje s určitou <bold>presnosťou (σ)</bold>. Skutočná výška bodu (parameter <bold>μ</bold>) je neznáma, odhadujeme ju výberovým priemerom <bold>x̄</bold> z <bold>n</bold> meraní. Čím viac opakovaní vykonáme, tým menšia je stredná chyba priemeru (SEM) a tým spoľahlivejší je náš odhad. Sledujte, ako sa s rastúcim <bold>n</bold> zužuje rozptyl výberových priemerov okolo skutočnej hodnoty.",
+        "exampleDesc": "Geodet opakovane meria nadmorskú výšku toho istého bodu pomocou GNSS prijímača. Každé meranie je mierne odlišné — prístroj pracuje s určitou <bold>presnosťou (σ)</bold>. Skutočná výška bodu (parameter <bold>μ</bold>) je neznáma (no môžeme si navoliť očakávanú hodnotu), odhadujeme ju výberovým priemerom <bold>x̄</bold> z <bold>n</bold> meraní. Čím viac opakovaní vykonáme, tým menšia je stredná chyba priemeru (SEM) a tým spoľahlivejší je náš odhad. Sledujte, ako sa s rastúcim <bold>n</bold> zužuje rozptyl výberových priemerov okolo skutočnej hodnoty.",
         "desc": "Nastavte parametre populácie a veľkosť vzorky. Modrá krivka zobrazuje teoretické rozdelenie populácie, modrá plocha empirické rozdelenie vzorky.",
         "controls": {
           "target": "Odhadovaný parameter:",

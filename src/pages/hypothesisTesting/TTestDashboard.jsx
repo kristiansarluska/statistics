@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { studentTPDF, studentTCDF } from "../../utils/distributions";
 import ResetButton from "../../components/charts/helpers/ResetButton";
-import ChoroplethMap from "../../components/maps/helpers/ChoroplethMap";
+import ChoroplethMap from "../../components/maps/ChoroplethMap";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 

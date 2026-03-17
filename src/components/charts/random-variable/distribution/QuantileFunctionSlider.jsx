@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import BackgroundArea from "../../helpers/BackgroundArea";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
+import StatsBadge from "../../../content/helpers/StatsBadge";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
 const QuantileFunctionSlider = () => {
@@ -188,6 +189,32 @@ const QuantileFunctionSlider = () => {
       </div>
     );
 
+  const badgeItems =
+    target && !target.msg
+      ? [
+          {
+            label: "p",
+            value: `${(target.p * 100).toFixed(1)} %`,
+            color: "text-primary",
+            groupStart: true,
+          },
+          {
+            label: "x",
+            value: `${target.x.toFixed(2)} %`,
+            color: "text-success",
+            groupStart: true, // Vytvorí peknú vertikálnu čiaru medzi dvoma hodnotami
+          },
+        ]
+      : [];
+
+  if (error) return <div className="alert alert-danger p-4 mb-4">{error}</div>;
+  if (n === 0)
+    return (
+      <div className="p-4 text-center">
+        {t("components.randomVariableCharts.quantileSlider.loading")}
+      </div>
+    );
+
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
       <div
@@ -260,32 +287,9 @@ const QuantileFunctionSlider = () => {
             {target.msg}
           </div>
         )}
-        {target && !target.msg && (
-          <div
-            className="px-4 py-2 rounded-pill bg-body-tertiary border shadow-sm d-inline-block text-nowrap"
-            style={{ fontSize: "0.95rem" }}
-          >
-            <span className="text-muted me-2">
-              {t("components.randomVariableCharts.quantileSlider.resultLabel")}
-            </span>
-            {t("components.randomVariableCharts.quantileSlider.resultProb")}
-            <strong
-              className="text-primary d-inline-block text-start ms-1 text-nowrap"
-              style={{ width: "85px" }}
-            >
-              p = {(target.p * 100).toFixed(1)} %
-            </strong>{" "}
-            {t(
-              "components.randomVariableCharts.quantileSlider.resultCorresponds",
-            )}
-            <strong
-              className="text-primary d-inline-block text-start ms-1 text-nowrap"
-              style={{ width: "100px" }}
-            >
-              x = {target.x.toFixed(2)} %
-            </strong>
-          </div>
-        )}
+
+        {/* Použitie nového StatsBadge miesto pôvodného textu */}
+        {target && !target.msg && <StatsBadge items={badgeItems} />}
       </div>
 
       <h6 className="mb-3 text-center">
