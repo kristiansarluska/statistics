@@ -6,6 +6,7 @@ import ResetButton from "../../components/charts/helpers/ResetButton";
 import ChoroplethMap from "../../components/maps/ChoroplethMap";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
+import StatsBadge from "../../components/content/helpers/StatsBadge";
 
 // Sub-components
 import VariabilityScatterChart from "../../components/charts/hypothesis-testing/VariabilityScatterChart";
@@ -79,7 +80,6 @@ function TTestDashboard() {
         setLoading(false);
       }
     };
-
     fetchGeoJSON();
   }, []);
 
@@ -118,17 +118,44 @@ function TTestDashboard() {
     return points;
   }, [stats]);
 
-  if (loading) {
+  if (loading)
     return (
       <div className="text-center py-5">
         <div className="spinner-border text-primary" />
       </div>
     );
-  }
   if (!stats) return null;
 
   const isSignificant = stats.pValue < alpha;
   const isDefaultExpected = expectedValue === DEFAULT_EXPECTED_VALUE;
+
+  const statsBadgeItems = [
+    { label: "n", value: stats.n, color: "text-body", groupStart: true },
+    {
+      label: "x̄",
+      value: `${stats.mean.toFixed(2)} %`,
+      color: "text-primary",
+      groupStart: false,
+    },
+    {
+      label: "s",
+      value: stats.sd.toFixed(2),
+      color: "text-warning",
+      groupStart: false,
+    },
+    {
+      label: "t",
+      value: stats.t.toFixed(4),
+      color: isSignificant ? "text-danger" : "text-success",
+      groupStart: true,
+    },
+    {
+      label: "p",
+      value: stats.pValue.toFixed(4),
+      color: isSignificant ? "text-danger" : "text-success",
+      groupStart: false,
+    },
+  ];
 
   return (
     <section id="interactive-test" className="mb-5">
@@ -148,7 +175,7 @@ function TTestDashboard() {
             {t("hypothesisTesting.tTestDashboard.controls.district")}
           </label>
           <select
-            className="form-select text-left shadow-sm"
+            className="form-select shadow-sm"
             value={selectedOkres}
             onChange={(e) => setSelectedOkres(e.target.value)}
             style={{ maxWidth: "200px", height: "38px" }}
@@ -161,20 +188,26 @@ function TTestDashboard() {
           </select>
         </div>
 
+        {/* Expected value: replaced number input with slider */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
             {t("hypothesisTesting.tTestDashboard.controls.expectedValue")}
+            <span className="text-primary ms-2">
+              {expectedValue.toFixed(2)} %
+            </span>
           </label>
-          <div className="d-flex align-items-center gap-2">
+          <div
+            className="d-flex align-items-center gap-2"
+            style={{ maxWidth: "260px", width: "100%" }}
+          >
             <input
-              type="number"
-              className="form-control text-center shadow-sm"
+              type="range"
+              className="form-range"
+              min="15"
+              max="30"
+              step="0.01"
               value={expectedValue}
-              onChange={(e) =>
-                setExpectedValue(parseFloat(e.target.value) || 0)
-              }
-              step="any"
-              style={{ maxWidth: "150px", height: "38px" }}
+              onChange={(e) => setExpectedValue(parseFloat(e.target.value))}
             />
             <ResetButton
               onClick={() => setExpectedValue(DEFAULT_EXPECTED_VALUE)}
@@ -202,9 +235,83 @@ function TTestDashboard() {
         </div>
       </div>
 
-      {/* Alert */}
+      {/* Key stats summary */}
+      <div className="text-center mt-5 mb-3">
+        <StatsBadge items={statsBadgeItems} />
+      </div>
+
+      {/* Charts */}
       <div
-        className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-5`}
+        className="charts-wrapper w-100 mb-4"
+        style={{ alignItems: "flex-end" }}
+      >
+        <VariabilityScatterChart
+          data={stats.districtData}
+          expectedValue={expectedValue}
+          mean={stats.mean}
+          hoveredObec={hoveredObec}
+          setHoveredObec={setHoveredObec}
+        />
+        <TDistributionChart
+          data={tChartData}
+          tValue={stats.t}
+          tCrit={stats.tCrit}
+          df={stats.df}
+          isSignificant={isSignificant}
+        />
+      </div>
+
+      <ChoroplethMap
+        geoJsonData={geoJson}
+        attribute="podiel_nad65"
+        filterKey="okres"
+        filterValue={selectedOkres}
+        hoveredObec={hoveredObec}
+        setHoveredObec={setHoveredObec}
+        pivot={expectedValue}
+      />
+
+      {/* Interpretive note */}
+      <div className="alert alert-secondary border-0 shadow-sm mb-4 small">
+        <Trans
+          i18nKey="hypothesisTesting.tTestDashboard.interpretiveNote"
+          components={{ bold: <strong /> }}
+        />
+      </div>
+
+      {/* Calculation breakdown toggle */}
+      <div className="mb-4">
+        <button
+          className="btn btn-outline-secondary btn-sm rounded-pill px-4 mx-auto d-block"
+          type="button"
+          onClick={() => setCalcOpen((v) => !v)}
+        >
+          {calcOpen
+            ? t("hypothesisTesting.tTestDashboard.calcToggle.hide")
+            : t("hypothesisTesting.tTestDashboard.calcToggle.show")}
+        </button>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateRows: calcOpen ? "1fr" : "0fr",
+            transition: "grid-template-rows 0.35s ease",
+          }}
+        >
+          <div style={{ overflow: "hidden" }}>
+            <TTestCalculation
+              stats={stats}
+              expectedValue={expectedValue}
+              alpha={alpha}
+              selectedOkres={selectedOkres}
+              isSignificant={isSignificant}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Test result alert — moved below charts */}
+      <div
+        className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-3`}
       >
         <h5 className="alert-heading mb-2">
           {t("hypothesisTesting.tTestDashboard.alert.title")}{" "}
@@ -236,65 +343,6 @@ function TTestDashboard() {
               })}
         </p>
       </div>
-
-      {/* Live calculation breakdown */}
-      <div className="mb-4">
-        <button
-          className="btn btn-outline-secondary btn-sm rounded-pill px-4 mx-auto d-block"
-          type="button"
-          onClick={() => setCalcOpen((v) => !v)}
-        >
-          {calcOpen
-            ? t("hypothesisTesting.tTestDashboard.calcToggle.hide")
-            : t("hypothesisTesting.tTestDashboard.calcToggle.show")}
-        </button>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateRows: calcOpen ? "1fr" : "0fr",
-            transition: "grid-template-rows 0.35s ease",
-          }}
-        >
-          <div style={{ overflow: "hidden" }}>
-            <TTestCalculation
-              stats={stats}
-              expectedValue={expectedValue}
-              alpha={alpha}
-              selectedOkres={selectedOkres}
-              isSignificant={isSignificant}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Charts */}
-      <div className="charts-wrapper w-100" style={{ alignItems: "flex-end" }}>
-        <VariabilityScatterChart
-          data={stats.districtData}
-          expectedValue={expectedValue}
-          mean={stats.mean}
-          hoveredObec={hoveredObec}
-          setHoveredObec={setHoveredObec}
-        />
-        <TDistributionChart
-          data={tChartData}
-          tValue={stats.t}
-          tCrit={stats.tCrit}
-          df={stats.df}
-          isSignificant={isSignificant}
-        />
-      </div>
-
-      <ChoroplethMap
-        geoJsonData={geoJson}
-        attribute="podiel_nad65"
-        filterKey="okres"
-        filterValue={selectedOkres}
-        hoveredObec={hoveredObec}
-        setHoveredObec={setHoveredObec}
-        pivot={expectedValue}
-      />
     </section>
   );
 }

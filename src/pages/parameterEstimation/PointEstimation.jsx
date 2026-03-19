@@ -65,6 +65,26 @@ function PointEstimation() {
         </p>
         <PointEstimationSimulation />
       </div>
+      <h4 className="mt-5 mb-3">
+        {t("parameterEstimation.pointEstimation.realDataTitle")}
+      </h4>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.realDataP1"
+          components={{ bold: <strong /> }}
+        />
+      </p>
+      <p>
+        <Trans
+          i18nKey="parameterEstimation.pointEstimation.realDataP2"
+          components={{
+            bold: <strong />,
+            mu: <InlineMath math="\mu = 46{,}22" />,
+            sigma: <InlineMath math="\sigma = 3{,}76" />,
+          }}
+        />
+      </p>
+
       <RealDataSampling />
     </section>
   );

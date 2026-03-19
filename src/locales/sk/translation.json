@@ -374,7 +374,10 @@
           "histogram": "Histogram (vzorka)",
           "pdf": "Teoretické rozdelenie (populácia)"
         }
-      }
+      },
+      "realDataTitle": "Bodový odhad na reálnych dátach",
+      "realDataP1": "Doteraz sme bodový odhad a SEM ilustrovali na syntetických dátach. Teraz si vyskúšame, ako to funguje v praxi — na reálnom geografickom datasete. <bold>Základným súborom</bold> (populáciou) bude všetkých <bold>1 113 regiónov NUTS3 Európskej únie</bold>, pre ktoré Eurostat v roku 2025 eviduje údaj o mediáne veku obyvateľstva.",
+      "realDataP2": "Keďže máme k dispozícii celú populáciu, poznáme jej skutočné parametre: strednú hodnotu <mu/> rokov a smerodajnú odchýlku <sigma/> rokov. V praxi by sme tieto hodnoty nepoznali — máme ich len preto, aby sme mohli sledovať, <bold>ako dobre náš výberový odhad trafí skutočnú hodnotu</bold>. Pomocou nástroja nižšie môžeš generovať náhodné výbery rôznych veľkostí a sledovať, ako sa výberový priemer x̄ a SEM správajú v závislosti od n."
     },
     "intervalEstimation": {
       "title": "Intervalový odhad"
@@ -449,6 +452,7 @@
     "tTestDashboard": {
       "title": "Interaktívna ukážka",
       "description": "V predchádzajúcich častiach sme prešli všeobecným postupom testovania hypotéz a formulovali sme konkrétne hypotézy pre podiel obyvateľov nad 65 rokov v obciach Moravskoslezského kraja. Teraz si celý proces môžeš vyskúšať interaktívne — vyber okres, nastav referenčnú hodnotu <m/> a sleduj, ako sa mení výsledok testu aj vizualizácia rozdelenia.",
+      "interpretiveNote": "Všimnite si, že výsledok testu nezávisí len od skutočného <bold>výberového priemeru</bold>, ale aj od <bold>variability (s)</bold> a <bold>veľkosti vzorky (n)</bold>. Práve preto môže nastať situácia, keď v jednom okrese hypotézu nezamietneme napriek väčšiemu rozdielu od μ₀, kým v inom ju zamietneme pri menšom rozdiele — jednoducho preto, že tam je nižšia variabilita alebo väčší počet obcí.",
       "controls": {
         "district": "Výber okresu:",
         "expectedValue": "Očakávaný podiel nad 65 rokov (μ₀):",
