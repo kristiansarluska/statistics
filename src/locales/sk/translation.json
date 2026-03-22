@@ -380,7 +380,46 @@
       "realDataP2": "Keďže máme k dispozícii celú populáciu, poznáme jej skutočné parametre: strednú hodnotu <mu/> rokov a smerodajnú odchýlku <sigma/> rokov. V praxi by sme tieto hodnoty nepoznali — máme ich len preto, aby sme mohli sledovať, <bold>ako dobre náš výberový odhad trafí skutočnú hodnotu</bold>. Pomocou nástroja nižšie môžeš generovať náhodné výbery rôznych veľkostí a sledovať, ako sa výberový priemer x̄ a SEM správajú v závislosti od n."
     },
     "intervalEstimation": {
-      "title": "Intervalový odhad"
+      "title": "Intervalový odhad",
+      "p1": "Bodový odhad je síce užitočný, ale neposkytuje nám žiadnu informáciu o svojej presnosti. Tento nedostatok rieši <bold>intervalový odhad</bold>, ktorý okolo bodového odhadu konštruuje určitý interval (rozsah hodnôt). O tomto intervale môžeme s vopred zvolenou pravdepodobnosťou tvrdiť, že pokrýva skutočnú, no pre nás neznámu hodnotu parametra populácie.",
+      "p2": "Táto pravdepodobnosť sa označuje ako <bold>hladina spoľahlivosti</bold> (<confLevel/>) a zvyčajne sa udáva v percentách (napr. 90 %, 95 % alebo 99 %). Jej doplnok do 100 %, označovaný ako <alpha/>, sa nazýva <bold>hladina významnosti</bold> a predstavuje riziko, že sa hľadaný parameter v našom intervale nenachádza.",
+      "typesTitle": "Typy intervalových odhadov",
+      "typesDesc": "Podľa toho, či nás zaujíma horná, dolná, alebo obe hranice neznámeho parametra, rozlišujeme tri typy intervalov:",
+      "typeTwoSided": "<bold>Obojstranný interval:</bold> Ohraničuje hľadaný parameter zdola aj zhora. Riziko omylu sa rovnomerne rozdelí na obe strany rozdelenia (<alphaHalf/>).",
+      "typeLeftSided": "<bold>Ľavostranný interval:</bold> Určuje iba dolnú hranicu parametra (očakávame, že parameter je väčší ako táto hranica). Celé riziko <alpha/> je na jednej strane.",
+      "typeRightSided": "<bold>Pravostranný interval:</bold> Určuje iba hornú hranicu parametra.",
+      "meanKnownSigmaTitle": "Odhad strednej hodnoty (známy rozptyl populácie)",
+      "meanKnownSigmaDesc": "Ak poznáme skutočný rozptyl populácie (<sigma2/>), na konštrukciu intervalu využívame kvantily štandardizovaného normálneho rozdelenia (<u/>). Obojstranný interval spoľahlivosti pre strednú hodnotu (<mu/>) má tvar:",
+      "meanUnknownSigmaTitle": "Odhad strednej hodnoty (neznámy rozptyl populácie)",
+      "meanUnknownSigmaDesc": "V praxi rozptyl populácie zväčša nepoznáme. V takom prípade ho nahradíme výberovým rozptylom (<s2/>) a pre výpočet intervalu musíme použiť Studentovo t-rozdelenie s (<nMinus1/>) stupňami voľnosti. Interval má následne tvar:",
+      "interactivePlaceholder": "Interaktívny prvok: Simulácia intervalov spoľahlivosti (Pripravuje sa)",
+      "simulation": {
+        "title": "Simulátor intervalových odhadov",
+        "controls": {
+          "confidence": "Hladina spoľahlivosti (1-α)",
+          "variance": "Rozptyl populácie",
+          "varianceKnown": "Známy (Z-skóre)",
+          "varianceUnknown": "Neznámy (t-skóre)",
+          "tailType": "Typ odhadu",
+          "twoSided": "Obojstranný",
+          "leftSided": "Ľavostranný",
+          "rightSided": "Pravostranný",
+          "sampleSize": "Veľkosť výberu (n):"
+        },
+        "actions": {
+          "add1": "+ 1 výber",
+          "add5": "+ 5 výberov",
+          "add10": "+ 10 výberov",
+          "reset": "Zmazať históriu",
+          "showCalc": "Zobraziť výpočet (posledný výber)",
+          "hideCalc": "Skryť výpočet"
+        },
+        "formulaTitle": "Výpočet pre posledný výber (č. {{id}})",
+        "charts": {
+          "densityTitle": "Rozdelenie testovacej štatistiky a kritické oblasti",
+          "intervalsTitle": "Vygenerované intervaly spoľahlivosti"
+        }
+      }
     }
   },
 

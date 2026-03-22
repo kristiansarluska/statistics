@@ -322,3 +322,32 @@ export const normalPdf = (x, mean, stdDev) => {
     Math.exp(-Math.pow(x - mean, 2) / (2 * variance))
   );
 };
+
+// Pridaj na koniec súboru src/utils/distributions.js
+
+// Kvantily štandardizovaného normálneho rozdelenia (Z-skóre) pre bežné hladiny významnosti
+export const getZCriticalValue = (confidenceLevel) => {
+  if (confidenceLevel === 0.9) return 1.645;
+  if (confidenceLevel === 0.95) return 1.96;
+  if (confidenceLevel === 0.99) return 2.576;
+  return 1.96; // default 95%
+};
+
+// Aproximácia kvantilu Studentovho t-rozdelenia
+// Pre presné akademické účely sa často používa aproximácia cez Z-skóre pre n > 30,
+// a pre menšie n presnejší výpočet. Tu je zjednodušená presná tabuľková interpolácia/aproximácia.
+export const getTCriticalValue = (confidenceLevel, df) => {
+  const z = getZCriticalValue(confidenceLevel);
+  if (df <= 0) return z;
+
+  // Aproximácia Cornish-Fisher / Peizer-Pratt pre t-kvantil
+  // Pre vysoké stupne voľnosti sa t blíži k Z
+  if (df > 120) return z;
+
+  const z2 = z * z;
+  const z3 = z2 * z;
+  const z5 = z3 * z2;
+
+  // Zlepšená aproximácia pre menšie vzorky
+  return z + (z3 + z) / (4 * df) + (5 * z5 + 16 * z3 + 3 * z) / (96 * df * df);
+};
