@@ -1,15 +1,11 @@
 // src/components/content/parameterEstimation/ConfidenceIntervalSimulation.jsx
 import React, { useState, useEffect, useMemo } from "react";
+import { Trans } from "react-i18next";
+import { InlineMath } from "react-katex";
+import InfoIcon from "../helpers/InfoIcon";
+import { useTranslation } from "react-i18next";
 import { BlockMath } from "react-katex";
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ReferenceLine,
-  ReferenceArea,
-  ResponsiveContainer,
-} from "recharts";
+import { ReferenceArea, ReferenceLine } from "recharts";
 import StyledLineChart from "../../charts/helpers/StyledLineChart";
 import ResetButton from "../../charts/helpers/ResetButton";
 import {
@@ -22,8 +18,6 @@ import {
 const POP_MEAN = 46.2226;
 const POP_STD = 3.7576;
 const MAX_SAMPLES = 100;
-const CLAMP_MIN = 36;
-const CLAMP_MAX = 57;
 const DIST_STEPS = 300;
 
 // ─── Math helpers ──────────────────────────────────────────────────────────────
@@ -67,6 +61,7 @@ const DistributionChart = ({
   lastZScore,
   allZScores,
   computedSamples,
+  t,
 }) => {
   const [hoverX, setHoverX] = useState(null);
   const df = n - 1;
@@ -95,17 +90,23 @@ const DistributionChart = ({
       ? `α/2 = ${((alpha / 2) * 100).toFixed(1)} %`
       : `α = ${(alpha * 100).toFixed(0)} %`;
 
-  // Pass F(z) as extra tooltip row
   const extraRows = useMemo(() => {
     if (hoverX === null) return [];
     return [
       {
-        label: "F(z)",
+        label: t(
+          "parameterEstimation.intervalEstimation.simulation.charts.tooltipF",
+          { score: knowSigma ? "z" : "t" },
+        ),
         value: `${(cdfFn(hoverX) * 100).toFixed(2)} %`,
         color: "var(--bs-secondary-color)",
       },
     ];
-  }, [hoverX, cdfFn]);
+  }, [hoverX, cdfFn, knowSigma, t]);
+
+  // Skóre posledného výberu mení farbu ak CI neobsahuje strednú hodnotu
+  const lastHit = computedSamples[0]?.hit ?? true;
+  const lastScoreColor = lastHit ? "var(--bs-success)" : "var(--bs-danger)";
 
   return (
     <StyledLineChart
@@ -121,8 +122,9 @@ const DistributionChart = ({
       type="pdf"
       showReferenceArea={false}
       extraRows={extraRows}
+      height={220}
+      margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
     >
-      {/* Critical region(s) */}
       {type !== "right" && (
         <ReferenceArea
           x1={-4}
@@ -152,7 +154,6 @@ const DistributionChart = ({
         />
       )}
 
-      {/* Critical value dashed lines */}
       {type !== "right" && (
         <ReferenceLine
           x={-crit}
@@ -182,7 +183,6 @@ const DistributionChart = ({
         />
       )}
 
-      {/* Ghost z-scores from previous samples — colored by hit/miss */}
       {allZScores &&
         allZScores.slice(1).map((z, i) => {
           if (z < -4 || z > 4) return null;
@@ -198,17 +198,16 @@ const DistributionChart = ({
           );
         })}
 
-      {/* Last sample z/t-score */}
       {lastZScore !== null && lastZScore >= -4 && lastZScore <= 4 && (
         <ReferenceLine
           x={lastZScore}
-          stroke="var(--bs-success)"
+          stroke={lastScoreColor}
           strokeWidth={2}
           label={{
             value: `${knowSigma ? "z" : "t"}=${lastZScore.toFixed(2)}`,
             position: lastZScore > 1.5 ? "insideTopLeft" : "insideTopRight",
             fontSize: 10,
-            fill: "var(--bs-success)",
+            fill: lastScoreColor,
             fontWeight: "bold",
           }}
         />
@@ -219,7 +218,7 @@ const DistributionChart = ({
 
 // ─── CI chart — pure SVG ───────────────────────────────────────────────────────
 
-const CIChart = ({ samples }) => {
+const CIChart = ({ samples, n, t }) => {
   if (!samples.length) {
     return (
       <div
@@ -230,20 +229,35 @@ const CIChart = ({ samples }) => {
           borderRadius: 4,
         }}
       >
-        Zatiaľ žiadne výbery. Kliknite na „+ výber".
+        {t(
+          "parameterEstimation.intervalEstimation.simulation.charts.emptyState",
+        )}
       </div>
     );
   }
 
   const [tooltip, setTooltip] = React.useState(null);
 
+  const popSE = POP_STD / Math.sqrt(n);
+  const CLAMP_MIN = POP_MEAN - 4 * popSE;
+  const CLAMP_MAX = POP_MEAN + 4 * popSE;
+
+  const X_TICKS = useMemo(() => {
+    return [
+      POP_MEAN - 4 * popSE,
+      POP_MEAN - 2 * popSE,
+      POP_MEAN,
+      POP_MEAN + 2 * popSE,
+      POP_MEAN + 4 * popSE,
+    ];
+  }, [popSE]);
+
   const ROW_H = 20;
-  const ML = 36;
-  const MR = 16;
+  const ML = 65;
+  const MR = 30;
   const MT = 24;
   const MB = 36;
-  const X_TICKS = [38, 40, 42, 44, 46, 48, 50, 52, 54, 56];
-  const MAX_H = 300; // matches StyledLineChart fixed height
+  const MAX_H = 240;
 
   const svgH = MT + samples.length * ROW_H + MB;
 
@@ -278,8 +292,6 @@ const CIChart = ({ samples }) => {
   return (
     <div
       style={{
-        border: "1px solid var(--bs-border-color)",
-        borderRadius: 4,
         background: "var(--bs-body-bg)",
         overflowX: "hidden",
         overflowY: svgH > MAX_H ? "auto" : "visible",
@@ -336,7 +348,7 @@ const CIChart = ({ samples }) => {
               fill="var(--bs-body-color)"
               opacity={0.7}
             >
-              {v}
+              {v.toFixed(2)}
             </text>
           </g>
         ))}
@@ -350,7 +362,9 @@ const CIChart = ({ samples }) => {
           fill="var(--bs-body-color)"
           opacity={0.8}
         >
-          medián veku (r.)
+          {t(
+            "parameterEstimation.intervalEstimation.simulation.charts.xAxisLabel",
+          )}
         </text>
 
         {/* Y axis labels */}
@@ -466,15 +480,34 @@ const CIChart = ({ samples }) => {
             const { s, i, mx, my } = tooltip;
             const col = s.hit ? "var(--bs-success)" : "var(--bs-danger)";
             const lines = [
-              `Výber #${samples.length - i}`,
+              t(
+                "parameterEstimation.intervalEstimation.simulation.charts.tooltipSelection",
+                { num: samples.length - i },
+              ),
               `x̄ = ${s.mean.toFixed(3)}`,
               ...(s.lower !== -Infinity
-                ? [`dolná = ${s.lower.toFixed(3)}`]
+                ? [
+                    t(
+                      "parameterEstimation.intervalEstimation.simulation.charts.tooltipLower",
+                      { val: s.lower.toFixed(3) },
+                    ),
+                  ]
                 : []),
               ...(s.upper !== Infinity
-                ? [`horná = ${s.upper.toFixed(3)}`]
+                ? [
+                    t(
+                      "parameterEstimation.intervalEstimation.simulation.charts.tooltipUpper",
+                      { val: s.upper.toFixed(3) },
+                    ),
+                  ]
                 : []),
-              s.hit ? "Obsahuje μ" : "Neobsahuje μ",
+              s.hit
+                ? t(
+                    "parameterEstimation.intervalEstimation.simulation.charts.tooltipContains",
+                  )
+                : t(
+                    "parameterEstimation.intervalEstimation.simulation.charts.tooltipNotContains",
+                  ),
             ];
             const tw = 148,
               th = lines.length * 16 + 10;
@@ -523,7 +556,7 @@ const CIChart = ({ samples }) => {
 
 // ─── Formula panel ─────────────────────────────────────────────────────────────
 
-const FormulaPanel = ({ cl, type, knowSigma, lastSample }) => {
+const FormulaPanel = ({ cl, type, knowSigma, lastSample, t }) => {
   const sigStr = knowSigma ? "\\sigma" : "s";
   const critSub = type === "two" ? "1-\\alpha/2" : "1-\\alpha";
   const critStr = knowSigma ? `z_{${critSub}}` : `t_{n-1,\\,${critSub}}`;
@@ -564,17 +597,22 @@ const FormulaPanel = ({ cl, type, knowSigma, lastSample }) => {
     }
   }
 
-  const typeLabel = {
-    two: "obojstranný",
-    left: "ľavostranný",
-    right: "pravostranný",
-  }[type];
+  const typeMap = { two: "Two", left: "Left", right: "Right" };
+  const typeLabel = t(
+    `parameterEstimation.intervalEstimation.simulation.controls.type${typeMap[type]}`,
+  );
+  const varTypeLabel = knowSigma
+    ? t("parameterEstimation.intervalEstimation.simulation.formula.varKnown")
+    : t("parameterEstimation.intervalEstimation.simulation.formula.varUnknown");
 
   return (
     <div className="p-3 border rounded-3 bg-body-tertiary shadow-sm mt-1">
       <p className="fw-bold text-muted mb-2" style={{ fontSize: "0.85rem" }}>
-        Vzorec ({cl} %, {typeLabel},{" "}
-        {knowSigma ? "σ známe — Z-skóre" : "σ neznáme — t-skóre"}):
+        {t("parameterEstimation.intervalEstimation.simulation.formula.title", {
+          cl,
+          type: typeLabel,
+          varType: varTypeLabel,
+        })}
       </p>
       <div className="text-center overflow-auto">
         <BlockMath math={formulaLatex} />
@@ -586,19 +624,35 @@ const FormulaPanel = ({ cl, type, knowSigma, lastSample }) => {
             className="fw-bold text-muted mb-1"
             style={{ fontSize: "0.85rem" }}
           >
-            Výpočet pre posledný výber (n = {lastSample.n}):
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.formula.calcTitle",
+              { n: lastSample.n },
+            )}
           </p>
           <div className="text-center overflow-auto">
             <BlockMath math={calcLatex} />
           </div>
           <p className="text-center mb-0 mt-1" style={{ fontSize: "0.85rem" }}>
-            Interval{" "}
-            {lastSample.hit ? (
-              <strong className="text-success">obsahuje</strong>
-            ) : (
-              <strong className="text-danger">neobsahuje</strong>
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.formula.resultPrefix",
             )}{" "}
-            populačnú strednú hodnotu μ = {POP_MEAN}.
+            {lastSample.hit ? (
+              <strong className="text-success">
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.formula.resultContains",
+                )}
+              </strong>
+            ) : (
+              <strong className="text-danger">
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.formula.resultNotContains",
+                )}
+              </strong>
+            )}{" "}
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.formula.resultSuffix",
+              { mu: POP_MEAN },
+            )}
           </p>
         </>
       )}
@@ -609,6 +663,7 @@ const FormulaPanel = ({ cl, type, knowSigma, lastSample }) => {
 // ─── Main component ─────────────────────────────────────────────────────────────
 
 function ConfidenceIntervalSimulation() {
+  const { t } = useTranslation();
   const [geoJson, setGeoJson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cl, setCl] = useState(95);
@@ -679,7 +734,6 @@ function ConfidenceIntervalSimulation() {
     return (lastSample.mean - POP_MEAN) / se;
   }, [lastSample, knowSigma]);
 
-  // All z/t-scores for ghost lines in distribution chart (capped at 40 for performance)
   const allZScores = useMemo(
     () =>
       computedSamples.slice(0, 40).map((s) => {
@@ -706,15 +760,24 @@ function ConfidenceIntervalSimulation() {
       >
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 small text-center">
-            Hladina spoľahlivosti (1 − α):
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.controls.confidence",
+            )}
           </label>
           <div className="btn-group">
             {[90, 95, 99].map((v, i, arr) => (
               <button
                 key={v}
                 type="button"
-                className={`btn btn-sm btn-outline-primary px-3 ${cl === v ? "active" : ""}
-                  ${i === 0 ? "rounded-start-pill" : i === arr.length - 1 ? "rounded-end-pill" : ""}`}
+                className={`btn btn-sm btn-outline-primary px-3 ${
+                  cl === v ? "active" : ""
+                } ${
+                  i === 0
+                    ? "rounded-start-pill"
+                    : i === arr.length - 1
+                      ? "rounded-end-pill"
+                      : ""
+                }`}
                 onClick={() => setCl(v)}
               >
                 {v} %
@@ -725,19 +788,43 @@ function ConfidenceIntervalSimulation() {
 
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 small text-center">
-            Typ intervalu:
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.controls.type",
+            )}
           </label>
           <div className="btn-group">
             {[
-              ["left", "Ľavostranný"],
-              ["two", "Obojstranný"],
-              ["right", "Pravostranný"],
+              [
+                "left",
+                t(
+                  "parameterEstimation.intervalEstimation.simulation.controls.typeLeft",
+                ),
+              ],
+              [
+                "two",
+                t(
+                  "parameterEstimation.intervalEstimation.simulation.controls.typeTwo",
+                ),
+              ],
+              [
+                "right",
+                t(
+                  "parameterEstimation.intervalEstimation.simulation.controls.typeRight",
+                ),
+              ],
             ].map(([v, label], i, arr) => (
               <button
                 key={v}
                 type="button"
-                className={`btn btn-sm btn-outline-primary px-3 ${type === v ? "active" : ""}
-                  ${i === 0 ? "rounded-start-pill" : i === arr.length - 1 ? "rounded-end-pill" : ""}`}
+                className={`btn btn-sm btn-outline-primary px-3 ${
+                  type === v ? "active" : ""
+                } ${
+                  i === 0
+                    ? "rounded-start-pill"
+                    : i === arr.length - 1
+                      ? "rounded-end-pill"
+                      : ""
+                }`}
                 onClick={() => setType(v)}
               >
                 {label}
@@ -747,19 +834,43 @@ function ConfidenceIntervalSimulation() {
         </div>
 
         <div className="d-flex flex-column align-items-center">
-          <label className="form-label fw-bold mb-2 small text-center">
-            Rozptyl populácie:
+          <label className="form-label fw-bold mb-2 small text-center d-flex align-items-center">
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.controls.variance",
+            )}
+            <InfoIcon>
+              <Trans
+                i18nKey="parameterEstimation.intervalEstimation.simulation.infoZvsT"
+                components={{
+                  bold: <strong className="text-primary" />,
+                  m1: <InlineMath math="s" />,
+                  m2: <InlineMath math="\bar{x}" />,
+                  m3: <InlineMath math="t" />,
+                }}
+              />
+            </InfoIcon>
           </label>
           <div className="btn-group">
             {[
-              [true, "σ známe (Z)"],
-              [false, "σ neznáme (t)"],
+              [
+                true,
+                t(
+                  "parameterEstimation.intervalEstimation.simulation.controls.varKnown",
+                ),
+              ],
+              [
+                false,
+                t(
+                  "parameterEstimation.intervalEstimation.simulation.controls.varUnknown",
+                ),
+              ],
             ].map(([v, label], i) => (
               <button
                 key={String(v)}
                 type="button"
-                className={`btn btn-sm btn-outline-primary px-3 ${knowSigma === v ? "active" : ""}
-                  ${i === 0 ? "rounded-start-pill" : "rounded-end-pill"}`}
+                className={`btn btn-sm btn-outline-primary px-3 ${
+                  knowSigma === v ? "active" : ""
+                } ${i === 0 ? "rounded-start-pill" : "rounded-end-pill"}`}
                 onClick={() => setKnowSigma(v)}
               >
                 {label}
@@ -769,7 +880,6 @@ function ConfidenceIntervalSimulation() {
         </div>
       </div>
 
-      {/* ── Draw buttons + slider in one row ── */}
       <div className="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
         <div className="d-flex align-items-center gap-2">
           <label className="fw-bold small mb-0 text-nowrap">
@@ -799,7 +909,10 @@ function ConfidenceIntervalSimulation() {
               }
               onClick={() => draw(cnt)}
             >
-              + {cnt}
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.actions.addCount",
+                { count: cnt },
+              )}
             </button>
           ))}
         </div>
@@ -807,16 +920,20 @@ function ConfidenceIntervalSimulation() {
           className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill"
           style={{ fontSize: "0.9rem" }}
         >
-          {total} výberov
+          {total}{" "}
+          {t(
+            "parameterEstimation.intervalEstimation.simulation.actions.samplesCount",
+          )}
         </span>
         <ResetButton
           onClick={() => setRawSamples([])}
           disabled={total === 0}
-          title="Vymazať všetky výbery"
+          title={t(
+            "parameterEstimation.intervalEstimation.simulation.actions.clearAll",
+          )}
         />
       </div>
 
-      {/* ── Coverage — StatsBadge style ── */}
       {total > 0 && (
         <div
           className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2 mb-4"
@@ -824,44 +941,71 @@ function ConfidenceIntervalSimulation() {
         >
           <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
             <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">Obsahuje μ:</span>
+              <span className="text-muted">
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.coverage.contains",
+                )}
+              </span>
               <strong className="text-success">
                 {hits} ({((hits / total) * 100).toFixed(1)} %)
               </strong>
             </div>
             <div className="d-none d-sm-block mx-2 border-start align-self-stretch" />
             <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">Neobsahuje μ:</span>
+              <span className="text-muted">
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.coverage.notContains",
+                )}
+              </span>
               <strong className="text-danger">
                 {total - hits} ({(((total - hits) / total) * 100).toFixed(1)} %)
               </strong>
             </div>
             <div className="d-none d-sm-block mx-2 border-start align-self-stretch" />
             <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">Teoretická pokryvnosť:</span>
+              <span className="text-muted">
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.coverage.theoretical",
+                )}
+              </span>
               <strong className="text-body">{cl} %</strong>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Charts: side-by-side on md+, stacked on mobile ── */}
-      <div className="charts-wrapper w-100" style={{ maxWidth: 1100 }}>
+      {/* ── Charts: stacked vertically with controlled height and reduced gap ── */}
+      <div
+        className="d-flex flex-column gap-2 w-100 mx-auto"
+        style={{ maxWidth: "1000px" }}
+      >
         {/* Distribution chart */}
-        <div>
-          <h6 className="text-center mb-1" style={{ fontSize: "0.88rem" }}>
-            {knowSigma ? "N(0,1)" : `t(${n - 1})`} — kritické oblasti a{" "}
-            {knowSigma ? "z" : "t"}-skóre výberov
+        <div className="w-100">
+          <h6 className="text-center mb-0" style={{ fontSize: "0.88rem" }}>
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.charts.distTitle",
+              {
+                dist: knowSigma ? "N(0,1)" : `t(${n - 1})`,
+                score: knowSigma ? "z" : "t",
+              },
+            )}
           </h6>
           <div
             className="d-flex gap-3 justify-content-center mb-1"
             style={{ fontSize: "0.8rem" }}
           >
             <span style={{ color: "var(--bs-danger)" }}>
-              ■ kritická oblasť (α)
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.charts.legendCrit",
+              )}
             </span>
             <span style={{ color: "var(--bs-success)" }}>
-              │ {knowSigma ? "z" : "t"}-skóre posl. výberu
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.charts.legendLast",
+                {
+                  score: knowSigma ? "z" : "t",
+                },
+              )}
             </span>
           </div>
           <DistributionChart
@@ -872,36 +1016,56 @@ function ConfidenceIntervalSimulation() {
             lastZScore={lastZScore}
             allZScores={allZScores}
             computedSamples={computedSamples}
+            t={t}
           />
         </div>
 
         {/* CI chart */}
-        <div>
+        <div className="w-100 mt-2">
           <h6 className="text-center mb-2" style={{ fontSize: "0.88rem" }}>
-            Intervaly spoľahlivosti ({cl} %) — μ = {POP_MEAN} r.
+            {t(
+              "parameterEstimation.intervalEstimation.simulation.charts.ciTitle",
+              { cl, mu: POP_MEAN },
+            )}
           </h6>
           <div
             className="d-flex gap-3 justify-content-center mb-2"
             style={{ fontSize: "0.8rem" }}
           >
-            <span style={{ color: "var(--bs-success)" }}>— obsahuje μ</span>
-            <span style={{ color: "var(--bs-danger)" }}>— neobsahuje μ</span>
+            <span style={{ color: "var(--bs-success)" }}>
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.charts.legendContains",
+              )}
+            </span>
+            <span style={{ color: "var(--bs-danger)" }}>
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.charts.legendNotContains",
+              )}
+            </span>
             <span style={{ color: "var(--bs-body-color)", opacity: 0.6 }}>
-              ● x̄
+              {t(
+                "parameterEstimation.intervalEstimation.simulation.charts.legendMean",
+              )}
             </span>
           </div>
-          <CIChart samples={computedSamples} />
+          <CIChart samples={computedSamples} n={n} t={t} />
         </div>
       </div>
 
       {/* ── Formula toggle ── */}
-      <div className="w-100 mt-4" style={{ maxWidth: 1100 }}>
+      <div className="w-100 mt-4 mx-auto" style={{ maxWidth: "1000px" }}>
         <button
           type="button"
           className="btn btn-outline-secondary btn-sm rounded-pill px-4 d-block mx-auto mb-1"
           onClick={() => setShowFormula((v) => !v)}
         >
-          {showFormula ? "Skryť vzorec ▲" : "Zobraziť vzorec a výpočet ▼"}
+          {showFormula
+            ? t(
+                "parameterEstimation.intervalEstimation.simulation.formula.hide",
+              )
+            : t(
+                "parameterEstimation.intervalEstimation.simulation.formula.show",
+              )}
         </button>
         <div
           style={{
@@ -916,6 +1080,7 @@ function ConfidenceIntervalSimulation() {
               type={type}
               knowSigma={knowSigma}
               lastSample={lastSample}
+              t={t}
             />
           </div>
         </div>

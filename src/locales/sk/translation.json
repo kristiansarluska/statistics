@@ -362,17 +362,23 @@
           "targetStd": "Smerodajná odchýlka (σ)",
           "popMean": "Skutočná stredná hodnota (μ):",
           "popStd": "Skutočná smer. odchýlka (σ):",
-          "sampleSize": "Veľkosť vzorky (n):",
-          "generateBtn": "Vygenerovať nový výber"
+          "sampleSize": "Veľkosť výberu (n):"
+        },
+        "actions": {
+          "generateNew": "Vygenerovať nový výber",
+          "clearHistory": "Vymazať históriu výberov"
         },
         "results": {
           "sampleMean": "Výberový priemer",
           "sampleStd": "Výberová smer. odchýlka",
-          "sem": "Stredná chyba (SEM)"
+          "sem": "Stredná chyba (SEM)",
+          "recordedMeans": "Zaznamenané priemery:",
+          "recordedStds": "Zaznamenané smer. odchýlky:",
+          "samplesCount": "výberov"
         },
         "chart": {
-          "histogram": "Histogram (vzorka)",
-          "pdf": "Teoretické rozdelenie (populácia)"
+          "xAxisLabel": "Nadmorská výška (m)",
+          "yAxisLabel": "f(x)"
         }
       },
       "realDataTitle": "Bodový odhad na reálnych dátach",
@@ -381,44 +387,97 @@
     },
     "intervalEstimation": {
       "title": "Intervalový odhad",
-      "p1": "Bodový odhad je síce užitočný, ale neposkytuje nám žiadnu informáciu o svojej presnosti. Tento nedostatok rieši <bold>intervalový odhad</bold>, ktorý okolo bodového odhadu konštruuje určitý interval (rozsah hodnôt). O tomto intervale môžeme s vopred zvolenou pravdepodobnosťou tvrdiť, že pokrýva skutočnú, no pre nás neznámu hodnotu parametra populácie.",
-      "p2": "Táto pravdepodobnosť sa označuje ako <bold>hladina spoľahlivosti</bold> (<confLevel/>) a zvyčajne sa udáva v percentách (napr. 90 %, 95 % alebo 99 %). Jej doplnok do 100 %, označovaný ako <alpha/>, sa nazýva <bold>hladina významnosti</bold> a predstavuje riziko, že sa hľadaný parameter v našom intervale nenachádza.",
-      "typesTitle": "Typy intervalových odhadov",
-      "typesDesc": "Podľa toho, či nás zaujíma horná, dolná, alebo obe hranice neznámeho parametra, rozlišujeme tri typy intervalov:",
-      "typeTwoSided": "<bold>Obojstranný interval:</bold> Ohraničuje hľadaný parameter zdola aj zhora. Riziko omylu sa rovnomerne rozdelí na obe strany rozdelenia (<alphaHalf/>).",
-      "typeLeftSided": "<bold>Ľavostranný interval:</bold> Určuje iba dolnú hranicu parametra (očakávame, že parameter je väčší ako táto hranica). Celé riziko <alpha/> je na jednej strane.",
-      "typeRightSided": "<bold>Pravostranný interval:</bold> Určuje iba hornú hranicu parametra.",
-      "meanKnownSigmaTitle": "Odhad strednej hodnoty (známy rozptyl populácie)",
-      "meanKnownSigmaDesc": "Ak poznáme skutočný rozptyl populácie (<sigma2/>), na konštrukciu intervalu využívame kvantily štandardizovaného normálneho rozdelenia (<u/>). Obojstranný interval spoľahlivosti pre strednú hodnotu (<mu/>) má tvar:",
-      "meanUnknownSigmaTitle": "Odhad strednej hodnoty (neznámy rozptyl populácie)",
-      "meanUnknownSigmaDesc": "V praxi rozptyl populácie zväčša nepoznáme. V takom prípade ho nahradíme výberovým rozptylom (<s2/>) a pre výpočet intervalu musíme použiť Studentovo t-rozdelenie s (<nMinus1/>) stupňami voľnosti. Interval má následne tvar:",
-      "interactivePlaceholder": "Interaktívny prvok: Simulácia intervalov spoľahlivosti (Pripravuje sa)",
+      "p1": "Kým bodový odhad aproximuje neznámy parameter jediným číslom, intervalový odhad vymedzuje <bold>interval hodnôt</bold>, v ktorom sa parameter nachádza s určitou pravdepodobnosťou <m1/> (hladina spoľahlivosti).",
+      "p2": "Interval spoľahlivosti je dvojica štatistík <m1/>, pre ktorú platí:",
+      "alertTitle": "Najčastejšia zámena pojmov",
+      "alertDesc": "Interval spoľahlivosti <bold>nehovorí</bold>, že 95 % dát leží v danom intervale. Je to pravdepodobnosť, že <bold>tento konkrétny postup vzorkovania</bold> pri opakovanom aplikovaní pokryje skutočnú hodnotu parametra v 95 % prípadov. Ak by 100 výskumníkov nezávisle odobralo vzorku a vypočítalo 95 % interval, zhruba 95 z nich by skutočne pokrylo populačný parameter, 5 by ho minulo.",
+      "typesTitle": "Typy intervalov spoľahlivosti",
+      "typeLeftTitle": "Ľavostranný",
+      "typeLeftDesc": "Parameter je väčší ako dolná hranica. Testuje sa, či hodnota nie je príliš malá.",
+      "typeTwoSidedTitle": "Obojstranný",
+      "typeTwoSidedDesc": "Parameter leží medzi dolnou a hornou hranicou. Najčastejšie používaný typ.",
+      "typeRightTitle": "Pravostranný",
+      "typeRightDesc": "Parameter je menší ako horná hranica. Testuje sa, či hodnota nie je príliš veľká.",
+      "p3": "Ak je smerodajná odchýlka populácie <m1/> <bold>neznáma</bold> (bežný prípad v praxi), nahrádzame <m2/>-skóre kvantilmi <bold>Studentovho t-rozdelenia</bold> a populačné <m3/> výberovým <m4/>. Toto rozdelenie má ťažšie chvosty (väčšiu neistotu) a s rastúcim <m5/> konverguje k normálnemu rozdeleniu.",
+      "simTitle": "Interaktívna simulácia intervalu spoľahlivosti",
+      "simDesc": "Simulácia používa rovnaké dáta ako bodový odhad — mediány veku 1 113 regiónov NUTS3 EÚ (Eurostat 2025), s populačnou strednou hodnotou <bold>μ = 46,22 rokov</bold> a smerodajnou odchýlkou <bold>σ = 3,76 rokov</bold>. Pridávajte výbery a sledujte, koľko intervalov skutočne pokryje μ. Po zmene nastavení (hladina, typ, σ) sa <italic>všetky existujúce intervaly automaticky prepočítajú</italic> — môžete tak priamo porovnať, ako nastavenia ovplyvňujú pokryvnosť.",
       "simulation": {
-        "title": "Simulátor intervalových odhadov",
+        "infoZvsT": "Zaujímavosť: Všimnite si, že ak je zapnuté <bold>Z-skóre (známe σ)</bold>, osi oboch grafov a zvislé čiary sú pod sebou zarovnané absolútne dokonale. Ak však prepnete na <bold>t-skóre (neznáme σ)</bold>, na okrajoch uvidíte jemné odchýlky. To nie je chyba, je to priamy dôsledok toho, že pri t-skóre delíme výberovou odchýlkou <m1/>, ktorá je pre každý výber iná. Vzťah medzi <m2/> a <m3/> je teda pre každý výber mierne iný. Toto je vizualizácia samotnej podstaty Studentovho rozdelenia v praxi.",
         "controls": {
-          "confidence": "Hladina spoľahlivosti (1-α)",
-          "variance": "Rozptyl populácie",
-          "varianceKnown": "Známy (Z-skóre)",
-          "varianceUnknown": "Neznámy (t-skóre)",
-          "tailType": "Typ odhadu",
-          "twoSided": "Obojstranný",
-          "leftSided": "Ľavostranný",
-          "rightSided": "Pravostranný",
+          "confidence": "Hladina spoľahlivosti (1 − α):",
+          "type": "Typ intervalu:",
+          "typeLeft": "Ľavostranný",
+          "typeTwo": "Obojstranný",
+          "typeRight": "Pravostranný",
+          "variance": "Rozptyl populácie:",
+          "varKnown": "σ známe (Z)",
+          "varUnknown": "σ neznáme (t)",
           "sampleSize": "Veľkosť výberu (n):"
         },
         "actions": {
-          "add1": "+ 1 výber",
-          "add5": "+ 5 výberov",
-          "add10": "+ 10 výberov",
-          "reset": "Zmazať históriu",
-          "showCalc": "Zobraziť výpočet (posledný výber)",
-          "hideCalc": "Skryť výpočet"
+          "addCount": "+ {{count}}",
+          "samplesCount": "výberov",
+          "clearAll": "Vymazať všetky výbery"
         },
-        "formulaTitle": "Výpočet pre posledný výber (č. {{id}})",
+        "coverage": {
+          "contains": "Obsahuje μ:",
+          "notContains": "Neobsahuje μ:",
+          "theoretical": "Teoretická pokryvnosť:"
+        },
         "charts": {
-          "densityTitle": "Rozdelenie testovacej štatistiky a kritické oblasti",
-          "intervalsTitle": "Vygenerované intervaly spoľahlivosti"
+          "distTitle": "{{dist}} — kritické oblasti a {{score}}-skóre výberov",
+          "legendCrit": "■ kritická oblasť (α)",
+          "legendLast": "│ {{score}}-skóre posl. výberu",
+          "ciTitle": "Intervaly spoľahlivosti ({{cl}} %) — μ = {{mu}} r.",
+          "legendContains": "— obsahuje μ",
+          "legendNotContains": "— neobsahuje μ",
+          "legendMean": "● x̄",
+          "emptyState": "Zatiaľ žiadne výbery. Kliknite na „+ výber\".",
+          "xAxisLabel": "medián veku (r.)",
+          "tooltipF": "F({{score}})",
+          "tooltipSelection": "Výber #{{num}}",
+          "tooltipLower": "dolná = {{val}}",
+          "tooltipUpper": "horná = {{val}}",
+          "tooltipContains": "Obsahuje μ",
+          "tooltipNotContains": "Neobsahuje μ"
+        },
+        "formula": {
+          "show": "Zobraziť vzorec a výpočet ▼",
+          "hide": "Skryť vzorec ▲",
+          "title": "Vzorec ({{cl}} %, {{type}}, {{varType}}):",
+          "varKnown": "σ známe — Z-skóre",
+          "varUnknown": "σ neznáme — t-skóre",
+          "calcTitle": "Výpočet pre posledný výber (n = {{n}}):",
+          "resultPrefix": "Interval",
+          "resultContains": "obsahuje",
+          "resultNotContains": "neobsahuje",
+          "resultSuffix": "populačnú strednú hodnotu μ = {{mu}}."
         }
+      }
+    },
+    "realDataSampling": {
+      "controls": {
+        "target": "Odhadovaný parameter:",
+        "targetMean": "Stredná hodnota (μ)",
+        "targetVar": "Rozptyl (σ²)",
+        "sampleSize": "Veľkosť výberu (n):",
+        "generate": "Vygenerovať nový výber",
+        "clear": "Vymazať históriu výberov"
+      },
+      "stats": {
+        "grandMean": "Priemer z {{count}} výberov:",
+        "recordedMeans": "Zaznamenané priemery:",
+        "recordedVars": "Zaznamenané rozptyly:"
+      },
+      "table": {
+        "title": "Vybrané regióny",
+        "colRegion": "Región (NUTS3)",
+        "colCountry": "Krajina",
+        "colMedianAge": "Medián veku (r.)"
+      },
+      "map": {
+        "legend": "Medián veku (r.)",
+        "tooltipAge": "Medián veku:"
       }
     }
   },

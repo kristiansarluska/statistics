@@ -1,5 +1,6 @@
 // src/components/content/parameterEstimation/RealDataSampling.jsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import NutsMap from "../../maps/NutsMap";
 import DataPreviewTable from "../../charts/helpers/DataPreviewTable";
 import ResetButton from "../../charts/helpers/ResetButton";
@@ -7,29 +8,6 @@ import ResetButton from "../../charts/helpers/ResetButton";
 const POP_MEAN = 46.2226;
 const POP_STD = 3.7576;
 const POP_VARIANCE = POP_STD * POP_STD;
-
-const SAMPLE_COLUMNS = [
-  {
-    key: "name",
-    label: "Región (NUTS3)",
-    render: (val, row) => (
-      <>
-        <span className="fw-semibold">{val}</span>
-        <span className="text-muted ms-2" style={{ fontSize: "0.78rem" }}>
-          {row.nuts_id}
-        </span>
-      </>
-    ),
-  },
-  { key: "country", label: "Krajina" },
-  {
-    key: "median_age",
-    label: "Medián veku (r.)",
-    render: (val) => (
-      <span className="text-primary fw-semibold">{Number(val).toFixed(1)}</span>
-    ),
-  },
-];
 
 const computeStats = (vals) => {
   const n = vals.length;
@@ -40,36 +18,26 @@ const computeStats = (vals) => {
   return { mean, std: Math.sqrt(variance), variance, sem, n };
 };
 
-// Compact two-column stats grid — reduces height on mobile vs inline-flex wrapping
-// Compact two-column stats grid — reduces height on mobile vs inline-flex wrapping
-// Compact two-column stats grid — reduces height on mobile vs inline-flex wrapping
 function StatsBadge({
   currentStats,
   targetParam,
   sampledStats,
   grandEstimate,
+  t,
 }) {
   const isVariance = targetParam === "variance";
   const popVal = isVariance ? POP_VARIANCE : POP_MEAN;
   const sampleVal = isVariance ? currentStats.variance : currentStats.mean;
   const estimateLabel = isVariance ? "s²" : "x̄";
-  const popLabel = isVariance ? "σ²" : "μ";
   const unit = isVariance ? "r.²" : "r.";
 
-  // Zistíme, či máme viac výberov
   const hasMultipleSamples = sampledStats.length > 1 && grandEstimate !== null;
-
-  // Ak máme viac výberov, testujeme "grandEstimate" voči populácii.
-  // Ak len jeden, testujeme aktuálny výber.
   const activeEstimate = hasMultipleSamples ? grandEstimate : sampleVal;
   const activeEstimateLabel = hasMultipleSamples
     ? `${estimateLabel}̄`
-    : estimateLabel; // x̄̄ alebo s²̄
-
-  // Vypočítame rozdiel zvoleného odhadu a populácie
+    : estimateLabel;
   const error = Math.abs(activeEstimate - popVal);
 
-  // Prahová hodnota pre zelenú/červenú farbu (pri viacerých výberoch sa teoretická chyba zmenšuje)
   const m = Math.max(1, sampledStats.length);
   const errorThreshold = isVariance
     ? (POP_VARIANCE * Math.sqrt(2 / (currentStats.n - 1))) / Math.sqrt(m)
@@ -96,7 +64,6 @@ function StatsBadge({
           groupStart: true,
         },
         {
-          // Dynamický štítok: |s² - σ²| alebo |s²̄ - σ²|
           label: `|${activeEstimateLabel} − σ²|`,
           value: `${error.toFixed(3)} r.²`,
           color: error <= errorThreshold ? "text-success" : "text-danger",
@@ -135,7 +102,6 @@ function StatsBadge({
           groupStart: false,
         },
         {
-          // Dynamický štítok: |x̄ - μ| alebo |x̄̄ - μ|
           label: `|${activeEstimateLabel} − μ|`,
           value: `${error.toFixed(3)} r.`,
           color: error <= errorThreshold ? "text-success" : "text-danger",
@@ -148,7 +114,6 @@ function StatsBadge({
       className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2"
       style={{ fontSize: "0.88rem", display: "inline-block", maxWidth: "100%" }}
     >
-      {/* Responsive flex layout — wraps naturally on narrow screens */}
       <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
         {rows.map(({ label, value, color, groupStart }, i) => (
           <React.Fragment key={label}>
@@ -167,15 +132,15 @@ function StatsBadge({
           </React.Fragment>
         ))}
       </div>
-
-      {/* Grand estimate — separator row, only with 2+ draws */}
       {hasMultipleSamples && (
         <div
           className="border-top mt-2 pt-1 text-center"
           style={{ fontSize: "0.85rem" }}
         >
           <span className="text-muted me-1">
-            Priemer z {sampledStats.length} výberov:
+            {t("parameterEstimation.realDataSampling.stats.grandMean", {
+              count: sampledStats.length,
+            })}
           </span>
           <strong style={{ color: "var(--bs-primary)" }}>
             {activeEstimateLabel} = {grandEstimate.toFixed(3)} {unit}
@@ -187,6 +152,7 @@ function StatsBadge({
 }
 
 function RealDataSampling() {
+  const { t } = useTranslation();
   const [geoJsonData, setGeoJsonData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [n, setN] = useState(30);
@@ -194,6 +160,37 @@ function RealDataSampling() {
   const [targetParam, setTargetParam] = useState("mean");
   const [sampledStats, setSampledStats] = useState([]);
   const [hoveredNuts, setHoveredNuts] = useState(null);
+
+  const SAMPLE_COLUMNS = useMemo(
+    () => [
+      {
+        key: "name",
+        label: t("parameterEstimation.realDataSampling.table.colRegion"),
+        render: (val, row) => (
+          <>
+            <span className="fw-semibold">{val}</span>
+            <span className="text-muted ms-2" style={{ fontSize: "0.78rem" }}>
+              {row.nuts_id}
+            </span>
+          </>
+        ),
+      },
+      {
+        key: "country",
+        label: t("parameterEstimation.realDataSampling.table.colCountry"),
+      },
+      {
+        key: "median_age",
+        label: t("parameterEstimation.realDataSampling.table.colMedianAge"),
+        render: (val) => (
+          <span className="text-primary fw-semibold">
+            {Number(val).toFixed(1)}
+          </span>
+        ),
+      },
+    ],
+    [t],
+  );
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/NUTS3_median_age_EU.geojson`)
@@ -259,24 +256,32 @@ function RealDataSampling() {
 
   return (
     <div className="d-flex flex-column align-items-center w-100 mb-5">
-      {/* ── Controls ── */}
       <div
         className="d-flex flex-wrap justify-content-center align-items-end gap-4 mb-4 w-100"
         style={{ maxWidth: "1100px" }}
       >
-        {/* Target parameter toggle */}
         <div className="d-flex flex-column align-items-center">
           <label
             className="form-label fw-bold mb-2 text-center"
             style={{ fontSize: "0.9rem" }}
           >
-            Odhadovaný parameter:
+            {t("parameterEstimation.realDataSampling.controls.target")}
           </label>
           <div className="btn-group" role="group">
             {[
-              { value: "mean", label: "Stredná hodnota (μ)" },
-              { value: "variance", label: "Rozptyl (σ²)" },
-            ].map(({ value, label }, i, arr) => (
+              {
+                value: "mean",
+                label: t(
+                  "parameterEstimation.realDataSampling.controls.targetMean",
+                ),
+              },
+              {
+                value: "variance",
+                label: t(
+                  "parameterEstimation.realDataSampling.controls.targetVar",
+                ),
+              },
+            ].map(({ value, label }, i) => (
               <button
                 key={value}
                 type="button"
@@ -289,13 +294,12 @@ function RealDataSampling() {
           </div>
         </div>
 
-        {/* Sample size slider */}
         <div className="d-flex flex-column align-items-center">
           <label
             className="form-label fw-bold mb-2 text-center"
             style={{ fontSize: "0.9rem" }}
           >
-            Veľkosť výberu (n):
+            {t("parameterEstimation.realDataSampling.controls.sampleSize")}
             <span
               className="text-primary ms-2"
               style={{ width: 40, display: "inline-block" }}
@@ -321,17 +325,16 @@ function RealDataSampling() {
             className="btn btn-primary btn-sm rounded-pill px-4"
             onClick={drawSample}
           >
-            Vygenerovať nový výber
+            {t("parameterEstimation.realDataSampling.controls.generate")}
           </button>
           <ResetButton
             onClick={reset}
             disabled={sampledStats.length <= 1}
-            title="Vymazať históriu výberov"
+            title={t("parameterEstimation.realDataSampling.controls.clear")}
           />
         </div>
       </div>
 
-      {/* ── Compact stats badge ── */}
       {currentStats && (
         <div
           className="w-100 mb-3 d-flex justify-content-center px-2"
@@ -342,11 +345,11 @@ function RealDataSampling() {
             targetParam={targetParam}
             sampledStats={sampledStats}
             grandEstimate={grandEstimate}
+            t={t}
           />
         </div>
       )}
 
-      {/* ── Sampled values history badges ── */}
       {sampledStats.length > 0 && (
         <div className="w-100 mb-4 text-center" style={{ maxWidth: "1100px" }}>
           <div
@@ -354,7 +357,9 @@ function RealDataSampling() {
             style={{ fontSize: "0.85rem" }}
           >
             <span className="text-muted" style={{ fontSize: "0.82rem" }}>
-              Zaznamenané {targetParam === "mean" ? "priemery" : "rozptyly"}:
+              {targetParam === "mean"
+                ? t("parameterEstimation.realDataSampling.stats.recordedMeans")
+                : t("parameterEstimation.realDataSampling.stats.recordedVars")}
             </span>
             {sampledStats.map((s, i) => {
               const val = targetParam === "mean" ? s.mean : s.variance;
@@ -383,12 +388,10 @@ function RealDataSampling() {
         </div>
       )}
 
-      {/* ── Map + Table — side by side on desktop, stacked on mobile ── */}
       <div
         className="w-100 d-flex flex-column flex-lg-row gap-3 align-items-start"
         style={{ maxWidth: "1100px" }}
       >
-        {/* w-100 ensures full width in flex-column (mobile); flex-basis 55% applies in flex-row (desktop) */}
         <div className="w-100" style={{ flex: "0 0 55%", minWidth: 0 }}>
           <NutsMap
             geoJsonData={geoJsonData}
@@ -402,7 +405,7 @@ function RealDataSampling() {
             data={tableRows}
             columns={SAMPLE_COLUMNS}
             previewRows={10}
-            title="Vybrané regióny"
+            title={t("parameterEstimation.realDataSampling.table.title")}
             rowKey="nuts_id"
             hoveredRowKey={hoveredNuts}
             onRowHover={setHoveredNuts}

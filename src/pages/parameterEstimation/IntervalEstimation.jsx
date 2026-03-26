@@ -16,15 +16,22 @@ function IntervalEstimation() {
       </h2>
 
       <p>
-        Kým bodový odhad aproximuje neznámy parameter jediným číslom,
-        intervalový odhad vymedzuje <strong>interval hodnôt</strong>, v ktorom
-        sa parameter nachádza s určitou pravdepodobnosťou{" "}
-        <InlineMath math="1 - \alpha" /> (hladina spoľahlivosti).
+        <Trans
+          i18nKey="parameterEstimation.intervalEstimation.p1"
+          components={{
+            bold: <strong />,
+            m1: <InlineMath math="1 - \alpha" />,
+          }}
+        />
       </p>
 
       <p>
-        Interval spolehlivosti je dvojica štatistík{" "}
-        <InlineMath math="(T_D, T_H)" />, pre ktorú platí:
+        <Trans
+          i18nKey="parameterEstimation.intervalEstimation.p2"
+          components={{
+            m1: <InlineMath math="(T_D, T_H)" />,
+          }}
+        />
       </p>
 
       <div className="text-center overflow-auto mb-4">
@@ -33,39 +40,40 @@ function IntervalEstimation() {
 
       <div className="alert alert-info border-info-subtle shadow-sm mb-5">
         <h5 className="alert-heading fs-6 fw-bold">
-          Najčastejšia zámena pojmov
+          {t("parameterEstimation.intervalEstimation.alertTitle")}
         </h5>
         <p className="mb-0 small text-muted">
-          Interval spoľahlivosti <strong>nehovorí</strong>, že 95 % dát leží v
-          danom intervale. Je to pravdepodobnosť, že{" "}
-          <strong>tento konkrétny postup vzorkovania</strong> pri opakovanom
-          aplikovaní pokryje skutočnú hodnotu parametra v 95 % prípadov. Ak by
-          100 výskumníkov nezávisle odobralo vzorku a vypočítalo 95 % interval,
-          zhruba 95 z nich by skutočne pokrylo populačný parameter, 5 by ho
-          minulo.
+          <Trans
+            i18nKey="parameterEstimation.intervalEstimation.alertDesc"
+            components={{ bold: <strong /> }}
+          />
         </p>
       </div>
 
       {/* CI formula overview */}
-      <h4 className="mb-3">Typy intervalov spoľahlivosti</h4>
+      <h4 className="mb-3">
+        {t("parameterEstimation.intervalEstimation.typesTitle")}
+      </h4>
       <div className="row g-3 mb-5">
         {[
           {
-            title: "Ľavostranný",
+            title: t("parameterEstimation.intervalEstimation.typeLeftTitle"),
             math: "\\left(\\bar{x} - z_{1-\\alpha} \\cdot \\frac{\\sigma}{\\sqrt{n}},\\;+\\infty\\right)",
-            desc: "Parameter je väčší ako dolná hranica. Testuje sa, či hodnota nie je príliš malá.",
+            desc: t("parameterEstimation.intervalEstimation.typeLeftDesc"),
             color: "border-success",
           },
           {
-            title: "Obojstranný",
+            title: t(
+              "parameterEstimation.intervalEstimation.typeTwoSidedTitle",
+            ),
             math: "\\bar{x} \\pm z_{1-\\alpha/2} \\cdot \\frac{\\sigma}{\\sqrt{n}}",
-            desc: "Parameter leží medzi dolnou a hornou hranicou. Najčastejšie používaný typ.",
+            desc: t("parameterEstimation.intervalEstimation.typeTwoSidedDesc"),
             color: "border-primary",
           },
           {
-            title: "Pravostranný",
+            title: t("parameterEstimation.intervalEstimation.typeRightTitle"),
             math: "\\left(-\\infty,\\;\\bar{x} + z_{1-\\alpha} \\cdot \\frac{\\sigma}{\\sqrt{n}}\\right)",
-            desc: "Parameter je menší ako horná hranica. Testuje sa, či hodnota nie je príliš veľká.",
+            desc: t("parameterEstimation.intervalEstimation.typeRightDesc"),
             color: "border-warning",
           },
         ].map(({ title, math, desc, color }) => (
@@ -87,26 +95,32 @@ function IntervalEstimation() {
       </div>
 
       <p>
-        Ak je smerodajná odchýlka populácie <InlineMath math="\sigma" />{" "}
-        <strong>neznáma</strong> (bežný prípad v praxi), nahrádzame{" "}
-        <InlineMath math="z" />
-        -skóre kvantilmi <strong>Studentovho t-rozdelenia</strong> a populačné{" "}
-        <InlineMath math="\sigma" /> výberovým <InlineMath math="s" />. Toto
-        rozdelenie má ťažšie chvosty (väčšiu neistotu) a s rastúcim{" "}
-        <InlineMath math="n" /> konverguje k normálnemu rozdeleniu.
+        <Trans
+          i18nKey="parameterEstimation.intervalEstimation.p3"
+          components={{
+            bold: <strong />,
+            m1: <InlineMath math="\sigma" />,
+            m2: <InlineMath math="z" />,
+            m3: <InlineMath math="\sigma" />,
+            m4: <InlineMath math="s" />,
+            m5: <InlineMath math="n" />,
+          }}
+        />
       </p>
 
       {/* Simulation */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">Interaktívna simulácia intervalu spoľahlivosti</h5>
+        <h5 className="mb-3">
+          {t("parameterEstimation.intervalEstimation.simTitle")}
+        </h5>
         <p className="text-muted mb-4 small">
-          Simulácia používa rovnaké dáta ako bodový odhad — mediány veku 1 113
-          regiónov NUTS3 EÚ (Eurostat 2025), s populačnou strednou hodnotou{" "}
-          <strong>μ = 46,22 rokov</strong> a smerodajnou odchýlkou{" "}
-          <strong>σ = 3,76 rokov</strong>. Pridávajte výbery a sledujte, koľko
-          intervalov skutočne pokryje μ. Po zmene nastavení (hladina, typ, σ) sa{" "}
-          <em>všetky existujúce intervaly automaticky prepočítajú</em> — môžete
-          tak priamo porovnať, ako nastavenia ovplyvňujú pokryvnosť.
+          <Trans
+            i18nKey="parameterEstimation.intervalEstimation.simDesc"
+            components={{
+              bold: <strong />,
+              italic: <em />,
+            }}
+          />
         </p>
         <ConfidenceIntervalSimulation />
       </div>

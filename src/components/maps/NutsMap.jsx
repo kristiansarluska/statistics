@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useContext, useMemo } from "react";
 import { GeoJSON } from "react-leaflet";
 import { ThemeContext } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 import BaseMap from "./helpers/BaseMap";
 
 const SELECTED_COLORS = ["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"];
@@ -67,10 +68,15 @@ function NutsMap({
   selectedIds,
   hoveredId = null,
   onRegionHover = null,
-  legendLabel = "Medián veku (r.)",
 }) {
   const { darkMode } = useContext(ThemeContext);
+  const { t } = useTranslation();
   const geoJsonRef = useRef(null);
+
+  const legendLabel = t(
+    "parameterEstimation.realDataSampling.map.legend",
+    "Medián veku (r.)",
+  );
 
   const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds]);
 
@@ -123,19 +129,22 @@ function NutsMap({
   const onEachFeature = (feature, layer) => {
     const { name, country, median_age, nuts_id } = feature.properties;
     const isSelected = selectedSet.has(nuts_id);
+    const tooltipAgeLabel = t(
+      "parameterEstimation.realDataSampling.map.tooltipAge",
+      "Medián veku:",
+    );
 
     layer.bindTooltip(
       `<div class="text-center">
-        <strong>${name}</strong><br/>
-        <small class="text-muted">${country} · ${nuts_id}</small><br/>
-        <span style="color:var(--bs-primary)"><strong>Medián veku: ${median_age} r.</strong></span>
-      </div>`,
+      <strong>${name}</strong><br/>
+      <small class="text-muted">${country} · ${nuts_id}</small><br/>
+      <span style="color:var(--bs-primary)"><strong>${tooltipAgeLabel} ${median_age} r.</strong></span>
+    </div>`,
       { sticky: false, className: "shadow-sm border-0 bg-body text-body" },
     );
 
     layer.on({
       mouseover: (e) => {
-        // Close all open tooltips before opening this one — same as ChoroplethMap
         if (geoJsonRef.current)
           geoJsonRef.current.eachLayer((l) => l.closeTooltip());
         layer.openTooltip(e.latlng);
@@ -166,7 +175,6 @@ function NutsMap({
       {geoJsonData && (
         <GeoJSON
           ref={geoJsonRef}
-          // Remount when sample or theme changes → onEachFeature always has fresh closures
           key={`${selectedIds.join(",")}-${darkMode ? "d" : "l"}`}
           data={geoJsonData}
           style={style}
