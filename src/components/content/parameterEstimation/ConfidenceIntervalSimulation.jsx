@@ -111,7 +111,13 @@ const DistributionChart = ({
   return (
     <StyledLineChart
       data={data}
-      xLabel={knowSigma ? "z-skóre  N(0,1)" : `t-skóre  t(${df})`}
+      xLabel={t(
+        "parameterEstimation.intervalEstimation.simulation.charts.xLabelDist",
+        {
+          score: knowSigma ? "z" : "t",
+          dist: knowSigma ? "N(0,1)" : `t(${df})`,
+        },
+      )}
       yLabel="f"
       lineClass="chart-line-primary"
       hoverX={hoverX}

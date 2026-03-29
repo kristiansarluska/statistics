@@ -428,6 +428,7 @@
           "distTitle": "{{dist}} — kritické oblasti a {{score}}-skóre výberov",
           "legendCrit": "■ kritická oblasť (α)",
           "legendLast": "│ {{score}}-skóre posl. výberu",
+          "xLabelDist": "{{score}}-skóre  {{dist}}",
           "ciTitle": "Intervaly spoľahlivosti ({{cl}} %) — μ = {{mu}} r.",
           "legendContains": "— obsahuje μ",
           "legendNotContains": "— neobsahuje μ",
@@ -821,7 +822,8 @@
         "title": "Výpočet rozptylu: Variabilita hustoty LiDARových dát",
         "inputLabel": "Nameraná hustota bodov (body/m²):",
         "placeholder": "Nová hodnota",
-        "errorMin2": "Pre výpočet výberového rozptylu sú potrebné aspoň 2 hodnoty."
+        "errorMin2": "Pre výpočet výberového rozptylu sú potrebné aspoň 2 hodnoty.",
+        "unit": "(bodov/m²)²"
       },
       "standardDeviation": {
         "title": "Výpočet smerodajnej odchýlky (Teploty senzorov)",

@@ -133,6 +133,7 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
 /* Mobily (pod 768px): Navbar si drží 100% šírku a celý sa POSUNIE mimo obrazovku */
 /* Mobile: sidebar overlays/pushes content out of viewport instead of shrinking it */
+/* Mobily (pod 768px) */
 @media (max-width: 767.98px) {
   #wrapper {
     position: relative;
@@ -140,11 +141,11 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   }
 
   #sidebar-wrapper {
-    position: absolute;
+    position: fixed; /* ZMENA: Namiesto absolute - Sidebar ostane viditeľný, aj keď si odscrollovaný dole */
     top: 0;
     left: -15rem;
     height: 100%;
-    z-index: 1000;
+    z-index: 1040; /* Zvýšený index, aby prekrýval okraje */
     transition: left 0.25s ease-out;
   }
 
@@ -154,11 +155,26 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
   #page-content-wrapper {
     width: 100%;
-    transition: transform 0.25s ease-out;
+    position: relative;
+    left: 0;
+    transition: left 0.25s ease-out; /* ZMENA: Používame left namiesto transform */
   }
 
   body.sb-sidenav-toggled #page-content-wrapper {
-    transform: translateX(15rem);
+    left: 15rem; /* Odsunie hlavný obsah bez toho, aby rozbil 'position: fixed' vnútri */
+  }
+
+  /* NOVÉ: Vynútenie posunu samotného Navbaru, aby ostal viditeľný bok Navbaru (tlačidlo) */
+  #page-content-wrapper .navbar.fixed-top {
+    transition:
+      left 0.25s ease-out,
+      right 0.25s ease-out,
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body.sb-sidenav-toggled #page-content-wrapper .navbar.fixed-top {
+    left: 15rem;
+    right: -15rem; /* Zabezpečí, že sa nezúži, ale iba celý posunie o 15rem doprava */
   }
 }
 

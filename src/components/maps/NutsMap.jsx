@@ -70,13 +70,10 @@ function NutsMap({
   onRegionHover = null,
 }) {
   const { darkMode } = useContext(ThemeContext);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const geoJsonRef = useRef(null);
 
-  const legendLabel = t(
-    "parameterEstimation.realDataSampling.map.legend",
-    "Medián veku (r.)",
-  );
+  const legendLabel = t("parameterEstimation.realDataSampling.map.legend");
 
   const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds]);
 
@@ -131,7 +128,6 @@ function NutsMap({
     const isSelected = selectedSet.has(nuts_id);
     const tooltipAgeLabel = t(
       "parameterEstimation.realDataSampling.map.tooltipAge",
-      "Medián veku:",
     );
 
     layer.bindTooltip(
@@ -175,7 +171,7 @@ function NutsMap({
       {geoJsonData && (
         <GeoJSON
           ref={geoJsonRef}
-          key={`${selectedIds.join(",")}-${darkMode ? "d" : "l"}`}
+          key={`${selectedIds.join(",")}-${darkMode ? "d" : "l"}-${i18n.language}`}
           data={geoJsonData}
           style={style}
           onEachFeature={onEachFeature}
