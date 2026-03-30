@@ -25,41 +25,44 @@ function BinomialChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
-        style={{ width: "100%", maxWidth: "500px" }}
-      >
-        <div style={{ flex: "1 1 200px" }}>
-          <label htmlFor="pRangeBinom" className="form-label w-100 text-center">
-            {t("components.probabilityCharts.binomial.probP")}{" "}
-            <strong>{p.toFixed(2)}</strong>
+      <div className="controls mb-4 row justify-content-center gx-4 gy-3 w-100 mx-0">
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
+          <label
+            htmlFor="nRangeBinom"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.binomial.trialsN")}
+            <span className="parameter-value">{n}</span>
           </label>
           <input
             type="range"
-            className="form-range"
-            id="pRangeBinom"
-            min="0"
-            max="1"
-            step="0.01"
-            value={p}
-            onChange={(e) => setP(Number(e.target.value))}
-          />
-        </div>
-
-        <div style={{ flex: "1 1 200px" }}>
-          <label htmlFor="nRangeBinom" className="form-label w-100 text-center">
-            {t("components.probabilityCharts.binomial.trialsN")}{" "}
-            <strong>{n}</strong>
-          </label>
-          <input
-            type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             id="nRangeBinom"
             min="1"
             max="20"
             step="1"
             value={n}
             onChange={(e) => setN(Number(e.target.value))}
+          />
+        </div>
+
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
+          <label
+            htmlFor="pRangeBinom"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.binomial.probP")}
+            <span className="parameter-value">{p.toFixed(2)}</span>
+          </label>
+          <input
+            type="range"
+            className="form-range w-100 mb-0"
+            id="pRangeBinom"
+            min="0"
+            max="1"
+            step="0.01"
+            value={p}
+            onChange={(e) => setP(Number(e.target.value))}
           />
         </div>
       </div>

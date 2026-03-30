@@ -56,21 +56,19 @@ function PointEstimation() {
           {t("parameterEstimation.pointEstimation.simulation.exampleTitle")}
         </h5>
 
-        {/* Manuálne pridaný kontextový text pre Praděd */}
         <p className="text-muted mb-4 small">
-          Predstavte si, že opakovane meriame nadmorskú výšku hory Praděd
-          pomocou GPS prístroja. Skutočná výška (<InlineMath math="\mu" />) je{" "}
-          <strong>1492 m</strong>, pričom prístroj má danú presnosť, ktorá
-          predstavuje smerodajnú odchýlku populácie (
-          <InlineMath math="\sigma = 5" /> m). V simulácii nižšie môžete
-          sledovať, ako sa pri rôznej veľkosti výberu (<InlineMath math="n" />{" "}
-          meraní) správa bodový odhad strednej hodnoty (
-          <InlineMath math="\bar{x}" />) a výberovej smerodajnej odchýlky (
-          <InlineMath math="s" />
-          ). Pridávaním ďalších výberov zistíte, ako jednotlivé odhady kolíšu
-          okolo skutočnej hodnoty.
+          <Trans
+            i18nKey="parameterEstimation.pointEstimation.simulation.exampleDesc"
+            components={{
+              m1: <InlineMath math="\mu" />,
+              bold: <strong />,
+              m2: <InlineMath math="\sigma = 5" />,
+              m3: <InlineMath math="n" />,
+              m4: <InlineMath math="\bar{x}" />,
+              m5: <InlineMath math="s" />,
+            }}
+          />
         </p>
-
         <PointEstimationSimulation />
       </div>
 

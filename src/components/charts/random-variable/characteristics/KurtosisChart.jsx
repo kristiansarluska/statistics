@@ -53,9 +53,7 @@ function KurtosisChart() {
             className="form-label w-100 text-center mb-2"
           >
             {t("components.randomVariableCharts.kurtosis.sliderLabel")}{" "}
-            <strong>
-              {kurtosisValue > 0 ? `+${kurtosisValue}` : kurtosisValue}
-            </strong>
+            <span className="parameter-value">{kurtosisValue.toFixed(1)}</span>
           </label>
           <input
             type="range"

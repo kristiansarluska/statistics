@@ -58,7 +58,7 @@ function SkewnessChart() {
             className="form-label w-100 text-center mb-2"
           >
             {t("components.randomVariableCharts.skewness.sliderLabel")}{" "}
-            <strong>{skewValue > 0 ? `+${skewValue}` : skewValue}</strong>
+            <span className="parameter-value">{skewValue.toFixed(1)}</span>
           </label>
           <input
             type="range"

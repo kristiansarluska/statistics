@@ -38,26 +38,22 @@ function BernoulliChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div className="controls mb-4">
-        <label className="d-flex align-items-center">
-          {t("components.probabilityCharts.bernoulli.paramP")}
+      <div className="controls mb-4 row justify-content-center w-100 mx-0">
+        <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
+          <label className="form-label fw-bold mb-2 text-center small">
+            {t("components.probabilityCharts.bernoulli.paramP")}
+            <span className="parameter-value">{bernoulliP.toFixed(2)}</span>
+          </label>
           <input
             type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             min="0"
             max="1"
             step="0.01"
             value={bernoulliP}
             onChange={handleBernoulliPChange}
-            style={{ width: "200px", cursor: "pointer", margin: "0 10px" }}
           />
-          <span
-            style={{ minWidth: "40px", textAlign: "right" }}
-            className="ms-2 fw-bold"
-          >
-            {bernoulliP.toFixed(2)}
-          </span>
-        </label>
+        </div>
       </div>
 
       <div className="charts-wrapper w-100">

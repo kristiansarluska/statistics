@@ -53,21 +53,18 @@ function NormalChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
-        style={{ width: "100%", maxWidth: "600px" }}
-      >
-        <div style={{ flex: "1 1 200px" }}>
+      <div className="controls mb-4 row justify-content-center gx-4 gy-3 w-100 mx-0">
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
           <label
             htmlFor="meanRangeNormal"
-            className="form-label w-100 text-center"
+            className="form-label fw-bold mb-2 text-center small"
           >
-            {t("components.probabilityCharts.normal.mean")}{" "}
+            {t("components.probabilityCharts.normal.mean")}
             <span className="parameter-value">{m.toFixed(1)}</span>
           </label>
           <input
             type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             id="meanRangeNormal"
             min="-10"
             max="10"
@@ -77,17 +74,17 @@ function NormalChart() {
           />
         </div>
 
-        <div style={{ flex: "1 1 200px" }}>
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
           <label
             htmlFor="sdRangeNormal"
-            className="form-label w-100 text-center"
+            className="form-label fw-bold mb-2 text-center small"
           >
-            {t("components.probabilityCharts.normal.sd")}{" "}
+            {t("components.probabilityCharts.normal.sd")}
             <span className="parameter-value">{s.toFixed(1)}</span>
           </label>
           <input
             type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             id="sdRangeNormal"
             min="0.1"
             max="5"

@@ -215,62 +215,58 @@ function UniformContinuousChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4"
-        style={{ width: "100%", maxWidth: "400px" }}
-      >
-        <div className="d-flex justify-content-between w-100 mb-2">
-          <span>
-            {t("components.probabilityCharts.uniformContinuous.lowerA")}{" "}
-            <span className="parameter-value">{a}</span>
-          </span>
-          <span>
-            {t("components.probabilityCharts.uniformContinuous.upperB")}{" "}
-            <span className="parameter-value">{b}</span>
-          </span>
-        </div>
-        <div
-          className="dual-slider-container"
-          ref={sliderRef}
-          onClick={handleTrackClick}
-          style={{ cursor: "pointer" }}
-        >
-          <input
-            type="range"
-            min={minX}
-            max={maxX}
-            step={step}
-            value={a}
-            onChange={handleAChange}
-            className="dual-slider-input"
-            style={{ zIndex: a > maxX - 100 ? "5" : "3" }}
-          />
-          <input
-            type="range"
-            min={minX}
-            max={maxX}
-            step={step}
-            value={b}
-            onChange={handleBChange}
-            className="dual-slider-input"
-            style={{ zIndex: "4" }}
-          />
-          <div
-            className="dual-slider-track"
-            style={{ pointerEvents: "none" }}
-          ></div>
-          <div
-            className="dual-slider-range"
-            style={{
-              left: `${getPercent(a)}%`,
-              width: `${getPercent(b) - getPercent(a)}%`,
-              pointerEvents: "none",
-            }}
-          ></div>
-        </div>
+      <div className="controls mb-4 row justify-content-center w-100 mx-0">
+        <div className="col-11 col-sm-9 col-md-7 col-lg-5 d-flex flex-column align-items-center">
+          <div className="d-flex justify-content-between w-100 mb-2 fw-bold small">
+            <span>
+              {t("components.probabilityCharts.uniformContinuous.lowerA")}
+              <span className="parameter-value">{a}</span>
+            </span>
+            <span>
+              {t("components.probabilityCharts.uniformContinuous.upperB")}
+              <span className="parameter-value">{b}</span>
+            </span>
+          </div>
 
-        <div className="text-center mt-3 small text-muted w-100">
-          f(x) = 1 / ({b} - {a < 0 ? `(${a})` : a}) = {(1 / (b - a)).toFixed(4)}
+          <div
+            className="dual-slider-container w-100"
+            ref={sliderRef}
+            onClick={handleTrackClick}
+            style={{ cursor: "pointer" }}
+          >
+            <input
+              type="range"
+              min={minX}
+              max={maxX}
+              step={step}
+              value={a}
+              onChange={handleAChange}
+              className="dual-slider-input"
+              style={{ zIndex: a > maxX - 100 ? "5" : "3" }}
+            />
+            <input
+              type="range"
+              min={minX}
+              max={maxX}
+              step={step}
+              value={b}
+              onChange={handleBChange}
+              className="dual-slider-input"
+              style={{ zIndex: "4" }}
+            />
+            <div
+              className="dual-slider-track"
+              style={{ pointerEvents: "none" }}
+            ></div>
+            <div
+              className="dual-slider-range"
+              style={{
+                left: `${getPercent(a)}%`,
+                width: `${getPercent(b) - getPercent(a)}%`,
+                pointerEvents: "none",
+              }}
+            ></div>
+          </div>
         </div>
       </div>
 

@@ -59,8 +59,8 @@
       "exponential": "Exponenciálne rozdelenie",
       "normal": "Normálne rozdelenie",
       "chiSquare": "Chí kvadrát rozdelenie",
-      "studentT": "Studentovo t rozdelenie",
-      "fisherF": "Fisherovo F rozdelenie"
+      "studentT": "Studentovo t-rozdelenie",
+      "fisherF": "Fisherovo F-rozdelenie"
     },
     "parameterEstimation": {
       "pointEstimation": "Bodový odhad",
@@ -354,7 +354,7 @@
       "simulation": {
         "title": "Simulátor bodového odhadu a SEM",
         "exampleTitle": "Určenie nadmorskej výšky bodu GNSS meraním",
-        "exampleDesc": "Geodet opakovane meria nadmorskú výšku toho istého bodu pomocou GNSS prijímača. Každé meranie je mierne odlišné — prístroj pracuje s určitou <bold>presnosťou (σ)</bold>. Skutočná výška bodu (parameter <bold>μ</bold>) je neznáma (no môžeme si navoliť očakávanú hodnotu), odhadujeme ju výberovým priemerom <bold>x̄</bold> z <bold>n</bold> meraní. Čím viac opakovaní vykonáme, tým menšia je stredná chyba priemeru (SEM) a tým spoľahlivejší je náš odhad. Sledujte, ako sa s rastúcim <bold>n</bold> zužuje rozptyl výberových priemerov okolo skutočnej hodnoty.",
+        "exampleDesc": "Predstavte si, že opakovane meriame nadmorskú výšku hory Praděd pomocou GPS prístroja. Skutočná výška (<m1/>) je <bold>1492 m</bold>, pričom prístroj má danú presnosť, ktorá predstavuje smerodajnú odchýlku populácie (<m2/> m). V simulácii nižšie môžete sledovať, ako sa pri rôznej veľkosti výberu (<m3/> meraní) správa bodový odhad strednej hodnoty (<m4/>) a výberovej smerodajnej odchýlky (<m5/>). Pridávaním ďalších výberov zistíte, ako jednotlivé odhady kolíšu okolo skutočnej hodnoty.",
         "desc": "Nastavte parametre populácie a veľkosť vzorky. Modrá krivka zobrazuje teoretické rozdelenie populácie, modrá plocha empirické rozdelenie vzorky.",
         "controls": {
           "target": "Odhadovaný parameter:",
@@ -721,8 +721,8 @@
       },
       "pdfTitle": "Hustota pravdepodobnosti (PDF)",
       "uniformContinuous": {
-        "lowerA": "Dolná (a):",
-        "upperB": "Horná (b):"
+        "lowerA": "Dolná (a): ",
+        "upperB": "Horná (b): "
       },
       "normal": {
         "mean": "Stredná hodnota (μ):",

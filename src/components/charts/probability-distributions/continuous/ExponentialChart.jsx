@@ -49,27 +49,26 @@ function ExponentialChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4"
-        style={{ width: "100%", maxWidth: "300px" }}
-      >
-        <label
-          htmlFor="lambdaRangeExp"
-          className="form-label w-100 text-center"
-        >
-          {t("components.probabilityCharts.poisson.paramLambda")}{" "}
-          <span className="parameter-value">{lambda.toFixed(1)}</span>
-        </label>
-        <input
-          type="range"
-          className="form-range"
-          id="lambdaRangeExp"
-          min="0.1"
-          max="5"
-          step="0.1"
-          value={lambda}
-          onChange={(e) => setLambda(Number(e.target.value))}
-        />
+      <div className="controls mb-4 row justify-content-center w-100 mx-0">
+        <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
+          <label
+            htmlFor="lambdaRangeExp"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.poisson.paramLambda")}
+            <span className="parameter-value">{lambda.toFixed(1)}</span>
+          </label>
+          <input
+            type="range"
+            className="form-range w-100 mb-0"
+            id="lambdaRangeExp"
+            min="0.1"
+            max="5"
+            step="0.1"
+            value={lambda}
+            onChange={(e) => setLambda(Number(e.target.value))}
+          />
+        </div>
       </div>
 
       <div className="charts-wrapper w-100">

@@ -178,7 +178,13 @@ function PointEstimationSimulation() {
         <div className="d-flex flex-wrap align-items-center justify-content-center gap-4 mt-2 w-100">
           <div className="d-flex align-items-center gap-2">
             <label className="fw-bold small mb-0 text-nowrap">
-              n = <span className="text-primary">{n}</span>
+              n ={" "}
+              <span
+                className="text-primary d-inline-block text-center"
+                style={{ width: "24px" }}
+              >
+                {n}
+              </span>
             </label>
             <input
               type="range"

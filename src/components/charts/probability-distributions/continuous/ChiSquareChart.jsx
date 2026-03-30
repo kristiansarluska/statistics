@@ -60,24 +60,26 @@ function ChiSquareChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4"
-        style={{ width: "100%", maxWidth: "300px" }}
-      >
-        <label htmlFor="kRange" className="form-label w-100 text-center">
-          {t("components.probabilityCharts.chiSquare.df")}{" "}
-          <span className="parameter-value">{k}</span>
-        </label>
-        <input
-          type="range"
-          className="form-range"
-          id="kRange"
-          min="1"
-          max="30"
-          step="1"
-          value={k}
-          onChange={(e) => setK(Number(e.target.value))}
-        />
+      <div className="controls mb-4 row justify-content-center w-100 mx-0">
+        <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
+          <label
+            htmlFor="kRange"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.chiSquare.df")}
+            <span className="parameter-value">{k}</span>
+          </label>
+          <input
+            type="range"
+            className="form-range w-100 mb-0"
+            id="kRange"
+            min="1"
+            max="30"
+            step="1"
+            value={k}
+            onChange={(e) => setK(Number(e.target.value))}
+          />
+        </div>
       </div>
 
       <div className="charts-wrapper w-100">

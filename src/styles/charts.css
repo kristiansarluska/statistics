@@ -95,6 +95,15 @@
   pointer-events: none;
 }
 
+.parameter-value {
+  color: var(--bs-primary);
+  font-weight: 600;
+  /*display: inline-block;*/
+  text-align: center;
+  width: 10px;
+  /*margin-left: 0.5rem;*/
+}
+
 /* --- DUAL RANGE SLIDER --- */
 .dual-slider-container {
   position: relative;
@@ -137,8 +146,8 @@
 .dual-slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   background-color: var(--bs-primary);
   border-radius: 50%;
   cursor: pointer;
@@ -148,8 +157,8 @@
 
 /* Úprava samotných bežcov (thumbs) - Firefox */
 .dual-slider-input::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   background-color: var(--bs-primary);
   border: none;
   border-radius: 50%;

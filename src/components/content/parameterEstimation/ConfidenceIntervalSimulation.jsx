@@ -889,7 +889,13 @@ function ConfidenceIntervalSimulation() {
       <div className="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
         <div className="d-flex align-items-center gap-2">
           <label className="fw-bold small mb-0 text-nowrap">
-            n = <span className="text-primary">{n}</span>
+            n ={" "}
+            <span
+              className="text-primary d-inline-block text-center"
+              style={{ width: "30px" }}
+            >
+              {n}
+            </span>
           </label>
           <input
             type="range"

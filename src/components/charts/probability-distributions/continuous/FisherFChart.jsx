@@ -57,18 +57,18 @@ function FisherFChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
-      <div
-        className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
-        style={{ width: "100%", maxWidth: "500px" }}
-      >
-        <div style={{ flex: "1 1 200px" }}>
-          <label htmlFor="d1Range" className="form-label w-100 text-center">
-            {t("components.probabilityCharts.fisherF.d1")}{" "}
+      <div className="controls mb-4 row justify-content-center gx-4 gy-3 w-100 mx-0">
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
+          <label
+            htmlFor="d1Range"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.fisherF.d1")}
             <span className="parameter-value">{d1}</span>
           </label>
           <input
             type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             id="d1Range"
             min="1"
             max="30"
@@ -78,14 +78,17 @@ function FisherFChart() {
           />
         </div>
 
-        <div style={{ flex: "1 1 200px" }}>
-          <label htmlFor="d2Range" className="form-label w-100 text-center">
-            {t("components.probabilityCharts.fisherF.d2")}{" "}
+        <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
+          <label
+            htmlFor="d2Range"
+            className="form-label fw-bold mb-2 text-center small"
+          >
+            {t("components.probabilityCharts.fisherF.d2")}
             <span className="parameter-value">{d2}</span>
           </label>
           <input
             type="range"
-            className="form-range"
+            className="form-range w-100 mb-0"
             id="d2Range"
             min="1"
             max="30"
