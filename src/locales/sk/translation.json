@@ -69,6 +69,10 @@
     "hypothesisTesting": {
       "procedure": "Všeobecný postup",
       "interactiveTest": "Interaktívna ukážka"
+    },
+    "correlation": {
+      "analysis": "Princípy korelačnej analýzy",
+      "coefficients": "Korelačné koeficienty"
     }
   },
 
@@ -590,6 +594,51 @@
       }
     }
   },
+  "correlation": {
+    "introduction": {
+      "title": "Úvod do analýzy závislostí",
+      "p1": "Vo svete okolo nás existujú dva základné typy závislostí. Prvým je <bold>deterministická (funkčná) závislosť</bold>, ktorú poznáme z fyziky. Napríklad hmotnosť telesa vieme jednoznačne vypočítať, ak poznáme jeho objem a hustotu (<m/>). Výsledok je vždy presný a nemenný.",
+      "p2": "V geografii a spoločenských vedách sa však častejšie stretávame so <bold>stochastickou (štatistickou) závislosťou</bold>. Neexistuje tu jednoznačný vzorec – napríklad vzťah medzi priemernou mzdou a počtom rokov strávených štúdiom. Vieme, že tam určitý vzťah je, no nedokážeme z neho presne určiť výsledok pre konkrétneho jednotlivca. Práve na skúmanie a kvantifikovanie takejto stochastickej závislosti slúži <bold>korelačná analýza</bold>.",
+      "tableTitle": "Výber metódy podľa typu premenných",
+      "tableDesc": "Výber vhodnej štatistickej metódy na hľadanie závislostí závisí od toho, s akými typmi znakov (premenných) pracujeme. Korelačná analýza sa využíva primárne vtedy, keď sú obe premenné kvantitatívne (číselné).",
+      "typeY": "Typ znaku Y (Závislá premenná)",
+      "typeX": "Typ znaku X (Nezávislá premenná)",
+      "categorical": "Kategorické",
+      "quantitative": "Kvantitatívne",
+      "contingency": "Kontingenčné tabuľky, testy dobrej zhody",
+      "anova": "ANOVA",
+      "corr_regr": "Korelácia a regresia"
+    },
+    "analysis": {
+      "title": "Princípy korelačnej analýzy",
+      "p1": "Korelačná analýza meria <bold>silu a smer lineárnej závislosti</bold> medzi dvoma kvantitatívnymi znakmi. Kvantifikuje sa pomocou korelačného koeficientu, ktorý je bezrozmerný a nadobúda hodnoty v uzavretom intervale <m/>. Hodnota 0 značí úplnú lineárnu nezávislosť, zatiaľ čo hodnoty 1 a -1 predstavujú dokonalú funkčnú (lineárnu) závislosť.",
+      "positiveTitle": "Kladná (Pozitívna) korelácia",
+      "positiveDesc": "Nastáva, keď s rastúcou hodnotou jednej premennej <bold>rastie</bold> aj hodnota druhej premennej. <br/><br/>Platí: <i>„Čím viac jedného, tým viac druhého.“</i>",
+      "positiveExamples": "<bold>Príklad:</bold> Vzťah medzi vekom a počtom vrások, alebo vzťah medzi dĺžkou života a počtom narodených detí.",
+      "negativeTitle": "Záporná (Negatívna) korelácia",
+      "negativeDesc": "Nastáva, keď s rastúcou hodnotou jednej premennej hodnota druhej premennej <bold>klesá</bold>. <br/><br/>Platí: <i>„Čím viac jedného, tým menej druhého.“</i>",
+      "negativeExamples": "<bold>Príklad:</bold> Vzťah medzi spokojnosťou s bývaním a dĺžkou každodenného dochádzania do práce.",
+      "alertCausalityTitle": "Zlaté pravidlo: Korelácia nie je kauzalita!",
+      "alertCausalityDesc": "Samotný fakt, že sa dve veličiny menia spoločne (korelujú), <bold>ešte nedokazuje, že jedna spôsobuje druhú</bold>. Ide o nekauzálny vzťah – z matematického výpočtu nevieme určiť, čo je príčina a čo následok, alebo či na obe veličiny nepôsobí nejaký skrytý tretí faktor.<br/><br/>Známe sú tzv. <italic>falošné korelácie (spurious correlations)</italic> – napríklad vysoká štatistická korelácia medzi predajnosťou zmrzliny a počtom utopených ľudí. Príčinou utopenia nie je zmrzlina, ale tretí, skrytý faktor – horúce letné počasie, ktoré spôsobuje nárast oboch javov. Vždy preto musíme hľadať logiku a kontext, nie len slepo veriť číslam.",
+      "testingTitle": "Testovanie štatistickej významnosti",
+      "testingDesc": "Ak z dát vypočítame napríklad koreláciu <m1/>, musíme overiť, či táto závislosť skutočne existuje v celej populácii, alebo či ide len o náhodu v našom malom výbere. Pre tento účel vykonávame testovanie hypotéz (podobne ako pri t-testoch).",
+      "testingH0": "<bold>Nulová hypotéza (<h0/>):</bold> <m/> (Veličiny sú lineárne nezávislé).",
+      "testingHa": "<bold>Alternatívna hypotéza (<ha/>):</bold> <m/> (Medzi veličinami existuje lineárna závislosť).",
+      "simulatorPlaceholder": "[Placeholder: Interaktívny simulátor korelácie]",
+      "simulatorDesc": "Tu bude komponent s posuvníkom pre hodnotu r (−1 až 1), počet bodov n, vykresleným ScatterChartom a výsledkom testu významnosti."
+    },
+    "coefficients": {
+      "title": "Korelačné koeficienty",
+      "p1": "Na základe charakteru našich dát a splnenia štatistických predpokladov (napríklad prítomnosť normálneho rozdelenia) si vyberáme z viacerých typov korelačných koeficientov. Dvoma najčastejšie používanými sú Pearsonov a Spearmanov koeficient.",
+      "pearsonTitle": "Pearsonov korelačný koeficient (<m/>)",
+      "pearsonDesc": "Vychádza z kovariance štandardizovanej smerodajnými odchýlkami oboch veličín. Je to parametrický test, ktorý meria výhradne <bold>lineárnu závislosť</bold>. Vyžaduje, aby dáta pochádzali z normálneho rozdelenia. Jeho obrovskou nevýhodou je extrémna <bold>citlivosť na odľahlé hodnoty</bold> (outliery) – jediný extrémny bod dokáže koeficient úplne skresliť.",
+      "spearmanTitle": "Spearmanov korelačný koeficient (<m/>)",
+      "spearmanDesc": "Ide o neparametrickú alternatívu, tzv. <bold>poradový test</bold>. Namiesto pôvodných hodnôt pracuje s ich poradím. Vďaka tomu je veľmi <bold>robustný voči odľahlým hodnotám</bold> a dokáže zachytiť aj monotónnu nelineárnu závislosť. Používa sa vtedy, keď dáta nespĺňajú predpoklad normality.",
+      "placeholderTitle": "[Placeholder: Porovnanie na reálnych dátach]",
+      "placeholderDesc": "Tu bude komponent s prepínaním 2-3 ukážkových datasetov (nelineárny vzťah, dáta s outlierom, ideálny lineárny vzťah), ScatterChart a vizuálne porovnanie hodnoty Pearsona vs. Spearmana."
+    }
+  },
+
   "components": {
     "dataPreviewTable": {
       "records": "{{count}} záznamov",

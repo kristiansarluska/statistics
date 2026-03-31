@@ -138,7 +138,20 @@ export const sidebarData = [
       },
     ],
   },
-  { labelKey: "topics.correlation", path: "/correlation" },
+  {
+    labelKey: "topics.correlation",
+    path: "/correlation",
+    children: [
+      {
+        labelKey: "sidebar.correlation.analysis",
+        path: "/correlation#analysis",
+      },
+      {
+        labelKey: "sidebar.correlation.coefficients",
+        path: "/correlation#coefficients",
+      },
+    ],
+  },
   {
     labelKey: "topics.spatialAutocorrelation",
     path: "/spatial-autocorrelation",
