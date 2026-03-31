@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  Label, // Pridaný import Label
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 
@@ -148,18 +149,18 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
           type="number"
           domain={[minX - 0.5, maxX + 1.5]}
           ticks={xTicks}
-          label={{ value: "x", position: "insideBottom", offset: -15 }}
-        />
-        <YAxis
-          domain={[0, 1.1]}
-          ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}
-          label={{
-            value: "F(x)",
-            angle: -90,
-            position: "insideLeft",
-            offset: -10,
-          }}
-        />
+        >
+          <Label value="x" position="insideBottom" offset={-15} />
+        </XAxis>
+        <YAxis domain={[0, 1.1]} ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}>
+          <Label
+            value="F(x)"
+            angle={-90}
+            position="insideLeft"
+            offset={-10}
+            style={{ textAnchor: "middle" }}
+          />
+        </YAxis>
         <Tooltip
           cursor={false}
           content={(props) =>

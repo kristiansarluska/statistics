@@ -274,9 +274,6 @@ function StyledBoxplot({
       const yAxisRect = yAxisEl.getBoundingClientRect();
       const gridRect = gridEl.getBoundingClientRect();
 
-      console.log("barEl:", barEl);
-      console.log("barEl bbox:", barEl?.getBoundingClientRect());
-
       setWrapperSize({
         width: svgRect.width,
         height: svgRect.height,

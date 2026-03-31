@@ -5,6 +5,7 @@ import { ReferenceLine } from "recharts";
 import { BlockMath } from "react-katex";
 import StyledLineChart from "../../charts/helpers/StyledLineChart";
 import BackgroundArea from "../../charts/helpers/BackgroundArea";
+import AnimatedRefLine from "../../charts/helpers/AnimatedRefLine";
 import StatsBadge from "../helpers/StatsBadge";
 import ResetButton from "../../charts/helpers/ResetButton";
 import { randomNormal, normalPdf } from "../../../utils/distributions";
@@ -43,7 +44,7 @@ function PointEstimationSimulation() {
 
       newSamples.push({ mean: sampleMean, std: sampleStd, data });
     }
-    // Pridanie na koniec poľa (najnovšie záznamy budú vpravo)
+    // Add to the end of the array (newest records on the right)
     setSamplesHistory((prev) => [...prev, ...newSamples].slice(-MAX_SAMPLES));
   };
 
@@ -54,7 +55,6 @@ function PointEstimationSimulation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [n]);
 
-  // Posledný pridaný vzor je teraz na konci poľa
   const lastSample = samplesHistory[samplesHistory.length - 1] || {
     mean: 0,
     std: 0,
@@ -100,7 +100,7 @@ function PointEstimationSimulation() {
     return points;
   }, [lastSample.data, n]);
 
-  // Vypočítame presné lokálne maximum Y-osi pre odstránenie prázdnej medzery na vrchu
+  // Calculate precise local maximum for Y-axis to remove top gap
   const maxY = useMemo(() => {
     if (chartData.length === 0) return 0.1;
     return Math.max(...chartData.map((d) => Math.max(d.y, d.empirical || 0)));
@@ -112,7 +112,7 @@ function PointEstimationSimulation() {
         "parameterEstimation.pointEstimation.simulation.results.sampleMean",
       ),
       value: lastSample.mean.toFixed(2),
-      color: "text-primary",
+      color: "text-success",
       groupStart: true,
     },
     {
@@ -126,7 +126,7 @@ function PointEstimationSimulation() {
     {
       label: t("parameterEstimation.pointEstimation.simulation.results.sem"),
       value: sem.toFixed(2),
-      color: "text-success",
+      color: "text-primary",
       groupStart: true,
     },
   ];
@@ -178,13 +178,7 @@ function PointEstimationSimulation() {
         <div className="d-flex flex-wrap align-items-center justify-content-center gap-4 mt-2 w-100">
           <div className="d-flex align-items-center gap-2">
             <label className="fw-bold small mb-0 text-nowrap">
-              n ={" "}
-              <span
-                className="text-primary d-inline-block text-center"
-                style={{ width: "24px" }}
-              >
-                {n}
-              </span>
+              n = <span className="parameter-value">{n}</span>
             </label>
             <input
               type="range"
@@ -227,7 +221,7 @@ function PointEstimationSimulation() {
           <StatsBadge items={badgeItems} />
         </div>
 
-        {/* História zaznamenaných výberov (Badges) */}
+        {/* History of recorded samples (Badges) */}
         {samplesHistory.length > 0 && (
           <div className="w-100 mb-3 text-center d-flex justify-content-center">
             <div
@@ -267,7 +261,7 @@ function PointEstimationSimulation() {
           </div>
         )}
 
-        {/* Vzorec SEM */}
+        {/* SEM Formula */}
         <div className="overflow-auto py-1">
           <BlockMath
             math={`\\sigma_{\\bar{x}} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{${PRADED_STD}}{\\sqrt{${n}}} = ${sem.toFixed(4)}`}
@@ -291,7 +285,10 @@ function PointEstimationSimulation() {
           lineClass="chart-line-secondary"
           hoverX={hoverX}
           setHoverX={setHoverX}
+          minX={PRADED_MEAN - 4 * PRADED_STD} // Enforced domain boundaries for perfect centering
+          maxX={PRADED_MEAN + 4 * PRADED_STD}
           yAxisDomain={[0, maxY * 1.05]}
+          margin={{ top: 10, right: 30, left: 20, bottom: 5 }} // Match padding with other charts
         >
           <BackgroundArea
             dataKey="empirical"
@@ -303,7 +300,7 @@ function PointEstimationSimulation() {
             animationDuration={600}
           />
 
-          {/* Ghost lines pre históriu (bez posledného výberu) */}
+          {/* Ghost lines for history (excluding the very last sample) */}
           {samplesHistory.slice(0, -1).map((s, i) => (
             <React.Fragment key={i}>
               {targetParam === "mean" ? (
@@ -317,13 +314,13 @@ function PointEstimationSimulation() {
                 <>
                   <ReferenceLine
                     x={s.mean - s.std}
-                    stroke="var(--bs-danger)"
+                    stroke="var(--bs-warning)"
                     strokeWidth={1}
                     opacity={0.2}
                   />
                   <ReferenceLine
                     x={s.mean + s.std}
-                    stroke="var(--bs-danger)"
+                    stroke="var(--bs-warning)"
                     strokeWidth={1}
                     opacity={0.2}
                   />
@@ -332,42 +329,42 @@ function PointEstimationSimulation() {
             </React.Fragment>
           ))}
 
-          {/* Posledný výber */}
+          {/* Last sample - Custom animated SVG reference line so color & text positioning is preserved */}
           {targetParam === "mean" ? (
             <ReferenceLine
               x={lastSample.mean}
-              stroke="var(--bs-success)"
-              strokeWidth={2}
-              label={{
-                position: "top",
-                value: `x̄ = ${lastSample.mean.toFixed(2)}`,
-                fill: "var(--bs-success)",
-                fontWeight: "bold",
-              }}
+              className="animated-reference"
+              shape={
+                <AnimatedRefLine
+                  lineColor="var(--bs-success)"
+                  labelText={`x̄ = ${lastSample.mean.toFixed(2)}`}
+                  labelPosition="right"
+                />
+              }
             />
           ) : (
             <>
               <ReferenceLine
                 x={lastSample.mean - lastSample.std}
-                stroke="var(--bs-danger)"
-                strokeWidth={2}
-                label={{
-                  position: "top",
-                  value: `x̄ - s`,
-                  fill: "var(--bs-danger)",
-                  fontWeight: "bold",
-                }}
+                className="animated-reference"
+                shape={
+                  <AnimatedRefLine
+                    lineColor="var(--bs-warning)"
+                    labelText={`x̄ - ${lastSample.std.toFixed(2)}`}
+                    labelPosition="left"
+                  />
+                }
               />
               <ReferenceLine
                 x={lastSample.mean + lastSample.std}
-                stroke="var(--bs-danger)"
-                strokeWidth={2}
-                label={{
-                  position: "top",
-                  value: `x̄ + s`,
-                  fill: "var(--bs-danger)",
-                  fontWeight: "bold",
-                }}
+                className="animated-reference"
+                shape={
+                  <AnimatedRefLine
+                    lineColor="var(--bs-warning)"
+                    labelText={`x̄ + ${lastSample.std.toFixed(2)}`}
+                    labelPosition="right"
+                  />
+                }
               />
             </>
           )}

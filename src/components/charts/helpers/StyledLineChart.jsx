@@ -11,6 +11,7 @@ import {
   ReferenceLine,
   ReferenceDot,
   ResponsiveContainer,
+  Label, // Pridaný import Label
 } from "recharts";
 import "../../../styles/charts.css";
 import CustomTooltip from "./CustomTooltip";
@@ -229,24 +230,27 @@ function StyledLineChart({
             domain={xConfig.domain}
             ticks={xConfig.ticks}
             allowDecimals={true}
-            label={{ value: xLabel, position: "insideBottom", offset: -15 }}
             className="chart-axis"
             tickFormatter={xConfig.formatTick}
             allowDuplicatedCategory={false}
-          />
+          >
+            <Label value={xLabel} position="insideBottom" offset={-15} />
+          </XAxis>
           <YAxis
-            label={{
-              value: displayYLabel,
-              angle: -90,
-              position: "insideLeft",
-              offset: -10,
-            }}
             className="chart-axis"
             tickFormatter={yConfig.formatTick}
             domain={yConfig.domain}
             ticks={yConfig.ticks}
             allowDataOverflow={false}
-          />
+          >
+            <Label
+              value={displayYLabel}
+              angle={-90}
+              position="insideLeft"
+              offset={-10}
+              style={{ textAnchor: "middle" }}
+            />
+          </YAxis>
 
           <Tooltip
             content={

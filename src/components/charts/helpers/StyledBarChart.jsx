@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceArea,
+  Label, // Pridaný import Label
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 import { getAxisConfig } from "../../../utils/distributions";
@@ -107,22 +108,22 @@ function StyledBarChart({
         onMouseLeave={() => setHoverX && setHoverX(null)}
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis
-          dataKey="x"
-          label={{ value: xLabel, position: "insideBottom", offset: -15 }}
-          tickFormatter={formatXTick}
-        />
+        <XAxis dataKey="x" tickFormatter={formatXTick}>
+          <Label value={xLabel} position="insideBottom" offset={-15} />
+        </XAxis>
         <YAxis
           domain={yConfig.domain}
           ticks={yConfig.ticks}
-          label={{
-            value: yLabel,
-            angle: -90,
-            position: "insideLeft",
-            offset: -10,
-          }}
           tickFormatter={yConfig.formatTick}
-        />
+        >
+          <Label
+            value={yLabel}
+            angle={-90}
+            position="insideLeft"
+            offset={-10}
+            style={{ textAnchor: "middle" }}
+          />
+        </YAxis>
 
         <Tooltip
           cursor={
@@ -141,7 +142,7 @@ function StyledBarChart({
         ) : (
           <Bar
             dataKey={barDataKey}
-            fill="var(--bs-primary)" // Definovanie default farby tu
+            fill="var(--bs-primary)"
             maxBarSize={maxBarSize}
             isAnimationActive={true}
             radius={[4, 4, 0, 0]}
