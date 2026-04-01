@@ -2,6 +2,7 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
+import CorrelationChart from "../../components/charts/correlation/CorrelationChart";
 
 function CorrelationAnalysis() {
   const { t } = useTranslation();
@@ -128,15 +129,7 @@ function CorrelationAnalysis() {
         </div>
       </div>
 
-      {/* Placeholder for Interactive Simulator */}
-      <div className="card bg-light border-0 shadow-sm p-5 text-center mt-4 border-start border-end border-5 border-secondary">
-        <h5 className="text-muted">
-          {t("correlation.analysis.simulatorPlaceholder")}
-        </h5>
-        <p className="text-muted small mb-0">
-          {t("correlation.analysis.simulatorDesc")}
-        </p>
-      </div>
+      <CorrelationChart />
     </section>
   );
 }

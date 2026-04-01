@@ -1,5 +1,7 @@
+// src/components/content/parameterEstimation/CIFormulaPanel.jsx
 import React from "react";
-import { BlockMath } from "react-katex";
+import { InlineMath } from "react-katex";
+import CalcPanel from "../helpers/CalcPanel";
 import { POP_MEAN, POP_STD } from "../../../utils/ciMath";
 
 function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
@@ -16,13 +18,33 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
     formulaLatex = `\\left(-\\infty,\\;\\bar{x} + ${critStr} \\cdot \\frac{${sigStr}}{\\sqrt{n}}\\right)`;
   }
 
+  const typeMap = { two: "Two", left: "Left", right: "Right" };
+  const typeLabel = t(
+    `parameterEstimation.intervalEstimation.simulation.controls.type${typeMap[type]}`,
+  );
+  const varTypeLabel = knowSigma
+    ? t("parameterEstimation.intervalEstimation.simulation.formula.varKnown")
+    : t("parameterEstimation.intervalEstimation.simulation.formula.varUnknown");
+
+  const title = t(
+    "parameterEstimation.intervalEstimation.simulation.formula.title",
+    {
+      cl,
+      type: typeLabel,
+      varType: varTypeLabel,
+    },
+  );
+
+  // Build concrete calculation if a sample is available
   let calcLatex = null;
+  let resultHit = null;
   if (lastSample) {
     const { mean, sd, n, lower, upper, crit, se } = lastSample;
     const sigVal = (knowSigma ? POP_STD : sd).toFixed(4);
     const lStr = lower === -Infinity ? "-\\infty" : lower.toFixed(3);
     const uStr = upper === Infinity ? "+\\infty" : upper.toFixed(3);
     const critLbl = knowSigma ? "z" : `t_{${n - 1}}`;
+
     if (type === "two") {
       calcLatex = `\\begin{aligned}
         \\bar{x} &= ${mean.toFixed(3)},\\quad ${knowSigma ? "\\sigma" : "s"} = ${sigVal},\\quad n = ${n} \\\\
@@ -41,48 +63,34 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
         CI &= (-\\infty,\\;${mean.toFixed(3)} + ${crit.toFixed(4)} \\cdot ${se.toFixed(4)}) = (-\\infty,\\;${uStr})
       \\end{aligned}`;
     }
+    resultHit = lastSample.hit;
   }
 
-  const typeMap = { two: "Two", left: "Left", right: "Right" };
-  const typeLabel = t(
-    `parameterEstimation.intervalEstimation.simulation.controls.type${typeMap[type]}`,
-  );
-  const varTypeLabel = knowSigma
-    ? t("parameterEstimation.intervalEstimation.simulation.formula.varKnown")
-    : t("parameterEstimation.intervalEstimation.simulation.formula.varUnknown");
-
   return (
-    <div className="p-3 border rounded-3 bg-body-tertiary shadow-sm mt-1">
-      <p className="fw-bold text-muted mb-2" style={{ fontSize: "0.85rem" }}>
-        {t("parameterEstimation.intervalEstimation.simulation.formula.title", {
-          cl,
-          type: typeLabel,
-          varType: varTypeLabel,
-        })}
-      </p>
-      <div className="text-center overflow-auto">
-        <BlockMath math={formulaLatex} />
-      </div>
-      {lastSample && (
+    <CalcPanel title={title}>
+      {/* General formula */}
+      <CalcPanel.Row formula={formulaLatex} />
+
+      {/* Concrete calculation */}
+      {calcLatex && (
         <>
-          <hr className="my-2" />
-          <p
-            className="fw-bold text-muted mb-1"
-            style={{ fontSize: "0.85rem" }}
-          >
+          <CalcPanel.Divider />
+          <CalcPanel.Note>
             {t(
               "parameterEstimation.intervalEstimation.simulation.formula.calcTitle",
-              { n: lastSample.n },
+              {
+                n: lastSample.n,
+              },
             )}
-          </p>
-          <div className="text-center overflow-auto">
-            <BlockMath math={calcLatex} />
-          </div>
-          <p className="text-center mb-0 mt-1" style={{ fontSize: "0.85rem" }}>
+          </CalcPanel.Note>
+          <CalcPanel.Row concrete formula={calcLatex} />
+
+          {/* Result */}
+          <p className="text-center mb-0 mt-2" style={{ fontSize: "0.85rem" }}>
             {t(
               "parameterEstimation.intervalEstimation.simulation.formula.resultPrefix",
             )}{" "}
-            {lastSample.hit ? (
+            {resultHit ? (
               <strong className="text-success">
                 {t(
                   "parameterEstimation.intervalEstimation.simulation.formula.resultContains",
@@ -97,12 +105,14 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
             )}{" "}
             {t(
               "parameterEstimation.intervalEstimation.simulation.formula.resultSuffix",
-              { mu: POP_MEAN },
+              {
+                mu: POP_MEAN,
+              },
             )}
           </p>
         </>
       )}
-    </div>
+    </CalcPanel>
   );
 }
 

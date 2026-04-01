@@ -1,26 +1,29 @@
 // src/utils/correlationMath.js
 
-// Generates a random number from a standard normal distribution (Box-Muller transform)
-const randomNormal = () => {
-  let u = 0,
-    v = 0;
-  while (u === 0) u = Math.random();
-  while (v === 0) v = Math.random();
-  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+const normalCDF = (x) => {
+  const t = 1 / (1 + 0.2316419 * Math.abs(x));
+  const d = 0.3989423 * Math.exp((-x * x) / 2);
+  const p =
+    d *
+    t *
+    (0.3193815 +
+      t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+  return x > 0 ? 1 - p : p;
 };
 
-// Generates array of objects {x, y} with a specific target correlation 'r'
-export const generateCorrelatedData = (n, r) => {
+export const generateCorrelatedData = (n, targetR) => {
   const data = [];
   for (let i = 0; i < n; i++) {
-    const z1 = randomNormal();
-    const z2 = randomNormal();
+    let u1 = Math.random();
+    let u2 = Math.random();
+    while (u1 === 0) u1 = Math.random();
 
-    // Transform independent normals to correlated normals
+    const z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+    const z2 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(2.0 * Math.PI * u2);
+
     const x = z1;
-    const y = r * z1 + Math.sqrt(1 - r * r) * z2;
+    const y = targetR * z1 + Math.sqrt(1 - targetR * targetR) * z2;
 
-    // Scale and shift for visualization purposes (mean ~50, stdDev ~15)
     data.push({
       x: x * 15 + 50,
       y: y * 15 + 50,
@@ -29,7 +32,6 @@ export const generateCorrelatedData = (n, r) => {
   return data;
 };
 
-// Calculates Pearson correlation coefficient for given dataset
 export const calculatePearson = (data) => {
   const n = data.length;
   if (n === 0) return 0;
@@ -42,7 +44,6 @@ export const calculatePearson = (data) => {
   let num = 0,
     denX = 0,
     denY = 0;
-
   for (let i = 0; i < n; i++) {
     const dx = data[i].x - meanX;
     const dy = data[i].y - meanY;
@@ -55,8 +56,14 @@ export const calculatePearson = (data) => {
   return num / Math.sqrt(denX * denY);
 };
 
-// Calculates T-statistic for correlation significance test
-export const calculateTStatistic = (r, n) => {
-  if (Math.abs(r) === 1) return Infinity;
-  return (r * Math.sqrt(n - 2)) / Math.sqrt(1 - r * r);
+export const calculateCorrelationSignificance = (r, n) => {
+  if (n <= 2) return { tStat: 0, pValue: 1 };
+
+  const safeR = Math.max(Math.min(r, 0.9999), -0.9999);
+  const tStat = (safeR * Math.sqrt(n - 2)) / Math.sqrt(1 - safeR * safeR);
+
+  // Aproximácia p-hodnoty cez normálne rozdelenie
+  const pValue = 2 * (1 - normalCDF(Math.abs(tStat)));
+
+  return { tStat, pValue };
 };

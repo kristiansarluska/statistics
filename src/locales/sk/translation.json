@@ -627,6 +627,27 @@
       "simulatorPlaceholder": "[Placeholder: Interaktívny simulátor korelácie]",
       "simulatorDesc": "Tu bude komponent s posuvníkom pre hodnotu r (−1 až 1), počet bodov n, vykresleným ScatterChartom a výsledkom testu významnosti."
     },
+    "simulator": {
+      "title": "Interaktívna simulácia korelácie",
+      "targetR": "Cieľová hodnota korelácie (r):",
+      "badgeTargetR": "r cieľ",
+      "badgeActualR": "r vypočítané",
+      "pointCount": "Počet bodov (n):",
+      "generateNew": "Vygenerovať nové dáta",
+      "resultsTitle": "Výsledky testu významnosti",
+      "actualR": "Vypočítané r:",
+      "tStat": "Testové kritérium (T):",
+      "pValue": "p-hodnota:",
+      "significant": "Zamietame H₀: Korelácia JE štatisticky významná",
+      "significantDesc": "P-hodnota je menšia ako hladina významnosti α = {{alpha}}.",
+      "insignificant": "Nezamietame H₀: Korelácia NIE JE štatisticky významná",
+      "insignificantDesc": "P-hodnota je väčšia ako hladina významnosti α = {{alpha}}.",
+      "showCalc": "Zobraziť výpočet ▼",
+      "hideCalc": "Skryť výpočet ▲",
+      "calcTitle": "Výpočet testového kritéria (T)",
+      "calcDesc": "Obojstranná p-value z Studentovho t-rozdelenia so stupňami voľnosti",
+      "rDiffInfo": "<bold>Cieľová hodnota r</bold> určuje silu závislosti pri generovaní dát (matematický parameter). <bold>Vypočítané r</bold> je Pearsonov koeficient nameraný priamo na vygenerovaných bodoch. Keďže dáta sú náhodné, tieto <bold>hodnoty sa vždy mierne líšia</bold> — čím <bold>menší počet bodov</bold> (n), tým <bold>väčšia odchýlka</bold>. Kliknite na Vygenerovať nové dáta a sledujte, ako sa vypočítané r mení."
+    },
     "coefficients": {
       "title": "Korelačné koeficienty",
       "p1": "Na základe charakteru našich dát a splnenia štatistických predpokladov (napríklad prítomnosť normálneho rozdelenia) si vyberáme z viacerých typov korelačných koeficientov. Dvoma najčastejšie používanými sú Pearsonov a Spearmanov koeficient.",
