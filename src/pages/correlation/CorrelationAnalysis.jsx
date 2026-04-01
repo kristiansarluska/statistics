@@ -19,35 +19,13 @@ function CorrelationAnalysis() {
         />
       </p>
 
-      {/* Causality Alert (similar to Law of Large Numbers alert) */}
-      <div className="alert alert-warning shadow-sm mb-5 border-start border-5 border-warning">
-        <h5 className="alert-heading fw-bold d-flex align-items-center">
-          <i className="bi bi-exclamation-triangle-fill me-2"></i>
-          {t("correlation.analysis.alertCausalityTitle")}
-        </h5>
-        <hr />
-        <p className="mb-0">
-          <Trans
-            i18nKey="correlation.analysis.alertCausalityDesc"
-            components={{
-              bold: <strong />,
-              italic: <i />,
-              br: <br />,
-            }}
-          />
-        </p>
-      </div>
-
-      <div className="row mb-5">
+      <div className="row mb-4">
         <div className="col-md-6 mb-3">
           <div className="card h-100 shadow-sm border-success">
-            <div className="card-header bg-success text-white">
-              <h5 className="card-title mb-0 d-flex align-items-center">
-                <span className="badge bg-light text-success me-2 fs-6">+</span>
+            <div className="card-body">
+              <h5 className="card-title text-success">
                 {t("correlation.analysis.positiveTitle")}
               </h5>
-            </div>
-            <div className="card-body bg-success bg-opacity-10">
               <p className="card-text">
                 <Trans
                   i18nKey="correlation.analysis.positiveDesc"
@@ -66,13 +44,10 @@ function CorrelationAnalysis() {
 
         <div className="col-md-6 mb-3">
           <div className="card h-100 shadow-sm border-danger">
-            <div className="card-header bg-danger text-white">
-              <h5 className="card-title mb-0 d-flex align-items-center">
-                <span className="badge bg-light text-danger me-2 fs-6">−</span>
+            <div className="card-body">
+              <h5 className="card-title text-danger">
                 {t("correlation.analysis.negativeTitle")}
               </h5>
-            </div>
-            <div className="card-body bg-danger bg-opacity-10">
               <p className="card-text">
                 <Trans
                   i18nKey="correlation.analysis.negativeDesc"
@@ -88,6 +63,23 @@ function CorrelationAnalysis() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Causality Alert matching IntervalEstimation style */}
+      <div className="alert alert-info border-info-subtle shadow-sm mb-5">
+        <h5 className="alert-heading fs-6 fw-bold">
+          {t("correlation.analysis.alertCausalityTitle")}
+        </h5>
+        <p className="mb-0 small text-muted">
+          <Trans
+            i18nKey="correlation.analysis.alertCausalityDesc"
+            components={{
+              bold: <strong />,
+              italic: <i />,
+              br: <br />,
+            }}
+          />
+        </p>
       </div>
 
       <div className="mb-4">

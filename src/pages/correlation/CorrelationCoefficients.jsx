@@ -13,7 +13,7 @@ function CorrelationCoefficients() {
 
       <div className="row mb-5">
         <div className="col-lg-6 mb-4">
-          <div className="card h-100 shadow-sm">
+          <div className="card h-100 shadow-sm border-primary border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
               <h4 className="card-title text-primary mb-3">
                 <Trans
@@ -27,9 +27,7 @@ function CorrelationCoefficients() {
                   components={{ bold: <strong /> }}
                 />
               </p>
-            </div>
-            <div className="card-footer bg-light border-top-0 pb-4">
-              <div className="text-center overflow-auto mt-2">
+              <div className="text-center overflow-auto mt-4">
                 <BlockMath math="r = \frac{cov(X,Y)}{\sigma_X \sigma_Y}" />
               </div>
             </div>
@@ -37,7 +35,7 @@ function CorrelationCoefficients() {
         </div>
 
         <div className="col-lg-6 mb-4">
-          <div className="card h-100 shadow-sm">
+          <div className="card h-100 shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
               <h4 className="card-title text-success mb-3">
                 <Trans
@@ -51,9 +49,7 @@ function CorrelationCoefficients() {
                   components={{ bold: <strong /> }}
                 />
               </p>
-            </div>
-            <div className="card-footer bg-light border-top-0 pb-4">
-              <div className="text-center overflow-auto mt-2">
+              <div className="text-center overflow-auto mt-4">
                 <BlockMath math="r_s = 1 - \frac{6 \sum (P_i - R_i)^2}{n(n^2 - 1)}" />
               </div>
             </div>

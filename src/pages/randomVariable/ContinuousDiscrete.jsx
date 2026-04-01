@@ -13,7 +13,7 @@ const ContinuousDiscrete = () => {
       <div className="row mt-4">
         {/* Discrete Card */}
         <div className="col-md-6 mb-3">
-          <div className="card h-100 shadow-sm">
+          <div className="card h-100 shadow-sm border-primary">
             <div className="card-body">
               <h5 className="card-title text-primary">
                 {t("randomVariable.continuousDiscrete.discrete.title")}
@@ -44,7 +44,7 @@ const ContinuousDiscrete = () => {
 
         {/* Continuous Card */}
         <div className="col-md-6 mb-3">
-          <div className="card h-100 shadow-sm">
+          <div className="card h-100 shadow-sm border-success">
             <div className="card-body">
               <h5 className="card-title text-success">
                 {t("randomVariable.continuousDiscrete.continuous.title")}
