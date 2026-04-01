@@ -665,6 +665,31 @@
       "spearmanDesc": "Ide o neparametrickú alternatívu, tzv. <bold>poradový test</bold>. Namiesto pôvodných hodnôt pracuje s ich poradím. Vďaka tomu je veľmi <bold>robustný voči odľahlým hodnotám</bold> a dokáže zachytiť aj monotónnu nelineárnu závislosť. Používa sa vtedy, keď dáta nespĺňajú predpoklad normality.",
       "placeholderTitle": "[Placeholder: Porovnanie na reálnych dátach]",
       "placeholderDesc": "Tu bude komponent s prepínaním 2-3 ukážkových datasetov (nelineárny vzťah, dáta s outlierom, ideálny lineárny vzťah), ScatterChart a vizuálne porovnanie hodnoty Pearsona vs. Spearmana."
+    },
+    "comparison": {
+      "title": "Porovnanie vlastností koeficientov na reálnych dátach",
+      "p1": "Teoretické rozdiely medzi koeficientmi môžeme demonštrovať na reálnych dátach z Eurostatu (na úrovni regiónov NUTS2). V grafe nižšie sledujeme vzťah medzi <bold>hrubým domácim produktom</bold> (HDP na obyvateľa v PPS) a <bold>strednou dĺžkou života</bold>.",
+      "p2": "Kým Pearsonov koeficient <mR/> meria striktne lineárnu závislosť a je mimoriadne citlivý na extrémy, Spearmanov koeficient <mRs/> hodnotí iba poradie hodnôt (monotónnosť) a voči odľahlým hodnotám (outlierom) je robustný.",
+      "instructionsTitle": "Čo si v grafe všímať:",
+      "instructions": {
+        "nonlinear": "<bold>Nelineárny vzťah (Všetky regióny):</bold> Tzv. Prestonova krivka ukazuje, že s rastom HDP dĺžka života najprv prudko stúpa, no pri bohatších regiónoch sa ustaľuje. Keďže vzťah je monotónny, ale nie lineárny, Spearmanov koeficient tu dosahuje viditeľne vyššie hodnoty ako Pearsonov.",
+        "outlier": "<bold>Vplyv outlierov (Južná Európa + Rumunsko):</bold> Regióny Španielska či Talianska tvoria zhluk s mimoriadne vysokou dĺžkou života a priemerným HDP. Bukurešť (Rumunsko) má však veľmi vysoké HDP, no dĺžka života zostáva nízka. Tento jediný odľahlý bod v pravom dolnom rohu deformuje lineárny trend (Pearsonov koeficient sa znateľne zmenšuje), kým Spearman si drží lepšiu stabilitu.",
+        "interactive": "<bold>Pridanie fiktívnej hodnoty:</bold> Pomocou ovládacieho panelu si vytvorte vlastný fiktívny región. Umiestnite ho napríklad do pravého dolného rohu (extrémne vysoké HDP, ale nízke dožitie). Sledujte, ako jediný takýto bod dokáže úplne znehodnotiť Pearsonov koeficient."
+      },
+      "tabAll": "Všetky regióny",
+      "tabBenelux": "Benelux",
+      "tabSouthRO": "Južná Európa + Rumunsko",
+      "pearsonTitle": "Pearsonov koeficient",
+      "pearsonDesc": "Citlivý na outliery. Meria len lineárny vzťah.",
+      "spearmanTitle": "Spearmanov koeficient",
+      "spearmanDesc": "Odolný voči outlierom. Zachytáva monotónne vzťahy.",
+      "outlierControls": {
+        "title": "Pridať vlastnú odľahlú hodnotu",
+        "labelX": "HDP (X)",
+        "labelY": "Dožitie (Y)",
+        "addBtn": "Pridať bod",
+        "clearBtn": "Vymazať fiktívne"
+      }
     }
   },
 

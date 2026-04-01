@@ -13,39 +13,51 @@ import {
   Label,
 } from "recharts";
 
-const ScatterTooltip = ({
-  active,
-  payload,
-  xLabel,
-  yLabel,
-  xTickFormatter,
-  yTickFormatter,
-}) => {
+// ZMENA: Kompletná prerábka pre lepšiu podporu geografických dát (name, id)
+const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
   if (!active || !payload?.length) return null;
   const point = payload[0]?.payload;
   if (!point) return null;
 
-  const xVal = xTickFormatter
-    ? Number(xTickFormatter(point.x)).toFixed(2)
-    : Number(point.x).toFixed(2);
-
-  const yVal = yTickFormatter
-    ? Number(yTickFormatter(point.y)).toFixed(2)
-    : Number(point.y).toFixed(2);
+  // Hľadáme priestorové identifikátory
+  const regionName = point.name || point.Region_Name || null;
+  const regionId = point.id || point.NUTS2_Code || null;
 
   return (
     <div
-      className="custom-tooltip bg-body border rounded shadow-sm p-2"
-      style={{ fontSize: "0.9rem" }}
+      className="custom-tooltip bg-body border rounded shadow-sm p-3"
+      style={{ fontSize: "0.85rem", maxWidth: "250px" }}
     >
-      <p className="mb-0 fw-bold">{`${xLabel ?? "X"}: ${xVal}`}</p>
-      <p className="mb-0" style={{ color: "var(--bs-primary)" }}>
-        {`${yLabel ?? "Y"}: ${yVal}`}
-      </p>
+      {/* Hlavička s názvom a kódom, ak existujú */}
+      {regionName && (
+        <p className="mb-1 fw-bold text-wrap border-bottom pb-2">
+          {regionName}
+          {regionId && (
+            <span className="text-muted fw-normal small ms-2">
+              ({regionId})
+            </span>
+          )}
+        </p>
+      )}
+
+      {/* Samotné hodnoty (X a Y), zaokrúhlené */}
+      <div className="d-flex justify-content-between mt-2 pt-1">
+        <span className="text-muted pe-3">{xLabel ?? "X"}:</span>
+        <strong className="text-body-emphasis">
+          {point.x ? Number(point.x).toFixed(1) : "-"}
+        </strong>
+      </div>
+      <div className="d-flex justify-content-between mt-1">
+        <span className="text-muted pe-3">{yLabel ?? "Y"}:</span>
+        <strong className="text-primary">
+          {point.y ? Number(point.y).toFixed(1) : "-"}
+        </strong>
+      </div>
     </div>
   );
 };
 
+// Zvyšok komponentu StyledScatterChart zostáva nezmenený, len pridáva nové rekvizity pre Tooltip
 const StyledScatterChart = ({
   data,
   xDataKey = "x",
@@ -63,11 +75,16 @@ const StyledScatterChart = ({
   opacity = 0.7,
   height = 300,
   referenceLines = [],
+  onClick,
+  cursor = "default",
 }) => {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <ScatterChart margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
-        <CartesianGrid strokeDasharray="3 3" />
+      <ScatterChart
+        margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
+        style={{ cursor: cursor }}
+      >
+        <CartesianGrid strokeDasharray="3 3" opacity={0.5} />
 
         <XAxis
           type="number"
@@ -76,10 +93,15 @@ const StyledScatterChart = ({
           allowDataOverflow
           hide={hideXAxis}
           tickFormatter={xTickFormatter}
-          className="chart-axis"
+          className="chart-axischart-x-axis"
         >
           {xLabel && (
-            <Label value={xLabel} position="insideBottom" offset={-15} />
+            <Label
+              value={xLabel}
+              position="insideBottom"
+              offset={-15}
+              style={{ fontSize: "12px" }}
+            />
           )}
         </XAxis>
 
@@ -91,6 +113,7 @@ const StyledScatterChart = ({
           hide={hideYAxis}
           tickFormatter={yTickFormatter}
           className="chart-axis"
+          width={hideYAxis ? 10 : 45}
         >
           {yLabel && (
             <Label
@@ -98,21 +121,15 @@ const StyledScatterChart = ({
               angle={-90}
               position="insideLeft"
               offset={-10}
-              style={{ textAnchor: "middle" }}
+              style={{ textAnchor: "middle", fontSize: "12px" }}
             />
           )}
         </YAxis>
 
+        {/* ZMENA: Tooltip teraz prijíma popisy osí, aby ich mohol zobraziť k hodnotám */}
         {!hideTooltip && (
           <Tooltip
-            content={
-              <ScatterTooltip
-                xLabel={xLabel}
-                yLabel={yLabel}
-                xTickFormatter={xTickFormatter}
-                yTickFormatter={yTickFormatter}
-              />
-            }
+            content={<ScatterTooltip xLabel={xLabel} yLabel={yLabel} />}
             cursor={{ strokeDasharray: "3 3" }}
           />
         )}
@@ -129,10 +146,10 @@ const StyledScatterChart = ({
         ))}
 
         <Scatter data={data} fill={fillColor}>
-          {data.map((_, index) => (
+          {data.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
-              fill={fillColor}
+              fill={entry.fill || fillColor}
               fillOpacity={opacity}
             />
           ))}

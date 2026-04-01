@@ -67,3 +67,44 @@ export const calculateCorrelationSignificance = (r, n) => {
 
   return { tStat, pValue };
 };
+
+// Calculates Spearman rank correlation coefficient
+export const calculateSpearman = (data) => {
+  const n = data.length;
+  if (n <= 1) return 0;
+
+  // Helper function to assign ranks (handling ties with average rank)
+  const assignRanks = (arr, key) => {
+    const sorted = [...arr]
+      .map((item, i) => ({ val: item[key], originalIndex: i }))
+      .sort((a, b) => a.val - b.val);
+    const ranks = new Array(n);
+    let i = 0;
+
+    while (i < n) {
+      let j = i;
+      let sum = 0;
+      while (j < n && sorted[j].val === sorted[i].val) {
+        sum += j + 1; // 1-based rank
+        j++;
+      }
+      const avgRank = sum / (j - i);
+      for (let k = i; k < j; k++) {
+        ranks[sorted[k].originalIndex] = avgRank;
+      }
+      i = j;
+    }
+    return ranks;
+  };
+
+  const xRanks = assignRanks(data, "x");
+  const yRanks = assignRanks(data, "y");
+
+  let sumDSquared = 0;
+  for (let i = 0; i < n; i++) {
+    const d = xRanks[i] - yRanks[i];
+    sumDSquared += d * d;
+  }
+
+  return 1 - (6 * sumDSquared) / (n * (n * n - 1));
+};

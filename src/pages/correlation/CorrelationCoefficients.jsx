@@ -2,6 +2,7 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
+import CoefficientComparison from "../../components/charts/correlation/CoefficientComparison";
 
 function CorrelationCoefficients() {
   const { t } = useTranslation();
@@ -57,14 +58,51 @@ function CorrelationCoefficients() {
         </div>
       </div>
 
-      {/* Placeholder for Data Comparison */}
-      <div className="card bg-light border-0 shadow-sm p-5 text-center mt-4 border-start border-end border-5 border-secondary">
-        <h5 className="text-muted">
-          {t("correlation.coefficients.placeholderTitle")}
-        </h5>
-        <p className="text-muted small mb-0">
-          {t("correlation.coefficients.placeholderDesc")}
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">{t("correlation.comparison.title")}</h5>
+
+        <p className="text-muted mb-3 small">
+          <Trans
+            i18nKey="correlation.comparison.p1"
+            components={{ bold: <strong /> }}
+          />
         </p>
+        <p className="text-muted mb-3 small">
+          <Trans
+            i18nKey="correlation.comparison.p2"
+            components={{
+              mR: <InlineMath math="r" />,
+              mRs: <InlineMath math="r_s" />,
+            }}
+          />
+        </p>
+
+        <h6 className="text-muted mb-3">
+          {t("correlation.comparison.instructionsTitle")}
+        </h6>
+        <ul className="text-muted mb-3 small">
+          <li className="text-muted mb-3 ">
+            <Trans
+              i18nKey="correlation.comparison.instructions.nonlinear"
+              components={{ bold: <strong className="text-body" /> }}
+            />
+          </li>
+          <li className="text-muted mb-3 ">
+            <Trans
+              i18nKey="correlation.comparison.instructions.outlier"
+              components={{ bold: <strong className="text-body" /> }}
+            />
+          </li>
+          <li className="text-muted mb-3 ">
+            <Trans
+              i18nKey="correlation.comparison.instructions.interactive"
+              components={{ bold: <strong className="text-body" /> }}
+            />
+          </li>
+        </ul>
+
+        {/* Samotný interaktívny komponent */}
+        <CoefficientComparison />
       </div>
     </section>
   );
