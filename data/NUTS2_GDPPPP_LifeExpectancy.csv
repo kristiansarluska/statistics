@@ -1,0 +1,217 @@
+NUTS2_Code,Country,Region_Name,Life_Expectancy,GDP_PPS
+BE10,Belgium,"Région de Bruxelles-Capitale/Brussels Hoofdstedelijk Gewest",82.1,190
+BE21,Belgium,"Prov. Antwerpen",83.3,135
+BE22,Belgium,"Prov. Limburg (BE)",83.4,94
+BE23,Belgium,"Prov. Oost-Vlaanderen",83.0,110
+BE24,Belgium,"Prov. Vlaams-Brabant",83.9,127
+BE25,Belgium,"Prov. West-Vlaanderen",83.1,117
+BE31,Belgium,"Prov. Brabant wallon",83.1,155
+BE32,Belgium,"Prov. Hainaut",80.0,72
+BE33,Belgium,"Prov. Liège",80.7,86
+BE34,Belgium,"Prov. Luxembourg (BE)",80.6,72
+BE35,Belgium,"Prov. Namur",80.9,80
+BG31,Bulgaria,"Severozapaden",73.9,42
+BG32,Bulgaria,"Severen tsentralen",74.9,43
+BG33,Bulgaria,"Severoiztochen",75.4,51
+BG34,Bulgaria,"Yugoiztochen",75.7,57
+BG41,Bulgaria,"Yugozapaden",77.0,107
+BG42,Bulgaria,"Yuzhen tsentralen",76.1,43
+CY00,Cyprus,"Kýpros",83.5,99
+CZ01,Czechia,"Praha",81.9,192
+CZ02,Czechia,"Střední Čechy",80.2,84
+CZ03,Czechia,"Jihozápad",80.3,75
+CZ04,Czechia,"Severozápad",78.3,61
+CZ05,Czechia,"Severovýchod",80.4,75
+CZ06,Czechia,"Jihovýchod",80.6,84
+CZ07,Czechia,"Střední Morava",79.9,74
+CZ08,Czechia,"Moravskoslezsko",78.7,71
+DE11,Germany,"Stuttgart",82.3,153
+DE12,Germany,"Karlsruhe",82.2,124
+DE13,Germany,"Freiburg",82.2,105
+DE14,Germany,"Tübingen",82.5,122
+DE21,Germany,"Oberbayern",82.7,170
+DE22,Germany,"Niederbayern",81.2,113
+DE23,Germany,"Oberpfalz",81.2,122
+DE24,Germany,"Oberfranken",80.8,109
+DE25,Germany,"Mittelfranken",81.4,126
+DE26,Germany,"Unterfranken",82.0,115
+DE27,Germany,"Schwaben",82.1,109
+DE30,Germany,"Berlin",81.2,127
+DE40,Germany,"Brandenburg",81.0,86
+DE50,Germany,"Bremen",79.7,132
+DE60,Germany,"Hamburg",81.2,196
+DE71,Germany,"Darmstadt",82.0,148
+DE72,Germany,"Gießen",80.6,100
+DE73,Germany,"Kassel",80.6,108
+DE80,Germany,"Mecklenburg-Vorpommern",79.7,88
+DE91,Germany,"Braunschweig",80.5,129
+DE92,Germany,"Hannover",80.6,112
+DE93,Germany,"Lüneburg",80.7,84
+DE94,Germany,"Weser-Ems",80.6,105
+DEA1,Germany,"Düsseldorf",80.4,116
+DEA2,Germany,"Köln",81.3,118
+DEA3,Germany,"Münster",80.8,95
+DEA4,Germany,"Detmold",81.2,106
+DEA5,Germany,"Arnsberg",80.1,98
+DEB1,Germany,"Koblenz",80.9,95
+DEB2,Germany,"Trier",80.8,88
+DEB3,Germany,"Rheinhessen-Pfalz",81.2,107
+DEC0,Germany,"Saarland",79.9,95
+DED2,Germany,"Dresden",82.1,92
+DED4,Germany,"Chemnitz",80.7,82
+DED5,Germany,"Leipzig",81.4,97
+DEE0,Germany,"Sachsen-Anhalt",79.5,83
+DEF0,Germany,"Schleswig-Holstein",80.8,97
+DEG0,Germany,"Thüringen",80.7,83
+DK01,Denmark,"Hovedstaden",82.4,175
+DK02,Denmark,"Sjælland",81.4,90
+DK03,Denmark,"Syddanmark",81.8,107
+DK04,Denmark,"Midtjylland",82.3,108
+DK05,Denmark,"Nordjylland",81.4,100
+EE00,Estonia,"Eesti",79.4,79
+ES11,Spain,"Galicia",84.2,84
+ES12,Spain,"Principado de Asturias",83.4,83
+ES13,Spain,"Cantabria",84.0,84
+ES21,Spain,"País Vasco",84.7,115
+ES22,Spain,"Comunidad Foral de Navarra",84.7,109
+ES23,Spain,"La Rioja",83.9,95
+ES24,Spain,"Aragón",84.3,103
+ES30,Spain,"Comunidad de Madrid",85.7,125
+ES41,Spain,"Castilla y León",84.8,86
+ES42,Spain,"Castilla-La Mancha",83.9,73
+ES43,Spain,"Extremadura",83.2,70
+ES51,Spain,"Cataluña",84.3,105
+ES52,Spain,"Comunitat Valenciana",83.5,77
+ES53,Spain,"Illes Balears",83.5,101
+ES61,Spain,"Andalucía",82.9,69
+ES62,Spain,"Región de Murcia",83.5,75
+ES63,Spain,"Ciudad de Ceuta",81.9,64
+ES64,Spain,"Ciudad de Melilla",83.3,59
+ES70,Spain,"Canarias",82.9,72
+FI19,Finland,"Länsi-Suomi",82.3,93
+FI1B,Finland,"Helsinki-Uusimaa",82.8,128
+FI1C,Finland,"Etelä-Suomi",81.9,89
+FI1D,Finland,"Pohjois- ja Itä-Suomi",81.7,89
+FI20,Finland,"Åland",83.3,111
+FR10,France,"Ile de France",84.6,160
+FRB0,France,"Centre — Val de Loire",82.6,82
+FRC1,France,"Bourgogne",82.4,83
+FRC2,France,"Franche-Comté",82.3,74
+FRD1,France,"Basse-Normandie",82.3,80
+FRD2,France,"Haute-Normandie",81.9,83
+FRE1,France,"Nord-Pas de Calais",81.3,77
+FRE2,France,"Picardie",81.6,73
+FRF1,France,"Alsace",82.9,89
+FRF2,France,"Champagne-Ardenne",81.8,87
+FRF3,France,"Lorraine",81.7,72
+FRG0,France,"Pays de la Loire",83.5,87
+FRH0,France,"Bretagne",82.5,84
+FRI1,France,"Aquitaine",83.5,87
+FRI2,France,"Limousin",82.4,74
+FRI3,France,"Poitou-Charentes",82.5,81
+FRJ1,France,"Languedoc-Roussillon",83.0,76
+FRJ2,France,"Midi-Pyrénées",83.7,89
+FRK1,France,"Auvergne",82.7,79
+FRK2,France,"Rhône-Alpes",84.2,100
+FRL0,France,"Provence-Alpes-Côte d’Azur",83.8,96
+FRM0,France,"Corse",84.0,86
+FRY1,France,"Guadeloupe",81.1,67
+FRY2,France,"Martinique",81.5,69
+FRY3,France,"Guyane",80.1,41
+FRY4,France,"La Réunion",81.9,63
+FRY5,France,"Mayotte",74.5,30
+HR02,Croatia,"Panonska Hrvatska",77.2,53
+HR03,Croatia,"Jadranska Hrvatska",79.9,73
+HR05,Croatia,"Grad Zagreb",80.2,131
+HR06,Croatia,"Sjeverna Hrvatska",78.5,64
+HU11,Hungary,"Budapest",78.9,168
+HU12,Hungary,"Pest",77.5,64
+HU21,Hungary,"Közép-Dunántúl",77.1,66
+HU22,Hungary,"Nyugat-Dunántúl",77.5,66
+HU23,Hungary,"Dél-Dunántúl",76.8,50
+HU31,Hungary,"Észak-Magyarország",75.1,47
+HU32,Hungary,"Észak-Alföld",75.5,50
+HU33,Hungary,"Dél-Alföld",76.5,52
+IE04,Ireland,"Northern and Western",83.2,100
+IE05,Ireland,"Southern",82.7,217
+IE06,Ireland,"Eastern and Midland",83.2,268
+ITC1,Italy,"Piemonte",83.7,101
+ITC2,Italy,"Valle d’Aosta/Vallée d’Aoste",83.2,125
+ITC3,Italy,"Liguria",83.8,102
+ITC4,Italy,"Lombardia",84.4,132
+ITF1,Italy,"Abruzzo",83.8,84
+ITF2,Italy,"Molise",82.7,72
+ITF3,Italy,"Campania",82.0,64
+ITF4,Italy,"Puglia",83.5,64
+ITF5,Italy,"Basilicata",83.5,74
+ITF6,Italy,"Calabria",82.7,57
+ITG1,Italy,"Sicilia",82.6,61
+ITG2,Italy,"Sardegna",83.2,73
+ITH1,Italy,"Provincia Autonoma di Bolzano/Bozen",85.0,161
+ITH2,Italy,"Provincia Autonoma di Trento",85.0,125
+ITH3,Italy,"Veneto",84.6,109
+ITH4,Italy,"Friuli-Venezia Giulia",84.2,102
+ITH5,Italy,"Emilia-Romagna",84.3,117
+ITI1,Italy,"Toscana",84.2,103
+ITI2,Italy,"Umbria",84.1,85
+ITI3,Italy,"Marche",84.4,89
+ITI4,Italy,"Lazio",83.6,113
+LT01,Lithuania,"Sostinės regionas",78.0,133
+LT02,Lithuania,"Vidurio ir vakarų Lietuvos regionas",77.2,68
+LU00,Luxembourg,"Luxembourg",83.2,245
+LV00,Latvia,"Latvija",76.4,68
+NL11,Netherlands,"Groningen",80.7,117
+NL12,Netherlands,"Friesland (NL)",81.7,98
+NL13,Netherlands,"Drenthe",81.4,96
+NL21,Netherlands,"Overijssel",81.7,116
+NL22,Netherlands,"Gelderland",81.9,114
+NL23,Netherlands,"Flevoland",81.9,103
+NL32,Netherlands,"Noord-Holland",82.1,175
+NL34,Netherlands,"Zeeland",82.1,113
+NL35,Netherlands,"Utrecht",82.4,162
+NL36,Netherlands,"Zuid-Holland",82.0,129
+NL41,Netherlands,"Noord-Brabant",82.0,139
+NL42,Netherlands,"Limburg (NL)",81.6,110
+PL21,Poland,"Małopolskie",79.6,70
+PL22,Poland,"Śląskie",78.0,79
+PL41,Poland,"Wielkopolskie",78.5,82
+PL42,Poland,"Zachodniopomorskie",77.9,64
+PL43,Poland,"Lubuskie",78.0,63
+PL51,Poland,"Dolnośląskie",78.1,83
+PL52,Poland,"Opolskie",78.6,63
+PL61,Poland,"Kujawsko-pomorskie",78.2,63
+PL62,Poland,"Warmińsko-mazurskie",77.9,56
+PL63,Poland,"Pomorskie",78.7,75
+PL71,Poland,"Łódzkie",77.5,74
+PL72,Poland,"Świętokrzyskie",78.2,60
+PL81,Poland,"Lubelskie",78.6,55
+PL82,Poland,"Podkarpackie",79.5,57
+PL84,Poland,"Podlaskie",79.3,61
+PL91,Poland,"Warszawski stołeczny",79.9,157
+PL92,Poland,"Mazowiecki regionalny",77.7,71
+RO11,Romania,"Nord-Vest",76.6,71
+RO12,Romania,"Centru",77.0,71
+RO21,Romania,"Nord-Est",75.5,48
+RO22,Romania,"Sud-Est",75.7,59
+RO31,Romania,"Sud-Muntenia",76.3,55
+RO32,Romania,"Bucureşti-Ilfov",77.8,188
+RO41,Romania,"Sud-Vest Oltenia",76.9,60
+RO42,Romania,"Vest",76.4,78
+RS11,Serbia,"Beogradski region",77.4,87
+RS12,Serbia,"Region Vojvodine",75.3,47
+RS21,Serbia,"Region Sumadije i Zapadne Srbije",76.4,33
+RS22,Serbia,"Region Juzne i Istocne Srbije",75.6,38
+SE11,Sweden,"Stockholm",85.0,153
+SE12,Sweden,"Östra Mellansverige",83.7,97
+SE21,Sweden,"Småland med öarna",84.0,93
+SE22,Sweden,"Sydsverige",83.7,96
+SE23,Sweden,"Västsverige",83.7,107
+SE31,Sweden,"Norra Mellansverige",83.3,85
+SE32,Sweden,"Mellersta Norrland",82.8,99
+SE33,Sweden,"Övre Norrland",82.7,108
+SI03,Slovenia,"Vzhodna Slovenija",81.3,72
+SI04,Slovenia,"Zahodna Slovenija",83.2,110
+SK01,Slovakia,"Bratislavský kraj",80.6,153
+SK02,Slovakia,"Západné Slovensko",78.4,70
+SK03,Slovakia,"Stredné Slovensko",78.0,62
+SK04,Slovakia,"Východné Slovensko",78.2,54
