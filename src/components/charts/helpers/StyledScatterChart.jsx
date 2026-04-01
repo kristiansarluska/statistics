@@ -13,20 +13,34 @@ import {
   Label,
 } from "recharts";
 
-// Scatter tooltip shows X and Y without the duplication that CustomTooltip causes
-// (Recharts Scatter passes both axes as separate payload entries)
-const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
+const ScatterTooltip = ({
+  active,
+  payload,
+  xLabel,
+  yLabel,
+  xTickFormatter,
+  yTickFormatter,
+}) => {
   if (!active || !payload?.length) return null;
   const point = payload[0]?.payload;
   if (!point) return null;
+
+  const xVal = xTickFormatter
+    ? Number(xTickFormatter(point.x)).toFixed(2)
+    : Number(point.x).toFixed(2);
+
+  const yVal = yTickFormatter
+    ? Number(yTickFormatter(point.y)).toFixed(2)
+    : Number(point.y).toFixed(2);
+
   return (
     <div
       className="custom-tooltip bg-body border rounded shadow-sm p-2"
       style={{ fontSize: "0.9rem" }}
     >
-      <p className="mb-0 fw-bold">{`${xLabel ?? "X"}: ${Number(point.x).toFixed(2)}`}</p>
+      <p className="mb-0 fw-bold">{`${xLabel ?? "X"}: ${xVal}`}</p>
       <p className="mb-0" style={{ color: "var(--bs-primary)" }}>
-        {`${yLabel ?? "Y"}: ${Number(point.y).toFixed(2)}`}
+        {`${yLabel ?? "Y"}: ${yVal}`}
       </p>
     </div>
   );
@@ -43,6 +57,8 @@ const StyledScatterChart = ({
   hideXAxis = false,
   hideYAxis = false,
   hideTooltip = false,
+  xTickFormatter,
+  yTickFormatter,
   fillColor = "var(--bs-primary)",
   opacity = 0.7,
   height = 300,
@@ -59,6 +75,7 @@ const StyledScatterChart = ({
           domain={xAxisDomain}
           allowDataOverflow
           hide={hideXAxis}
+          tickFormatter={xTickFormatter}
           className="chart-axis"
         >
           {xLabel && (
@@ -72,6 +89,7 @@ const StyledScatterChart = ({
           domain={yAxisDomain}
           allowDataOverflow
           hide={hideYAxis}
+          tickFormatter={yTickFormatter}
           className="chart-axis"
         >
           {yLabel && (
@@ -87,7 +105,14 @@ const StyledScatterChart = ({
 
         {!hideTooltip && (
           <Tooltip
-            content={<ScatterTooltip xLabel={xLabel} yLabel={yLabel} />}
+            content={
+              <ScatterTooltip
+                xLabel={xLabel}
+                yLabel={yLabel}
+                xTickFormatter={xTickFormatter}
+                yTickFormatter={yTickFormatter}
+              />
+            }
             cursor={{ strokeDasharray: "3 3" }}
           />
         )}

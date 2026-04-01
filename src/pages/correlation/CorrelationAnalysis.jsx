@@ -129,7 +129,35 @@ function CorrelationAnalysis() {
         </div>
       </div>
 
-      <CorrelationChart />
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">{t("correlation.simulator.exampleTitle")}</h5>
+        <p className="text-muted mb-3 small">
+          {t("correlation.simulator.exampleDesc")}
+        </p>
+
+        <ul className="mb-4">
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.positive"
+              components={{ bold: <strong />, italic: <em /> }}
+            />
+          </li>
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.negative"
+              components={{ bold: <strong />, italic: <em /> }}
+            />
+          </li>
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.zero"
+              components={{ bold: <strong /> }}
+            />
+          </li>
+        </ul>
+
+        <CorrelationChart />
+      </div>
     </section>
   );
 }

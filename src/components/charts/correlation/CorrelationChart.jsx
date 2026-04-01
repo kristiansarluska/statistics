@@ -237,10 +237,12 @@ const CorrelationChart = () => {
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledScatterChart
           data={data}
-          xLabel="X"
-          yLabel="Y"
+          xLabel={t("correlation.simulator.xAxisLabel")}
+          yLabel={t("correlation.simulator.yAxisLabel")}
           xAxisDomain={AXIS_DOMAIN}
           yAxisDomain={AXIS_DOMAIN}
+          xTickFormatter={(v) => v}
+          yTickFormatter={(v) => v * 2}
           fillColor="var(--bs-primary)"
           height={300}
         />
