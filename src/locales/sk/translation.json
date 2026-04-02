@@ -700,7 +700,15 @@
       },
       "stats": {
         "originalData": "Pôvodné dáta",
-        "withOutliers": "S fiktívnymi hodnotami"
+        "withOutliers": "S fiktívnymi hodnotami",
+        "pearsonLabel": "r (Pearson)",
+        "spearmanLabel": "rₛ (Spearman)"
+      },
+      "table": {
+        "title": "Zdrojové dáta pre výpočet",
+        "colCode": "Kód",
+        "colCountry": "Krajina",
+        "colRegion": "Región"
       }
     }
   },

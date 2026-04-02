@@ -1,18 +1,10 @@
 // src/components/charts/helpers/DataPreviewTable.jsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
- * Reusable paginated data preview table.
- *
- * Props:
- * data             — array of row objects
- * columns          — [{ key, label, render?: (value, row) => ReactNode }]
- * previewRows      — rows shown before "show all" (default 5)
- * title            — optional string in the header
- * downloadUrl      — optional URL of the raw file to download (e.g. "/data/file.json")
- * downloadFilename — optional custom filename for the download
- * downloadBtnLabel — optional custom text for the download button
+ * Reusable paginated data preview table with smooth height transition
+ * and horizontal scroll support for mobile devices.
  */
 function DataPreviewTable({
   data = [],
@@ -22,22 +14,20 @@ function DataPreviewTable({
   downloadUrl,
   downloadFilename,
   downloadBtnLabel,
-  // Hover sync: key field name (e.g. "nuts_id") and controlled hover state
   rowKey = null,
   hoveredRowKey = null,
   onRowHover = null,
 }) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
+  const tableRef = useRef(null);
 
-  const visibleRows = expanded ? data : data.slice(0, previewRows);
   const hiddenCount = data.length - previewRows;
+  const visibleRows = data;
 
   if (!data.length || !columns.length) return null;
 
-  // Funkcia na stiahnutie dát (pôvodný súbor alebo fallback na CSV)
   const handleDownload = () => {
-    // Ak bola dodaná URL, stiahneme pôvodný súbor
     if (downloadUrl) {
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -51,7 +41,6 @@ function DataPreviewTable({
       return;
     }
 
-    // Ak URL nebola dodaná, vygenerujeme z aktuálnej tabuľky CSV
     const headers = columns.map((c) => `"${c.label}"`).join(";");
     const csvRows = data.map((row) =>
       columns
@@ -75,8 +64,17 @@ function DataPreviewTable({
     document.body.removeChild(link);
   };
 
+  const handleToggle = () => {
+    if (expanded && tableRef.current) {
+      tableRef.current.scrollTop = 0;
+    }
+    setExpanded(!expanded);
+  };
+
   const btnLabel =
     downloadBtnLabel || t("components.dataPreviewTable.downloadBtn");
+
+  const collapsedHeightStr = `${38 + previewRows * 32}px`;
 
   return (
     <div className="mt-4">
@@ -91,9 +89,7 @@ function DataPreviewTable({
             {t("components.dataPreviewTable.records", { count: data.length })}
           </span>
         </div>
-
         <div className="d-flex gap-2">
-          {/* Tlačidlo na stiahnutie dát */}
           <button
             type="button"
             className="btn btn-sm btn-outline-primary rounded-pill d-flex align-items-center gap-1"
@@ -117,7 +113,7 @@ function DataPreviewTable({
             <button
               type="button"
               className="btn btn-sm btn-outline-secondary rounded-pill"
-              onClick={() => setExpanded((v) => !v)}
+              onClick={handleToggle}
               style={{ minWidth: "145px" }}
             >
               {expanded
@@ -128,63 +124,75 @@ function DataPreviewTable({
         </div>
       </div>
 
-      {/* ── Table ── */}
+      {/* ── Table Container s plynulou animáciou a horizontálnym scrollom ── */}
       <div
-        className="table-responsive rounded-3 border"
+        ref={tableRef}
+        className="rounded-3 border bg-body w-100"
         style={{
-          maxHeight: expanded ? "420px" : undefined,
-          overflowY: expanded ? "scroll" : "hidden",
+          maxHeight:
+            hiddenCount > 0
+              ? expanded
+                ? "420px"
+                : collapsedHeightStr
+              : "420px",
+          transition: "max-height 0.4s ease-in-out",
+          overflowY: expanded ? "auto" : "hidden",
           scrollbarGutter: "stable",
         }}
       >
-        <table
-          className="table table-sm table-hover mb-0"
-          style={{ fontSize: "0.82rem" }}
-        >
-          <thead className="table-active sticky-top">
-            <tr>
-              <th className="text-muted fw-normal ps-3" style={{ width: 40 }}>
-                #
-              </th>
-              {columns.map(({ key, label }) => (
-                <th key={key} className="fw-semibold">
-                  {label}
+        {/* Vnútorný obal pre horizontálne scrollovanie */}
+        <div className="table-responsive w-100">
+          <table
+            className="table table-sm table-hover mb-0 text-nowrap"
+            style={{ fontSize: "0.82rem" }}
+          >
+            <thead className="table-active sticky-top bg-body z-1">
+              <tr>
+                <th className="text-muted fw-normal ps-3" style={{ width: 40 }}>
+                  #
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.map((row, i) => {
-              const isHovered =
-                rowKey && hoveredRowKey && row[rowKey] === hoveredRowKey;
-              return (
-                <tr
-                  key={i}
-                  style={{
-                    backgroundColor: isHovered
-                      ? "var(--bs-primary-bg-subtle)"
-                      : undefined,
-                    cursor: onRowHover ? "pointer" : undefined,
-                    transition: "background-color 0.15s",
-                  }}
-                  onMouseEnter={
-                    onRowHover && rowKey
-                      ? () => onRowHover(row[rowKey])
-                      : undefined
-                  }
-                  onMouseLeave={onRowHover ? () => onRowHover(null) : undefined}
-                >
-                  <td className="text-muted ps-3">{i + 1}</td>
-                  {columns.map(({ key, render }) => (
-                    <td key={key}>
-                      {render ? render(row[key], row) : (row[key] ?? "—")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                {columns.map(({ key, label }) => (
+                  <th key={key} className="fw-semibold">
+                    {label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {visibleRows.map((row, i) => {
+                const isHovered =
+                  rowKey && hoveredRowKey && row[rowKey] === hoveredRowKey;
+                return (
+                  <tr
+                    key={i}
+                    style={{
+                      backgroundColor: isHovered
+                        ? "var(--bs-primary-bg-subtle)"
+                        : undefined,
+                      cursor: onRowHover ? "pointer" : undefined,
+                      transition: "background-color 0.15s",
+                    }}
+                    onMouseEnter={
+                      onRowHover && rowKey
+                        ? () => onRowHover(row[rowKey])
+                        : undefined
+                    }
+                    onMouseLeave={
+                      onRowHover ? () => onRowHover(null) : undefined
+                    }
+                  >
+                    <td className="text-muted ps-3">{i + 1}</td>
+                    {columns.map(({ key, render }) => (
+                      <td key={key}>
+                        {render ? render(row[key], row) : (row[key] ?? "—")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* ── Collapsed hint ── */}
