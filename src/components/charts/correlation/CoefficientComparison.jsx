@@ -1,6 +1,6 @@
 // src/components/charts/correlation/CoefficientComparison.jsx
-import React, { useState, useEffect, useMemo } from "react";
-import { useTranslation, Trans } from "react-i18next";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { InlineMath } from "react-katex";
 import StyledScatterChart from "../helpers/StyledScatterChart";
 import {
@@ -39,35 +39,46 @@ const CoefficientComparison = () => {
   const [outliers, setOutliers] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
 
-  // Hodnoty pre slider nového outlieru
   const [newOutlierX, setNewOutlierX] = useState(250);
   const [newOutlierY, setNewOutlierY] = useState(72);
+
+  const [showCrosshair, setShowCrosshair] = useState(false);
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    setShowCrosshair(true);
+    const timer = setTimeout(() => setShowCrosshair(false), 2000);
+    return () => clearTimeout(timer);
+  }, [newOutlierX, newOutlierY]);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/NUTS2_GDPPPP_LifeExpectancy.csv`)
       .then((res) => {
-        if (!res.ok) throw new Error("Súbor sa nepodarilo načítať");
+        if (!res.ok) throw new Error(t("correlation.comparison.fetchError"));
         return res.text();
       })
       .then((csvText) => {
         const rows = parseCSV(csvText);
-        // Header: NUTS2_Code, Country, Region_Name, Life_Expectancy, GDP_PPS
         const parsed = rows
           .slice(1)
           .map((row) => ({
             id: row[0],
             country: row[1],
-            name: row[2], // Region Name - tooltip ho teraz nájde
-            y: parseFloat(row[3]), // Life Expectancy
-            x: parseFloat(row[4]), // GDP
+            name: row[2],
+            y: parseFloat(row[3]),
+            x: parseFloat(row[4]),
           }))
           .filter((d) => !isNaN(d.x) && !isNaN(d.y));
         setRawData(parsed);
       })
       .catch((err) => console.error("Chyba pri načítaní dát:", err));
-  }, []);
+  }, [t]);
 
-  // Pôvodné dáta bez outlierov
   const baseData = useMemo(() => {
     if (activeTab === "south_ro") {
       return rawData.filter((d) =>
@@ -82,21 +93,17 @@ const CoefficientComparison = () => {
         ].includes(d.country),
       );
     }
-
     return rawData;
   }, [rawData, activeTab]);
 
-  // Dáta spojené s pridanými outliermi
   const chartData = useMemo(
     () => [...baseData, ...outliers],
     [baseData, outliers],
   );
 
-  // Výpočty PÔVODNÝCH koeficientov (len z baseData)
   const basePearson = useMemo(() => calculatePearson(baseData), [baseData]);
   const baseSpearman = useMemo(() => calculateSpearman(baseData), [baseData]);
 
-  // Výpočty NOVÝCH koeficientov (z chartData)
   const pearsonR = useMemo(() => calculatePearson(chartData), [chartData]);
   const spearmanR = useMemo(() => calculateSpearman(chartData), [chartData]);
 
@@ -104,10 +111,11 @@ const CoefficientComparison = () => {
     const newPoint = {
       x: newOutlierX,
       y: newOutlierY,
-      name: "Fiktívny outlier",
-      fill: "var(--bs-danger)",
+      name: t("correlation.comparison.fictionalOutlier"),
+      fill: "var(--bs-secondary)", // ZMENA: Farba nového bodu
     };
     setOutliers([...outliers, newPoint]);
+    setShowCrosshair(false);
   };
 
   const handleTabChange = (tab) => {
@@ -115,38 +123,76 @@ const CoefficientComparison = () => {
     setOutliers([]);
   };
 
+  const currentMaxX = Math.max(newOutlierX, ...chartData.map((d) => d.x));
+
+  const crossSizeX = currentMaxX * 0.025;
+  const crossSizeY = 20 * 0.04;
+
+  const crosshairLines = showCrosshair
+    ? [
+        {
+          segment: [
+            { x: Math.max(0, newOutlierX - crossSizeX), y: newOutlierY },
+            { x: newOutlierX + crossSizeX, y: newOutlierY },
+          ],
+          stroke: "var(--bs-secondary)",
+          strokeWidth: 2, // Plná čiara bez strokeDasharray
+        },
+        {
+          segment: [
+            { x: newOutlierX, y: Math.max(70, newOutlierY - crossSizeY) },
+            { x: newOutlierX, y: Math.min(90, newOutlierY + crossSizeY) },
+          ],
+          stroke: "var(--bs-secondary)",
+          strokeWidth: 2, // Plná čiara bez strokeDasharray
+        },
+      ]
+    : [];
+
   return (
-    <div className="card shadow-sm mt-4 border-2 border-primary border-top-0 border-bottom-0 border-end-0">
+    <div className="card shadow-sm mt-4">
       <div className="card-body p-4">
-        {/* Kontroly - Horný riadok */}
         <div className="row g-4 align-items-center mb-4 pb-4 border-bottom opacity-75">
           <div className="col-lg-3 text-center mb-3 mb-lg-0 border-end pe-4">
             <p className="small text-muted mb-2">
-              Dataset (zmena vymaže fiktívne)
+              {t("correlation.comparison.datasetLabel")}
             </p>
-            <div
-              className="btn-group btn-group-sm w-100 flex-wrap"
-              role="group"
-            >
-              <button
-                className={`btn ${activeTab === "all" ? "btn-primary" : "btn-outline-primary"}`}
-                onClick={() => handleTabChange("all")}
+            <div className="btn-group w-100" role="group">
+              <input
+                type="radio"
+                className="btn-check"
+                id="dataset-all"
+                name="datasetTab"
+                checked={activeTab === "all"}
+                onChange={() => handleTabChange("all")}
+              />
+              <label
+                className="btn btn-outline-primary btn-sm"
+                htmlFor="dataset-all"
               >
                 {t("correlation.comparison.tabAll")}
-              </button>
+              </label>
 
-              <button
-                className={`btn ${activeTab === "south_ro" ? "btn-primary" : "btn-outline-primary"}`}
-                onClick={() => handleTabChange("south_ro")}
+              <input
+                type="radio"
+                className="btn-check"
+                id="dataset-south"
+                name="datasetTab"
+                checked={activeTab === "south_ro"}
+                onChange={() => handleTabChange("south_ro")}
+              />
+              <label
+                className="btn btn-outline-primary btn-sm"
+                htmlFor="dataset-south"
               >
                 {t("correlation.comparison.tabSouthRO")}
-              </button>
+              </label>
             </div>
           </div>
 
           <div className="col-lg-6 mb-3 mb-lg-0 px-4">
             <h6 className="fw-bold mb-3 d-flex align-items-center">
-              <i className="bi bi-crosshair me-2 text-danger"></i>
+              <i className="bi bi-crosshair me-2 text-secondary"></i>
               {t("correlation.comparison.outlierControls.title")}
             </h6>
             <div className="row g-3">
@@ -161,7 +207,7 @@ const CoefficientComparison = () => {
                   type="range"
                   className="form-range"
                   min="0"
-                  max="350"
+                  max="270"
                   step="5"
                   value={newOutlierX}
                   onChange={(e) => setNewOutlierX(Number(e.target.value))}
@@ -179,8 +225,8 @@ const CoefficientComparison = () => {
                 <input
                   type="range"
                   className="form-range"
-                  min="65"
-                  max="95"
+                  min="70"
+                  max="90"
                   step="0.5"
                   value={newOutlierY}
                   onChange={(e) => setNewOutlierY(Number(e.target.value))}
@@ -191,7 +237,7 @@ const CoefficientComparison = () => {
 
           <div className="col-lg-3 text-lg-end d-flex flex-row flex-lg-column gap-2 border-start ps-4">
             <button
-              className="btn btn-outline-danger btn-sm"
+              className="btn btn-primary btn-sm"
               onClick={handleAddOutlier}
             >
               <i className="bi bi-plus-circle me-2"></i>
@@ -206,23 +252,25 @@ const CoefficientComparison = () => {
           </div>
         </div>
 
-        {/* Graf - Stredná časť */}
         <div className="w-100 mx-auto mb-5" style={{ maxWidth: "1000px" }}>
           <StyledScatterChart
             data={chartData}
-            xLabel="HDP (PPS % priemeru EÚ)"
-            yLabel="Stredná dĺžka života (roky)"
+            xLabel={t("correlation.comparison.chart.xLabel")}
+            yLabel={t("correlation.comparison.chart.yLabel")}
+            xTooltipLabel={t("correlation.comparison.chart.xLabelShort")}
+            yTooltipLabel={t("correlation.comparison.chart.yLabelShort")}
             xAxisDomain={[0, "auto"]}
-            yAxisDomain={[70, 90]} // Pevné osky vyzerajú lepšie
+            yAxisDomain={[70, 90]}
             fillColor="var(--bs-primary)"
             height={400}
-            // ZMENA: X, Y osky v tooltipe sú teraz bez jednotiek, tie sú v Labeli grafu
+            crosshairPoint={
+              showCrosshair ? { x: newOutlierX, y: newOutlierY } : null
+            }
           />
         </div>
 
         <hr className="text-muted opacity-25" />
 
-        {/* Výsledky - Dolná časť s využitím StatsBadge a InlineMath */}
         <div className="row mt-4 pt-2 mb-0">
           <div className="col-md-6 mb-3">
             <div className="alert alert-light border border-primary-subtle shadow-sm h-100 mb-0 d-flex flex-column">
@@ -235,12 +283,12 @@ const CoefficientComparison = () => {
                 <StatsBadge
                   items={[
                     {
-                      label: "Pôvodné dáta",
+                      label: t("correlation.comparison.stats.originalData"),
                       value: basePearson.toFixed(3),
                       color: "text-muted",
                     },
                     {
-                      label: "S outliermi",
+                      label: t("correlation.comparison.stats.withOutliers"),
                       value: pearsonR.toFixed(3),
                       color: "text-primary",
                       groupStart: true,
@@ -266,12 +314,12 @@ const CoefficientComparison = () => {
                 <StatsBadge
                   items={[
                     {
-                      label: "Pôvodné dáta",
+                      label: t("correlation.comparison.stats.originalData"),
                       value: baseSpearman.toFixed(3),
                       color: "text-muted",
                     },
                     {
-                      label: "S outliermi",
+                      label: t("correlation.comparison.stats.withOutliers"),
                       value: spearmanR.toFixed(3),
                       color: "text-success",
                       groupStart: true,

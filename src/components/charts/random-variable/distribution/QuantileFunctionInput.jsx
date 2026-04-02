@@ -101,7 +101,7 @@ const QuantileFunctionInput = () => {
       </h6>
 
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
-        <div className="btn-group shadow-sm" role="group">
+        <div className="btn-group" role="group">
           {["none", "median", "quartiles", "deciles"].map(
             (qType, index, arr) => {
               const isActive = activeQuantile === qType;

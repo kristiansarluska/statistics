@@ -241,7 +241,7 @@ function FiveNumberSummaryBoxplot() {
             <span className="small text-muted text-nowrap">
               {t("components.randomVariableCharts.boxplot.groupLabel")}
             </span>
-            <div className="btn-group shadow-sm" role="group">
+            <div className="btn-group" role="group">
               {groupOptions.map(({ value, label }, i, arr) => {
                 const roundClass =
                   i === 0

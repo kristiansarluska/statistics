@@ -66,6 +66,8 @@ const StyledScatterChart = ({
   yAxisDomain = ["auto", "auto"],
   xLabel,
   yLabel,
+  xTooltipLabel,
+  yTooltipLabel,
   hideXAxis = false,
   hideYAxis = false,
   hideTooltip = false,
@@ -75,6 +77,7 @@ const StyledScatterChart = ({
   opacity = 0.7,
   height = 300,
   referenceLines = [],
+  crosshairPoint = null,
   onClick,
   cursor = "default",
 }) => {
@@ -126,23 +129,22 @@ const StyledScatterChart = ({
           )}
         </YAxis>
 
-        {/* ZMENA: Tooltip teraz prijíma popisy osí, aby ich mohol zobraziť k hodnotám */}
         {!hideTooltip && (
           <Tooltip
-            content={<ScatterTooltip xLabel={xLabel} yLabel={yLabel} />}
+            content={
+              <ScatterTooltip
+                xLabel={xTooltipLabel || xLabel}
+                yLabel={yTooltipLabel || yLabel}
+                xTickFormatter={xTickFormatter}
+                yTickFormatter={yTickFormatter}
+              />
+            }
             cursor={{ strokeDasharray: "3 3" }}
           />
         )}
 
         {referenceLines.map((line, i) => (
-          <ReferenceLine
-            key={i}
-            x={line.x}
-            y={line.y}
-            stroke={line.stroke || "var(--bs-danger)"}
-            strokeDasharray={line.strokeDasharray || "5 5"}
-            label={line.label}
-          />
+          <ReferenceLine key={i} {...line} />
         ))}
 
         <Scatter data={data} fill={fillColor}>
@@ -154,6 +156,38 @@ const StyledScatterChart = ({
             />
           ))}
         </Scatter>
+
+        {/* NOVÉ: Nedeformovateľný kríž vykreslený presne na pixel vďaka SVG <g> */}
+        {crosshairPoint && (
+          <Scatter
+            data={[crosshairPoint]}
+            isAnimationActive={false}
+            shape={(props) => {
+              const { cx, cy } = props;
+              // Kríž s dĺžkou 8px do každého smeru od stredu. pointerEvents="none" zabráni bugom s tooltipom.
+              return (
+                <g style={{ pointerEvents: "none" }}>
+                  <line
+                    x1={cx - 8}
+                    y1={cy}
+                    x2={cx + 8}
+                    y2={cy}
+                    stroke="var(--bs-secondary)"
+                    strokeWidth={2}
+                  />
+                  <line
+                    x1={cx}
+                    y1={cy - 8}
+                    x2={cx}
+                    y2={cy + 8}
+                    stroke="var(--bs-secondary)"
+                    strokeWidth={2}
+                  />
+                </g>
+              );
+            }}
+          />
+        )}
       </ScatterChart>
     </ResponsiveContainer>
   );
