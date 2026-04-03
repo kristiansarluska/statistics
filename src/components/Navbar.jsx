@@ -13,11 +13,9 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // NOVÉ: Stav pre uzamknutie Navbaru, keď je na mobile otvorené menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isAutoScrolling = useRef(false);
 
-  // NOVÉ: Sledovanie natívnych Bootstrap udalostí pre hamburger menu
   useEffect(() => {
     const menu = document.getElementById("navbarSupportedContent");
     if (!menu) return;
@@ -111,7 +109,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
         </button>
 
         <button
-          className="navbar-toggler ms-2" /* ms-2 pre istotu pridá malú medzeru, ak by sa displej extrémne zúžil */
+          className="navbar-toggler ms-2"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -134,44 +132,14 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
                 {t("navbar.about")}
               </a>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                id="navbarDropdown"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+            <li className="nav-item active">
+              <Link
+                to="https://www.geoinformatics.upol.cz/"
+                target="_blank"
+                className="nav-link"
               >
-                {t("navbar.links")}
-              </a>
-              <div
-                className="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdown"
-              >
-                <a
-                  className="dropdown-item"
-                  href="https://www.geoinformatics.upol.cz/"
-                  target="_blank"
-                >
-                  {t("navbar.dropdown.department")}
-                </a>
-                <a
-                  className="dropdown-item"
-                  href="https://getbootstrap.com/"
-                  target="_blank"
-                >
-                  {t("navbar.dropdown.bootstrap")}
-                </a>
-                <div className="dropdown-divider"></div>
-                <a
-                  className="dropdown-item"
-                  href="mailto:kikosarluska@gmail.com"
-                >
-                  {t("navbar.dropdown.contact")}
-                </a>
-              </div>
+                {t("navbar.department")}
+              </Link>
             </li>
           </ul>
           <div className="d-flex ms-auto align-items-center">

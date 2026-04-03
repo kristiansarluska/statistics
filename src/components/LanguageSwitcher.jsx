@@ -1,3 +1,4 @@
+// src/components/LanguageSwitcher.jsx
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -4,11 +4,7 @@
     "about": "O bakalárskej práci",
     "links": "Dôležité odkazy",
     "topics": "Témy",
-    "dropdown": {
-      "department": "Katedra",
-      "bootstrap": "Bootstrap",
-      "contact": "Kontakt"
-    }
+    "department": "Katedra geoinformatiky"
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
@@ -624,8 +620,7 @@
       "testingDesc": "Ak z dát vypočítame napríklad koreláciu <m1/>, musíme overiť, či táto závislosť skutočne existuje v celej populácii, alebo či ide len o náhodu v našom malom výbere. Pre tento účel vykonávame testovanie hypotéz (podobne ako pri t-testoch).",
       "testingH0": "<bold>Nulová hypotéza (<h0/>):</bold> <m/> (Veličiny sú lineárne nezávislé).",
       "testingHa": "<bold>Alternatívna hypotéza (<ha/>):</bold> <m/> (Medzi veličinami existuje lineárna závislosť).",
-      "simulatorPlaceholder": "[Placeholder: Interaktívny simulátor korelácie]",
-      "simulatorDesc": "Tu bude komponent s posuvníkom pre hodnotu r (−1 až 1), počet bodov n, vykresleným ScatterChartom a výsledkom testu významnosti."
+      "testingTStat": "Testové kritérium (T) sa následne riadi Studentovým t-rozdelením"
     },
     "simulator": {
       "exampleTitle": "Cena nehnuteľnosti a vzdialenosť od rieky",
@@ -970,5 +965,12 @@
         "sortedData": "Zoradené dáta:"
       }
     }
+  },
+  "footer": {
+    "thesis": "Vytvorené v rámci bakalárskej práce",
+    "supervisor": "Školiteľ: Mgr. Karel Macků, PhD.",
+    "sourceCode": "GitHub | Zdrojový kód",
+    "ui": "UI:",
+    "iconsBy": "Ikony od"
   }
 }

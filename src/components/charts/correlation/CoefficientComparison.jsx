@@ -41,8 +41,8 @@ const CoefficientComparison = () => {
   const [outliers, setOutliers] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
 
-  const [newOutlierX, setNewOutlierX] = useState(150);
-  const [newOutlierY, setNewOutlierY] = useState(72);
+  const [newOutlierX, setNewOutlierX] = useState(145);
+  const [newOutlierY, setNewOutlierY] = useState(77);
 
   const [showCalc, setShowCalc] = useState(false);
 
@@ -330,7 +330,6 @@ const CoefficientComparison = () => {
         />
       </div>
 
-      {/* CalcPanel & Data Table toggle */}
       <div className="mt-4 w-100" style={{ maxWidth: "1000px" }}>
         <button
           type="button"
@@ -349,7 +348,8 @@ const CoefficientComparison = () => {
             transition: "grid-template-rows 0.35s ease",
           }}
         >
-          <div style={{ overflow: "hidden" }}>
+          {/* FIX: minWidth: 0 prevents the grid item from stretching beyond mobile screen */}
+          <div style={{ overflow: "hidden", minWidth: 0 }}>
             <CalcPanel title={t("correlation.simulator.calcTitle")}>
               {/* Pearson */}
               <CalcPanel.Row formula="r = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum(x_i-\bar{x})^2 \cdot \sum(y_i-\bar{y})^2}}" />
@@ -386,16 +386,15 @@ const CoefficientComparison = () => {
               </CalcPanel.Note>
             </CalcPanel>
           </div>
+        </div>
 
-          {/* Data Table */}
-          <div className="mt-4 pt-3 border-top">
-            <DataPreviewTable
-              data={tableData}
-              columns={tableColumns}
-              previewRows={5}
-              title={t("correlation.comparison.table.title")}
-            />
-          </div>
+        <div className="mt-4 w-100" style={{ minWidth: 0 }}>
+          <DataPreviewTable
+            data={tableData}
+            columns={tableColumns}
+            previewRows={5}
+            title={t("correlation.comparison.table.title")}
+          />
         </div>
       </div>
     </div>

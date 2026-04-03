@@ -100,7 +100,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 #page-content-wrapper {
   min-width: 0;
   flex: 1;
-  padding-bottom: 60vh;
   padding-top: 65px;
   overflow-x: hidden;
 }

@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import ScrollToTopButton from "../components/ScrollToTopButton";
+import Footer from "../components/Footer";
 
 function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,10 +47,17 @@ function Layout({ children }) {
   return (
     <div className="d-flex" id="wrapper">
       <Sidebar closeSidebar={closeSidebar} />
-      <div id="page-content-wrapper">
+      <div
+        id="page-content-wrapper"
+        className="d-flex flex-column min-vh-100 w-100"
+      >
         <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
-        <div className="container-fluid">{children}</div>
-        <ScrollToTopButton />
+        <div className="container-fluid p-4 flex-grow-1">
+          <ScrollToTopButton />
+          {children}
+        </div>
+
+        <Footer />
       </div>
     </div>
   );

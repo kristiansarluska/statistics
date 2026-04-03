@@ -134,8 +134,6 @@ body {
 #page-content-wrapper {
   overflow-y: auto;
   height: 100%;
-  /* Pridaný priestor, aby sa posledné kotvy (anchors) dali hladko zoscrollovať nahor */
-  padding-bottom: 60vh;
 }
 
 @media (min-width: 768px) {

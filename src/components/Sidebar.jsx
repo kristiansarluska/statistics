@@ -1,8 +1,10 @@
 // src/components/Sidebar.jsx
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
+import { Link } from "react-router-dom";
 import "../styles/sidebar.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 import SidebarItem from "./sidebar/SidebarItem";
 import { sidebarData } from "./sidebar/sidebarData";
 
@@ -11,6 +13,8 @@ function Sidebar({ closeSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
   const arrow = `${import.meta.env.BASE_URL}assets/images/small-arrow.png`;
+
+  const { darkMode } = useContext(ThemeContext);
 
   const [activePath, setActivePath] = useState(
     location.pathname + location.hash,
@@ -84,7 +88,16 @@ function Sidebar({ closeSidebar }) {
   return (
     <div className="border-end d-flex flex-column" id="sidebar-wrapper">
       <div className="sidebar-heading border-bottom">
-        {t("topics.statisticalMethods")}
+        <Link to="/">
+          <img
+            src={
+              darkMode
+                ? `${import.meta.env.BASE_URL}assets/images/logo_left_dark.svg`
+                : `${import.meta.env.BASE_URL}assets/images/logo_left_light.svg`
+            }
+            alt="StatTerra"
+          />
+        </Link>
       </div>
       <div className="list-group list-group-flush">
         {sidebarData.map((item, idx) => (

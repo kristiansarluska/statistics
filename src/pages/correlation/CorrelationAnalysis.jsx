@@ -118,8 +118,7 @@ function CorrelationAnalysis() {
               </ul>
               <hr className="my-3" />
               <p className="text-muted small mb-2 text-center">
-                Testové kritérium (T) sa následne riadi Studentovým
-                t-rozdelením:
+                {t("correlation.analysis.testingTStat")}
               </p>
               <div className="text-center overflow-auto">
                 <BlockMath math="T = \frac{r_{xy} \cdot \sqrt{n-2}}{\sqrt{1 - r_{xy}^2}} \sim t_{n-2}" />
