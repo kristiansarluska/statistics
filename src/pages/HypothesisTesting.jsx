@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import Introduction from "./hypothesisTesting/Introduction";
-import GeneralProcedure from "./hypothesisTesting/GeneralProcedure";
-import TTestDashboard from "./hypothesisTesting/TTestDashboard";
+import Introduction from "./hypothesis-testing/Introduction";
+import GeneralProcedure from "./hypothesis-testing/GeneralProcedure";
+import TTestDashboard from "./hypothesis-testing/TTestDashboard";
 
 function HypothesisTesting() {
   const { t } = useTranslation();

@@ -2,7 +2,7 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
-import ConfidenceIntervalSimulation from "../../components/content/parameterEstimation/ConfidenceIntervalSimulation";
+import ConfidenceIntervalSimulation from "../../components/content/parameter-estimation/ConfidenceIntervalSimulation";
 
 import "katex/dist/katex.min.css";
 

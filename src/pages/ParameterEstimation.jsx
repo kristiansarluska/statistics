@@ -3,9 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // Import sections
-import Introduction from "./parameterEstimation/Introduction";
-import PointEstimation from "./parameterEstimation/PointEstimation";
-import IntervalEstimation from "./parameterEstimation/IntervalEstimation";
+import Introduction from "./parameter-estimation/Introduction";
+import PointEstimation from "./parameter-estimation/PointEstimation";
+import IntervalEstimation from "./parameter-estimation/IntervalEstimation";
 
 function ParameterEstimation() {
   const { t } = useTranslation();

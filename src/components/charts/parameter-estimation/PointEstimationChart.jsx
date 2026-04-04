@@ -1,13 +1,13 @@
-// src/components/content/parameterEstimation/PointEstimationSimulation.jsx
+// src/components/content/parameterEstimation/PointEstimationChart.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ReferenceLine } from "recharts";
 import { BlockMath } from "react-katex";
-import StyledLineChart from "../../charts/helpers/StyledLineChart";
-import BackgroundArea from "../../charts/helpers/BackgroundArea";
-import AnimatedRefLine from "../../charts/helpers/AnimatedRefLine";
-import StatsBadge from "../helpers/StatsBadge";
-import ResetButton from "../../charts/helpers/ResetButton";
+import StyledLineChart from "../helpers/StyledLineChart";
+import BackgroundArea from "../helpers/BackgroundArea";
+import AnimatedRefLine from "../helpers/AnimatedRefLine";
+import StatsBadge from "../../content/helpers/StatsBadge";
+import ResetButton from "../helpers/ResetButton";
 import { randomNormal, normalPdf } from "../../../utils/distributions";
 
 // Fixed population parameters for Mount Praděd height measurement
@@ -15,7 +15,7 @@ const PRADED_MEAN = 1492.0;
 const PRADED_STD = 5.0;
 const MAX_SAMPLES = 100;
 
-function PointEstimationSimulation() {
+function PointEstimationChart() {
   const { t } = useTranslation();
 
   const [n, setN] = useState(15);
@@ -374,4 +374,4 @@ function PointEstimationSimulation() {
   );
 }
 
-export default PointEstimationSimulation;
+export default PointEstimationChart;

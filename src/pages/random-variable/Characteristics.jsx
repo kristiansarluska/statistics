@@ -1,6 +1,6 @@
 // src/pages/randomVariable/Characteristics.jsx
 import React from "react";
-import { InlineMath } from "react-katex";
+import { InlineMath, BlockMath } from "react-katex";
 import { useTranslation, Trans } from "react-i18next";
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 import HarmonicMeanCalc from "../../components/content/characteristics/HarmonicMeanCalc";
@@ -417,11 +417,14 @@ const Characteristics = () => {
           <Trans
             i18nKey="randomVariable.characteristics.otherMeasures.skewness.description"
             components={{
-              m: <InlineMath math="\gamma_1" />,
+              m: <InlineMath math="\alpha" />,
               bold: <strong />,
             }}
           />
         </p>
+        <div className="overflow-x-auto pb-2 mb-4">
+          <BlockMath math="\alpha = \frac{1}{n s_x^3} \cdot \sum_{i=1}^{n} (x_i - \bar{x})^3" />
+        </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
@@ -431,8 +434,11 @@ const Characteristics = () => {
           </h5>
           <p className="text-muted mb-4 small">
             <Trans
-              i18nKey="randomVariable.characteristics.otherMeasures.skewness.exampleDesc"
-              components={{ bold: <strong /> }}
+              i18nKey="randomVariable.characteristics.otherMeasures.kurtosis.description"
+              components={{
+                m: <InlineMath math="\varepsilon_{ex}" />,
+                bold: <strong />,
+              }}
             />
           </p>
           <SkewnessChart />
@@ -446,11 +452,14 @@ const Characteristics = () => {
           <Trans
             i18nKey="randomVariable.characteristics.otherMeasures.kurtosis.description"
             components={{
-              m: <InlineMath math="\gamma_2" />,
+              m: <InlineMath math="\varepsilon" />,
               bold: <strong />,
             }}
           />
         </p>
+        <div className="overflow-x-auto pb-2 mb-4">
+          <BlockMath math="\varepsilon = \frac{1}{n s_x^4} \cdot \sum_{i=1}^{n} (x_i - \bar{x})^4 - 3" />
+        </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">

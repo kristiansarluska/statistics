@@ -33,7 +33,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\begin{cases} \\frac{1}{b-a} & x \\in \\langle a, b \\rangle \\\\ 0 & x \\notin \\langle a, b \\rangle \\end{cases}`}
         />
@@ -67,7 +67,7 @@ function ContinuousDistributions() {
         {t("probabilityDistributions.continuous.exponential.description")}
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\begin{cases} \\lambda e^{-\\lambda x} & x \\ge 0 \\\\ 0 & x < 0 \\end{cases}`}
         />
@@ -106,7 +106,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}`}
         />
@@ -148,7 +148,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\begin{cases} \\frac{1}{\\Gamma\\left(\\frac{\\nu}{2}\\right) 2^{\\frac{\\nu}{2}}} x^{\\frac{\\nu}{2}-1} e^{-\\frac{x}{2}} & x > 0 \\\\ 0 & x \\le 0 \\end{cases}`}
         />
@@ -184,7 +184,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\frac{1}{\\sqrt{n\\pi}} \\cdot \\frac{\\Gamma\\left(\\frac{n+1}{2}\\right)}{\\Gamma\\left(\\frac{n}{2}\\right)} \\cdot \\left(1 + \\frac{x^2}{n}\\right)^{-\\frac{n+1}{2}}`}
         />
@@ -221,7 +221,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`f(x) = \\begin{cases} \\frac{1}{\\mathrm{B}\\left(\\frac{v_1}{2}, \\frac{v_2}{2}\\right)} \\left(\\frac{v_1}{v_2}\\right)^{\\frac{v_1}{2}} x^{\\frac{v_1}{2}-1} \\left(1 + \\frac{v_1}{v_2}x\\right)^{-\\frac{v_1+v_2}{2}} & x > 0 \\\\ 0 & x \\le 0 \\end{cases}`}
         />

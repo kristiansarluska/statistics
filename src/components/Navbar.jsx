@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { Link } from "react-router-dom";
 
-function Navbar({ onToggleSidebar, isSidebarOpen }) {
+function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
 
@@ -15,6 +15,17 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isAutoScrolling = useRef(false);
+
+  const handleHomeClick = () => {
+    if (window.innerWidth < 768) {
+      if (closeSidebar) closeSidebar();
+
+      const navbarCollapse = document.querySelector(".navbar-collapse");
+      if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+        navbarCollapse.classList.remove("show");
+      }
+    }
+  };
 
   useEffect(() => {
     const menu = document.getElementById("navbarSupportedContent");
@@ -123,16 +134,16 @@ function Navbar({ onToggleSidebar, isSidebarOpen }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
             <li className="nav-item active">
-              <Link to="/" className="nav-link">
+              <Link to="/" className="nav-link" onClick={handleHomeClick}>
                 {t("navbar.home")}
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#!">
+              <a className="nav-link" href="#!" onClick={handleHomeClick}>
                 {t("navbar.about")}
               </a>
             </li>
-            <li className="nav-item active">
+            <li className="nav-item active" onClick={handleHomeClick}>
               <Link
                 to="https://www.geoinformatics.upol.cz/"
                 target="_blank"

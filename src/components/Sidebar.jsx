@@ -88,7 +88,18 @@ function Sidebar({ closeSidebar }) {
   return (
     <div className="border-end d-flex flex-column" id="sidebar-wrapper">
       <div className="sidebar-heading border-bottom">
-        <Link to="/">
+        <Link
+          to="/"
+          onClick={() => {
+            if (window.innerWidth < 768) {
+              closeSidebar();
+              const navbarCollapse = document.querySelector(".navbar-collapse");
+              if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+                navbarCollapse.classList.remove("show");
+              }
+            }
+          }}
+        >
           <img
             src={
               darkMode

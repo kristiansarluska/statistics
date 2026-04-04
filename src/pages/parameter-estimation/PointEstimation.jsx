@@ -2,8 +2,8 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
-import PointEstimationSimulation from "../../components/content/parameterEstimation/PointEstimationSimulation";
-import RealDataSampling from "../../components/content/parameterEstimation/RealDataSampling";
+import PointEstimationChart from "../../components/charts/parameter-estimation/PointEstimationChart";
+import RealDataSampling from "../../components/content/parameter-estimation/RealDataSampling";
 import "katex/dist/katex.min.css";
 
 function PointEstimation() {
@@ -69,7 +69,7 @@ function PointEstimation() {
             }}
           />
         </p>
-        <PointEstimationSimulation />
+        <PointEstimationChart />
       </div>
 
       <h4 className="mt-5 mb-3">

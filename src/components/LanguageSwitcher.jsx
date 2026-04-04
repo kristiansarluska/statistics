@@ -1,5 +1,5 @@
 // src/components/LanguageSwitcher.jsx
-import React, { useContext } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export function LanguageSwitcher() {
@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
   return (
     <div className="dropdown">
       <button
-        className="btn dropdown-toggle d-flex align-items-center"
+        className="btn dropdown-toggle border-0 d-flex align-items-center nav-icon-btn"
         type="button"
         id="languageDropdown"
         data-bs-toggle="dropdown"
@@ -39,17 +39,16 @@ export function LanguageSwitcher() {
           alt="flag"
           className="me-2 language-flag"
         />
-
         {languages.find((l) => l.code === i18n.language)?.label}
       </button>
       <ul
-        className="dropdown-menu dropdown-menu-end"
+        className="dropdown-menu dropdown-menu-end shadow-sm border-0"
         aria-labelledby="languageDropdown"
       >
         {languages.map((lang) => (
           <li key={lang.code}>
             <button
-              className="dropdown-item d-flex align-items-center"
+              className="dropdown-item d-flex align-items-center py-2"
               onClick={() => changeLanguage(lang.code)}
             >
               <img
@@ -57,7 +56,6 @@ export function LanguageSwitcher() {
                 alt={lang.label}
                 className="me-2 language-flag"
               />
-
               {lang.label}
             </button>
           </li>

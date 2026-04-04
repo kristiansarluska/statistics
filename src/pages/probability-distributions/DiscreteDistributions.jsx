@@ -34,7 +34,7 @@ function DiscreteDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-automb-4">
         <BlockMath
           math={`p(x) = P(X=x) = \\begin{cases} 1-p & \\text x = 0 \\\\ p & \\text x = 1 \\\\ 0 & \\text{${t("probabilityDistributions.discrete.bernoulli.otherwise")}} \\end{cases}`}
         />
@@ -63,7 +63,7 @@ function DiscreteDistributions() {
       <h3 id="uniform-discrete" className="mb-3 mt-5">
         {t("probabilityDistributions.discrete.uniform.title")}
       </h3>
-      <p className="mb-4">
+      <p className="overflow-x-auto mb-4">
         <Trans
           i18nKey="probabilityDistributions.discrete.uniform.description"
           components={{
@@ -73,7 +73,7 @@ function DiscreteDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`p(x_i) = p(x) = \\frac{1}{n} \\quad \\text x \\in \\{1, 2, \\dots, n\\}`}
         />
@@ -116,7 +116,10 @@ function DiscreteDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div
+        className="overflow-x-auto
+      mb-4"
+      >
         <BlockMath
           math={`P(X=x) = \\binom{n}{x} p^x (1-p)^{n-x} \\quad \\text x \\in \\{0, 1, \\dots, n\\}`}
         />
@@ -157,7 +160,7 @@ function DiscreteDistributions() {
         />
       </p>
 
-      <div className="mb-4">
+      <div className="overflow-x-auto mb-4">
         <BlockMath
           math={`P(X=x) = \\frac{\\lambda^x}{x!} e^{-\\lambda} \\quad \\text x \\in \\{0, 1, 2, \\dots\\}`}
         />

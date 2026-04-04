@@ -9,7 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
-  Label, // Pridaný import Label
+  Label,
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 
@@ -141,6 +141,9 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
       <ComposedChart
         margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
         onMouseMove={handleChartInteraction}
+        onTouchMove={handleChartInteraction}
+        onTouchStart={handleChartInteraction}
+        onClick={handleChartInteraction}
         onMouseLeave={() => setHoverX && setHoverX(null)}
       >
         <CartesianGrid strokeDasharray="3 3" vertical={false} />

@@ -2,12 +2,10 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-// Sub-components
-import Introduction from "./randomVariable/Introduction";
-import ContinuousDiscrete from "./randomVariable/ContinuousDiscrete";
-import Distribution from "./randomVariable/Distribution";
-import Characteristics from "./randomVariable/Characteristics";
+import Introduction from "./random-variable/Introduction";
+import ContinuousDiscrete from "./random-variable/ContinuousDiscrete";
+import Distribution from "./random-variable/Distribution";
+import Characteristics from "./random-variable/Characteristics";
 
 const RandomVariable = () => {
   const { t } = useTranslation();

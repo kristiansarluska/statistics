@@ -2,13 +2,8 @@
   "navbar": {
     "home": "Úvod",
     "about": "O bakalářské práci",
-    "links": "Důležité odkazy",
-    "topics": "Témy",
-    "dropdown": {
-      "department": "Katedra",
-      "bootstrap": "Bootstrap",
-      "contact": "Kontakt"
-    }
+    "department": "Katedra geoinformatiky",
+    "topics": "Témy"
   },
   "topics": {
     "randomVariable": "Náhodná veličina",

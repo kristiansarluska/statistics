@@ -5,9 +5,9 @@ import { useLocation } from "react-router-dom";
 import "../styles/charts.css";
 
 // Pod-komponenty
-import Introduction from "./probabilityDistributions/Introduction";
-import DiscreteDistributions from "./probabilityDistributions/DiscreteDistributions";
-import ContinuousDistributions from "./probabilityDistributions/ContinuousDistributions";
+import Introduction from "./probability-distributions/Introduction";
+import DiscreteDistributions from "./probability-distributions/DiscreteDistributions";
+import ContinuousDistributions from "./probability-distributions/ContinuousDistributions";
 
 function ProbabilityDistributions() {
   const { t } = useTranslation();

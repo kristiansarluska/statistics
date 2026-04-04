@@ -51,7 +51,11 @@ function Layout({ children }) {
         id="page-content-wrapper"
         className="d-flex flex-column min-vh-100 w-100"
       >
-        <Navbar onToggleSidebar={toggleSidebar} isSidebarOpen={sidebarOpen} />
+        <Navbar
+          onToggleSidebar={toggleSidebar}
+          isSidebarOpen={sidebarOpen}
+          closeSidebar={closeSidebar}
+        />
         <div className="container-fluid p-4 flex-grow-1">
           <ScrollToTopButton />
           {children}

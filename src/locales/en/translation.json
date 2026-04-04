@@ -2,13 +2,8 @@
   "navbar": {
     "home": "Home",
     "about": "About the thesis",
-    "links": "Important links",
-    "topics": "Topics",
-    "dropdown": {
-      "department": "Department",
-      "bootstrap": "Bootstrap",
-      "contact": "Contact"
-    }
+    "department": "Department",
+    "topics": "Topics"
   },
   "topics": {
     "randomVariable": "Random Variable",

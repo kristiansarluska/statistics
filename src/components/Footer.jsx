@@ -19,7 +19,10 @@ function Footer() {
   const linkClass = "link-body-emphasis text-decoration-none";
 
   return (
-    <footer className="mt-auto py-4 bg-body-tertiary border-top text-center text-secondary">
+    <footer
+      className="mt-auto pt-4 pb-5 bg-body-tertiary border-top text-center text-secondary"
+      style={{ paddingBottom: "calc(3rem + env(safe-area-inset-bottom))" }}
+    >
       <div className="container-fluid d-flex flex-column align-items-center gap-3">
         <div className="small">
           {/* Copyright & Name */}
@@ -29,8 +32,8 @@ function Footer() {
               href="mailto:kikosarluska@gmail.com"
               className="link-primary text-decoration-none fw-medium"
             >
-              Kristián Šarluška
-            </a>{" "}
+              Kristián ŠARLUŠKA
+            </a>
             <br />
             {t("footer.thesis")}
             <br />
@@ -40,7 +43,7 @@ function Footer() {
           {/* GitHub Link */}
           <p className="mb-4">
             <a
-              href="https://github.com/kristiansarluska/statistics"
+              href="https://github.com/kristiansarluska/StatTerra"
               target="_blank"
               rel="noopener noreferrer"
               className={linkClass}
@@ -85,7 +88,7 @@ function Footer() {
           </p>
 
           {/* University Logo */}
-          <div className="mb-2">
+          <div className="mb-0">
             <Link to="https://www.upol.cz/" target="_blank">
               <img
                 src={uniLogo}
