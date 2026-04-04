@@ -1,12 +1,18 @@
 // src/pages/Home.jsx
 import React from "react";
+import Hero from "./home/Hero";
+import About from "./home/About";
+import Topics from "./home/Topics";
+import Methodology from "./home/Methodology";
 
 function Home() {
   return (
-    <>
-      <h1 className="mb-4">Simple Sidebar in React</h1>
-      <p>Prosím, funguj. Toto je testovací obsah prenesený do Reactu.</p>
-    </>
+    <div className="container-fluid px-0">
+      <Hero />
+      <About />
+      <Topics />
+      <Methodology />
+    </div>
   );
 }
 

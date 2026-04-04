@@ -178,3 +178,20 @@ body {
 .nav-icon-btn:active {
   background-color: var(--bs-secondary-bg) !important;
 }
+
+/* Jemný mapový/štatistický grid do pozadia Hero sekcie */
+.hero-grid-bg {
+  background-image:
+    linear-gradient(rgba(var(--bs-body-color-rgb), 0.05) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      rgba(var(--bs-body-color-rgb), 0.05) 1px,
+      transparent 1px
+    );
+  background-size: 30px 30px;
+  background-position: center center;
+}
+
+[data-bs-theme="light"] .hero-grid-bg h1 {
+  color: #495057 !important;
+}
