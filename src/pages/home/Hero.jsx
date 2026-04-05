@@ -1,8 +1,11 @@
 // src/pages/home/Hero.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Hero() {
+  const { t } = useTranslation();
+
   return (
     <section className="py-5 mb-5 bg-secondary-subtle rounded-4 shadow-sm hero-grid-bg position-relative">
       <div className="row align-items-center px-4 px-lg-5 position-relative z-1">
@@ -16,17 +19,13 @@ function Hero() {
           <h1 className="display-4 fw-normal mb-0 tracking-tight">StatTerra</h1>
         </div>
         <div className="col-lg-7 text-center text-lg-end ps-lg-5">
-          <h2 className="fw-normal mb-3">Porozumejte štatistike v priestore</h2>
-          <p className="lead text-muted mb-4">
-            Interaktívna edukačná aplikácia (nielen) pre geoinformatikov.
-            Prepája teoretické poznatky s dynamickými vizualizáciami a reálnymi
-            dátami.
-          </p>
+          <h2 className="fw-normal mb-3">{t("home.hero.title")}</h2>
+          <p className="lead text-muted mb-4">{t("home.hero.subtitle")}</p>
           <Link
             to="/random-variable"
-            className="btn btn-primary btn-lg rounded-pill px-5 shadow-sm"
+            className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm fw-semibold"
           >
-            Začať s učením
+            {t("home.hero.cta")}
           </Link>
         </div>
       </div>

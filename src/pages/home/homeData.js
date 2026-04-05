@@ -2,33 +2,33 @@
 
 export const chapters = [
   {
-    title: "Náhodná veličina",
-    desc: "Základné koncepty, typy rozdelení a charakteristiky polohy či variability.",
-    icon: "🎲",
+    titleKey: "home.data.chapters.randomVariable.title",
+    descKey: "home.data.chapters.randomVariable.desc",
+    icon: "assets/images/dice.png",
     path: "/random-variable",
   },
   {
-    title: "Rozdelenia pravdepodobnosti",
-    desc: "Diskrétne a spojité rozdelenia s vizualizáciou funkcií.",
-    icon: "📊",
+    titleKey: "home.data.chapters.probabilityDistributions.title",
+    descKey: "home.data.chapters.probabilityDistributions.desc",
+    icon: "assets/images/normal-distribution.png",
     path: "/probability-distributions",
   },
   {
-    title: "Odhady parametrov",
-    desc: "Bodové a intervalové odhady, simulácie na reálnych dátach.",
-    icon: "🎯",
+    titleKey: "home.data.chapters.parameterEstimation.title",
+    descKey: "home.data.chapters.parameterEstimation.desc",
+    icon: "assets/images/estimation.png",
     path: "/parameter-estimation",
   },
   {
-    title: "Testovanie hypotéz",
-    desc: "Všeobecný postup testovania a interaktívne t-testy.",
-    icon: "⚖️",
+    titleKey: "home.data.chapters.hypothesisTesting.title",
+    descKey: "home.data.chapters.hypothesisTesting.desc",
+    icon: "assets/images/hypothesis.png",
     path: "/hypothesis-testing",
   },
   {
-    title: "Korelačná analýza",
-    desc: "Skúmanie vzťahov medzi premennými a korelačné koeficienty.",
-    icon: "📈",
+    titleKey: "home.data.chapters.correlation.title",
+    descKey: "home.data.chapters.correlation.desc",
+    icon: "assets/images/correlation.png",
     path: "/correlation",
   },
 ];
@@ -36,29 +36,17 @@ export const chapters = [
 export const methodologyModules = [
   {
     id: "theory",
-    title: "Základná teória",
-    shortDesc:
-      "Vysvetlenie štatistických pojmov a metód vrátane matematických zápisov (KaTeX).",
-    fullDesc:
-      "Prehľadné zhrnutie teórie. V aplikácii sú všetky vzorce renderované cez KaTeX, čo zabezpečuje ich presnosť a čitateľnosť.",
-    placeholderText: "[ Ukážka: Vzorec vyrenderovaný cez KaTeX ]",
+    titleKey: "home.data.methodologyModules.theory.title",
+    shortDescKey: "home.data.methodologyModules.theory.shortDesc",
   },
   {
     id: "interactive",
-    title: "Interaktívne prvky",
-    shortDesc:
-      "Dynamické grafy a kalkulačky, kde si môžeš meniť vstupné parametre.",
-    fullDesc:
-      "Vyskúšaj si, ako zmena parametrov ovplyvňuje tvar rozdelenia. Tu neskôr vložíme reálny React komponent (napr. NormalChart alebo kalkulačku).",
-    placeholderText: "[ Ukážka: Skutočný Recharts komponent s posuvníkmi ]",
+    titleKey: "home.data.methodologyModules.interactive.title",
+    shortDescKey: "home.data.methodologyModules.interactive.shortDesc",
   },
   {
     id: "data",
-    title: "Dáta z praxe",
-    shortDesc:
-      "Aplikácia metód priamo na reálnych európskych či slovenských geodátach.",
-    fullDesc:
-      "Štatistika pre geoinformatikov má najväčší zmysel na reálnych mapách. Ukážka interaktívnej mapy s NUTS regiónmi.",
-    placeholderText: "[ Ukážka: Reálna Leaflet mapa NUTS regiónov ]",
+    titleKey: "home.data.methodologyModules.data.title",
+    shortDescKey: "home.data.methodologyModules.data.shortDesc",
   },
 ];

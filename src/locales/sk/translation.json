@@ -71,6 +71,74 @@
     }
   },
 
+  "home": {
+    "hero": {
+      "title": "Porozumejte štatistike v priestore",
+      "subtitle": "Interaktívna edukačná aplikácia (nielen) pre geoinformatikov. Prepája teoretické poznatky s dynamickými vizualizáciami a reálnymi dátami.",
+      "cta": "Začať s učením"
+    },
+    "about": {
+      "title": "O projekte",
+      "description": "Táto webová aplikácia vznikla ako výstup bakalárskej práce. Jej cieľom je prepojiť teoretické poznatky štatistiky s praktickými ukážkami, vizualizáciami a geodátami.",
+      "targetAudienceTitle": "Pre koho je to určené?",
+      "audience1": "Pre študentov katedry geoinformatiky Univerzity Palackého v Olomouci",
+      "audience2": "Pre študentov príbuzných odborov",
+      "audience3": "Pre každého, kto hľadá moderný spôsob výučby štatistiky"
+    },
+    "topicsTitle": "Preberané témy",
+    "data": {
+      "chapters": {
+        "randomVariable": {
+          "title": "Náhodná veličina",
+          "desc": "Základné koncepty, typy funkcií a charakteristiky polohy či variability."
+        },
+        "probabilityDistributions": {
+          "title": "Rozdelenia pravdepodobnosti",
+          "desc": "Diskrétne a spojité rozdelenia s vizualizáciou funkcií."
+        },
+        "parameterEstimation": {
+          "title": "Odhady parametrov",
+          "desc": "Bodové a intervalové odhady, simulácie na reálnych dátach."
+        },
+        "hypothesisTesting": {
+          "title": "Testovanie hypotéz",
+          "desc": "Všeobecný postup testovania a interaktívny t-test."
+        },
+        "correlation": {
+          "title": "Korelácia",
+          "desc": "Skúmanie vzťahov medzi premennými a korelačné koeficienty."
+        }
+      },
+      "methodologyModules": {
+        "theory": {
+          "title": "Základná teória",
+          "shortDesc": "Vysvetlenie štatistických pojmov a metód vrátane matematických zápisov."
+        },
+
+        "interactive": {
+          "title": "Interaktívne prvky",
+          "shortDesc": "Dynamicky sa meniace grafy a kalkulačky s možnosťou úpravy parametrov."
+        },
+        "data": {
+          "title": "Dáta z praxe",
+          "shortDesc": "Aplikácia metód priamo na reálnych európskych či českých geodátach."
+        }
+      }
+    },
+
+    "methodology": {
+      "title": "Metodika výučby",
+      "loadingMap": "Načítavam mapové dáta...",
+      "table": {
+        "title": "Ukážka reálnych dát (NUTS 3 Regióny)",
+        "colNutsId": "NUTS ID",
+        "colRegion": "Región",
+        "colCountry": "Krajina",
+        "colMedianAge": "Mediánový vek"
+      }
+    }
+  },
+
   "randomVariable": {
     "introduction": {
       "p1": "V reálnom svete, a obzvlášť v geoinformatike, sú naše merania a pozorovania takmer vždy zaťažené určitou mierou neistoty. Či už ide o meranie nadmorskej výšky GNSS prijímačom, počítanie výskytu dopravných nehôd na križovatke, alebo analýzu teploty, výsledky týchto procesov závisia od náhody.",
