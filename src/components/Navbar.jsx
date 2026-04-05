@@ -4,11 +4,12 @@ import ThemeToggle from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext.jsx";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
+  const location = useLocation();
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -17,6 +18,13 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
   const isAutoScrolling = useRef(false);
 
   const handleHomeClick = () => {
+    if (location.pathname === "/") {
+      const contentWrapper = document.getElementById("page-content-wrapper");
+      if (contentWrapper) {
+        contentWrapper.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
     if (window.innerWidth < 768) {
       if (closeSidebar) closeSidebar();
 

@@ -9,7 +9,7 @@
 #sidebar-wrapper {
   width: 15rem;
   flex-shrink: 0;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   transition: margin 0.25s ease-out;

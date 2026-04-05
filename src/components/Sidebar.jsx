@@ -91,6 +91,15 @@ function Sidebar({ closeSidebar }) {
         <Link
           to="/"
           onClick={() => {
+            if (location.pathname === "/") {
+              const contentWrapper = document.getElementById(
+                "page-content-wrapper",
+              );
+              if (contentWrapper) {
+                contentWrapper.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }
+
             if (window.innerWidth < 768) {
               closeSidebar();
               const navbarCollapse = document.querySelector(".navbar-collapse");
