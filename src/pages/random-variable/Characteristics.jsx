@@ -436,7 +436,7 @@ const Characteristics = () => {
             <Trans
               i18nKey="randomVariable.characteristics.otherMeasures.kurtosis.description"
               components={{
-                m: <InlineMath math="\varepsilon_{ex}" />,
+                m: <InlineMath math="\alpha" />,
                 bold: <strong />,
               }}
             />

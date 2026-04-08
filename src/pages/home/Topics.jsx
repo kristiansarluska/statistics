@@ -4,15 +4,13 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { chapters } from "./homeData";
 
-// src/pages/home/Topics.jsx
-// ... importy
-
 function Topics() {
   const { t } = useTranslation();
 
   return (
     <section className="mb-5">
       <h2 className="mb-4 border-bottom pb-2">{t("home.topicsTitle")}</h2>
+      <p className=" text-center">{t("home.topiscDescription")}</p>
       <div className="row g-3">
         {chapters.map((chapter, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-4">

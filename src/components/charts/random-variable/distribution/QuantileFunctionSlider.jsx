@@ -1,10 +1,8 @@
 // src/components/charts/random-variable/distribution/QuantileFunctionSlider.jsx
 import React, { useState, useEffect, useMemo } from "react";
-import Papa from "papaparse";
 import { ReferenceLine } from "recharts";
 import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
-import BackgroundArea from "../../helpers/BackgroundArea";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
 import StatsBadge from "../../../content/helpers/StatsBadge";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
@@ -16,58 +14,97 @@ const QuantileFunctionSlider = () => {
   const [error, setError] = useState(null);
 
   const [activeMode, setActiveMode] = useState("slider");
-  const [sliderP, setSliderP] = useState(50);
+  const [sliderP, setSliderP] = useState(25);
 
   const [inputX, debouncedInputX, setInputX] = useDebouncedValue("", 0);
   const [hoverX, setHoverX] = useState(null);
 
-  const csvUrl = `${import.meta.env.BASE_URL}data/CapitalPopulationShare.csv`;
+  const csvUrl = `${import.meta.env.BASE_URL}data/World_HCI.csv`;
 
+  // Vlastný CSV parser na nahradenie PapaParse
   useEffect(() => {
-    Papa.parse(csvUrl, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        // Extrakcia číselných hodnôt pre výpočty grafu
-        const values = results.data
-          .map((row) => parseFloat(row["2024"]))
+    fetch(csvUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error("Chyba siete pri sťahovaní CSV");
+        return res.text();
+      })
+      .then((csvText) => {
+        const parseCsvLine = (line) => {
+          const result = [];
+          let current = "";
+          let inQuotes = false;
+          for (let i = 0; i < line.length; i++) {
+            if (line[i] === '"') {
+              inQuotes = !inQuotes;
+            } else if (line[i] === "," && !inQuotes) {
+              result.push(current.trim());
+              current = "";
+            } else {
+              current += line[i];
+            }
+          }
+          result.push(current.trim());
+          return result;
+        };
+
+        const lines = csvText
+          .split(/\r?\n/)
+          .filter((line) => line.trim() !== "");
+        if (lines.length < 2) throw new Error("CSV neobsahuje dáta.");
+
+        const headers = parseCsvLine(lines[0]);
+        const scoreIdx = headers.indexOf("HCI_2025");
+        const nameIdx = headers.indexOf("Country.Name");
+
+        if (scoreIdx === -1 || nameIdx === -1) {
+          throw new Error("Nesprávny formát hlavičky v CSV.");
+        }
+
+        const parsedRows = lines.slice(1).map((line) => {
+          const cols = parseCsvLine(line);
+          return {
+            "Country.Name": cols[nameIdx] || "",
+            HCI_2025: cols[scoreIdx] || "",
+          };
+        });
+
+        const values = parsedRows
+          .map((row) => parseFloat(row["HCI_2025"]))
           .filter((val) => !isNaN(val))
           .sort((a, b) => a - b);
 
         if (values.length > 0) {
           setData(values);
-          // Uložíme si riadky, pričom ich zoradíme podľa hodnoty podielu (vzostupne)
-          const sortedRows = [...results.data]
-            .filter((row) => !isNaN(parseFloat(row["2024"])))
-            .sort((a, b) => parseFloat(a["2024"]) - parseFloat(b["2024"]));
+          const sortedRows = parsedRows
+            .filter((row) => !isNaN(parseFloat(row["HCI_2025"])))
+            .sort(
+              (a, b) => parseFloat(a["HCI_2025"]) - parseFloat(b["HCI_2025"]),
+            );
           setRawRows(sortedRows);
         } else {
           setError(
             t("components.randomVariableCharts.quantileSlider.errorNoData"),
           );
         }
-      },
-      error: (err) => {
-        console.error("PapaParse chyba:", err);
+      })
+      .catch((err) => {
+        console.error("CSV Fetch Error:", err);
         setError(
           t("components.randomVariableCharts.quantileSlider.errorFetch"),
         );
-      },
-    });
+      });
   }, [t, csvUrl]);
 
-  // Definícia stĺpcov pre tabuľku - upravený kľúč na Country_Name
   const tableColumns = useMemo(
     () => [
       {
-        key: "Country_Name",
+        key: "Country.Name",
         label: t("components.randomVariableCharts.quantileSlider.countryCol"),
       },
       {
-        key: "2024",
-        label: t("components.randomVariableCharts.quantileSlider.shareCol"),
-        render: (val) => <strong>{parseFloat(val).toFixed(2)} %</strong>,
+        key: "HCI_2025",
+        label: t("components.randomVariableCharts.quantileSlider.scoreCol"),
+        render: (val) => <strong>{parseFloat(val).toFixed(2)}</strong>,
       },
     ],
     [t],
@@ -78,10 +115,9 @@ const QuantileFunctionSlider = () => {
     if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
 
     const allX = new Set([0, 100]);
-    data.forEach((val, idx) => {
-      allX.add(((idx + 1) / length) * 100);
-      allX.add(val);
-    });
+    for (let i = 0; i < length; i++) {
+      allX.add(((i + 1) / length) * 100);
+    }
 
     const sortedX = Array.from(allX).sort((a, b) => a - b);
 
@@ -181,28 +217,26 @@ const QuantileFunctionSlider = () => {
       ? (target.p * 100).toFixed(1)
       : currentSliderValue;
 
-  if (error) return <div className="alert alert-danger p-4 mb-4">{error}</div>;
-  if (n === 0)
-    return (
-      <div className="p-4 text-center">
-        {t("components.randomVariableCharts.quantileSlider.loading")}
-      </div>
-    );
-
   const badgeItems =
     target && !target.msg
       ? [
           {
-            label: "p",
+            label: t(
+              "components.randomVariableCharts.quantileSlider.badgeP",
+              "Kvantil (p)",
+            ),
             value: `${(target.p * 100).toFixed(1)} %`,
             color: "text-primary",
             groupStart: true,
           },
           {
-            label: "x",
-            value: `${target.x.toFixed(2)} %`,
+            label: t(
+              "components.randomVariableCharts.quantileSlider.badgeX",
+              "HCI+ Skóre (x)",
+            ),
+            value: `${target.x.toFixed(2)}`,
             color: "text-success",
-            groupStart: true, // Vytvorí peknú vertikálnu čiaru medzi dvoma hodnotami
+            groupStart: true,
           },
         ]
       : [];
@@ -288,7 +322,6 @@ const QuantileFunctionSlider = () => {
           </div>
         )}
 
-        {/* Použitie nového StatsBadge miesto pôvodného textu */}
         {target && !target.msg && <StatsBadge items={badgeItems} />}
       </div>
 
@@ -303,31 +336,15 @@ const QuantileFunctionSlider = () => {
         <StyledLineChart
           data={chartData}
           xLabel="p (%)"
-          yLabel="x (%)"
+          yLabel="HCI+ Skóre"
           lineType="stepBefore"
           type="cdf"
           hoverX={hoverX}
           setHoverX={setHoverX}
           minX={0}
           maxX={100}
-          yAxisDomain={[0, 100]}
+          yAxisDomain={[0, 325]}
         >
-          <ReferenceLine
-            segment={[
-              { x: 0, y: 0 },
-              { x: 100, y: 100 },
-            ]}
-            stroke="var(--bs-secondary)"
-            strokeDasharray="3 3"
-            opacity={0.5}
-          />
-          <BackgroundArea
-            dataKey="cdfY"
-            type="stepAfter"
-            color="var(--bs-gray-400)"
-            fillOpacity={0.05}
-            strokeWidth={1}
-          />
           {target && !target.msg && (
             <>
               <ReferenceLine
@@ -356,7 +373,7 @@ const QuantileFunctionSlider = () => {
           )}
           previewRows={5}
           downloadUrl={csvUrl}
-          downloadFilename="CapitalPopulationShare.csv"
+          downloadFilename="HCI_2025.csv"
         />
       </div>
     </div>

@@ -1,0 +1,218 @@
+"Country.Name","Country.Code","HCI_2025"
+"Argentina","ARG","199.918168428304"
+"Australia","AUS","269.984965083665"
+"Brazil","BRA","202.918398704556"
+"China","CHN","218.194501157773"
+"France","FRA","251.244449185312"
+"Germany","DEU","257.354609424053"
+"India","IND","158.761159883466"
+"Indonesia","IDN","175.368980057936"
+"Italy","ITA","224.887290284884"
+"Japan","JPN","283.794481765171"
+"Korea, Rep.","KOR","266.902286947982"
+"Mexico","MEX","193.468533715888"
+"Netherlands","NLD","270.627627757936"
+"Russian Federation","RUS","248.790457136841"
+"Saudi Arabia","SAU","209.765196729666"
+"Spain","ESP","240.509349347421"
+"Switzerland","CHE","264.915676386724"
+"Turkiye","TUR","228.232515594739"
+"United Kingdom","GBR","261.200767838187"
+"United States","USA","251.724106430326"
+"Afghanistan","AFG","80.2485372320575"
+"Albania","ALB","203.459741321192"
+"Algeria","DZA","155.067203804097"
+"American Samoa","ASM",
+"Andorra","AND",
+"Angola","AGO",
+"Antigua and Barbuda","ATG",
+"Armenia","ARM","223.605451269278"
+"Aruba","ABW",
+"Austria","AUT","252.119368847511"
+"Azerbaijan","AZE","207.515782692056"
+"Bahamas, The","BHS",
+"Bahrain","BHR","233.928983673937"
+"Bangladesh","BGD","146.7078335973"
+"Barbados","BRB",
+"Belarus","BLR","250.419940662448"
+"Belgium","BEL","246.007415156981"
+"Belize","BLZ",
+"Benin","BEN","124.776337202293"
+"Bermuda","BMU",
+"Bhutan","BTN","151.233351326266"
+"Bolivia","BOL",
+"Bosnia and Herzegovina","BIH","191.624202512709"
+"Botswana","BWA","156.905382826979"
+"British Virgin Islands","VGB",
+"Brunei Darussalam","BRN","207.618978552671"
+"Bulgaria","BGR","226.234387784634"
+"Burkina Faso","BFA","107.134396967593"
+"Burundi","BDI","114.25951684727"
+"Cabo Verde","CPV",
+"Cambodia","KHM","138.916587206256"
+"Cameroon","CMR","126.931815193658"
+"Canada","CAN","256.888938337996"
+"Cayman Islands","CYM",
+"Central African Republic","CAF","105.950487304105"
+"Chad","TCD","89.3808236267492"
+"Channel Islands","CHI",
+"Chile","CHL","226.150644265244"
+"Colombia","COL","197.634190932185"
+"Comoros","COM","135.288275416686"
+"Congo, Dem. Rep.","COD","121.542729897707"
+"Congo, Rep.","COG","124.758870547647"
+"Costa Rica","CRI","192.460526848094"
+"Cote d'Ivoire","CIV","114.614230404904"
+"Croatia","HRV","239.869595662273"
+"Cuba","CUB",
+"Curacao","CUW",
+"Cyprus","CYP","257.18390053541"
+"Czechia","CZE","249.672229273336"
+"Denmark","DNK","265.178774312543"
+"Djibouti","DJI","72.4308511986611"
+"Dominica","DMA",
+"Dominican Republic","DOM","173.667837180522"
+"Ecuador","ECU","184.17601580933"
+"Egypt, Arab Rep.","EGY","161.193015955761"
+"El Salvador","SLV","156.675182316704"
+"Equatorial Guinea","GNQ",
+"Eritrea","ERI",
+"Estonia","EST","262.158629983184"
+"Eswatini","SWZ","133.524393758374"
+"Ethiopia","ETH","123.430698691138"
+"Faroe Islands","FRO",
+"Fiji","FJI","192.830506398657"
+"Finland","FIN","256.79108789099"
+"French Polynesia","PYF",
+"Gabon","GAB","129.370289734272"
+"Gambia, The","GMB","113.903912570953"
+"Georgia","GEO","207.3034765733"
+"Ghana","GHA","151.103548422827"
+"Gibraltar","GIB",
+"Greece","GRC","221.945548275141"
+"Greenland","GRL",
+"Grenada","GRD","182.590732138334"
+"Guam","GUM",
+"Guatemala","GTM","142.320706893762"
+"Guinea","GIN","104.287671577352"
+"Guinea-Bissau","GNB","112.551019865699"
+"Guyana","GUY","158.343352175498"
+"Haiti","HTI","141.173976068942"
+"Honduras","HND","140.426922489937"
+"Hong Kong SAR, China","HKG","258.364618978878"
+"Hungary","HUN","235.934126230516"
+"Iceland","ISL","266.661214930692"
+"Iran, Islamic Rep.","IRN","180.455321718084"
+"Iraq","IRQ",
+"Ireland","IRL","269.52288696857"
+"Isle of Man","IMN",
+"Israel","ISR","248.570777889358"
+"Jamaica","JAM","200.125337175894"
+"Jordan","JOR","170.209690385734"
+"Kazakhstan","KAZ","229.787517348898"
+"Kenya","KEN","170.810173552016"
+"Kiribati","KIR","161.894557557773"
+"Korea, Dem. People's Rep.","PRK",
+"Kosovo","XKX",
+"Kuwait","KWT","194.502456825832"
+"Kyrgyz Republic","KGZ","197.504551602378"
+"Lao PDR","LAO","135.560140991602"
+"Latvia","LVA","252.575868107477"
+"Lebanon","LBN","160.100531946259"
+"Lesotho","LSO","99.4602630441549"
+"Liberia","LBR",
+"Libya","LBY",
+"Liechtenstein","LIE",
+"Lithuania","LTU","258.178006808676"
+"Luxembourg","LUX","239.86369476281"
+"Macao SAR, China","MAC","255.778757041837"
+"Madagascar","MDG","119.213786287104"
+"Malawi","MWI","123.841689144642"
+"Malaysia","MYS","200.617273303235"
+"Maldives","MDV",
+"Mali","MLI","93.4526580680485"
+"Malta","MLT","254.565052309424"
+"Marshall Islands","MHL","145.229385906531"
+"Mauritania","MRT",
+"Mauritius","MUS","183.517484889709"
+"Micronesia, Fed. Sts.","FSM",
+"Moldova","MDA","221.72119017642"
+"Monaco","MCO",
+"Mongolia","MNG","209.453827978017"
+"Montenegro","MNE","218.864610323482"
+"Morocco","MAR","147.050940879989"
+"Mozambique","MOZ",
+"Myanmar","MMR","149.185531689632"
+"Namibia","NAM","140.689700953747"
+"Nauru","NRU","161.644021795538"
+"Nepal","NPL","133.214866816606"
+"New Caledonia","NCL",
+"New Zealand","NZL","263.66833343592"
+"Nicaragua","NIC","178.080323441416"
+"Niger","NER","101.470599643395"
+"Nigeria","NGA","130.687436466829"
+"North Macedonia","MKD","202.451581213171"
+"Northern Mariana Islands","MNP",
+"Norway","NOR","266.006945772632"
+"Oman","OMN","206.17282490536"
+"Pakistan","PAK","129.581274572444"
+"Palau","PLW","226.609413043691"
+"Panama","PAN","174.161556698804"
+"Papua New Guinea","PNG",
+"Paraguay","PRY","180.840572907759"
+"Peru","PER","206.373846063001"
+"Philippines","PHL","175.448312088346"
+"Poland","POL","259.093863791164"
+"Portugal","PRT","249.355005800635"
+"Puerto Rico (US)","PRI",
+"Qatar","QAT","228.588401444874"
+"Romania","ROU","198.648041679"
+"Rwanda","RWA","156.944200946409"
+"Samoa","WSM","164.365209274739"
+"San Marino","SMR",
+"Sao Tome and Principe","STP","106.631740255625"
+"Senegal","SEN","109.36866625024"
+"Serbia","SRB","230.386376813325"
+"Seychelles","SYC","226.551647263106"
+"Sierra Leone","SLE","116.63967001977"
+"Singapore","SGP","282.370962873384"
+"Sint Maarten (Dutch part)","SXM",
+"Slovak Republic","SVK","232.007657400246"
+"Slovenia","SVN","252.553635723346"
+"Solomon Islands","SLB",
+"Somalia, Fed. Rep.","SOM",
+"South Africa","ZAF","132.135890722015"
+"South Sudan","SSD",
+"Sri Lanka","LKA",
+"St. Kitts and Nevis","KNA",
+"St. Lucia","LCA","201.017397219691"
+"St. Martin (French part)","MAF",
+"St. Vincent and the Grenadines","VCT","164.232408265939"
+"Sudan","SDN","109.275764568178"
+"Suriname","SUR",
+"Sweden","SWE","270.012235561226"
+"Syrian Arab Republic","SYR",
+"Tajikistan","TJK","138.469191684176"
+"Tanzania","TZA","132.631068631231"
+"Thailand","THA","202.297187373807"
+"Timor-Leste","TLS",
+"Togo","TGO","136.164178497012"
+"Tonga","TON","175.778000893774"
+"Trinidad and Tobago","TTO","189.999056876157"
+"Tunisia","TUN","161.163455429672"
+"Turkmenistan","TKM","178.768794380418"
+"Turks and Caicos Islands","TCA",
+"Tuvalu","TUV","166.096299719403"
+"Uganda","UGA","145.176022527982"
+"Ukraine","UKR","220.311625686497"
+"United Arab Emirates","ARE","262.769818900107"
+"Uruguay","URY","204.588746951467"
+"Uzbekistan","UZB","169.612080696624"
+"Vanuatu","VUT","136.446004491691"
+"Venezuela, RB","VEN",
+"Viet Nam","VNM","214.368419596821"
+"Virgin Islands (U.S.)","VIR",
+"West Bank and Gaza","PSE","157.935687934005"
+"Yemen, Rep.","YEM",
+"Zambia","ZMB","129.684500367016"
+"Zimbabwe","ZWE","139.392818132141"

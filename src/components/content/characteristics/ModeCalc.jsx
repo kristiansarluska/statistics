@@ -48,14 +48,15 @@ const ModeCalc = () => {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
-      <h5 className="mb-4 text-center">
+      <h6 className="mb-4 text-center">
         {t("components.characteristics.mode.title")}
-      </h5>
+      </h6>
 
       <div
-        className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100 mb-4"
+        className="p-3 r6unded-3 shadow-sm border bg-body-tertiary text-center w-100 mb-4"
         style={{ maxWidth: "800px" }}
       >
+        6{" "}
         <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
           {t("components.characteristics.mode.currentMode")}
         </p>

@@ -143,7 +143,8 @@ const Distribution = () => {
               m2: <InlineMath math="x_p" />,
               m3: <InlineMath math="p" />,
               bold: <strong />,
-              m4: <InlineMath math="p = 0.5" />,
+              italic: <i />,
+              m4: <InlineMath math="p = 0,5" />,
             }}
           />
         </p>
