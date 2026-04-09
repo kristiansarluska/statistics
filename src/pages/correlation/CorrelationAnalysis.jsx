@@ -83,6 +83,36 @@ function CorrelationAnalysis() {
         </p>
       </div>
 
+      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">{t("correlation.simulator.exampleTitle")}</h5>
+        <p className="text-muted mb-3 small">
+          {t("correlation.simulator.exampleDesc")}
+        </p>
+
+        <ul className="mb-4">
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.positive"
+              components={{ bold: <strong />, italic: <em /> }}
+            />
+          </li>
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.negative"
+              components={{ bold: <strong />, italic: <em /> }}
+            />
+          </li>
+          <li className="text-muted mb-2 small">
+            <Trans
+              i18nKey="correlation.simulator.examplePoints.zero"
+              components={{ bold: <strong /> }}
+            />
+          </li>
+        </ul>
+
+        <CorrelationChart />
+      </div>
+
       <div className="mb-4">
         <h4>{t("correlation.analysis.testingTitle")}</h4>
         <p>
@@ -128,34 +158,24 @@ function CorrelationAnalysis() {
         </div>
       </div>
 
-      <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">{t("correlation.simulator.exampleTitle")}</h5>
-        <p className="text-muted mb-3 small">
-          {t("correlation.simulator.exampleDesc")}
-        </p>
-
-        <ul className="mb-4">
-          <li className="text-muted mb-2 small">
+      <div className="mx-auto w-100 mt-4">
+        <div className="bg-body-tertiary border rounded-3 p-4 shadow-sm">
+          <h6 className="fw-bold mb-2">
+            <i className="bi bi-lightbulb text-warning me-2"></i>
+            {t("correlation.analysis.testingExperimentTitle")}
+          </h6>
+          <p className="mb-0 small text-muted">
             <Trans
-              i18nKey="correlation.simulator.examplePoints.positive"
-              components={{ bold: <strong />, italic: <em /> }}
+              i18nKey="correlation.analysis.testingExperimentDesc"
+              components={{
+                bold: <strong className="text-body" />,
+                italic: <i />,
+                textDanger: <strong className="text-danger" />,
+                textSuccess: <strong className="text-success" />,
+              }}
             />
-          </li>
-          <li className="text-muted mb-2 small">
-            <Trans
-              i18nKey="correlation.simulator.examplePoints.negative"
-              components={{ bold: <strong />, italic: <em /> }}
-            />
-          </li>
-          <li className="text-muted mb-2 small">
-            <Trans
-              i18nKey="correlation.simulator.examplePoints.zero"
-              components={{ bold: <strong /> }}
-            />
-          </li>
-        </ul>
-
-        <CorrelationChart />
+          </p>
+        </div>
       </div>
     </section>
   );

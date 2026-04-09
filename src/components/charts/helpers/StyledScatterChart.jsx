@@ -78,6 +78,7 @@ const StyledScatterChart = ({
   height = 300,
   referenceLines = [],
   crosshairPoint = null,
+  crosshairColor = "var(--bs-warning)",
   onClick,
   cursor = "default",
 }) => {
@@ -164,7 +165,6 @@ const StyledScatterChart = ({
             isAnimationActive={false}
             shape={(props) => {
               const { cx, cy } = props;
-              // Kríž s dĺžkou 8px do každého smeru od stredu. pointerEvents="none" zabráni bugom s tooltipom.
               return (
                 <g style={{ pointerEvents: "none" }}>
                   <line
@@ -172,7 +172,7 @@ const StyledScatterChart = ({
                     y1={cy}
                     x2={cx + 8}
                     y2={cy}
-                    stroke="var(--bs-secondary)"
+                    stroke={crosshairColor} // <-- ZMENA: namiesto "var(--bs-secondary)"
                     strokeWidth={2}
                   />
                   <line
@@ -180,7 +180,7 @@ const StyledScatterChart = ({
                     y1={cy - 8}
                     x2={cx}
                     y2={cy + 8}
-                    stroke="var(--bs-secondary)"
+                    stroke={crosshairColor} // <-- ZMENA: namiesto "var(--bs-secondary)"
                     strokeWidth={2}
                   />
                 </g>

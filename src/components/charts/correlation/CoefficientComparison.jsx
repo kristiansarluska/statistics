@@ -170,7 +170,7 @@ const CoefficientComparison = () => {
         x: newOutlierX,
         y: newOutlierY,
         name: t("correlation.comparison.fictionalOutlier"),
-        fill: "var(--bs-secondary)",
+        fill: "var(--bs-gray-600)",
       },
     ]);
   };
@@ -326,7 +326,8 @@ const CoefficientComparison = () => {
           yAxisDomain={[70, 90]}
           fillColor="var(--bs-primary)"
           height={400}
-          crosshairPoint={{ x: newOutlierX, y: newOutlierY }} // Crosshair je trvalo viditeľný
+          crosshairPoint={{ x: newOutlierX, y: newOutlierY }}
+          crosshairColor="var(--bs-gray-600)"
         />
       </div>
 

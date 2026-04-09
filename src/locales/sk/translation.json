@@ -689,7 +689,9 @@
       "testingDesc": "Ak z dát vypočítame napríklad koreláciu <m1/>, musíme overiť, či táto závislosť skutočne existuje v celej populácii, alebo či ide len o náhodu v našom malom výbere. Pre tento účel vykonávame testovanie hypotéz (podobne ako pri t-testoch).",
       "testingH0": "<bold>Nulová hypotéza (<h0/>):</bold> <m/> (Veličiny sú lineárne nezávislé).",
       "testingHa": "<bold>Alternatívna hypotéza (<ha/>):</bold> <m/> (Medzi veličinami existuje lineárna závislosť).",
-      "testingTStat": "Testové kritérium (T) sa následne riadi Studentovým t-rozdelením"
+      "testingTStat": "Testové kritérium (T) sa následne riadi Studentovým t-rozdelením",
+      "testingExperimentTitle": "Vyskúšajte si to na grafe vyššie",
+      "testingExperimentDesc": "Vráťte sa k interaktívnemu prvku a nastavte relatívne slabú koreláciu (napr. <bold>r = 0,30</bold>) a malý počet bodov (<bold>n = 10</bold>). Výsledok pravdepodobne <textDanger>nebude štatisticky významný</textDanger>. Následne začnite postupne zvyšovať počet bodov na posuvníku. Všimnite si, ako s pribúdajúcim množstvom dát klesá <italic>p-hodnota</italic> a aj táto slabá korelácia sa pri veľkej vzorke (napr. <bold>n = 100</bold>) stane <textSuccess>štatisticky preukázateľnou</textSuccess>."
     },
     "simulator": {
       "exampleTitle": "Cena nehnuteľnosti a vzdialenosť od rieky",
