@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   ReferenceDot,
   ResponsiveContainer,
-  Label, // Pridaný import Label
+  Label,
 } from "recharts";
 import "../../../styles/charts.css";
 import CustomTooltip from "./CustomTooltip";
@@ -336,7 +336,7 @@ function StyledLineChart({
               y={hoverY}
               r={5}
               fill="var(--bs-primary)"
-              stroke="var(--bs-body-color, black)"
+              stroke="var(--bs-secondary)"
               strokeWidth={2}
               isFront={true}
             />

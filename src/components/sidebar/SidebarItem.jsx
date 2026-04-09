@@ -44,6 +44,7 @@ function SidebarItem({
     setActivePath(item.path);
     setExpandedPath(item.path);
 
+    // 3. Ak sme na aktuálnej stránke a klikneme na hlavnú kapitolu -> scroll hore
     if (isCurrentPage && isMainChapter) {
       e.preventDefault();
 
@@ -63,6 +64,22 @@ function SidebarItem({
       return;
     }
 
+    // 4. Ak ide o podkapitolu (má # v URL), manuálne zascrollujeme
+    if (!isMainChapter) {
+      const hashId = item.path.split("#")[1];
+      if (hashId) {
+        // Ak ideme z inej stránky, DOM potrebuje viac času na počiatočný render
+        const delay = isCurrentPage ? 50 : 500;
+        setTimeout(() => {
+          const element = document.getElementById(hashId);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, delay);
+      }
+    }
+
+    // 5. Presmerovanie cez navigate()
     handleClick(item.path);
   };
 
