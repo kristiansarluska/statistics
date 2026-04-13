@@ -1,7 +1,7 @@
 // src/pages/parameterEstimation/PointEstimation.jsx
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
-import { InlineMath } from "react-katex";
+import { InlineMath, BlockMath } from "react-katex";
 import PointEstimationChart from "../../components/charts/parameter-estimation/PointEstimationChart";
 import RealDataSampling from "../../components/content/parameter-estimation/RealDataSampling";
 import "katex/dist/katex.min.css";
@@ -36,19 +36,17 @@ function PointEstimation() {
       <p>
         <Trans
           i18nKey="parameterEstimation.pointEstimation.semDesc"
-          components={{ bold: <strong /> }}
-        />
-      </p>
-      <p>
-        <Trans
-          i18nKey="parameterEstimation.pointEstimation.semFormulaDesc"
           components={{
+            bold: <strong />,
             sigma: <InlineMath math="\sigma" />,
             n: <InlineMath math="n" />,
           }}
         />
       </p>
 
+      <div className="overflow-auto py-1">
+        <BlockMath math={`\\sigma_{\\bar{x}} = \\frac{\\sigma}{\\sqrt{n}}`} />
+      </div>
       <p>{t("parameterEstimation.pointEstimation.semEffect")}</p>
 
       <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "1000px" }}>
@@ -72,27 +70,29 @@ function PointEstimation() {
         <PointEstimationChart />
       </div>
 
-      <h4 className="mt-5 mb-3">
-        {t("parameterEstimation.pointEstimation.realDataTitle")}
-      </h4>
-      <p>
-        <Trans
-          i18nKey="parameterEstimation.pointEstimation.realDataP1"
-          components={{ bold: <strong /> }}
-        />
-      </p>
-      <p>
-        <Trans
-          i18nKey="parameterEstimation.pointEstimation.realDataP2"
-          components={{
-            bold: <strong />,
-            mu: <InlineMath math="\mu = 46{,}22" />,
-            sigma: <InlineMath math="\sigma = 3{,}76" />,
-          }}
-        />
-      </p>
+      <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "1000px" }}>
+        <h5 className="mb-3">
+          {t("parameterEstimation.pointEstimation.realDataTitle")}
+        </h5>
+        <p className="text-muted mb-4 small">
+          <Trans
+            i18nKey="parameterEstimation.pointEstimation.realDataP1"
+            components={{ bold: <strong /> }}
+          />
+        </p>
+        <p className="text-muted mb-4 small">
+          <Trans
+            i18nKey="parameterEstimation.pointEstimation.realDataP2"
+            components={{
+              bold: <strong />,
+              mu: <InlineMath math="\mu = 46{,}22" />,
+              sigma: <InlineMath math="\sigma = 3{,}76" />,
+            }}
+          />
+        </p>
 
-      <RealDataSampling />
+        <RealDataSampling />
+      </div>
     </section>
   );
 }

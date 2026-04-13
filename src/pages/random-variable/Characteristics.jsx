@@ -434,9 +434,8 @@ const Characteristics = () => {
           </h5>
           <p className="text-muted mb-4 small">
             <Trans
-              i18nKey="randomVariable.characteristics.otherMeasures.kurtosis.description"
+              i18nKey="randomVariable.characteristics.otherMeasures.skewness.exampleDesc"
               components={{
-                m: <InlineMath math="\alpha" />,
                 bold: <strong />,
               }}
             />
@@ -490,6 +489,8 @@ const Characteristics = () => {
               bold: <strong />,
               m1: <InlineMath math="Q_1" />,
               m2: <InlineMath math="Q_3" />,
+              ul: <ul />,
+              li: <li />,
             }}
           />
         </p>

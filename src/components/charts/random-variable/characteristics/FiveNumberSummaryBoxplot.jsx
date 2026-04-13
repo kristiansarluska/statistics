@@ -686,10 +686,6 @@ function FiveNumberSummaryBoxplot() {
         yMax={yMax}
       />
 
-      <p className="text-muted small mt-2 mb-0 text-center">
-        {t("components.randomVariableCharts.boxplot.legendNote")}
-      </p>
-
       {/* Data table */}
       <DataPreviewTable
         data={rawRows}

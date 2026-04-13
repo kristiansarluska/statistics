@@ -160,8 +160,7 @@ function CorrelationAnalysis() {
 
       <div className="mx-auto w-100 mt-4">
         <div className="bg-body-tertiary border rounded-3 p-4 shadow-sm">
-          <h6 className="fw-bold mb-2">
-            <i className="bi bi-lightbulb text-warning me-2"></i>
+          <h6 className="mb-2">
             {t("correlation.analysis.testingExperimentTitle")}
           </h6>
           <p className="mb-0 small text-muted">

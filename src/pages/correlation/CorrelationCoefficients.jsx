@@ -67,15 +67,6 @@ function CorrelationCoefficients() {
             components={{ bold: <strong /> }}
           />
         </p>
-        <p className="text-muted mb-3 small">
-          <Trans
-            i18nKey="correlation.comparison.p2"
-            components={{
-              mR: <InlineMath math="r" />,
-              mRs: <InlineMath math="r_s" />,
-            }}
-          />
-        </p>
 
         <h6 className="text-muted mb-3">
           {t("correlation.comparison.instructionsTitle")}

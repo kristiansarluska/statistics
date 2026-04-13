@@ -21,7 +21,7 @@ function DiscreteDistributions() {
       <h3 id="bernoulli" className="mb-3">
         {t("probabilityDistributions.discrete.bernoulli.title")}
       </h3>
-      <p className="mb-3">
+      <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.discrete.bernoulli.description"
           components={{
@@ -60,10 +60,10 @@ function DiscreteDistributions() {
       </div>
 
       {/* ROVNOMERNÉ ROZDELENIE */}
-      <h3 id="uniform-discrete" className="mb-3 mt-5">
+      <h3 id="uniform-discrete" className="mb-3">
         {t("probabilityDistributions.discrete.uniform.title")}
       </h3>
-      <p className="overflow-x-auto mb-4">
+      <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.discrete.uniform.description"
           components={{
@@ -102,7 +102,7 @@ function DiscreteDistributions() {
       </div>
 
       {/* BINOMICKÉ ROZDELENIE */}
-      <h3 id="binomial" className="mb-3 mt-5">
+      <h3 id="binomial" className="mb-3">
         {t("probabilityDistributions.discrete.binomial.title")}
       </h3>
       <p className="mb-4">
@@ -139,7 +139,7 @@ function DiscreteDistributions() {
               bold: <strong />,
               m1: <InlineMath math="p" />,
               m2: <InlineMath math="n" />,
-              m3: <InlineMath math="p = 0.9" />,
+              m3: <InlineMath math="p = 0,9" />,
               m4: <InlineMath math="n" />,
             }}
           />
@@ -148,7 +148,7 @@ function DiscreteDistributions() {
       </div>
 
       {/* POISSONOVO ROZDELENIE */}
-      <h3 id="poisson" className="mb-3 mt-5">
+      <h3 id="poisson" className="mb-3">
         {t("probabilityDistributions.discrete.poisson.title")}
       </h3>
       <p className="mb-4">

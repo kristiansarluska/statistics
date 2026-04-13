@@ -1,6 +1,7 @@
 // src/components/charts/probability-distributions/continuous/FisherFChart.jsx
 import React, { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+import { InlineMath } from "react-katex";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import { fisherFPDF, fisherFCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
@@ -63,8 +64,15 @@ function FisherFChart() {
             htmlFor="d1Range"
             className="form-label fw-bold mb-2 text-center small"
           >
-            {t("components.probabilityCharts.fisherF.d1")}
-            <span className="parameter-value">{d1}</span>
+            <span>
+              <Trans
+                i18nKey="components.probabilityCharts.fisherF.d1_control"
+                components={{
+                  m1: <InlineMath math="\nu_1" />,
+                }}
+              />
+            </span>
+            <span className="text-primary fw-bold">{d1}</span>
           </label>
           <input
             type="range"
@@ -83,8 +91,15 @@ function FisherFChart() {
             htmlFor="d2Range"
             className="form-label fw-bold mb-2 text-center small"
           >
-            {t("components.probabilityCharts.fisherF.d2")}
-            <span className="parameter-value">{d2}</span>
+            <span>
+              <Trans
+                i18nKey="components.probabilityCharts.fisherF.d2_control"
+                components={{
+                  m2: <InlineMath math="\nu_2" />,
+                }}
+              />
+            </span>
+            <span className="text-primary fw-bold">{d2}</span>
           </label>
           <input
             type="range"
@@ -106,7 +121,7 @@ function FisherFChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
-            yLabel="f(x; d₁, d₂)"
+            yLabel="f(x; ν₁, ν₂)"
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
@@ -123,7 +138,7 @@ function FisherFChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
-            yLabel="F(x; d₁, d₂)"
+            yLabel="F(x; ν₁, ν₂)"
             lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}

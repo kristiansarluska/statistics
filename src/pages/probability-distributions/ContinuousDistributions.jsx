@@ -23,7 +23,7 @@ function ContinuousDistributions() {
       </p>
 
       {/* ROVNOMERNÉ SPOJITÉ ROZDELENIE */}
-      <h3 id="uniform-continuous" className="mb-3 mt-5">
+      <h3 id="uniform-continuous" className="mb-3">
         {t("probabilityDistributions.continuous.uniform.title")}
       </h3>
       <p className="mb-4">
@@ -60,7 +60,7 @@ function ContinuousDistributions() {
       </div>
 
       {/* EXPONENCIÁLNE ROZDELENIE */}
-      <h3 id="exponential" className="mb-3 mt-5">
+      <h3 id="exponential" className="mb-3">
         {t("probabilityDistributions.continuous.exponential.title")}
       </h3>
       <p className="mb-4">
@@ -93,13 +93,17 @@ function ContinuousDistributions() {
       </div>
 
       {/* NORMÁLNE ROZDELENIE */}
-      <h3 id="normal" className="mb-3 mt-5">
+      <h3 id="normal" className="mb-3">
         {t("probabilityDistributions.continuous.normal.title")}
       </h3>
       <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.normal.description"
           components={{
+            bold: <strong />,
+            br: <br />,
+            ul: <ul />,
+            li: <li />,
             m1: <InlineMath math="\mu" />,
             m2: <InlineMath math="\sigma" />,
           }}
@@ -134,7 +138,7 @@ function ContinuousDistributions() {
       </div>
 
       {/* CHÍ-KVADRÁT ROZDELENIE */}
-      <h3 id="chi-square" className="mb-3 mt-5">
+      <h3 id="chi-square" className="mb-3">
         {t("probabilityDistributions.continuous.chiSquare.title")}
       </h3>
       <p className="mb-4">
@@ -144,6 +148,7 @@ function ContinuousDistributions() {
             m1: <InlineMath math="\chi^2" />,
             m2: <InlineMath math="\nu" />,
             m3: <InlineMath math="\nu = n-1" />,
+            bold: <strong />,
           }}
         />
       </p>
@@ -164,6 +169,7 @@ function ContinuousDistributions() {
             i18nKey="probabilityDistributions.continuous.chiSquare.exampleDesc"
             components={{
               bold: <strong />,
+              br: <br />,
               m1: <InlineMath math="\chi^2" />,
               m2: <InlineMath math="n-1" />,
               m3: <InlineMath math="\nu" />,
@@ -174,13 +180,13 @@ function ContinuousDistributions() {
       </div>
 
       {/* STUDENTOVO T-ROZDELENIE */}
-      <h3 id="student-t" className="mb-3 mt-5">
+      <h3 id="student-t" className="mb-3">
         {t("probabilityDistributions.continuous.studentT.title")}
       </h3>
       <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.studentT.description"
-          components={{ m1: <InlineMath math="n" /> }}
+          components={{ bold: <strong />, m1: <InlineMath math="n" /> }}
         />
       </p>
 
@@ -208,7 +214,7 @@ function ContinuousDistributions() {
       </div>
 
       {/* FISHEROVO F-ROZDELENIE */}
-      <h3 id="fisher-f" className="mb-3 mt-5">
+      <h3 id="fisher-f" className="mb-3">
         {t("probabilityDistributions.continuous.fisherF.title")}
       </h3>
       <p className="mb-4">

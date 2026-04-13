@@ -54,6 +54,9 @@ function IntervalEstimation() {
       <h4 className="mb-3">
         {t("parameterEstimation.intervalEstimation.typesTitle")}
       </h4>
+      <p className="mb-4">
+        {t("parameterEstimation.intervalEstimation.typesDesc")}
+      </p>
       <div className="row g-3 mb-5">
         {[
           {

@@ -95,8 +95,20 @@ function GeneralProcedure() {
   return (
     <section id="procedure" className="mb-5">
       <h2 className="mb-4">{t("hypothesisTesting.generalProcedure.title")}</h2>
-      <p>{t("hypothesisTesting.generalProcedure.description")}</p>
-
+      <p>
+        <Trans
+          i18nKey="hypothesisTesting.generalProcedure.description"
+          components={{
+            1: (
+              <a
+                href="https://www.arcdata.cz/cs-cz/produkty/data/arccr"
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            ),
+          }}
+        />
+      </p>
       {/* Data Preview Section */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <div className="card shadow-sm mt-4">
