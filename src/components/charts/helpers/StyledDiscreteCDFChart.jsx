@@ -56,7 +56,13 @@ const renderCDFTooltip = ({
   return null;
 };
 
-function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
+function StyledDiscreteCDFChart({
+  data,
+  hoverX,
+  setHoverX,
+  xLabel = "x",
+  yLabel = "F(x)",
+}) {
   const { minX, maxX } = useMemo(() => {
     if (!data || data.length === 0) return { minX: 0, maxX: 1 };
     const sortedX = data.map((d) => d.x).sort((a, b) => a - b);
@@ -153,11 +159,11 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
           domain={[minX - 0.5, maxX + 1.5]}
           ticks={xTicks}
         >
-          <Label value="x" position="insideBottom" offset={-15} />
+          <Label value={xLabel} position="insideBottom" offset={-15} />
         </XAxis>
         <YAxis domain={[0, 1.1]} ticks={[0, 0.2, 0.4, 0.6, 0.8, 1.0]}>
           <Label
-            value="F(x)"
+            value={yLabel}
             angle={-90}
             position="insideLeft"
             offset={-10}
@@ -170,8 +176,8 @@ function StyledDiscreteCDFChart({ data, hoverX, setHoverX }) {
             renderCDFTooltip({
               ...props,
               data,
-              xLabel: "x",
-              yLabel: "F(x)",
+              xLabel: xLabel,
+              yLabel: yLabel,
               minX,
               maxX,
             })

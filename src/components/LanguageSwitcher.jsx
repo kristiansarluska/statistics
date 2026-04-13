@@ -7,14 +7,14 @@ export function LanguageSwitcher() {
 
   const languages = [
     {
-      code: "sk",
-      label: "SK",
-      flag: `${import.meta.env.BASE_URL}assets/images/sk.webp`,
-    },
-    {
       code: "cs",
       label: "CZ",
       flag: `${import.meta.env.BASE_URL}assets/images/cs.webp`,
+    },
+    {
+      code: "sk",
+      label: "SK",
+      flag: `${import.meta.env.BASE_URL}assets/images/sk.webp`,
     },
     {
       code: "en",
@@ -23,7 +23,15 @@ export function LanguageSwitcher() {
     },
   ];
 
-  const changeLanguage = (lng) => i18n.changeLanguage(lng);
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    // Uložíme výber používateľa, aby mal pri ďalšej návšteve preferovaný jazyk
+    localStorage.setItem("app_language", lng);
+  };
+
+  // Bezpečnostná poistka pre prípad prvotného načítania
+  const currentLang =
+    languages.find((l) => l.code === i18n.language) || languages[0];
 
   return (
     <div className="dropdown">
@@ -34,12 +42,8 @@ export function LanguageSwitcher() {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <img
-          src={languages.find((l) => l.code === i18n.language)?.flag}
-          alt="flag"
-          className="me-2 language-flag"
-        />
-        {languages.find((l) => l.code === i18n.language)?.label}
+        <img src={currentLang.flag} alt="flag" className="me-2 language-flag" />
+        {currentLang.label}
       </button>
       <ul
         className="dropdown-menu dropdown-menu-end shadow-sm border-0"

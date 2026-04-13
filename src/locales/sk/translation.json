@@ -86,7 +86,7 @@
       "audience3": "pre každého, kto hľadá moderný spôsob výučby štatistiky"
     },
     "topicsTitle": "Preberané témy",
-    "topiscDescription": "Témy obsiahnuté v tejto aplikácii vychádzajú zo sylabu predmetu štatistické metódy v geoinformatike (KGI/STAME). V jednotlivých kapitolách sú predstavené základné teoretické koncepty súvisiace s daným učivom a dopĺňajú ich interaktívne dátové vizualizácie s prepojením do prexe prostredníctvom príkladov či reálnych dát.",
+    "topicDescription": "Témy obsiahnuté v tejto aplikácii vychádzajú zo sylabu predmetu štatistické metódy v geoinformatike (<1>KGI/STAME</1>). V jednotlivých kapitolách sú predstavené základné teoretické koncepty súvisiace s daným učivom a dopĺňajú ich interaktívne dátové vizualizácie s prepojením do prexe prostredníctvom príkladov či reálnych dát.",
     "data": {
       "chapters": {
         "randomVariable": {
@@ -113,16 +113,19 @@
       "methodologyModules": {
         "theory": {
           "title": "Základná teória",
-          "shortDesc": "Vysvetlenie štatistických pojmov a metód vrátane matematických zápisov."
+          "shortDesc": "Vysvetlenie štatistických pojmov a metód vrátane matematických zápisov.",
+          "longDesc": "Každá kapitola začína prehľadným teoretickým úvodom, ktorý vysvetľuje kľúčové pojmy, matematické vzorce a koncepty. Ukážkou inteaktivity môže byť nasledujúca kalkulačka aritmetického priemeru, ktorá umožňuje študentom zadať vlastné hodnoty a okamžite vidieť výsledok, čím sa teória stáva hmatateľnou a ľahšie pochopiteľnou:"
         },
 
         "interactive": {
           "title": "Interaktívne prvky",
-          "shortDesc": "Dynamicky sa meniace grafy a kalkulačky s možnosťou úpravy parametrov."
+          "shortDesc": "Dynamicky sa meniace grafy a kalkulačky s možnosťou úpravy parametrov.",
+          "longDesc": "Každá kapitola obsahuje interaktívne vizualizácie, ktoré umožňujú experimentovať s rôznymi parametrami a pozorovať okamžité zmeny v grafoch či výsledkoch. Napríklad v kapitole o rozdelení pravdepodobnosti môžu študenti upravovať strednú hodnotu a smerodajnú odchlku normálneho rozdelenia a sledovať, ako sa mení tvar krivky:"
         },
         "data": {
           "title": "Dáta z praxe",
-          "shortDesc": "Aplikácia metód priamo na reálnych európskych či českých geodátach."
+          "shortDesc": "Aplikácia metód priamo na reálnych európskych či českých geodátach.",
+          "longDesc": "Kapitoly obsahujú ukážky a cvičenia založené na dátach zo Svetovej banky, Eurostatu či Českého štatistického úradu. Takto sú teoretické koncepty aplikované na dátové sady z praxe, čo umožňuje študentom vidieť, ako sa predstavené štatistické metódy využívajú v reálnom svete:"
         }
       }
     },
@@ -173,7 +176,7 @@
       "pmfPdf": {
         "title": "Pravdepodobnostná funkcia a hustota pravdepodobnosti",
         "desc1": "Pri diskrétnych veličinách sa používa <bold>pravdepodobnostná funkcia (PMF)</bold>, ktorá priraďuje priamu pravdepodobnosť výskytu konkrétnej hodnote (<m1/>).<br/><br/>Pri spojitých veličinách je definovaná <bold>hustota pravdepodobnosti (<m2/>)</bold>. Keďže spojitá veličina má nekonečne veľa hodnôt, pravdepodobnosť jedného konkrétneho bodu je nulová. Namiesto toho určujeme pravdepodobnosť, že hodnota padne do určitého intervalu — táto pravdepodobnosť je reprezentovaná <bold>plochou pod krivkou hustoty</bold> na danom úseku.",
-        "alertTitle": "Teória vs. Empíria (Zákon veľkých čísel)",
+        "alertTitle": "Teória a Empíria (zákon veľkých čísel)",
         "alertDesc": "Prepojenie medzi teoretickými matematickými modelmi a reálnymi dátami popisuje <bold>Zákon veľkých čísel</bold>. Ten hovorí, že s rastúcim počtom nezávislých opakovaní náhodného pokusu sa relatívna početnosť výskytu javu (empirické rozdelenie) limitne blíži k jeho teoretickej pravdepodobnosti. V nasledujúcich dvoch simuláciách môžete tento jav pozorovať priamo.",
         "chart1Title": "<color>Pravdepodobnostná funkcia:</color> Počet viditeľných GNSS satelitov",
         "chart1Desc": "V mestskom prostredí je počet viditeľných satelitov náhodná premenná, keďže je ovyplvňovaná okolitou zástavbou a konkrétnym rozmiestnením satelitov na oblohe v danom okanihu. Graf nižšie zobrazuje <bold>teoretické pravdepodobnosti</bold> pre jednotlivé počty aktuálne viditeľnýchsatelitov (od 0 po 12, pravdepodobnosť viditeľnosti každého z nich je nastavená na 45 %). Pomocou kliknutia na tlačidlá nižšie sú do interaktívnej simulácie generované umelé merania. Všimnite si spomínaný zákon v praxi: pri nízkom počte meraní sú empirické stĺpce rozkolísané a nemusia zodpovedať teoretickému predpokladu. Akonáhle však počet meraní narastie do vyšších stoviek až tisícov, empirické relatívne početnosti sa stabilizujú a takmer dokonale splynú s teoretickým modelom.",
@@ -191,7 +194,7 @@
       "quantile": {
         "title": "Kvantilová funkcia",
         "desc": "Kvantilová funkcia je inverznou (opačnou) k distribučnej funkcii. Namiesto otázky <italic>Aká je pravdepodobnosť, že nameriame hodnotu pod <m1/>?</italic> ju otáčame: <italic>Aká je hraničná hodnota (<m2/>), pod ktorou sa nachádza presne určené percento dát (<m3/>)?</italic> Najznámejším kvantilom je <bold>medián</bold> (<m4/>), ďalšími dôležitými míľnikmi sú kvartily a decily.",
-        "chart1Title": "<color>Príklad z praxe:</color> Human Capital Index Plus (HCI+)",
+        "chart1Title": "<color>Príklad z praxe:</color> Index ľudského kapitálu",
         "chart1Desc": "V nasledujúcom grafe je možné vidieť kvantilovú funkciu vytvorenú z reálnych dát o indexe ľudského kapitálu (HCI+) pre rôzne krajiny sveta (rok 2025). Tento index hodnotí vplyv zdravia, vzdelania a pracovných zručností na produktivitu (škála 0 až 325). Na osi <bold>x</bold> volíme percentil (<m1/> v %) a na osi <bold>y</bold> odčítavame príslušný kvantil <m2/> (HCI+ skóre).<br/><br/><bold>Ako to čítať?</bold> Posuňte slider na pravdepodobnosť <bold>50 % (medián)</bold>. Kvantil, ktorý získate, predstavuje hraničnú hodnotu — polovica krajín má HCI+ skóre menšie alebo rovné tomuto číslu.",
         "chart2Title": "<color>Empirická kvantilová funkcia:</color> Výška stromov v rezervácii",
         "chart2Desc": "Predvolené dáta reprezentujú zoradené výšky stromov (v metroch) namerané v malej fiktívnej prírodnej rezervácii. Vyskúšajte si zobraziť <bold>medián</bold> (50 % stromov je nižších alebo rovnako vysokých) alebo <bold>decily</bold> (napr. 9. decil ukáže hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta môžete interaktívne mazať a dopĺňať vlastnými hodnotami."
@@ -897,7 +900,7 @@
     },
 
     "probabilityCharts": {
-      "pmfTitle": "Pravdepodobnostná funkcia (PMF)",
+      "pmfTitle": "Pravdepodobnostná funkcia",
       "cdfTitle": "Distribučná funkcia",
       "bernoulli": {
         "paramP": "Parameter (p):"

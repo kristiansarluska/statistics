@@ -3,7 +3,7 @@
     "home": "Úvod",
     "about": "O bakalářské práci",
     "department": "Katedra geoinformatiky",
-    "topics": "Témy"
+    "topics": "Témata"
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
@@ -28,5 +28,1028 @@
     "regression.description": "Regrese",
 
     "statisticalMethods": "Statistické metody v geoinformatice"
+  },
+
+  "sidebar": {
+    "randomVariable": {
+      "continuousDiscrete": "Spojitá a diskrétní náhodná veličina",
+      "distribution": "Rozdělení náhodné veličiny",
+      "pmfPdf": "Pravděpodobnostní funkce",
+      "cdf": "Distribuční funkce",
+      "quantile": "Kvantilová funkce",
+      "characteristics": "Charakteristiky náhodné veličiny",
+      "location": "Charakteristiky polohy",
+      "variability": "Charakteristiky variability",
+      "otherMeasures": "Jiné číselné míry",
+      "fiveNumber": "Pětičíselná charakteristika"
+    },
+    "probabilityDistributions": {
+      "discrete": "Diskrétní rozdělení",
+      "bernoulli": "Alternativní rozdělení",
+      "uniformDiscrete": "Rovnoměrné rozdělení",
+      "binomial": "Binomické rozdělení",
+      "poisson": "Poissonovo rozdělení",
+      "continuous": "Spojitá rozdělení",
+      "uniformContinuous": "Rovnoměrné rozdělení",
+      "exponential": "Exponenciální rozdělení",
+      "normal": "Normální rozdělení",
+      "chiSquare": "Chí-kvadrát rozdělení",
+      "studentT": "Studentovo t-rozdělení",
+      "fisherF": "Fisherovo F-rozdělení"
+    },
+    "parameterEstimation": {
+      "pointEstimation": "Bodový odhad",
+      "intervalEstimation": "Intervalový odhad"
+    },
+    "hypothesisTesting": {
+      "procedure": "Obecný postup",
+      "interactiveTest": "Interaktivní ukázka"
+    },
+    "correlation": {
+      "analysis": "Principy korelační analýzy",
+      "coefficients": "Korelační koeficienty"
+    }
+  },
+
+  "home": {
+    "hero": {
+      "title": "Porozumějte statistice v prostoru",
+      "subtitle": "Interaktivní edukační aplikace (nejen) pro geoinformatiky. Propojuje teoretické poznatky s dynamickými vizualizacemi a reálnými daty.",
+      "cta": "Začít s učením"
+    },
+    "about": {
+      "title": "O aplikaci",
+      "description": "Tato webová aplikace vznikla jako výstup bakalářské práce. Jejím cílem je propojit teoretické poznatky statistiky s praktickými ukázkami, vizualizacemi a geodaty.",
+      "targetAudienceTitle": "Pro koho je určena?",
+      "audience1": "pro studenty katedry geoinformatiky Univerzity Palackého v Olomouci",
+      "audience2": "pro studenty příbuzných oborů",
+      "audience3": "pro každého, kdo hledá moderní způsob výuky statistiky"
+    },
+    "topicsTitle": "Probíraná témata",
+    "topicsDescription": "Témata obsažená v této aplikaci vycházejí ze sylabu předmětu statistické metody v geoinformatice (<1>KGI/STAME</1>). V jednotlivých kapitolách jsou představeny základní teoretické koncepty související s daným učivem a doplňují je interaktivní datové vizualizace s propojením do praxe prostřednictvím příkladů či reálných dat.",
+    "data": {
+      "chapters": {
+        "randomVariable": {
+          "title": "Náhodná veličina",
+          "desc": "Základní koncepty, typy funkcí a charakteristiky polohy či variability."
+        },
+        "probabilityDistributions": {
+          "title": "Rozdělení pravděpodobnosti",
+          "desc": "Diskrétní a spojitá rozdělení s vizualizací funkcí."
+        },
+        "parameterEstimation": {
+          "title": "Odhady parametrů",
+          "desc": "Bodové a intervalové odhady, simulace na reálných datech."
+        },
+        "hypothesisTesting": {
+          "title": "Testování hypotéz",
+          "desc": "Obecný postup testování a interaktivní t-test."
+        },
+        "correlation": {
+          "title": "Korelace",
+          "desc": "Zkoumání vztahů mezi proměnnými a korelační koeficienty."
+        }
+      },
+      "methodologyModules": {
+        "theory": {
+          "title": "Základní teorie",
+          "shortDesc": "Vysvětlení statistických pojmů a metod včetně matematických zápisů.",
+          "longDesc": "Každá kapitola začíná přehledným teoretickým úvodem, který vysvětluje klíčové pojmy, matematické vzorce a koncepty. Ukázkou interaktivity může být následující kalkulačka aritmetického průměru, která umožňuje studentům zadat vlastní hodnoty a okamžitě vidět výsledek, čímž se teorie stává hmatatelnější a snáze pochopitelnou:"
+        },
+
+        "interactive": {
+          "title": "Interaktivní prvky",
+          "shortDesc": "Dynamicky se měnící grafy a kalkulačky s možností úpravy parametrů.",
+          "longDesc": "Každá kapitola obsahuje interaktivní vizualizace, které umožňují experimentovat s různými parametry a pozorovat okamžité změny v grafech či výsledcích. Například v kapitole o rozdělení pravděpodobnosti mohou studenti upravovat střední hodnotu a směrodatnou odchylku normálního rozdělení a sledovat, jak se mění tvar křivky:"
+        },
+        "data": {
+          "title": "Data z praxe",
+          "shortDesc": "Aplikace metod přímo na reálných evropských či českých geodatech.",
+          "longDesc": "Kapitoly obsahují ukázky a cvičení založená na datech ze Světové banky, Eurostatu či Českého statistického úřadu. Takto jsou teoretické koncepty aplikovány na datové sady z praxe, což umožňuje studentům vidět, jak se představené statistické metody využívají v reálném světě:"
+        }
+      }
+    },
+
+    "methodology": {
+      "title": "Metodika výuky",
+      "loadingMap": "Načítám mapová data...",
+      "table": {
+        "title": "Ukázka reálných dat (NUTS 3 Regiony)",
+        "colNutsId": "NUTS ID",
+        "colRegion": "Region",
+        "colCountry": "Země",
+        "colMedianAge": "Mediánový věk"
+      }
+    }
+  },
+
+  "randomVariable": {
+    "introduction": {
+      "p1": "V reálném světě jsou naše měření a pozorování téměř vždy zatížena určitou mírou nejistoty. Ať už jde o měření nadmořské výšky GNSS přijímačem, počítání výskytu dopravních nehod na křižovatce, nebo analýzu teploty, výsledky těchto procesů závisí na náhodě.",
+      "p2": "Abychom mohli tyto náhodné jevy matematicky a statisticky zpracovat, zavádí se pojem <bold>náhodná veličina</bold>. Jde o funkci, která každému možnému výsledku náhodného pokusu (elementárnímu jevu) přiřadí konkrétní reálné číslo. Díky tomu lze s nejistotou pracovat exaktně – umíme modelovat rozdělení pravděpodobnosti, odhadovat střední hodnoty či analyzovat variabilitu dat."
+    },
+
+    "continuousDiscrete": {
+      "title": "Spojitá a diskrétní náhodná veličina",
+      "description": "Jak bylo zmíněno, náhodná veličina je funkce, která každému elementárnímu jevu přiřazuje reálné číslo. Zjednodušeně řečeno, \"překládá\" náhodné výsledky různých jevů do řeči čísel, se kterými je možné dále statisticky pracovat. Podle toho, jaké hodnoty může veličina nabývat, známe dva základní typy:",
+      "discrete": {
+        "title": "Diskrétní veličina",
+        "description": "Nabývá pouze <bold>spočetného množství hodnot</bold> (obvykle celá čísla). Mezi jednotlivými hodnotami jsou mezery, neexistují přechody.",
+        "process": "Proces:",
+        "processDesc": "Vzniká počítáním (počítáním výskytů).",
+        "examples": "Příklady:",
+        "examplesDesc": "Počet zemětřesení za rok, počet budov v bloku, počet dopravních nehod na křižovatce."
+      },
+      "continuous": {
+        "title": "Spojitá veličina",
+        "description": "Může nabývat <bold>jakékoliv hodnoty z určitého intervalu</bold>. Počet možných hodnot je nekonečný a omezuje ho pouze podrobnost měřicího přístroje.",
+        "process": "Proces:",
+        "processDesc": "Vzniká měřením.",
+        "examples": "Příklady:",
+        "examplesDesc": "Nadmořská výška bodu, průměrná roční teplota, vzdálenost budovy od řeky."
+      }
+    },
+
+    "distribution": {
+      "title": "Rozdělení náhodné veličiny",
+      "description": "Rozdělení pravděpodobnosti nám říká, jak jsou pravděpodobnosti \"rozděleny\" mezi jednotlivé možné hodnoty náhodné veličiny. Pro jeho komplexní matematický a vizuální popis jsou využívány tři základní funkce: pravděpodobnostní (pro spojité veličiny hustota), distribuční a kvantilová funkce.",
+      "pmfPdf": {
+        "title": "Pravděpodobnostní funkce a hustota pravděpodobnosti",
+        "desc1": "U diskrétních veličin se používá <bold>pravděpodobnostní funkce (PMF)</bold>, která přiřazuje přímou pravděpodobnost výskytu konkrétní hodnotě (<m1/>).<br/><br/>U spojitých veličin je definována <bold>hustota pravděpodobnosti (<m2/>)</bold>. Jelikož má spojitá veličina nekonečně mnoho hodnot, pravděpodobnost jednoho konkrétního bodu je nulová. Místo toho určujeme pravděpodobnost, že hodnota padne do určitého intervalu — tato pravděpodobnost je reprezentována <bold>plochou pod křivkou hustoty</bold> na daném úseku.",
+        "alertTitle": "Teorie a empirie (zákon velkých čísel)",
+        "alertDesc": "Propojení mezi teoretickými matematickými modely a reálnými daty popisuje <bold>Zákon velkých čísel</bold>. Ten říká, že s rostoucím počtem nezávislých opakování náhodného pokusu se relativní četnost výskytu jevu (empirické rozdělení) limitně blíží k jeho teoretické pravděpodobnosti. V následujících dvou simulacích můžete tento jev pozorovat přímo.",
+        "chart1Title": "<color>Pravděpodobnostní funkce:</color> Počet viditelných GNSS satelitů",
+        "chart1Desc": "V městském prostředí je počet viditelných satelitů náhodná proměnná, jelikož je ovlivňována okolní zástavbou a konkrétním rozmístěním satelitů na obloze v daném okamžiku. Graf níže zobrazuje <bold>teoretické pravděpodobnosti</bold> pro jednotlivé počty aktuálně viditelných satelitů (od 0 po 12, pravděpodobnost viditelnosti každého z nich je nastavena na 45 %). Pomocí kliknutí na tlačítka níže jsou do interaktivní simulace generována umělá měření. Všimněte si zmíněného zákona v praxi: při nízkém počtu měření jsou empirické sloupce rozkolísané a nemusí odpovídat teoretickému předpokladu. Jakmile však počet měření naroste do vyšších stovek až tisíců, empirické relativní četnosti se stabilizují a téměř dokonale splynou s teoretickým modelem.",
+        "chart2Title": "<color>Hustota pravděpodobnosti:</color> Simulace odchylky GNSS měření",
+        "chart2Desc": "Tento graf demonstruje hustotu pravděpodobnosti pro normální rozdělení chyb GNSS přijímače. Modrá křivka reprezentuje dokonalý <bold>teoretický model</bold> se střední hodnotou <bold>0 m</bold> a směrodatnou odchylkou <bold>2,5 m</bold>. Šedý histogram pod ní zobrazuje hustotu nasimulovaných (empirických) dat. Opět zde platí zákon velkých čísel – při přidávání nových měření sledujte, jak se s rostoucím počtem iterací nepravidelný empirický histogram postupně vyhlazuje a jeho tvar konverguje přesně k teoretické Gaussově křivce."
+      },
+      "cdf": {
+        "title": "Distribuční funkce",
+        "desc": "Distribuční funkce (<m1/>) plní kumulativní roli. Udává celkovou pravděpodobnost, že náhodná veličina nabude hodnoty menší nebo rovné konkrétnímu číslu <m2/> (<m3/>). Je to neklesající funkce, která začíná v nule (0 %) a postupně roste nebo skokovitě stoupá k hodnotě 1 (100 %).",
+        "chart1Title": "<color>Diskrétní případ:</color> Dostupnost družicových dat",
+        "chart1Desc": "Představte si, že měsíčně očekáváte maximálně 5 přeletů družice nad určitým místem. Náhodná veličina <bold>X</bold> představuje počet snímků, které jsou reálně použitelné (bez oblačnosti). <br /><br />Hodnoty v polích pro vstupní hodnoty níže nepředstavují fixní procenta, ale <bold>četnost výskytu (počet měsíců z historických záznamů)</bold>, kdy nastal daný scénář. Graf všechny hodnoty sečte a automaticky je přemění na pravděpodobnost (součet je vždy 100 %).<bold>Vyzkoušejte si to:</bold> Do políčka pro <bold>x = 0</bold> zadejte vysoké číslo (např. 80) a nasimulujete tak oblast s častou oblačností. Všimněte si, jak distribuční funkce okamžitě strmě naroste, což představuje vysoké riziko nedostatku dat.",
+        "chart2Title": "<color>Spojitý případ:</color> Distribuce chyb GNSS měření",
+        "chart2Desc": "Na rozdíl od diskrétních veličin je distribuční funkce spojité proměnné reprezentována <bold>hladkou křivkou</bold> bez skoků. Tento model je důležitý například při analýze přesnosti měřicích přístrojů v terénu.<br/><br/>Tvar této křivky určují v případě normálního rozdělení dva typy chyb: <bold>systematická chyba (parametr μ)</bold>, která představuje konstantní posun měření (např. o 1 metr kvůli špatné kalibraci), a <bold>náhodná chyba (parametr σ)</bold>, která vyjadřuje samotnou přesnost přístroje. Distribuční funkce v každém bodě udává pravděpodobnost, že chyba měření nepřekročí zvolenou hodnotu. Všimněte si, že v bodě <bold>μ</bold> (střed rozdělení) nabývá funkce vždy hodnoty <bold>0,5</bold>. To znamená, že je přesně 50 % pravděpodobnost, že naměřená odchylka bude menší nebo rovná systémovému posunu přístroje."
+      },
+      "quantile": {
+        "title": "Kvantilová funkce",
+        "desc": "Kvantilová funkce je inverzní (opačnou) k distribuční funkci. Místo otázky <italic>Jaká je pravděpodobnost, že naměříme hodnotu pod <m1/>?</italic> ji otáčíme: <italic>Jaká je hraniční hodnota (<m2/>), pod kterou se nachází přesně určené procento dat (<m3/>)?</italic> Nejznámějším kvantilem je <bold>medián</bold> (<m4/>), dalšími důležitými milníky jsou kvartily a decily.",
+        "chart1Title": "<color>Příklad z praxe:</color> Index lidského kapitálu",
+        "chart1Desc": "V následujícím grafu je možné vidět kvantilovou funkci vytvořenou z reálných dat o indexu lidského kapitálu (HCI+) pro různé země světa (rok 2025). Tento index hodnotí vliv zdraví, vzdělání a pracovních dovedností na produktivitu (škála 0 až 325). Na ose <bold>x</bold> volíme percentil (<m1/> v %) a na ose <bold>y</bold> odečítáme příslušný kvantil <m2/> (HCI+ skóre).<br/><br/><bold>Jak to číst?</bold> Posuňte slider na pravděpodobnost <bold>50 % (medián)</bold>. Kvantil, který získáte, představuje hraniční hodnotu — polovina zemí má HCI+ skóre menší nebo rovné tomuto číslu.",
+        "chart2Title": "<color>Empirická kvantilová funkce:</color> Výška stromů v rezervaci",
+        "chart2Desc": "Výchozí data reprezentují seřazené výšky stromů (v metrech) naměřené v malé fiktivní přírodní rezervaci. Vyzkoušejte si zobrazit <bold>medián</bold> (50 % stromů je nižších nebo stejně vysokých) nebo <bold>decily</bold> (např. 9. decil ukáže hraniční výšku, pod kterou se nachází 90 % všech stromů). Data můžete interaktivně mazat a doplňovat vlastními hodnotami."
+      }
+    },
+
+    "characteristics": {
+      "title": "Charakteristiky náhodné veličiny",
+      "description": "Číselné charakteristiky nám umožňují shrnout komplexní vlastnosti celého rozdělení pravděpodobnosti do několika výstižných hodnot. Místo analýzy celého průběhu funkcí tak můžeme soubory rychle porovnávat na základě jejich polohy, variability či tvaru.",
+      "location": {
+        "title": "Charakteristiky polohy",
+        "description": "Tyto míry, často označované jako střední hodnoty, slouží k identifikaci \"těžiště\" nebo typické hodnoty statistického souboru. Udávají polohu na ose <m/>, kolem které se hodnoty náhodné veličiny nejvíce koncentrují.",
+        "arithmeticMean": {
+          "title": "Aritmetický průměr",
+          "description": "Aritmetický průměr (<m1/> pro výběrový soubor, <m2/> pro základní soubor) je nejběžnějším odhadem střední hodnoty. Vypočítá se jako součet všech naměřených hodnot vydělený jejich počtem. V geoinformatice ho často využíváme například při zpracování opakovaných měření na tomtéž místě, abychom eliminovali náhodné chyby.",
+          "exampleTitle": "Určení nadmořské výšky bodu",
+          "exampleDesc": "Při přesném určování nadmořské výšky bodu provádíme sérii nezávislých měření (např. GNSS aparaturou). Aritmetický průměr nám poskytne výslednou hodnotu výšky. Vyzkoušejte do kalkulačky zadat několik hodnot blízkých 420 m. Pokud přidáte jednu chybnou hodnotu (např. 480 m kvůli odrazu signálu), uvidíte, jak průměr citlivě zareaguje na tento extrém."
+        },
+        "harmonicMean": {
+          "title": "Harmonický průměr",
+          "description": "Harmonický průměr (<m/>) je vhodný pro veličiny, které jsou definovány jako poměry (např. jednotky za čas). Je to převrácená hodnota aritmetického průměru převrácených hodnot dat. V geografii ho využíváme například při výpočtech průměrných rychlostí na úsecích se stejnou délkou.",
+          "exampleTitle": "Průměrná rychlost letu dronu při snímkování",
+          "exampleDesc": "Představte si, že dron letí nad územím po dvou stejně dlouhých trasách. První proletí rychlostí 12,5 m/s (proti větru) a druhou rychlostí 18 m/s (po větru). Pokud chceme vědět průměrnou rychlost za celou misi, aritmetický průměr by nebyl vhodnou reprezentativní hodnotou. Harmonický průměr správně zohlední, že dron strávil více času na pomalejším úseku."
+        },
+        "geometricMean": {
+          "title": "Geometrický průměr",
+          "description": "Geometrický průměr (<m/>) se používá pro hodnoty, které mají charakter měr růstu nebo indexů. Na rozdíl od aritmetického průměru pracuje se součinem hodnot a n-tou odmocninou, čímž lépe zachycuje <bold>kumulativní změny</bold>.",
+          "exampleTitle": "Míra růstu zastavěného území",
+          "exampleDesc": "Pokud sledujeme, o kolik procent se rozrostlo město v deseti po sobě jdoucích letech, geometrický průměr nám řekne skutečnou průměrnou roční míru růstu. Je ideální pro data, kde každá další hodnota navazuje na předchozí (řetězové indexy)."
+        },
+        "weightedMean": {
+          "title": "Vážený průměr",
+          "description": "Vážený průměr (<m1/>) zohledňuje nerovnakou důležitost nebo váhu jednotlivých měření. Každé hodnotě přiřazujeme váhu (<m2/>), která určuje, jakou měrou přispěje k výsledku. Je důležitým nástrojem například při spojování dat z různých zdrojů.",
+          "exampleTitle": "Kombinované měření nadmořské výšky",
+          "exampleDesc": "Pokud měříme nadmořskou výšku téhož bodu dvěma různými přístroji — profesionální GNSS stanicí a smartphonem — nemůžeme je brát rovnocenně. Profesionálnímu přístroji přiřadíme vyšší váhu (např. podle převrácené hodnoty chyby měření). Vážený průměr tak \"přitáhne\" výsledek blíže ke spolehlivějšímu měření."
+        },
+        "mode": {
+          "title": "Modus",
+          "description": "Modus (<m/>) je hodnota, která se ve statistickém souboru vyskytuje nejčastěji. U spojitých dat (například přesná GNSS měření) se určuje obtížněji a hledáme spíše interval s největší hustotou. Pro diskrétní data je to však přímá, konkrétní hodnota.",
+          "exampleTitle": "Počet pater v městské zástavbě",
+          "exampleDesc": "V následujícím příkladu analyzujeme podlažnost budov ve vybrané městské čtvrti. Modusem bude typ budovy, který se v dané oblasti vyskytuje nejvíce (např. dvoupatrové rodinné domy). Na grafu si můžete všimnout i sekundárního lokálního vrcholu (tzv. lokální modus) reprezentujícího například shluk sedmipatrových paneláků. Přidáváním nebo odebíráním budov můžete sledovat, jak se mění nejčastěji se vyskytující hodnota."
+        },
+        "median": {
+          "title": "Medián",
+          "description": "Medián (<m/>) rozděluje statistický soubor na dvě stejně velké poloviny. Polovina hodnot je menší nebo rovna mediánu a druhá polovina je větší nebo rovna mediánu.",
+          "exampleTitle": "Výška budov a rezistence vůči extrémům",
+          "exampleDesc": "Hlavní výhodou mediánu oproti aritmetickému průměru je jeho <bold>odolnost vůči odlehlým hodnotám</bold>. Představme si, že analyzujeme výšky budov v běžné zástavbě. Vyzkoušejte si do dat přidat extrémnní hodnotu – například nový <bold>150metrový mrakodrap</bold>. Všimněte si, že zatímco aritmetický průměr by tato stavba radikálně zkreslila (vystřelil by na téměř dvojnásobek), medián se posune jen minimálně, protože zohledňuje výhradně fyzický střed uspořádané řady."
+        }
+      },
+      "variability": {
+        "title": "Charakteristiky variability",
+        "description": "Zatímco míry polohy nám říkají, kde se data soustřeďují, míry variability nám prozrazují, jak moc jsou od sebe rozptýlená. Nejjednodušší mírou je variační rozpětí.",
+        "range": {
+          "title": "Variační rozpětí",
+          "description": "Variační rozpětí (<m/>) je rozdíl mezi maximální a minimální hodnotou ve statistickém souboru. Je to rychlý ukazatel šířky intervalu, ve kterém se data nacházejí, ale pro svou podstatu je extrémně citlivý na extrémní hodnoty.",
+          "exampleTitle": "Převýšení lyžařského svahu",
+          "exampleDesc": "Představte si, že analyzujeme výškový profil lyžařského svahu na Malé Morávce. Získali jsme několik výškových bodů (v metrech nad mořem). Variační rozpětí nám v tomto případě udává celkové převýšení sjezdovky. Přidejte do výpočtu extrémnní hodnotu (například blízký vrchol Praděd s výškou 1492 m n. m.) a sledujte, jak se variační rozpětí okamžitě zkreslí."
+        },
+        "meanDeviation": {
+          "title": "Průměrná odchylka",
+          "description": "Průměrná odchylka (<m/>) vyjadřuje, o kolik se v průměru jednotlivé hodnoty statistického souboru odchylují od jejich aritmetického průměru. Počítá se jako aritmetický průměr absolutních hodnot odchylek od střední hodnoty. Oproti variačnímu rozpětí využívá informace ze všech měření, nejen z extrémů.",
+          "exampleTitle": "Opakované měření délky",
+          "exampleDesc": "V geodézii nikdy nezměříme stejnou vzdálenost dvakrát s absolutně identickým výsledkem. Následující data představují pět nezávislých měření délky hranice parcely v metrech. Průměrná odchylka nám v tomto případě udává průměrnou absolutní chybu jednotlivého měření vůči střední hodnotě. Vyzkoušejte přidat měření se zjevnou hrubou chybou (např. 51.5) a sledujte změnu odchylky."
+        },
+        "meanDifference": {
+          "title": "Střední diference",
+          "description": "Střední diference (<m/>) nevyjadřuje odchylku hodnot od jejich průměru, ale průměrný absolutní rozdíl mezi <bold>jakýmikoliv dvěma hodnotami</bold> navzájem. Počítá se jako součet absolutních rozdílů všech možných dvojic vydělený počtem těchto dvojic.",
+          "exampleTitle": "Heterogenita znečištění ovzduší",
+          "exampleDesc": "V geoinformatice často pracujeme se senzorovými sítěmi. Představme si měřicí stanice, které sledují koncentraci prachových částic PM10 (v µg/m³) ve velkoměstě. Střední diference nám přímo řekne, jaký průměrný rozdíl ve znečištění můžeme očekávat, pokud se přesuneme z okolí jedné libovolné stanice k jiné. Vyzkoušejte do sítě přidat stanici ležící u rušné křižovatky (například s hodnotou 85,0) a sledujte, jak vzroste průměrný rozdíl v síti."
+        },
+        "variance": {
+          "title": "Rozptyl",
+          "description": "Rozptyl (<m1/> pro výběrový soubor, <m2/> pro základní soubor) je průměrná čtvercová odchylka hodnot od jejich střední hodnoty. Tím, že se odchylky umocňují na druhou, rozptyl <bold>výrazně penalizuje velké extrémy</bold>. Nevýhodou je, že výsledek vychází ve čtvercových jednotkách (např. metry čtvereční, stupně Celsia na druhou), což je obtížnější na přímou interpretaci.",
+          "exampleTitle": "Heterogenita mračna bodů",
+          "exampleDesc": "Při leteckém laserovém skenování lesa nás zajímá nejen průměrná hustota bodů, ale i její variabilita. Následující data reprezentují počet odrazů (bodů) na metr čtvereční ve vybraných testovacích plochách. Vyzkoušejte přidat plochu s extrémně hustým pokrytím (např. 50 bodů/m²) a všimněte si, jak hodnota rozptylu kvůli umocňování rapidně naroste.",
+          "unit": "(bodů/m²)²"
+        },
+        "standardDeviation": {
+          "title": "Směrodatná odchylka",
+          "description": "Směrodatná odchylka (<m1/> nebo <m2/>) je odmocninou z rozptylu. Její hlavní výhodou je, že <bold>vrací výsledek do původních jednotek</bold> měření (například stupně Celsia, metry), což ji činí mnohem intuitivnější a snadněji interpretovatelnou v praxi. Říká nám, o kolik se hodnoty typicky odchylují od průměru.",
+          "exampleTitle": "Městský ostrov tepla",
+          "exampleDesc": "Fenomén městského ostrova tepla způsobuje, že centra měst jsou výrazně teplejší než jejich okolí. Představme si síť pěti teplotních senzorů rozmístěných v různých zónách města. Směrodatná odchylka nám v tomto případě říká, jak výrazné jsou teplotní rozdíly v rámci tohoto území. Zkuste přidat senzor z chladnějšího příměstského parku (např. 18.5 °C) a sledujte, jak se odchylka v systému zvětší."
+        },
+        "coefficientOfVariation": {
+          "title": "Variační koeficient",
+          "description": "Variační koeficient (<m/>) je bezrozměrná míra variability, nejčastěji vyjádřená v procentech. Počítá se jako poměr směrodatné odchylky k aritmetickému průměru. Jeho výhodou je, že <bold>umožňuje porovnávat variabilitu mezi soubory s různými jednotkami</bold> nebo diametrálně odlišnými průměry (např. variabilitu výšky stromů vs. tloušťky jejich kmenů).",
+          "exampleTitle": "Prostorová nestálost srážek",
+          "exampleDesc": "V hydrologii a klimatologii se variační koeficient často využívá ke zhodnocení stability srážek. Následující data představují roční úhrny srážek (v mm) na pěti různých srážkoměrných stanicích ve sledované oblasti. Pokud je výsledný koeficient vysoký (např. nad 30 %), říká nám to, že srážky jsou v území prostorově velmi nevyrovnané a nepředvídatelné. Vyzkoušejte změnit hodnoty tak, aby byly srážky vyrovnanější (například všem stanicím nastavte hodnoty kolem 500 mm) a sledujte pokles procentuální variability."
+        },
+        "iqr": {
+          "title": "Mezikvartilové rozpětí",
+          "description": "Mezikvartilové rozpětí (<m1/>) se zaměřuje výhradně na <bold>středních 50 % dat</bold>. Vypočítá se jako rozdíl mezi třetím (<m2/>) a prvním kvartilem (<m3/>). Jelikož do výpočtu vůbec nevstupuje dolních ani horních 25 % hodnot, tato charakteristika je extrémně odolná vůči hrubým chybám a odlehlým hodnotám (tzv. outlierům).",
+          "exampleTitle": "Tržní ceny pozemků a vliv extrémů",
+          "exampleDesc": "Katastrální a cenové mapy často obsahují anomálie. Představme si analýzu cen pozemků (v €/m²) v jedné zahrádkářské osadě. Mezi běžnými prodeji se nachází jeden extrém (například spekulativní nákup s hodnotou 145 €/m²). Zatímco obyčejné variační rozpětí by pro tato data vystřelilo nad 130 €, <m1/> extrém odignoruje a vrátí reálnou variabilitu středu trhu. Zkuste extrém (145) smazat a všimněte si, že <m2/> se téměř nezmění."
+        }
+      },
+      "otherMeasures": {
+        "title": "Jiné číselné míry",
+        "description": "Kromě polohy a rozptýlenosti dat zkoumáme i celkový průběh a symetrii rozdělení. Tyto charakteristiky tvaru nám říkají, zda se data soustřeďují k jedné straně nebo nakolik je jejich špička strmá v porovnání s teoretickým modelem.",
+        "skewness": {
+          "title": "Koeficient šikmosti",
+          "description": "Koeficient šikmosti (<m/>) hodnotí <bold>asymetriu</bold> rozdělení dat kolem jejich střední hodnoty. Pokud má rozdělení delší chvost směrem k vyšším hodnotám, jde o <bold>kladnou šikmost</bold> (několik vysokých hodnot táhne průměr nahoru). Pokud má delší chvost směrem k nižším hodnotám, jde o <bold>zápornou šikmost</bold>.",
+          "exampleTitle": "Věková struktura lesa",
+          "exampleDesc": "Přesuňte jezdec pro změnu šikmosti rozdělení věku stromů v lese. <bold>Kladná šikmost</bold> představuje například zmlazený les po těžbě (většina stromů je mladá, starých je minimum - chvost vpravo). <bold>Záporná šikmost</bold> naopak modeluje starý neprostupný prales (většina stromů je stará, přežije jen málo mladých kvůli nedostatku světla - chvost vlevo)."
+        },
+        "kurtosis": {
+          "title": "Koeficient špičatosti",
+          "description": "Koeficient špičatosti (<m/>) opisuje koncentraci hodnot kolem střední hodnoty v porovnání s normálním rozdělením. Kladná hodnota tohoto koeficientu se v datech projevuje výrazným špicem a tlustými chvosty (leptokurtické rozdělení), zatímco záporná hodnota znamená ploché rozdělení s tenkými chvosty (platykurtické rozdělení).",
+          "exampleTitle": "Režim průtoků řek",
+          "exampleDesc": "V hydrologii je tvar rozdělení klíčový pro predikci extrémů. <bold>Špičaté rozdělení</bold> s hrubými chvosty modeluje například nezkrocenou horskou bystřinu nebo vádí v poušti. Většinu roku je průtok stabilní (vysoký špic uprostřed), ale pokud přijde silná bouře, nastane nečekaná extrémní blesková povodeň (hrubé chvosty daleko od středu). Naopak <bold>ploché rozdělení</bold> představuje velkou řeku regulovanou přehradou. Průtok je zde předvídatelný a rovnoměrně kolísá v širším středním pásmu, ale k anomálním extrémním povodním téměř nedochází (tenké chvosty)."
+        }
+      },
+      "fiveNumber": {
+        "title": "Pětičíselná charakteristika a boxplot",
+        "description": "Pětičíselná charakteristika poskytuje ucelený pohled na rozdělení dat. Jejím vizuálním zpracováním je <bold>boxplot</bold>, který se skládá z několika klíčových částí: <br/><br/> <ul> <li> <bold>Box (obdélník):</bold> je ohraničen <bold>dolním kvartilem (<m1/>)</bold> a <bold>horním kvartilem (<m2/>)</bold>. Reprezentuje středních 50 % hodnot (mezikvartilové rozpětí – IQR). </li>  <li> <bold>Medián:</bold> čára uvnitř boxu, která rozděluje datový soubor na dvě poloviny. <br/> </li> <li> <bold>Vousy (whiskers):</bold> úsečky vystupující z boxu, které znázorňují variabilitu dat. Horní vous sahá k největší hodnotě a dolní k nejmenší hodnotě v souboru, které však nejsou odlehlé. <br/> </li> <li> <bold>Odlehlé hodnoty (outliery):</bold> body zobrazené mimo vousy. Za odlehlou se považuje hodnota, která je od boxu vzdálena více než 1,5násobek délky boxu (IQR). </li> </ul>",
+        "exampleTitle": "Střední délka života při narození ve světě",
+        "exampleDesc": "Boxploty jsou nejsilnější tehdy, když potřebujeme rychle porovnat více skupin v čase. Následující data od Světové banky a OSN zobrazují <bold>střední délku života při narození</bold> (kolika let by se v průměru dožil novorozenec při zachování aktuálních úmrtnostních poměrů). Tento ukazatel je důležitým indikátorem zdravotního stavu a socioekonomického rozvoje. <br /><br /> Vyzkoušejte si seskupit země podle <bold>kontinentu (klasifikace OSN)</bold> nebo <bold>příjmové skupiny (v roce 2025)</bold> a zapněte si porovnání více let současně. Uvidíte tak, jak se střední hodnoty postupem času posouvají nahoru a jak se mění variabilita či množství extrémů mezi skupinami."
+      }
+    }
+  },
+
+  "probabilityDistributions": {
+    "introduction": {
+      "p1": "V geoinformatice často pracujeme s daty, která mají náhodný charakter — například s chybou měření, odchylkami v polohách bodů nebo variabilitou v datech sesbíraných v terénu. Abychom tyto jevy byli schopni modelovat, používáme <bold>rozdělení pravděpodobnosti</bold>.",
+      "p2": "Jejich cílem je matematicky popsat, s jakou pravděpodobností se jednotlivé hodnoty náhodné veličiny vyskytují. Na základě takového popisu můžeme nejen analyzovat minulá data, ale i předpovídat chování systému do budoucna."
+    },
+    "discrete": {
+      "title": "Diskrétní rozdělení",
+      "description": "Diskrétní pravděpodobnostní rozdělení popisují náhodné veličiny, které mohou nabývat pouze spočetného množství hodnot, například určitá celá čísla.",
+      "bernoulli": {
+        "title": "Alternativní rozdělení",
+        "description": "Alternativní rozdělení je nejjednodušší diskrétní rozdělení pro experimenty, které mají pouze dva vzájemně se vylučující výsledky: \"úspěch\" (hodnota 1) a \"neúspěch\" (hodnota 0). Množina možných výsledků je <m1/>. Pravděpodobnost úspěchu označujeme jako <m2/> (kde <m3/>), tedy <m4/>. Pravděpodobnost neúspěchu je doplňkem do 1, tedy <m5/>.",
+        "otherwise": "jinak",
+        "exampleTitle": "Klasifikace satelitního snímku",
+        "exampleDesc": "Představme si, že analyzujeme satelitní snímek území, kde 25 % rozlohy tvoří vodní plocha. Náhodně vybereme jeden pixel na snímku. Náhodná veličina X nabývá hodnoty 1 (úspěch), pokud pixel reprezentuje vodu, a 0 (neúspěch), pokud jde o pevninu. V grafu níže můžete měnit parametr <bold><m/></bold> (podíl vodní plochy v území) a sledovat změnu pravděpodobnostní a distribuční funkce."
+      },
+      "uniform": {
+        "title": "Rovnoměrné rozdělení",
+        "description": "Diskrétní rovnoměrné rozdělení popisuje náhodnou veličinu, u níž má každý z konečného počtu <m1/> možných výsledků stejnou pravděpodobnost výskytu. Pravděpodobnostní funkce je konstantní: <m2/> pro všechny možné hodnoty.",
+        "exampleTitle": "Náhodný výběr administrativní jednotky",
+        "exampleDesc": "Představme si, že chceme provést náhodnou kontrolu kvality ovzduší v jednom vybraném okrese určitého kraje. Parametr <bold><m1/></bold> zde představuje celkový počet okresů v daném kraji. Pokud je výběr zcela náhodný, každý okres má stejnou šanci na kontrolu. Změnou parametru <bold><m2/></bold> na posuvníku simulujeme přechod do jiného kraje s jiným počtem okresů (např. Olomoucký kraj má <m3/>, Jihomoravský <m4/>). Všimněte si, že čím více je okresů, tím nižší je pravděpodobnost výběru konkrétního z nich."
+      },
+      "binomial": {
+        "title": "Binomické rozdělení",
+        "description": "Binomické rozdělení určuje počet úspěchů v <m1/> nezávislých pokusech. Veličina s binomickým rozdělením je součtem nezávislých veličin s alternativním rozdělením, parametry tohoto rozdělení jsou <m2/> (pravděpodobnost úspěchu jevu) a počet pokusů <m3/>.",
+        "exampleTitle": "Automatická extrakce objektů",
+        "exampleDesc": "Při analýze satelitních snímků používáme algoritmus na detekci budov. Parametr <bold><m1/></bold> představuje pravděpodobnost, že algoritmus správně rozpozná budovu (úspěch), a <bold><m2/></bold> je celkový počet budov na snímku, které má zpracovat. Všimněte si, že pokud je přesnost algoritmu vysoká (např. <m3/>), nejvyšší pravděpodobnost se kumuluje u hodnoty blízké celkovému počtu budov <bold><m4/></bold>."
+      },
+      "poisson": {
+        "title": "Poissonovo rozdělení",
+        "description": "Poissonovo rozdělení popisuje pravděpodobnost výskytu určitého počtu náhodných událostí v pevně stanoveném časovém nebo prostorovém intervalu. Klíčovým parametrem je <m1/> (lambda), který představuje průměrný počet těchto událostí na danou jednotku.",
+        "exampleTitle": "Kontrola kvality digitálního modelu reliéfu",
+        "exampleDesc": "Při zpracování dat z leteckého laserového skenování mohou vznikat v modelu chybné body. Předpokládejme, že při standardní kvalitě zpracování se v průměru vyskytuje <bold><m1/></bold> chyb na 100 hektarů plochy. Poissonovo rozdělení nám řekne, jaká je pravděpodobnost, že na následující kontrolované ploše nenajdeme žádnou chybu, nebo jich tam bude naopak nepřirozeně mnoho. Sledujte, jak se při zvyšování průměrného počtu chyb (<bold><m2/></bold>) rozdělení \"roztahuje\" a vrchol se posouvá doprava."
+      }
+    },
+
+    "continuous": {
+      "title": "Spojitá rozdělení",
+      "description": "Spojitá pravděpodobnostní rozdělení popisují náhodné veličiny, které mohou nabývat jakékoliv hodnoty v rámci určitého intervalu. Na rozdíl od diskrétních rozdělení, pravděpodobnost, že spojitá veličina nabude konkrétní hodnoty (např. přesně <m/>), je nulová. Místo toho počítáme pravděpodobnost, že hodnota připadne do určitého intervalu.",
+      "uniform": {
+        "title": "Rovnoměrné rozdělení",
+        "description": "Spojité rovnoměrné rozdělení definuje náhodnou veličinu, která může nabývat jakékoliv hodnoty v uzavřeném intervalu <m/>. Hustota pravděpodobnosti je v celém tomto intervalu konstantní, což znamená, že všechny podintervaly stejné délky jsou stejně pravděpodobné.",
+        "exampleTitle": "Čekání na přírodní úkaz",
+        "exampleDesc": "Představme si, že sledujeme gejzír, o kterém je známo, že vybuchuje náhodně v intervalu od <bold><m1/></bold> do <bold><m2/></bold> minut od poslední erupce. Pokud nemáme žádnou další informaci, předpokládáme, že pravděpodobnost výbuchu ve 14. minutě je stejná jako v 18. minutě. Na grafu níže je vidět, že hustota pravděpodobnosti tvoří obdélník – jeho plocha musí být vždy rovna 1, proto se se zvětšováním intervalu výška obdélníku snižuje."
+      },
+      "exponential": {
+        "title": "Exponenciální rozdělení",
+        "description": "Exponenciální rozdělení se často používá k modelování času mezi náhodnými událostmi – vyjadřuje dobu čekání na náhodnou událost. Jedná se o rozdělení s \"krátkou pamětí\" – pravděpodobnost, že událost nastane v nejbližším momentu, nezávisí na tom, jak dlouho již čekáme.",
+        "exampleTitle": "Spolehlivost monitorovací sítě",
+        "exampleDesc": "Představme si automatickou meteostanici v terénu. Exponenciální rozdělení modeluje <bold>čas mezi dvěma výpadky</bold> odesílání dat. Parametr <bold><m1/></bold> (lambda) představuje intenzitu poruch – čím je vyšší, tím častěji k výpadkům dochází a tím kratší jsou intervaly mezi nimi. Všimněte si, že křivka začíná vysoko (krátké intervaly jsou nejpravděpodobnější) a směrem doprava k dlouhým časům čekání zpravidla prudce klesá."
+      },
+      "normal": {
+        "title": "Normální rozdělení",
+        "description": "Normální (Gaussovo) rozdělení je nejdůležitějším spojitým rozdělením ve statistice. Je symetrické kolem střední hodnoty <m1/> a tvar jeho \"zvonu\" je určen směrodatnou odchylkou <m2/>. <br/><br/> Speciálním případem je <bold>normované normální rozdělení</bold> (též označované jako Z-rozdělení), které má: <ul> <li>střední hodnotu rovnou nule (<m1/> = 0),</li> <li>směrodatnou odchylku rovnou jedné (<m2/> = 1).</li> </ul> Každé normální rozdělení je možné převést na normované pomocí procesu <bold>standardizace</bold>. V přírodě a technice se normálním rozdělením řídí například většina náhodných chyb měření.",
+        "exampleTitle": "Kalibrace a přesnost GNSS přijímače",
+        "exampleDesc": "Představme si měření polohy stacionárního bodu pomocí GNSS. Parametr <bold><m1/> (střední hodnota)</bold> představuje systematickou chybu (např. pokud je přístroj špatně kalibrován a vždy posouvá výsledek o 1 metr). Parametr <bold><m2/> (směrodatná odchylka)</bold> určuje přesnost přístroje — čím je menší, tím jsou měření koncentrována blíže kolem středu a přístroj je kvalitnější. Všimněte si, že při zmenšení <bold><m3/></bold> se graf zúží a jeho vrchol prudce naroste, protože celková plocha pod křivkou musí zůstat rovna 1."
+      },
+      "chiSquare": {
+        "title": "Chí-kvadrát rozdělení",
+        "description": "Chí-kvadrát rozdělení (<m1/>) je asymetrické spojité rozdělení pravděpodobnosti, které nabývá pouze nezáporných hodnot. Vzniká jako součet čtverců nezávislých náhodných veličin s normovaným normálním rozdělením. Je definováno parametrem <bold><m2/> (stupně volnosti)</bold>, přičemž v mnoha statistických úlohách platí vztah <m3/>. Toto rozdělení je klíčové pro testování hypotéz o rozptylu, testování nezávislosti v kontingenčních tabulkách nebo při testech dobré shody.",
+        "exampleTitle": "Kontrola stability přesnosti měření",
+        "exampleDesc": "Představme si, že testujeme přesnost nového laserového dálkoměru. Provedeme sérii měření na známou vzdálenost a nezajímá nás průměrná délka, ale <bold>variabilita (rozptyl)</bold> chyb měření. <m1/> rozdělení modeluje právě součet čtverců těchto náhodných chyb. Parametr <bold><m3/> (stupně volnosti)</bold> přímo odráží rozsah vašeho experimentu (<m2/>). <br/><br/> Sledujte na grafu, že při nízkém počtu měření je rozdělení silně zešikmené a většina chyb se koncentruje blízko nuly. S narůstajícím počtem měření a zvyšováním <bold><m3/></bold> se vrchol rozdělení posouvá doprava, variabilita hodnot se zvyšuje a tvar křivky se začíná podobat symetrickému normálnímu rozdělení."
+      },
+      "studentT": {
+        "title": "Studentovo t-rozdělení",
+        "description": "Studentovo t-rozdělení se používá k odhadu střední hodnoty populace v případech, kdy je velikost vzorku malá a směrodatná odchylka populace není známa. Je odvozeno z normálního rozdělení a s určitou mírou spolehlivosti můžeme díky němu pracovat i s těmito menšími soubory. Velikost vzorku je zohledněna parametrem <bold><m1/> (stupně volnosti)</bold>.",
+        "exampleTitle": "Ověření přesnosti nového měřicího přístroje",
+        "exampleDesc": "Představme si, že testujeme přesnost nového laserového skeneru, ale stihli jsme provést pouze 5 kontrolních měření (malý vzorek). Kvůli malému počtu dat máme vyšší nejistotu, což t-rozdělení vyjadřuje širšími konci křivky. Parametr <bold>df (stupně volnosti)</bold> přímo souvisí s počtem měření. Všimněte si, že se zvyšujícím se <bold><m1/></bold> se t-rozdělení postupně přibližuje k normálnímu rozdělení."
+      },
+      "fisherF": {
+        "title": "Fisherovo F-rozdělení",
+        "description": "Fisherovo rozdělení popisuje variabilitu dvou výběrových rozptylů odvozených z normálního rozdělení. Je definováno dvěma parametry stupňů volnosti: <m1/> (pro čitatele) a <m2/> (pro jmenovatele). Je klíčové pro analýzu rozptylu (ANOVA).",
+        "exampleTitle": "Porovnání kvality ovzduší v různých zónách města",
+        "exampleDesc": "Představme si, že porovnáváme průměrné koncentrace prachu <m1/> v průmyslové, rezidenční a parkové zóně. F-rozdělení nám pomáhá rozhodnout, zda jsou rozdíly mezi těmito zónami <bold>statisticky významné</bold> vzhledem k přirozenému kolísání hodnot uvnitř každé zóny. Sledujte, jak změna kombinace stupňů volnosti <bold><m2/></bold> a <bold><m3/></bold> mění asymetrii a \"špičatost\" rozdělení."
+      }
+    }
+  },
+
+  "parameterEstimation": {
+    "intro": {
+      "p1": "Běžným případem při zpracování hromadných jevů je, že máme relativně malý počet pozorování (výběrový soubor) a chceme učinit závěry o tom, co bychom obdrželi, kdybychom měli k dispozici celý základní soubor.",
+      "p2": "Hledání „obecné pravdy“ o populaci pomocí náhodného výběru nazýváme <bold>statistická indukce</bold>. Na základě hodnot z výběrového souboru odhadujeme neznámé hodnoty populace, přičemž vždy musíme akceptovat určitou míru chyby – náš odhad má pravděpodobnostní charakter.",
+      "populationTitle": "Základní soubor (populace)",
+      "populationDesc": "Základní soubor charakterizujeme pomocí parametrů. Jde o konstantní hodnoty závislé na rozdělení pravděpodobnosti populace, které jsou pro nás většinou neznámé.",
+      "sampleTitle": "Výběrový soubor (vzorek)",
+      "sampleDesc": "Ve výběrovém souboru sledujeme výběrové charakteristiky. Nejsou to konstanty, ale mají spíše charakter náhodné veličiny, která se mění v závislosti na konkrétním výběru.",
+      "p3": "Abychom v teorii odhadů exaktně rozlišili, zda mluvíme o neznámé hodnotě celé populace, nebo o hodnotě zjištěné z našeho vzorku, používá statistika striktně oddělené značení.",
+      "tableTitle": "Základní a výběrový soubor",
+      "table": {
+        "col1": "Výběrová statistika → bodový odhad",
+        "col2": "Neznámý parametr základního souboru",
+        "row1_stat": "výběrový průměr",
+        "row1_param": "střední hodnota",
+        "row2_stat": "výběrová směrodatná odchylka",
+        "row2_param": "směrodatná odchylka",
+        "row3_stat": "velikost výběrového souboru",
+        "row3_param": "velikost populace"
+      },
+      "p4": "Výpočet výběrových charakteristik z konkrétního vzorku nám poskytuje tzv. bodový odhad hledaného parametru (např. výběrový průměr odhaduje střední hodnotu). Bodový odhad však není dokonalý a sám o sobě nám neříká nic o své přesnosti."
+    },
+    "pointEstimation": {
+      "title": "Bodový odhad",
+      "p1": "Základním cílem bodového odhadu je aproximovat neznámý parametr populace pomocí jediného čísla – výběrové statistiky. Nejtypičtějším příkladem je <bold>výběrový průměr</bold> (<xbar/>), kterým odhadujeme skutečnou střední hodnotu (<mu/>) celého základního souboru.",
+      "p2": "Tento odhad však nikdy není stoprocentně přesný. Jelikož vychází pouze z jednoho konkrétního vzorku prvků, je vždy zatížen určitou <bold>chybou odhadu</bold>. Pokud by byl proveden nový, stejně velký náhodný výběr, vypočítaný průměr by se mírně lišil.",
+      "semTitle": "Střední chyba průměru",
+      "semDesc": "Chybovost tohoto odhadu – tedy to, jak moc se získaný výběrový průměr obvykle liší od skutečné střední hodnoty populace – vyjadřuje tzv. <bold>střední chyba průměru</bold> (Standard Error of the Mean, SEM). Střední chyba průměru odpovídá směrodatné odchylce samotného rozdělení výběrových průměrů. Vypočítává se ze směrodatné odchylky celé populace (<sigma/>) a velikosti výběrového souboru (<n/>):",
+      "semEffect": "Z tohoto vztahu vyplývá, že s rostoucí velikostí vzorku se střední chyba snižuje. Čím více pozorování máme, tím méně kolísá výběrový průměr kolem skutečné střední hodnoty a náš odhad je přesnější.",
+      "simulation": {
+        "exampleTitle": "Určení nadmořské výšky bodu GNSS měřením",
+        "exampleDesc": "Představme si, že opakovaně měříme nadmořskou výšku hory Praděd pomocí GPS přístroje. Skutečná výška (<m1/>) je <bold>1492 m</bold>, přičemž přístroj má danou přesnost, která představuje směrodatnou odchylku populace (<m2/> m). V simulaci níže můžete sledovat, jak se při různé velikosti výběru (<m3/> měření) chová bodový odhad střední hodnoty (<m4/>) a výběrové směrodatné odchylky (<m5/>). Přidáváním dalších výběrů zjistíte, jak jednotlivé odhady kolísají kolem skutečné hodnoty.",
+        "controls": {
+          "target": "Odhadovaný parametr:",
+          "targetMean": "Střední hodnota (μ)",
+          "targetStd": "Směrodatná odchylka (σ)",
+          "popMean": "Skutečná střední hodnota (μ):",
+          "popStd": "Skutečná směr. odchylka (σ):",
+          "sampleSize": "Velikost výběru (n):"
+        },
+        "actions": {
+          "generateNew": "Vygenerovat nový výběr",
+          "clearHistory": "Vymazat historii výběrů"
+        },
+        "results": {
+          "sampleMean": "Výběrový průměr",
+          "sampleStd": "Výběrová směr. odchylka",
+          "sem": "Střední chyba (SEM)",
+          "recordedMeans": "Zaznamenané průměry:",
+          "recordedStds": "Zaznamenané směr. odchylky:",
+          "samplesCount": "výběrů"
+        },
+        "chart": {
+          "xAxisLabel": "Nadmořská výška (m)",
+          "yAxisLabel": "f(x)"
+        }
+      },
+      "realDataTitle": "Bodový odhad mediánového věku obyvatelstva v regionech EU",
+      "realDataP1": "V grafu výše byl bodový odhad a SEM ilustrován na syntetických datech. V tomto případě je <bold>základním souborem</bold> všech <bold>1 113 NUTS3 regionů Evropské unie</bold>, pro které Eurostat v roce 2025 eviduje údaj o mediánu věku obyvatelstva.",
+      "realDataP2": "Jelikož máme k dispozici celou populaci, známe její skutečné parametry: střední hodnotu <mu/> let a směrodatnou odchylku <sigma/> let. Díky tomu je možné pozorovat přesnost odhadu v závislosti na velikosti výběru. Pomocí nástroje níže je možné generovat náhodné výběry různých velikostí a sledovat, jak se výběrový průměr x̄ a SEM chovají v závislosti na n."
+    },
+    "intervalEstimation": {
+      "title": "Intervalový odhad",
+      "p1": "Zatímco bodový odhad aproximuje neznámý parametr jediným číslem, intervalový odhad vymezuje <bold>interval hodnot</bold>, ve kterém se parametr nachází s určitou pravděpodobností <m1/> (hladina spolehlivosti).",
+      "p2": "Interval spolehlivosti je dvojice statistik <m1/>, pro kterou platí:",
+      "alertTitle": "Častá záměna pojmů",
+      "alertDesc": "Interval spolehlivosti <bold>neříká</bold>, že 95 % dat leží v daném intervalu. Je to pravděpodobnost, že <bold>tento konkrétní postup vzorkování</bold> při opakovaném aplikování <bold>pokryje skutečnou hodnotu parametru v 95 % případů</bold>. Pokud by 100 výzkumníků nezávisle odebralo vzorek a vypočítalo 95% interval, zhruba 95 z nich by skutečně pokrylo populační parametr, 5 by ho minulo.",
+      "typesTitle": "Typy intervalů spolehlivosti",
+      "typesDesc": "Intervaly spolehlivosti rozdělujeme na jednostranné (levostranné a pravostranné) a oboustranné:",
+      "typeLeftTitle": "Levostranný",
+      "typeLeftDesc": "Parametr je větší než dolní hranice. Testuje se, zda hodnota není příliš malá.",
+      "typeTwoSidedTitle": "Oboustranný",
+      "typeTwoSidedDesc": "Parametr leží mezi dolní a horní hranicí. Nejčastěji používaný typ.",
+      "typeRightTitle": "Pravostranný",
+      "typeRightDesc": "Parametr je menší než horní hranice. Testuje se, zda hodnota není příliš velká.",
+      "p3": "Pokud je směrodatná odchylka populace <m1/> <bold>neznámá</bold> (běžný případ v praxi), nahrazujeme <m2/>-skóre kvantily <bold>Studentova t-rozdělení</bold> a populační <m3/> výběrovým <m4/>. Toto rozdělení má těžší chvosty (větší nejistotu) a s rostoucím <m5/> konverguje k normálnímu rozdělení.",
+      "simTitle": "Intervalový odhad mediánového věku obyvatelstva v regionech EU",
+      "simDesc": "Simulace odhadu používá stejná data jako bodový odhad — mediány věku 1 113 regionů NUTS3 EU (Eurostat 2025), s populační střední hodnotou <bold>μ = 46,22 let</bold> a směrodatnou odchylkou <bold>σ = 3,76 let</bold>. Přidávejte výběry a sledujte, kolik intervalů skutečně pokryje μ. Po změně nastavení (hladina, typ, σ) se <italic>všechny existující intervaly automaticky přepočítají</italic> — můžete tak přímo porovnat, jak nastavení ovlivňují pokryvnost.",
+      "simulation": {
+        "infoZvsT": "Zajímavost: Všimněte si, že pokud je zapnuto <bold>Z-skóre (známé σ)</bold>, osy obou grafů a svislé čáry jsou pod sebou zarovnány dokonale. Pokud však přepnete na <bold>t-skóre (neznámé σ)</bold>, na okrajích uvidíte odchylky. Není to chyba, ale přímý důsledek toho, že u t-skóre dělíme výběrovou odchylkou <m1/>, která je pro každý výběr jiná. Vztah mezi <m2/> a <m3/> je tedy pro každý výběr mírně odlišný.",
+        "controls": {
+          "confidence": "Hladina spolehlivosti (1 − α):",
+          "type": "Typ intervalu:",
+          "typeLeft": "Levostranný",
+          "typeTwo": "Oboustranný",
+          "typeRight": "Pravostranný",
+          "variance": "Rozptyl populace:",
+          "varKnown": "σ známé (Z)",
+          "varUnknown": "σ neznámé (t)",
+          "sampleSize": "Velikost výběru (n):"
+        },
+        "actions": {
+          "addCount": "+ {{count}}",
+          "samplesCount": "výběrů",
+          "clearAll": "Vymazat všechny výběry"
+        },
+        "coverage": {
+          "contains": "Obsahuje μ:",
+          "notContains": "Neobsahuje μ:",
+          "theoretical": "Teoretická pokryvnost:"
+        },
+        "charts": {
+          "distTitle": "{{dist}} — kritické oblasti a {{score}}-skóre výběrů",
+          "legendCrit": "■ kritická oblast (α)",
+          "legendLast": "│ {{score}}-skóre posl. výběru",
+          "xLabelDist": "{{score}}-skóre  {{dist}}",
+          "ciTitle": "Intervaly spolehlivosti ({{cl}} %) — μ = {{mu}} r.",
+          "legendContains": "— obsahuje μ",
+          "legendNotContains": "— neobsahuje μ",
+          "legendMean": "● x̄",
+          "emptyState": "Zatím žádné výběry. Klikněte na „+ výběr\".",
+          "xAxisLabel": "medián věku (r.)",
+          "tooltipF": "F({{score}})",
+          "tooltipSelection": "Výběr #{{num}}",
+          "tooltipLower": "dolní = {{val}}",
+          "tooltipUpper": "horní = {{val}}",
+          "tooltipContains": "Obsahuje μ",
+          "tooltipNotContains": "Neobsahuje μ"
+        },
+        "formula": {
+          "show": "Zobrazit vzorec a výpočet ▼",
+          "hide": "Skrýt vzorec ▲",
+          "title": "Vzorec ({{cl}} %, {{type}}, {{varType}}):",
+          "varKnown": "σ známé — Z-skóre",
+          "varUnknown": "σ neznámé — t-skóre",
+          "calcTitle": "Výpočet pro poslední výběr (n = {{n}}):",
+          "resultPrefix": "Interval",
+          "resultContains": "obsahuje",
+          "resultNotContains": "neobsahuje",
+          "resultSuffix": "populační střední hodnotu μ = {{mu}}."
+        }
+      }
+    },
+    "realDataSampling": {
+      "controls": {
+        "target": "Odhadovaný parametr:",
+        "targetMean": "Střední hodnota (μ)",
+        "targetVar": "Rozptyl (σ²)",
+        "sampleSize": "Velikost výběru (n):",
+        "generate": "Vygenerovat nový výběr",
+        "clear": "Vymazat historii výběrů"
+      },
+      "stats": {
+        "grandMean": "Průměr z {{count}} výběrů:",
+        "recordedMeans": "Zaznamenané průměry:",
+        "recordedVars": "Zaznamenané rozptyly:"
+      },
+      "table": {
+        "title": "Vybrané regiony",
+        "colRegion": "Region (NUTS3)",
+        "colCountry": "Země",
+        "colMedianAge": "Medián věku (r.)"
+      },
+      "map": {
+        "legend": "Medián věku (r.)",
+        "tooltipAge": "Medián věku:"
+      }
+    }
+  },
+
+  "hypothesisTesting": {
+    "introduction": {
+      "leadText": "Testování hypotéz je základní metodou induktivní statistiky, která umožňuje rozhodovat o vlastnostech základního souboru na základě dat získaných z výběrového souboru. V praxi často potřebujeme zjistit, zda pozorovaný rozdíl v datech představuje skutečný jev, nebo je pouze důsledkem náhodné variability výběru.",
+      "basicHypothesesTitle": "Základní hypotézy",
+      "nullHypothesis": "<bold>Nulová hypotéza (<h0/>):</bold> Očekávaný stav, který předpokládáme, že platí. Obvykle vyjadřuje nulový efekt (např. neexistuje rozdíl, střední hodnota se rovná očekávané).",
+      "alternativeHypothesis": "<bold>Alternativní hypotéza (<ha/>):</bold> Logický opak <h0/>. Tvrdí, že existuje rozdíl, závislost nebo změna. V datech hledáme důkaz právě pro zamítnutí <h0/> a přijetí <ha/>."
+    },
+
+    "generalProcedure": {
+      "title": "Obecný postup testování",
+      "description": "Testování hypotéz vždy probíhá v několika standardizovaných krocích. K demonstraci budou využita data obcí Moravskoslezského kraje (zdroj: <1>ArcČR 4.3</1>). Bude zjišťováno, zda je podíl obyvatelstva nad 65 let v těchto obcích srovnatelný s celorepublikovým průměrem.",
+      "dataPreview": {
+        "subtitle": "Vstupní data",
+        "description": "Náhled načtených dat z Moravskoslezského kraje. Podíl obyvatel nad 65 let byl vypočítán z atributů <c1>poc_obyv_SLDB_2021</c1> a <c2>poc_obyv_nad_65</c2>.",
+        "error": "Nepodařilo se stáhnout nebo zpracovat JSON soubor.",
+        "tableTitle": "Obce Moravskoslezského kraje",
+        "columns": {
+          "code": "Kód obce",
+          "name": "Název obce",
+          "district": "Okres",
+          "population": "Počet obyvatel",
+          "pop65": "Obyv. nad 65 l.",
+          "share65": "Podíl nad 65 (%)"
+        }
+      },
+      "step1": {
+        "title": "1. Formulace hypotéz",
+        "description": "Základem je stanovení nulové hypotézy (<h0/>), která obvykle vyjadřuje očekávaný stav, neexistenci rozdílu či rovnost parametrů. Oproti ní stojí alternativní hypotéza (<ha/>), která představuje logický opak a potvrzuje existenci statisticky významného rozdílu. V datech vždy hledáme důkazy pro zamítnutí <h0/>.",
+        "appTitle": "Aplikace na data",
+        "appDesc": "Průměrný podíl obyvatel nad 65 let v obcích ČR je 20,56 %. Stanovíme si hypotézy pro náš vybraný okres:",
+        "h0Item": "<bold><m/></bold> (průměrný podíl seniorů v obcích okresu se statisticky neliší od průměru ČR)",
+        "haItem": "<bold><m/></bold> (průměrný podíl seniorů se liší – oboustranná hypotéza)"
+      },
+      "step2": {
+        "title": "2. Volba hladiny významnosti (<alpha/>)",
+        "description": "Hladina významnosti představuje maximální přijatelné riziko, že nesprávně zamítneme nulovou hypotézu, ačkoliv ve skutečnosti platí (tzv. chyba I. druhu). Nejčastěji se ve statistice volí hodnota 0,05, což odpovídá 5 % pravděpodobnosti omylu. Dalšími běžně využívanými hodnotami jsou například 0,01 (1 %) a 0,1 (10 %).",
+        "appTitle": "Aplikace na data",
+        "appDesc": "Pro náš test zvolíme standardní hladinu <bold><alpha/></bold>. Pokud výsledná pravděpodobnost (p-value) klesne pod tuto hranici, rozdíl v podílu seniorů budeme považovat za statisticky významný a <h0/> zamítneme."
+      },
+      "step3": {
+        "title": "3. Výpočet testového kritéria",
+        "description": "Testové kritérium je vzorec, pomocí něhož z výběrových dat získáme konkrétní číselnou hodnotu (testovou statistiku). Tato statistika se řídí známým rozdělením pravděpodobnosti (např. t-rozdělení), se kterým ji následně porovnáváme, abychom určili, zda padne do kritického oboru.",
+        "appTitle": "Aplikace na data",
+        "appDesc": "Jelikož porovnáváme průměr jednoho výběru (obce v okrese) se známou konstantou (20,56 %) a vstupní data se přibližují normálnímu rozdělení, použijeme <bold>jednovýběrový Studentův t-test</bold>. Vzorec pro testovou statistiku je:",
+        "formulaDesc": "Kde <xbar/> je výběrový průměr (podíl v okrese), <mu0/> je referenční hodnota (20,56), <s/> je směrodatná odchylka výběru a <n/> je počet obcí."
+      },
+      "step4": {
+        "title": "4. Vyhodnocení hypotézy a p-hodnota",
+        "description": "Na základě hodnoty testového kritéria získáme <bold>p-hodnotu (p-value)</bold>. Představuje nejmenší hladinu významnosti, na které můžeme <h0/> zamítnout. Pokud je p-hodnota menší než <alpha/>, nulovou hypotézu zamítáme. Při každém rozhodnutí však hrozí riziko statistické chyby.",
+        "appTitle": "Aplikace na data (možné závěry)",
+        "table": {
+          "col1": "Skutečnost v populaci",
+          "col2": "Rozhodnutí testu (výsledek z dat)",
+          "col2a": "Nezamítáme <h0/>",
+          "col2b": "Zamítáme <h0/>",
+          "row1Title": "Platí <h0/> <br/> <small>Podíl seniorů se reálně neliší od průměru ČR.</small>",
+          "row1a": "Správné rozhodnutí <br/> <m/>",
+          "row1b": "<bold>Chyba I. druhu (<alpha/>)</bold><br/><small>Nesprávně tvrdíme, že okres má významně odlišný podíl seniorů, ačkoliv ve skutečnosti je stejný jako celorepublikový průměr (rozdíl v datech byl jen náhodný).</small>",
+          "row2Title": "Platí <ha/> <br/> <small>Podíl seniorů se reálně liší od průměru ČR.</small>",
+          "row2a": "<bold>Chyba II. druhu (<beta/>)</bold><br/><small>Přehlédnutí rozdílu. Z výběru dat se nám nepodařilo dokázat rozdíl, a proto nesprávně tvrdíme, že okres má průměrný podíl seniorů, ačkoliv se ve skutečnosti významně liší.</small>",
+          "row2b": "Správné rozhodnutí <br/> (síla testu <m/>)"
+        }
+      }
+    },
+
+    "tTestDashboard": {
+      "title": "Interaktivní ukázka t-testu",
+      "description": "V předchozích částech byl představen obecný postup testování hypotéz a byly formovány konkrétní hypotézy pro podíl obyvatel nad 65 let v obcích Moravskoslezského kraje. Nyní si celý proces můžete vyzkoušet interaktivně — vyberte okres, nastavte referenční hodnotu <m/> a sledujte, jak se mění výsledek testu i vizualizace rozdělení.",
+      "interpretiveNote": "Všimněte si, že výsledek testu nezávisí jen na skutečném <bold>výběrovém průměru</bold>, ale i na <bold>variabilitě (s)</bold> a <bold>velikosti vzorku (n)</bold>. Právě proto může nastat situace, kdy v jednom okrese hypotéza není zamítnuta navzdory většímu rozdílu od μ₀, zatímco v jiném je zamítnuta při menším rozdílu — jednoduše proto, že tam je nižší variabilita nebo větší počet obcí.",
+      "controls": {
+        "district": "Výběr okresu:",
+        "expectedValue": "Očekávaný podíl nad 65 let (μ₀):",
+        "alpha": "Hladina významnosti (α):"
+      },
+      "alert": {
+        "title": "Výsledek testování:",
+        "reject": "Zamítáme H₀",
+        "failToReject": "Nezamítáme H₀",
+        "pValue": "<bold>P-hodnota: {{value}}</bold> <sign/> α ({{alpha}}).",
+        "significantText": "Na hladině významnosti {{alpha}} existuje statisticky významný rozdíl. Průměrný podíl obyvatel nad 65 let v obcích okresu {{district}} ({{mean}} %) se prokazatelně liší od celostátní referenční hodnoty {{expected}} %.",
+        "insignificantText": "Na hladině významnosti {{alpha}} jsme neprokázali statisticky významný rozdíl. Variabilita v datech je příliš velká nebo průměr ({{mean}} %) je dostatečně blízko k referenční hodnotě {{expected}} %."
+      },
+      "calcToggle": {
+        "show": "Zobrazit výpočet ▼",
+        "hide": "Skrýt výpočet ▲"
+      },
+      "calculation": {
+        "tStatTitle": "Výpočet t-statistiky pro okres {{district}}",
+        "meanLabel": "výb. průměr (%)",
+        "expectedLabel": "ref. hodnota (%)",
+        "sdLabel": "směr. odch.",
+        "nLabel": "počet obcí",
+        "pValTitle": "Výpočet p-hodnoty",
+        "pValDesc": "kde <fdf/> je distribuční funkce Studentova t-rozdělení s <df/> stupni volnosti.",
+        "rejectSummary": "zamítáme H₀",
+        "acceptSummary": "nezamítáme H₀",
+        "equivalent": "Ekvivalentně:"
+      },
+      "charts": {
+        "scatterTitle": "Variabilita v okrese",
+        "scatterXAxis": "podíl obyv. nad 65 (%)",
+        "scatterTooltip": "Podíl nad 65: {{value}} %",
+        "tChartTitle": "Studentovo t-rozdělení (df = {{df}})",
+        "tChartCritArea": "kritická oblast (α/2)"
+      }
+    }
+  },
+  "correlation": {
+    "introduction": {
+      "title": "Úvod do analýzy závislostí",
+      "p1": "V geografii a společenských vědách se velmi často setkáváme se <bold>stochastickou (statistickou) závislostí</bold>. Neexistuje zde jednoznačný vzorec – víme sice, že mezi proměnnými existuje určitý vztah, ale neumíme z něj exaktně vypočítat výsledek pro konkrétního jednotlivce. Právě ke zkoumání a kvantifikování takové závislosti slouží <bold>korelační analýza</bold>.",
+      "p2": "Tento přístup je zásadně odlišný od <bold>deterministické (funkční) závislosti</bold>, kterou známe například z fyziky. Tam umíme hmotnost tělesa jednoznačně vypočítat, pokud známe jeho objem a hustotu (<m/>). Výsledek je v takovém případě vždy přesný a neměnný.",
+      "tableTitle": "Výběr metody podle typu proměnných",
+      "tableDesc": "Výběr vhodné statistické metody k hledání závislostí závisí na tom, s jakými typy znaků (proměnných) se pracuje. Korelační analýza se využívá tehdy, když jsou obě proměnné kvantitativní.",
+      "typeY": "Typ znaku Y (Závislá proměnná)",
+      "typeX": "Typ znaku X (Nezávislá proměnná)",
+      "categorical": "Kategorické",
+      "quantitative": "Kvantitativní",
+      "contingency": "Kontingenční tabulky, testy dobré shody",
+      "anova": "ANOVA",
+      "corr_regr": "Korelace a regrese"
+    },
+    "analysis": {
+      "title": "Principy korelační analýzy",
+      "p1": "Korelační analýza měří <bold>sílu a směr lineární závislosti</bold> mezi dvěma kvantitativními znaky. Kvantifikuje se pomocí korelačního koeficientu, který je bezrozměrný a nabývá hodnot v uzavřeném intervalu <m/>. Hodnota 0 značí úplnou lineární nezávislost, zatímco hodnoty 1 a -1 představují dokonalou funkční (lineární) závislost.",
+      "positiveTitle": "Kladná (pozitivní) korelace",
+      "positiveDesc": "Nastává, když s rostoucí hodnotou jedné proměnné <bold>roste</bold> i hodnota druhé proměnné. <br/><br/>Platí: <i>„Čím víc jednoho, tím víc druhého.“</i>",
+      "positiveExamples": "<bold>Příklad:</bold> Vztah mezi nadmořskou výškou a úhrnem srážek, vztah mezi hustotou zalidnění a počtem bodů zájmu (POI) v městských oblastech.",
+      "negativeTitle": "Záporná (negativní) korelace",
+      "negativeDesc": "Nastává, když s rostoucí hodnotou jedné proměnné hodnota druhé proměnné <bold>klesá</bold>. <br/><br/>Platí: <i>„Čím víc jednoho, tím míň druhého.“</i>",
+      "negativeExamples": "<bold>Příklad:</bold> Vztah mezi nadmořskou výškou a teplotou, vztah mezi vzdáleností od centra města a cenou pozemků.",
+      "alertCausalityTitle": "Korelace není kauzalita",
+      "alertCausalityDesc": "Samotný fakt, že se dvě veličiny mění společně korelují <bold>ještě nedokazuje, že jedna způsobuje druhou</bold>. Jde o nekauzální vztah – z matematického výpočtu neumíme určit, co je příčina a co následek, nebo zda na obě veličiny nepůsobí nějaký skrytý třetí faktor.",
+      "testingTitle": "Testování statistické významnosti",
+      "testingDesc": "Pokud z dat vypočítáme například korelaci <m1/>, musíme ověřit, zda tato závislost skutečně existuje v celé populaci, nebo zda jde jen o náhodu v našem malém výběru. Pro tento účel provádíme testování hypotéz (podobně jako u t-testů).",
+      "testingH0": "<bold>Nulová hypotéza (<h0/>):</bold> <m/> (veličiny jsou lineárně nezávislé).",
+      "testingHa": "<bold>Alternativní hypotéza (<ha/>):</bold> <m/> (mezi veličinami existuje lineární závislost).",
+      "testingTStat": "Testové kritérium (T) se následně řídí Studentovým t-rozdělením",
+      "testingExperimentTitle": "Vyzkoušejte si to na grafu výše",
+      "testingExperimentDesc": "Vraťte se k interaktivnímu prvku a nastavte relativně slabou korelaci (např. <bold>r = 0,30</bold>) a malý počet bodů (<bold>n = 10</bold>). Výsledek pravděpodobně <textDanger>nebude statisticky významný</textDanger>. Následně začněte postupně zvyšovat počet bodů na posuvníku. Všimněte si, jak s přibývajícím množstvím dat klesá <italic>p-hodnota</italic> a i tato slabá korelace se při velkém vzorku (např. <bold>n = 100</bold>) stane <textSuccess>statisticky prokazatelnou</textSuccess>."
+    },
+    "simulator": {
+      "exampleTitle": "Cena nemovitosti a vzdálenost od řeky",
+      "exampleDesc": "Pomocí posuvníku měňte cílovou hodnotu korelace, čímž nasimulujete různé prostorové kontexty ve městě:",
+      "examplePoints": {
+        "positive": "<bold>Silná kladná korelace (r blízko +1):</bold> Modeluje nebezpečnou záplavovou zónu. Čím <italic>větší</italic> je vzdálenost od řeky (vyšší bezpečí před stoletou vodou), tím <italic>vyšší</italic> je cena nemovitosti.",
+        "negative": "<bold>Silná záporná korelace (r blízko -1):</bold> Modeluje atraktivní rekreační oblast s čistou vodou. Čím <italic>menší</italic> je vzdálenost k řece (blíže k vodě), tím <italic>vyšší</italic> je cena nemovitosti díky turistickému potenciálu.",
+        "zero": "<bold>Nulová korelace (r blízko 0):</bold> Modeluje průmyslové město s regulovaným tokem v betonovém korytě, které nenabízí rekreaci ani nehrozí záplavou. Vzdálenost k řece nemá na cenu bytů žádný systematický vliv."
+      },
+      "targetR": "Cílová hodnota korelace (r):",
+      "badgeTargetR": "r cíl",
+      "badgeActualR": "r vypočítané",
+      "pointCount": "Počet bodů (n):",
+      "generateNew": "Vygenerovat nová data",
+      "xAxisLabel": "Vzdálenost (m)",
+      "yAxisLabel": "Cena (tis. €)",
+      "resultsTitle": "Výsledky testu významnosti",
+      "actualR": "Vypočítané r:",
+      "tStat": "Testové kritérium (T):",
+      "pValue": "p-hodnota:",
+      "significant": "Zamítáme H₀: Korelace je statisticky významná",
+      "significantDesc": "P-hodnota je menší než hladina významnosti α = {{alpha}}.",
+      "insignificant": "Nezamítáme H₀: Korelace není statisticky významná",
+      "insignificantDesc": "P-hodnota je větší než hladina významnosti α = {{alpha}}.",
+      "showCalc": "Zobrazit výpočet ▼",
+      "hideCalc": "Skrýt výpočet ▲",
+      "calcTitle": "Výpočet testového kritéria (T)",
+      "calcDesc": "Oboustranná p-value ze Studentova t-rozdělení se stupni volnosti",
+      "rDiffInfo": "<bold>Cílová hodnota r</bold> určuje sílu závislosti při generování dat (matematický parametr). <bold>Vypočítané r</bold> je Pearsonův koeficient naměřený přímo na vygenerovaných bodech. Jelikož jsou data náhodná, tyto <bold>hodnoty se mírně liší</bold> — čím <bold>menší počet bodů</bold> (n), tím <bold>větší odchylka</bold>. Klikněte na Vygenerovat nová data a sledujte, jak se vypočítané r mění."
+    },
+    "coefficients": {
+      "title": "Korelační koeficienty",
+      "p1": "Na základě charakteru vstupních dat a splnění statistických předpokladů (například přítomnost normálního rozdělení) se vybírá z vícera typů korelačních koeficientů. Dvěma nejčastěji používanými jsou Pearsonův a Spearmanův koeficient.",
+      "pearsonTitle": "Pearsonův korelační koeficient (<m/>)",
+      "pearsonDesc": "Vychází z kovariance standardizované směrodatnými odchylkami obou veličin. Je to parametrický test, který měří výhradně <bold>lineární závislost</bold>. Vyžaduje, aby data pocházela z normálního rozdělení. Jeho nevýhodou je velká <bold>citlivost na odlehlé hodnoty</bold> – jediný outlier dokáže koeficient výrazně zkreslit.",
+      "spearmanTitle": "Spearmanův korelační koeficient (<m/>)",
+      "spearmanDesc": "Jde o neparametrickou alternativu, tzv. <bold>pořadový test</bold>. Místo původních hodnot pracuje s jejich pořadím. Díky tomu je velmi <bold>robustní vůči odlehlým hodnotám</bold> a dokáže zachytit i monotónní nelineární závislost. Používá se tehdy, když data nesplňují předpoklad normality."
+    },
+    "comparison": {
+      "title": "Porovnání vlastností koeficientů na datech HDP a střední délky života",
+      "p1": "Teoretické rozdíly mezi koeficienty můžeme demonstrovat na reálných datech z Eurostatu (na úrovni NUTS2 – v datech se nacházejí pouze regiony, u kterých byly dostupné obě hodnoty za rok 2024). V grafu níže sledujeme vztah mezi <bold>hrubým domácím produktem</bold> (HDP na obyvatele v paritě kupní síly jako procento průměru EU) a <bold>střední délkou života</bold>.",
+      "instructionsTitle": "Čeho si v grafu všímat:",
+      "instructions": {
+        "nonlinear": "<bold>Nelineární vztah (všechny regiony):</bold> Tzv. Prestonova křivka ukazuje, že s růstem HDP délka života nejprve prudce stoupá, ale u bohatších regionů se ustaluje. Jelikož je vztah monotónní, ale ne lineární, Spearmanův koeficient zde dosahuje viditelně vyšších hodnot než Pearsonův.",
+        "outlier": "<bold>Vliv outlierů (jižní Evropa + Rumunsko):</bold> Regiony Španělska či Itálie tvoří shluk s mimořádně vysokou délkou života a průměrným HDP. Bukurešť (Rumunsko) má však velmi vysoké HDP, ale délka života zůstává nízká. Tento odlehlý bod v pravém dolním rohu deformuje lineární trend (Pearsonův koeficient se znatelně zmenšuje), zatímco Spearman si drží lepší stabilitu.",
+        "interactive": "<bold>Přidání fiktivní hodnoty:</bold> Pomocí ovládacího panelu si vytvořte vlastní fiktivní region. Umístěte ho například do pravého dolního rohu (extrémně vysoké HDP, ale nízké dožití). Sledujte, jak jediný takový bod dokáže výrazně ovlivnit hodnotu Pearsonova koeficientu."
+      },
+      "tabAll": "Všechny regiony",
+      "tabSouthRO": "Jižní Evropa + Rumunsko",
+      "pearsonTitle": "Pearsonův koeficient",
+      "pearsonDesc": "Citlivý na outliery. Měří pouze lineární vztah.",
+      "spearmanTitle": "Spearmanův koeficient",
+      "spearmanDesc": "Odolný vůči outlierům. Zachycuje monotónní vztahy.",
+      "outlierControls": {
+        "title": "Přidat vlastní hodnotu",
+        "labelX": "HDP (X)",
+        "labelY": "Dožití (Y)",
+        "addBtn": "Přidat bod",
+        "clearBtn": "Vymazat fiktivní"
+      },
+      "fetchError": "Soubor se nepodařilo načíst",
+      "fictionalOutlier": "Fiktivní hodnota",
+      "datasetLabel": "Dataset",
+      "chart": {
+        "xLabel": "HDP (PPS % průměru EU)",
+        "yLabel": "Střední délka života (roky)",
+        "xLabelShort": "HDP",
+        "yLabelShort": "Dožití"
+      },
+      "stats": {
+        "originalData": "Původní data",
+        "withOutliers": "S fiktivními hodnotami",
+        "pearsonLabel": "r (Pearson)",
+        "spearmanLabel": "rₛ (Spearman)"
+      },
+      "table": {
+        "title": "Zdrojová data pro výpočet",
+        "colCode": "Kód",
+        "colCountry": "Země",
+        "colRegion": "Region"
+      }
+    }
+  },
+
+  "components": {
+    "dataPreviewTable": {
+      "records": "{{count}} záznamů",
+      "downloadTitle": "Stáhnout data",
+      "downloadBtn": "Stáhnout",
+      "showLess": "Zobrazit méně ▲",
+      "showAll": "Zobrazit všechny ▼",
+      "showingRows": "Zobrazeno {{shown}} z {{total}} řádků"
+    },
+    "choroplethMap": {
+      "fullscreenTitle": "Zobrazit na celou obrazovku",
+      "legendTitle": "Podíl [%]",
+      "tooltip": {
+        "outsideDistrict": "Mimo vybraný okres",
+        "noData": "Bez dat",
+        "share": "Podíl: {{value}} %"
+      }
+    },
+
+    "randomVariableCharts": {
+      "measurements": "Měření: {{count}}",
+      "simulatedPMF": {
+        "title": "Simulace počtu zachycených satelitů (Binomické rozdělení)",
+        "xLabel": "Počet satelitů (k)",
+        "yLabel": "P(X=k)",
+        "theoretical": "Teoretická",
+        "empirical": "Empirická"
+      },
+      "simulatedPDF": {
+        "title": "Simulace GNSS odchylek: f(x)",
+        "xLabel": "Odchylka (m)",
+        "yLabel": "f(x)"
+      },
+      "quantileSlider": {
+        "title": "Kvantilová funkce: Human Capital Index Plus (HCI+)",
+        "labelP": "Zobrazit podle kvantilu (p):",
+        "labelX": "Nebo zadej konkrétní hodnotu (x):",
+        "placeholder": "např. 150",
+        "resultLabel": "Výsledek:",
+        "resultProb": "Pravděpodobnosti",
+        "resultCorresponds": "odpovídá hodnota",
+        "loading": "Načítám data z CSV...",
+        "errorNoData": "CSV se načetlo, ale nenašla se v něm platná číselná data pro sloupec 'HCI_2025'.",
+        "errorFetch": "Nepodařilo se stáhnout nebo zpracovat CSV soubor.",
+        "errorMin": "Zadaná hodnota ({{val}}) je nižší než minimum v datech ({{min}}).",
+        "errorMax": "Zadaná hodnota ({{val}}) překračuje maximum v datech ({{max}}).",
+        "dataTableTitle": "Vstupní data (HCI+ 2025)",
+        "countryCol": "Země",
+        "scoreCol": "HCI+ Skóre (2025)",
+        "badgeP": "Kvantil (p)",
+        "badgeX": "HCI+ Skóre (x)"
+      },
+      "quantileInput": {
+        "title": "Interaktivní kvantilová funkce z vlastních dat (výška stromů v m)",
+        "none": "Bez zvýraznění",
+        "median": "Medián",
+        "quartiles": "Kvartily",
+        "deciles": "Decily",
+        "inputDataLabel": "Vstupní data (seřazená):",
+        "placeholder": "Nová hodnota",
+        "calculatedTitle": "Vypočítaný kvantil ({{p}})"
+      },
+      "skewness": {
+        "title": "Tvar rozdělení:",
+        "symmetric": "Symetrické rozdělení",
+        "positive": "Kladná šikmost",
+        "negative": "Záporná šikmost",
+        "sliderLabel": "Hodnota šikmosti:",
+        "sliderMin": "Záporná",
+        "sliderMax": "Kladná",
+        "xLabel": "Věk stromů (roky)",
+        "yLabel": "Četnost (%)"
+      },
+      "kurtosis": {
+        "title": "Tvar rozdělení:",
+        "mesokurtic": "Normální rozdělení (Mezokurtické)",
+        "leptokurtic": "Špičaté rozdělení (Leptokurtické)",
+        "platykurtic": "Ploché rozdělení (Platykurtické)",
+        "sliderLabel": "Hodnota excesu:",
+        "sliderMin": "Ploché (Regulovaná)",
+        "sliderMax": "Špičaté (Bystřina)",
+        "xLabel": "Odchylka od běžného stavu",
+        "yLabel": "Pravděpodobnost (%)"
+      },
+      "boxplot": {
+        "title": "Střední délka života při narození",
+        "loading": "Načítám data...",
+        "groupLabel": "Seskupit podle:",
+        "yearLabel": "Zobrazit roky:",
+        "dataTableTitle": "Vstupní data",
+        "groups": {
+          "continent": "Kontinent",
+          "incomeGroup": "Příjmová skupina"
+        },
+        "columns": {
+          "country": "Země"
+        },
+        "categories": {
+          "Africa": "Afrika",
+          "Americas": "Amerika",
+          "Asia": "Asie",
+          "Europe": "Evropa",
+          "Oceania": "Oceánie",
+          "Lowincome": "Nízký příjem",
+          "Lowermiddleincome": "Nižší střední příjem",
+          "Uppermiddleincome": "Vyšší střední příjem",
+          "Highincome": "Vysoký příjem",
+          "Unclassified": "Neklasifikováno"
+        },
+        "tooltip": {
+          "max": "Max (vous):",
+          "q3": "Q3:",
+          "median": "Medián:",
+          "q1": "Q1:",
+          "min": "Min (vous):"
+        },
+        "legend": {
+          "median": "Medián"
+        }
+      }
+    },
+
+    "probabilityCharts": {
+      "pmfTitle": "Pravděpodobnostní funkce",
+      "cdfTitle": "Distribuční funkce",
+      "bernoulli": {
+        "paramP": "Parametr (p):"
+      },
+      "uniform": {
+        "outcomes": "Počet možných výsledků (n):",
+        "probCalc": "P(X=x) = 1/{{n}} ≈ {{p}}"
+      },
+      "binomial": {
+        "probP": "Pravděpodobnost (p):",
+        "trialsN": "Počet pokusů (n):"
+      },
+      "poisson": {
+        "paramLambda": "Parametr (λ):"
+      },
+      "pdfTitle": "Hustota pravděpodobnosti",
+      "uniformContinuous": {
+        "lowerA": "Dolní (a): ",
+        "upperB": "Horní (b): "
+      },
+      "normal": {
+        "mean": "Střední hodnota (μ):",
+        "sd": "Směrodatná odchylka (σ):"
+      },
+      "studentT": {
+        "df": "Stupně volnosti (k):"
+      },
+      "fisherF": {
+        "d1_control": "Stupně volnosti <m1/>:",
+        "d2_control": "Stupne volnosti <m2/>:"
+      },
+      "chiSquare": {
+        "df": "Stupně volnosti (k):"
+      }
+    },
+
+    "dataInputControl": {
+      "value": "Hodnota",
+      "weight": "Váha",
+      "save": "Uložit",
+      "cancel": "Zrušit",
+      "edit": "Editovat",
+      "delete": "Smazat",
+      "clickToOptions": "Kliknutím zobrazíš možnosti",
+      "clickToRemove": "Kliknutím odstraníš",
+      "noData": "Žádná data...",
+      "add": "Přidat",
+      "weightTitle": "Váha (musí být > 0)"
+    },
+    "calculatorTemplate": {
+      "calcSteps": "Postup výpočtu:",
+      "collapse": "Zkrátit zápis",
+      "expand": "Rozbalit celý zápis"
+    },
+    "characteristics": {
+      "arithmetic": {
+        "title": "Výpočet průměrné nadmořské výšky bodu",
+        "inputLabel": "Naměřené hodnoty (m):"
+      },
+      "harmonic": {
+        "title": "Průměrná rychlost letu na shodných úsecích",
+        "inputLabel": "Rychlosti dronu (m/s):"
+      },
+      "geometric": {
+        "title": "Průměrný koeficient růstu zastavěné plochy",
+        "inputLabel": "Roční koeficienty růstu (faktor):"
+      },
+      "weighted": {
+        "title": "Vážený průměr nadmořské výšky (podle přesnosti)",
+        "inputValuesLabel": "Naměřené hodnoty a jejich váhy:",
+        "placeholder": "Hodnota (m)",
+        "weightPlaceholder": "Váha",
+        "weightLabel": "v:"
+      },
+      "mode": {
+        "title": "Počet pater budov na sídlišti",
+        "currentMode": "Aktuální modus:",
+        "floor_1": "patro",
+        "floors_2_4": "patra",
+        "floors_many": "pater",
+        "noData": "Žádná data",
+        "chartXLabel": "Počet pater",
+        "chartYLabel": "Počet budov (frekvence)",
+        "inputLabel": "Naměřená data (seřazená podle pater):",
+        "placeholder": "Nová budova"
+      },
+      "median": {
+        "title": "Výpočet mediánu: Výška budov v městské zástavbě",
+        "inputLabel": "Naměřené výšky budov (m) – seřazené:",
+        "placeholder": "Nová budova",
+        "oddCount": "(pro lichý počet dat)",
+        "evenCount": "(pro sudý počet dat)",
+        "tooltip": "Vypočítaný medián",
+        "comparisonTitle": "Pro porovnání:",
+        "comparisonMean": "Aritmetický průměr těchto dat je",
+        "comparisonDesc": "Vyzkoušejte přidat extrémní hodnotu a sledujte, jak masivně se změní průměr v porovnání s mediánem."
+      },
+      "range": {
+        "title": "Výpočet variačního rozpětí: Výškový profil lyžařského svahu",
+        "inputLabel": "Naměřené nadmořské výšky (m n. m.) – Seřazené:",
+        "placeholder": "Nová výška"
+      },
+      "meanDeviation": {
+        "title": "Výpočet průměrné odchylky: Přesnost opakovaného měření délky",
+        "inputLabel": "Naměřené délky (m):",
+        "placeholder": "Nová délka"
+      },
+      "meanDifference": {
+        "title": "Výpočet střední diference: Rozdíly ve znečištění ovzduší",
+        "inputLabel": "Naměřené koncentrace PM10 (µg/m³):",
+        "placeholder": "Nová hodnota",
+        "errorMin2": "Pro výpočet jsou zapotřebí alespoň 2 hodnoty.",
+        "where": "kde"
+      },
+      "variance": {
+        "title": "Výpočet rozptylu: Variabilita hustoty LiDARových dat",
+        "inputLabel": "Naměřená hustota bodů (body/m²):",
+        "placeholder": "Nová hodnota",
+        "errorMin2": "Pro výpočet výběrového rozptylu jsou zapotřebí alespoň 2 hodnoty.",
+        "unit": "(bodů/m²)²"
+      },
+      "standardDeviation": {
+        "title": "Výpočet směrodatné odchylky: Teploty na senzorech",
+        "inputLabel": "Naměřené teploty (°C):",
+        "placeholder": "Teplota",
+        "errorMin2": "Nedostatek dat (n > 1)"
+      },
+      "coefficientOfVariation": {
+        "title": "Výpočet variačního koeficientu: Srážkové úhrny",
+        "inputLabel": "Roční úhrn srážok (mm):",
+        "placeholder": "Úhrn (mm)",
+        "errorMin2": "Nedostatek dat (n > 1)",
+        "errorDivZero": "Nedefinováno (průměr je 0)",
+        "errorDivZeroMath": "Dělení nulou"
+      },
+      "iqr": {
+        "title": "Výpočet mezikvartilového rozpětí: Ceny pozemků",
+        "inputLabel": "Jednotkové ceny (€/m²):",
+        "placeholder": "Cena",
+        "errorMin4": "Nedostatek dat (n ≥ 4)",
+        "sortedData": "Seřazená data:"
+      }
+    }
+  },
+  "footer": {
+    "thesis": "Vytvořeno v rámci bakalářské práce",
+    "supervisor": "Školitel: Mgr. Karel Macků, Ph.D.",
+    "sourceCode": "GitHub | Zdrojový kód",
+    "ui": "UI:",
+    "iconsBy": "Ikony od"
   }
 }

@@ -72,8 +72,8 @@ function StudentTChart() {
             data={dataPDF}
             areaValue={currentArea}
             title={t("components.probabilityCharts.pdfTitle")}
-            xLabel="t"
-            yLabel="f(t; k)"
+            xLabel="x"
+            yLabel="f(x)"
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
@@ -89,8 +89,8 @@ function StudentTChart() {
             data={dataCDF}
             areaValue={currentArea}
             title={t("components.probabilityCharts.cdfTitle")}
-            xLabel="t"
-            yLabel="F(t; k)"
+            xLabel="x"
+            yLabel="F(x)"
             lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}

@@ -56,7 +56,7 @@ function VarianceCalc() {
             s^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
           \\end{gathered}`,
           inlineMath: `s^2 = `,
-          resultText: `${variance.toFixed(3)} ${t("characteristics.variance.unit")}`,
+          resultText: `${variance.toFixed(3)} ${t("randomVariable.characteristics.variability.variance.unit")}`,
           isExpandable,
         };
       }}

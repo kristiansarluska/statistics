@@ -38,15 +38,18 @@ export const methodologyModules = [
     id: "theory",
     titleKey: "home.data.methodologyModules.theory.title",
     shortDescKey: "home.data.methodologyModules.theory.shortDesc",
+    longDescKey: "home.data.methodologyModules.theory.longDesc",
   },
   {
     id: "interactive",
     titleKey: "home.data.methodologyModules.interactive.title",
     shortDescKey: "home.data.methodologyModules.interactive.shortDesc",
+    longDescKey: "home.data.methodologyModules.interactive.longDesc",
   },
   {
     id: "data",
     titleKey: "home.data.methodologyModules.data.title",
     shortDescKey: "home.data.methodologyModules.data.shortDesc",
+    longDescKey: "home.data.methodologyModules.data.longDesc",
   },
 ];

@@ -55,8 +55,8 @@ function PoissonChart() {
           </h6>
           <StyledBarChart
             data={pmfData}
-            xLabel="k"
-            yLabel="P(X=k)"
+            xLabel="x"
+            yLabel="P(X=x)"
             yDomain={[0, "auto"]}
             hoverX={hoverX}
             setHoverX={setHoverX}

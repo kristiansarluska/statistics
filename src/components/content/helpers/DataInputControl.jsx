@@ -15,7 +15,6 @@ function DataInputControl({
   formatItem = (val) => val,
   editable = false,
   onEdit,
-  // Added missing props that were causing ReferenceErrors
   min,
   max,
   step = "any",
@@ -288,7 +287,6 @@ function DataInputControl({
           max={max}
           className="form-control"
           style={{ width: "135px" }}
-          // Fixed: use calculated finalPlaceholder
           placeholder={finalPlaceholder}
           required
           value={inputValue}
@@ -301,7 +299,6 @@ function DataInputControl({
             min="0.1"
             className="form-control"
             style={{ width: "90px" }}
-            // Fixed: use calculated finalWeightPlaceholder
             placeholder={finalWeightPlaceholder}
             required
             title={t("components.dataInputControl.weightTitle")}

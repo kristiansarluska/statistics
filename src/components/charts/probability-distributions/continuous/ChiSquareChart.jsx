@@ -89,7 +89,7 @@ function ChiSquareChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
-            yLabel="f(x; k)"
+            yLabel="f(x)"
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
@@ -106,7 +106,7 @@ function ChiSquareChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
-            yLabel="F(x; k)"
+            yLabel="F(x)"
             lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}

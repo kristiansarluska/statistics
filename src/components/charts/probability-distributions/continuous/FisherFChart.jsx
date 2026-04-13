@@ -121,7 +121,7 @@ function FisherFChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.pdfTitle")}
             xLabel="x"
-            yLabel="f(x; ν₁, ν₂)"
+            yLabel="f(x)"
             lineClass="chart-line-primary"
             hoverX={hoverX}
             setHoverX={setHoverX}
@@ -138,7 +138,7 @@ function FisherFChart() {
             areaValue={currentArea}
             title={t("components.probabilityCharts.cdfTitle")}
             xLabel="x"
-            yLabel="F(x; ν₁, ν₂)"
+            yLabel="F(x)"
             lineClass="chart-line-secondary"
             hoverX={hoverX}
             setHoverX={setHoverX}

@@ -221,7 +221,7 @@ function Methodology() {
                 </div>
                 <div className="modal-body p-4">
                   <p className="lead text-muted mb-4">
-                    {t(activeModal.shortDescKey)}
+                    {t(activeModal.longDescKey)}
                   </p>
                   <div
                     className="border rounded p-4 bg-body-tertiary"

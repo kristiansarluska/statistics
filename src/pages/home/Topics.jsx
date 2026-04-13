@@ -1,7 +1,7 @@
 // src/pages/home/Topics.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { chapters } from "./homeData";
 
 function Topics() {
@@ -10,7 +10,20 @@ function Topics() {
   return (
     <section className="mb-5">
       <h2 className="mb-4 border-bottom pb-2">{t("home.topicsTitle")}</h2>
-      <p className=" text-center">{t("home.topiscDescription")}</p>
+      <p className=" text-center">
+        <Trans
+          i18nKey="home.topicsDescription"
+          components={{
+            1: (
+              <a
+                href="https://stag.upol.cz/StagPortletsJSR168/CleanUrl?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KGI&predmetZkrPred=STAME&predmetRok=2025&predmetSemestr=LS"
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            ),
+          }}
+        />
+      </p>
       <div className="row g-3">
         {chapters.map((chapter, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-4">
