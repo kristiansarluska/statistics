@@ -144,13 +144,13 @@ function TTestDashboard() {
       groupStart: false,
     },
     {
-      label: "t",
+      label: "t-statistics",
       value: stats.t.toFixed(4),
       color: isSignificant ? "text-danger" : "text-success",
       groupStart: true,
     },
     {
-      label: "p",
+      label: "p-value",
       value: stats.pValue.toFixed(4),
       color: isSignificant ? "text-danger" : "text-success",
       groupStart: false,
@@ -159,7 +159,9 @@ function TTestDashboard() {
 
   return (
     <section id="interactive-test" className="mb-5">
-      <h2 className="mb-4">{t("hypothesisTesting.tTestDashboard.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("hypothesisTesting.tTestDashboard.title")}
+      </h2>
 
       <p className="mb-4">
         <Trans

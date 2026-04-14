@@ -7,7 +7,7 @@ const Introduction = () => {
 
   return (
     <section id="introduction" className="mb-5">
-      <p className="lead">{t("randomVariable.introduction.p1")}</p>
+      <p className="fst-italic lead">{t("randomVariable.introduction.p1")}</p>
       <p>
         <Trans
           i18nKey="randomVariable.introduction.p2"

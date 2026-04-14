@@ -28,7 +28,7 @@ function Topics() {
         {chapters.map((chapter, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-4">
             <Link to={chapter.path} className="text-decoration-none">
-              <div className="card h-100 shadow-sm border-0 nav-icon-btn">
+              <div className="card h-100 shadow-sm border-primary nav-icon-btn rounded-4">
                 <div className="card-body d-flex align-items-start">
                   <div
                     className="fs-1 me-3 lh-1 d-flex align-items-center justify-content-center"

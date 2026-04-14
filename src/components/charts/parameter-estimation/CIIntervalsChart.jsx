@@ -40,7 +40,6 @@ function CIIntervalsChart({ samples, n, t }) {
   const MR = 30;
   const MT = 24;
   const MB = 36;
-  const MAX_H = 240;
 
   const svgH = MT + samples.length * ROW_H + MB;
 
@@ -76,9 +75,7 @@ function CIIntervalsChart({ samples, n, t }) {
     <div
       style={{
         background: "var(--bs-body-bg)",
-        overflowX: "hidden",
-        overflowY: svgH > MAX_H ? "auto" : "visible",
-        maxHeight: svgH > MAX_H ? MAX_H : undefined,
+        overflow: "visible",
       }}
     >
       <svg

@@ -9,7 +9,7 @@ function CorrelationCoefficients() {
 
   return (
     <section id="coefficients" className="mb-5">
-      <h2 className="mb-4">{t("correlation.coefficients.title")}</h2>
+      <h2 className="mb-4 fw-bold">{t("correlation.coefficients.title")}</h2>
       <p className="mb-4">{t("correlation.coefficients.p1")}</p>
 
       <div className="row mb-5">

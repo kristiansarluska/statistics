@@ -90,7 +90,7 @@ function BaseMap({
             cursor: "pointer",
             color: "#333",
           }}
-          title={isFullscreen ? "Zatvoriť" : "Celá obrazovka"}
+          title={isFullscreen ? "Close" : "Fullscreen"}
         >
           {isFullscreen ? (
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">

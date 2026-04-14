@@ -8,7 +8,9 @@ function Introduction() {
 
   return (
     <section id="introduction" className="mb-5">
-      <p className="lead">{t("hypothesisTesting.introduction.leadText")}</p>
+      <p className="fst-italic lead">
+        {t("hypothesisTesting.introduction.leadText")}
+      </p>
 
       <div className="card shadow-sm mt-4">
         <div className="card-body">

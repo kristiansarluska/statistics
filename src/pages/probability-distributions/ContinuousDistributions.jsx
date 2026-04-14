@@ -14,7 +14,9 @@ function ContinuousDistributions() {
 
   return (
     <section id="continuous-distributions">
-      <h2 className="mb-4">{t("probabilityDistributions.continuous.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("probabilityDistributions.continuous.title")}
+      </h2>
       <p className="mb-5">
         <Trans
           i18nKey="probabilityDistributions.continuous.description"
@@ -138,9 +140,9 @@ function ContinuousDistributions() {
       </div>
 
       {/* CHÍ-KVADRÁT ROZDELENIE */}
-      <h3 id="chi-square" className="mb-3">
+      <h4 id="chi-square" className="mb-3">
         {t("probabilityDistributions.continuous.chiSquare.title")}
-      </h3>
+      </h4>
       <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.chiSquare.description"
@@ -180,9 +182,9 @@ function ContinuousDistributions() {
       </div>
 
       {/* STUDENTOVO T-ROZDELENIE */}
-      <h3 id="student-t" className="mb-3">
+      <h4 id="student-t" className="mb-3">
         {t("probabilityDistributions.continuous.studentT.title")}
-      </h3>
+      </h4>
       <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.studentT.description"
@@ -214,9 +216,9 @@ function ContinuousDistributions() {
       </div>
 
       {/* FISHEROVO F-ROZDELENIE */}
-      <h3 id="fisher-f" className="mb-3">
+      <h4 id="fisher-f" className="mb-3">
         {t("probabilityDistributions.continuous.fisherF.title")}
-      </h3>
+      </h4>
       <p className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.fisherF.description"

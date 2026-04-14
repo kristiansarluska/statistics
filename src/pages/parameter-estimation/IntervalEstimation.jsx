@@ -11,7 +11,7 @@ function IntervalEstimation() {
 
   return (
     <section id="interval-estimation" className="mb-5">
-      <h2 className="mb-4">
+      <h2 className="mb-4 fw-bold">
         {t("parameterEstimation.intervalEstimation.title")}
       </h2>
 

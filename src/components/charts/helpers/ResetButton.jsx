@@ -4,7 +4,7 @@ import React, { useState } from "react";
 const ResetButton = ({
   onClick,
   disabled,
-  title = "Obnoviť pôvodné dáta",
+  title = "Reset",
   className = "",
 }) => {
   const [rotation, setRotation] = useState(0);

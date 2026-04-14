@@ -150,6 +150,56 @@ function Methodology() {
   return (
     <section className="mb-5">
       <h2 className="text-center mb-4">{t("home.methodology.title")}</h2>
+      {/* --- Learning flow guide --- */}
+      <div className="row mb-5 justify-content-center">
+        <div className="col-lg-10 text-center">
+          <p className="text-muted mb-4">
+            {t("home.methodology.guideDescription")}
+          </p>
+
+          <div className="d-flex flex-column flex-md-row gap-3">
+            {/* Added h-100 for equal height */}
+            <div className="card bg-body-tertiary border-0 shadow-sm flex-fill h-100 w-100">
+              <div className="card-body">
+                <h6 className="card-subtitle mb-2 text-primary fw-bold">
+                  1. {t("home.methodology.step1Title")}
+                </h6>
+                <p className="card-text small mb-0 text-muted">
+                  {t("home.methodology.step1Desc")}
+                </p>
+              </div>
+            </div>
+
+            <div className="card bg-body-tertiary border-0 shadow-sm flex-fill h-100 w-100">
+              <div className="card-body">
+                <h6 className="card-subtitle mb-2 text-primary fw-bold">
+                  2. {t("home.methodology.step2Title")}
+                </h6>
+                <p className="card-text small mb-0 text-muted">
+                  {t("home.methodology.step2Desc")}
+                </p>
+              </div>
+            </div>
+
+            <div className="card bg-body-tertiary border-0 shadow-sm flex-fill h-100 w-100">
+              <div className="card-body">
+                <h6 className="card-subtitle mb-2 text-primary fw-bold">
+                  3. {t("home.methodology.step3Title")}
+                </h6>
+                <p className="card-text small mb-0 text-muted">
+                  {t("home.methodology.step3Desc")}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Added connection text */}
+          <p className="text-muted mt-4 mb-0">
+            {t("home.methodology.guideConnection")}
+          </p>
+        </div>
+      </div>
+
       <div className="row g-4">
         {methodologyModules.map((mod) => (
           <div className="col-md-4" key={mod.id}>

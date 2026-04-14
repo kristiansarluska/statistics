@@ -7,7 +7,7 @@ function Introduction() {
 
   return (
     <section id="introduction" className="mb-5">
-      <p className="lead">
+      <p className="fst-italic lead">
         <Trans
           i18nKey="probabilityDistributions.introduction.p1"
           components={{ bold: <strong /> }}

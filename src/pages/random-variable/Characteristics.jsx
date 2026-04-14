@@ -24,7 +24,9 @@ const Characteristics = () => {
 
   return (
     <section id="characteristics">
-      <h2 className="mb-4">{t("randomVariable.characteristics.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("randomVariable.characteristics.title")}
+      </h2>
       <p className="mb-5">{t("randomVariable.characteristics.description")}</p>
 
       {/* LOCATION */}

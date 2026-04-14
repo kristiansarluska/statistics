@@ -9,7 +9,7 @@ function CorrelationAnalysis() {
 
   return (
     <section id="analysis" className="mb-5">
-      <h2 className="mb-4">{t("correlation.analysis.title")}</h2>
+      <h2 className="mb-4 fw-bold">{t("correlation.analysis.title")}</h2>
       <p className="mb-4">
         <Trans
           i18nKey="correlation.analysis.p1"

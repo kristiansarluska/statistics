@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import "../styles/sidebar.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ThemeContext } from "../context/ThemeContext";
 import SidebarItem from "./sidebar/SidebarItem";
 import { sidebarData } from "./sidebar/sidebarData";
 
@@ -13,8 +12,6 @@ function Sidebar({ closeSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
   const arrow = `${import.meta.env.BASE_URL}assets/images/small-arrow.png`;
-
-  const { darkMode } = useContext(ThemeContext);
 
   const [activePath, setActivePath] = useState(
     location.pathname + location.hash,
@@ -90,6 +87,7 @@ function Sidebar({ closeSidebar }) {
       <div className="sidebar-heading border-bottom">
         <Link
           to="/"
+          className="sidebar-logo d-flex align-items-center text-decoration-none"
           onClick={() => {
             if (location.pathname === "/") {
               const contentWrapper = document.getElementById(
@@ -99,24 +97,17 @@ function Sidebar({ closeSidebar }) {
                 contentWrapper.scrollTo({ top: 0, behavior: "smooth" });
               }
             }
-
-            if (window.innerWidth < 768) {
-              closeSidebar();
-              const navbarCollapse = document.querySelector(".navbar-collapse");
-              if (navbarCollapse && navbarCollapse.classList.contains("show")) {
-                navbarCollapse.classList.remove("show");
-              }
-            }
           }}
         >
           <img
-            src={
-              darkMode
-                ? `${import.meta.env.BASE_URL}assets/images/logo_left_dark.svg`
-                : `${import.meta.env.BASE_URL}assets/images/logo_left_light.svg`
-            }
-            alt="StatTerra"
+            src={`${import.meta.env.BASE_URL}assets/images/logo_only.svg`}
+            alt="StatTerra Logo"
+            className="me-2"
+            style={{ height: "32px", width: "auto" }}
           />
+          <span className="h4 fw-normal mb-0 text-body tracking-tight">
+            StatTerra
+          </span>
         </Link>
       </div>
       <div className="list-group list-group-flush">

@@ -63,7 +63,7 @@
     },
     "hypothesisTesting": {
       "procedure": "Všeobecný postup",
-      "interactiveTest": "Interaktívna ukážka"
+      "interactiveTest": "Interaktívny t-test"
     },
     "correlation": {
       "analysis": "Princípy korelačnej analýzy",
@@ -86,7 +86,7 @@
       "audience3": "pre každého, kto hľadá moderný spôsob výučby štatistiky"
     },
     "topicsTitle": "Preberané témy",
-    "topicDescription": "Témy obsiahnuté v tejto aplikácii vychádzajú zo sylabu predmetu štatistické metódy v geoinformatike (<1>KGI/STAME</1>). V jednotlivých kapitolách sú predstavené základné teoretické koncepty súvisiace s daným učivom a dopĺňajú ich interaktívne dátové vizualizácie s prepojením do prexe prostredníctvom príkladov či reálnych dát.",
+    "topicsDescription": "Témy obsiahnuté v tejto aplikácii vychádzajú zo sylabu predmetu štatistické metódy v geoinformatike (<1>KGI/STAME</1>). V jednotlivých kapitolách sú predstavené základné teoretické koncepty súvisiace s daným učivom a dopĺňajú ich interaktívne dátové vizualizácie s prepojením do prexe prostredníctvom príkladov či reálnych dát.",
     "data": {
       "chapters": {
         "randomVariable": {
@@ -132,6 +132,14 @@
 
     "methodology": {
       "title": "Metodika výučby",
+      "guideDescription": "Pre maximálne porozumenie preberanej problematiky odporúčame pri každej téme dodržiavať nasledujúci postup:",
+      "step1Title": "Teoretický základ",
+      "step1Desc": "Prečítajte si definície a pochopte matematický princíp.",
+      "step2Title": "Kontext problému",
+      "step2Desc": "Zoznámte sa so zadaním praktického geoinformatického príkladu.",
+      "step3Title": "Interakcia a experiment",
+      "step3Desc": "Meňte parametre, sledujte zmeny v grafoch a upevnite si vedomosti.",
+      "guideConnection": "Nižšie sú predstavené tri základné moduly, ktoré sa vyskytujú pri jednotlivých témach obsiahnutých v aplikácii. Kliknutím na kartu si môžete otvoriť ich ukážku.",
       "loadingMap": "Načítavam mapové dáta...",
       "table": {
         "title": "Ukážka reálnych dát (NUTS 3 Regióny)",
@@ -176,7 +184,7 @@
       "pmfPdf": {
         "title": "Pravdepodobnostná funkcia a hustota pravdepodobnosti",
         "desc1": "Pri diskrétnych veličinách sa používa <bold>pravdepodobnostná funkcia (PMF)</bold>, ktorá priraďuje priamu pravdepodobnosť výskytu konkrétnej hodnote (<m1/>).<br/><br/>Pri spojitých veličinách je definovaná <bold>hustota pravdepodobnosti (<m2/>)</bold>. Keďže spojitá veličina má nekonečne veľa hodnôt, pravdepodobnosť jedného konkrétneho bodu je nulová. Namiesto toho určujeme pravdepodobnosť, že hodnota padne do určitého intervalu — táto pravdepodobnosť je reprezentovaná <bold>plochou pod krivkou hustoty</bold> na danom úseku.",
-        "alertTitle": "Teória a Empíria (zákon veľkých čísel)",
+        "alertTitle": "Teória a empíria (zákon veľkých čísel)",
         "alertDesc": "Prepojenie medzi teoretickými matematickými modelmi a reálnymi dátami popisuje <bold>Zákon veľkých čísel</bold>. Ten hovorí, že s rastúcim počtom nezávislých opakovaní náhodného pokusu sa relatívna početnosť výskytu javu (empirické rozdelenie) limitne blíži k jeho teoretickej pravdepodobnosti. V nasledujúcich dvoch simuláciách môžete tento jav pozorovať priamo.",
         "chart1Title": "<color>Pravdepodobnostná funkcia:</color> Počet viditeľných GNSS satelitov",
         "chart1Desc": "V mestskom prostredí je počet viditeľných satelitov náhodná premenná, keďže je ovyplvňovaná okolitou zástavbou a konkrétnym rozmiestnením satelitov na oblohe v danom okanihu. Graf nižšie zobrazuje <bold>teoretické pravdepodobnosti</bold> pre jednotlivé počty aktuálne viditeľnýchsatelitov (od 0 po 12, pravdepodobnosť viditeľnosti každého z nich je nastavená na 45 %). Pomocou kliknutia na tlačidlá nižšie sú do interaktívnej simulácie generované umelé merania. Všimnite si spomínaný zákon v praxi: pri nízkom počte meraní sú empirické stĺpce rozkolísané a nemusia zodpovedať teoretickému predpokladu. Akonáhle však počet meraní narastie do vyšších stoviek až tisícov, empirické relatívne početnosti sa stabilizujú a takmer dokonale splynú s teoretickým modelom.",
@@ -424,7 +432,7 @@
       "semEffect": "Z tohto vzťahu vyplýva, že s rastúcou veľkosťou vzorky sa stredná chyba znižuje. Čím viac pozorovaní máme, tým menej kolíše výberový priemer okolo skutočnej strednej hodnoty a náš odhad je presnejší.",
       "simulation": {
         "exampleTitle": "Určenie nadmorskej výšky bodu GNSS meraním",
-        "exampleDesc": "Predstavme si, že opakovane meriame nadmorskú výšku hory Praděd pomocou GPS prístroja. Skutočná výška (<m1/>) je <bold>1492 m</bold>, pričom prístroj má danú presnosť, ktorá predstavuje smerodajnú odchýlku populácie (<m2/> m). V simulácii nižšie môžete sledovať, ako sa pri rôznej veľkosti výberu (<m3/> meraní) správa bodový odhad strednej hodnoty (<m4/>) a výberovej smerodajnej odchýlky (<m5/>). Pridávaním ďalších výberov zistíte, ako jednotlivé odhady kolíšu okolo skutočnej hodnoty.",
+        "exampleDesc": "Predstavme si, že opakovane meriame nadmorskú výšku hory Praděd pomocou GPS prístroja. Skutočná výška (<m1/>) je <bold>1492 m</bold>, pričom prístroj má danú presnosť, ktorá predstavuje smerodajnú odchýlku populácie (<m2/> m). V simulácii nižšie môžete sledovať, <bold>ako sa pri rôznej veľkosti výberu (<m3/> meraní) správa bodový odhad</bold> strednej hodnoty (<m4/>) a výberovej smerodajnej odchýlky (<m5/>). <bold>Pridávaním ďalších výberov zistíte, ako jednotlivé odhady kolíšu</bold> okolo skutočnej hodnoty.",
         "controls": {
           "target": "Odhadovaný parameter:",
           "targetMean": "Stredná hodnota (μ)",
@@ -452,7 +460,7 @@
       },
       "realDataTitle": "Bodový odhad mediánového veku obyvateľstva v regiónoch EÚ",
       "realDataP1": "V grafe vyššie bol bodový odhad a SEM ilustrovaný na syntetických dátach. V tomto prípade je <bold>základným súborom</bold> všetkých <bold>1 113 NUTS3 regiónov Európskej únie</bold>, pre ktoré Eurostat v roku 2025 eviduje údaj o mediáne veku obyvateľstva.",
-      "realDataP2": "Keďže máme k dispozícii celú populáciu, poznáme jej skutočné parametre: strednú hodnotu <mu/> rokov a smerodajnú odchýlku <sigma/> rokov. Vďaka tomu je možné pozorovať presnosť odhadu v závislosti na veľkosti výberu. Pomocou nástroja nižšie je možné generovať náhodné výbery rôznych veľkostí a sledovať, ako sa výberový priemer x̄ a SEM správajú v závislosti od n."
+      "realDataP2": "Keďže máme k dispozícii celú populáciu, poznáme jej skutočné parametre: strednú hodnotu <mu/> rokov a smerodajnú odchýlku <sigma/> rokov. Vďaka tomu je možné pozorovať presnosť odhadu v závislosti na veľkosti výberu. Pomocou nástroja nižšie je možné <bold>generovať náhodné výbery rôznych veľkostí a sledovať, ako sa výberový priemer a rozptyl správajú v závislosti od n.</bold>"
     },
     "intervalEstimation": {
       "title": "Intervalový odhad",
@@ -470,7 +478,7 @@
       "typeRightDesc": "Parameter je menší ako horná hranica. Testuje sa, či hodnota nie je príliš veľká.",
       "p3": "Ak je smerodajná odchýlka populácie <m1/> <bold>neznáma</bold> (bežný prípad v praxi), nahrádzame <m2/>-skóre kvantilmi <bold>Studentovho t-rozdelenia</bold> a populačné <m3/> výberovým <m4/>. Toto rozdelenie má ťažšie chvosty (väčšiu neistotu) a s rastúcim <m5/> konverguje k normálnemu rozdeleniu.",
       "simTitle": "Intervalový odhad mediánového veku obyvateľstva v regiónoch EÚ",
-      "simDesc": "Simulácia odhadu používa rovnaké dáta ako bodový odhad — mediány veku 1 113 regiónov NUTS3 EÚ (Eurostat 2025), s populačnou strednou hodnotou <bold>μ = 46,22 rokov</bold> a smerodajnou odchýlkou <bold>σ = 3,76 rokov</bold>. Pridávajte výbery a sledujte, koľko intervalov skutočne pokryje μ. Po zmene nastavení (hladina, typ, σ) sa <italic>všetky existujúce intervaly automaticky prepočítajú</italic> — môžete tak priamo porovnať, ako nastavenia ovplyvňujú pokryvnosť.",
+      "simDesc": "Simulácia odhadu používa rovnaké dáta ako bodový odhad — mediány veku 1 113 regiónov NUTS3 EÚ (Eurostat 2025), s populačnou strednou hodnotou <bold>μ = 46,22 rokov</bold> a smerodajnou odchýlkou <bold>σ = 3,76 rokov</bold>. Pridávajte výbery a <bold>sledujte, koľko intervalov skutočne pokryje μ</bold>. Po zmene nastavení (hladina, typ, σ) sa <italic>všetky existujúce intervaly automaticky prepočítajú</italic> — môžete tak priamo porovnať, ako nastavenia ovplyvňujú pokryvnosť.",
       "simulation": {
         "infoZvsT": "Zaujímavosť: Všimnite si, že ak je zapnuté <bold>Z-skóre (známe σ)</bold>, osi oboch grafov a zvislé čiary sú pod sebou zarovnané dokonale. Ak však prepnete na <bold>t-skóre (neznáme σ)</bold>, na okrajoch uvidíte odchýlky. Nie je to chyba, ale to priamy dôsledok toho, že pri t-skóre delíme výberovou odchýlkou <m1/>, ktorá je pre každý výber iná. Vzťah medzi <m2/> a <m3/> je teda pre každý výber mierne odlišný.",
         "controls": {
@@ -487,7 +495,8 @@
         "actions": {
           "addCount": "+ {{count}}",
           "samplesCount": "výberov",
-          "clearAll": "Vymazať všetky výbery"
+          "clearAll": "Vymazať všetky výbery",
+          "limitReached": "Maximum je {{max}} výberov"
         },
         "coverage": {
           "contains": "Obsahuje μ:",
@@ -563,7 +572,7 @@
 
     "generalProcedure": {
       "title": "Všeobecný postup testovania",
-      "description": "Testovanie hypotéz vždy prebieha v niekoľkých štandardizovaných krokoch. Na demonštráciu budú využité dáta obcí Moravskosliezskeho kraja (zdroj: <1>ArcČR 4.3</1>). Budete zisťované, či je podiel obyvateľstva nad 65 rokov v týchto obciach porovnateľný s celorepublikovým priemerom.",
+      "description": "Testovanie hypotéz vždy prebieha v niekoľkých štandardizovaných krokoch. Obdobný postup môže byť použitý na zisťovanie normality dát, porovnávanie štatistických vzoriek, skúmanie vzťahov medzi skupinami atď. Na demonštráciu budú v tomto prípade využité dáta obcí Moravskosliezskeho kraja (zdroj: <1>ArcČR 4.3</1>). Budete zisťované, či je podiel obyvateľstva nad 65 rokov v týchto obciach porovnateľný s celorepublikovým priemerom.",
       "dataPreview": {
         "subtitle": "Vstupné dáta",
         "description": "Náhľad načítaných dát z Moravskosliezskeho kraja. Podiel obyvateľov nad 65 rokov bol vypočítaný z atribútov <c1>Poc_obyv_SLDB_2021</c1> a <c2>poc_obyv_nad_65</c2>.",
@@ -619,7 +628,7 @@
     },
 
     "tTestDashboard": {
-      "title": "Interaktívna ukážka t-testu",
+      "title": "Interaktívny jednovýberový t-test",
       "description": "V predchádzajúcich častiach bol predstavený všeobecný postup testovania hypotéz a boli formované konkrétne hypotézy pre podiel obyvateľov nad 65 rokov v obciach Moravskoslezského kraja. Teraz si celý proces môžete vyskúšať interaktívne — vyberte okres, nastavte referenčnú hodnotu <m/> a sledujte, ako sa mení výsledok testu aj vizualizácia rozdelenia.",
       "interpretiveNote": "Všimnite si, že výsledok testu nezávisí len od skutočného <bold>výberového priemeru</bold>, ale aj od <bold>variability (s)</bold> a <bold>veľkosti vzorky (n)</bold>. Práve preto môže nastať situácia, keď v jednom okrese hypotéza nie je zamietnutá napriek väčšiemu rozdielu od μ₀, kým v inom je zamietnutá pri menšom rozdiele — jednoducho preto, že tam je nižšia variabilita alebo väčší počet obcí.",
       "controls": {

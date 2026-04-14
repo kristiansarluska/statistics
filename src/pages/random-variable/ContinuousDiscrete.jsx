@@ -7,7 +7,9 @@ const ContinuousDiscrete = () => {
 
   return (
     <section id="continuous-discrete" className="mb-5">
-      <h2 className="mb-3">{t("randomVariable.continuousDiscrete.title")}</h2>
+      <h2 className="mb-3 fw-bold">
+        {t("randomVariable.continuousDiscrete.title")}
+      </h2>
       <p>{t("randomVariable.continuousDiscrete.description")}</p>
 
       <div className="row mt-4">

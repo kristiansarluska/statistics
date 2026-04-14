@@ -11,7 +11,9 @@ function PointEstimation() {
 
   return (
     <section id="point-estimation" className="mb-5">
-      <h2 className="mb-4">{t("parameterEstimation.pointEstimation.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("parameterEstimation.pointEstimation.title")}
+      </h2>
 
       <p>
         <Trans

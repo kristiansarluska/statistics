@@ -221,19 +221,13 @@ const QuantileFunctionSlider = () => {
     target && !target.msg
       ? [
           {
-            label: t(
-              "components.randomVariableCharts.quantileSlider.badgeP",
-              "Kvantil (p)",
-            ),
+            label: t("components.randomVariableCharts.quantileSlider.badgeP"),
             value: `${(target.p * 100).toFixed(1)} %`,
             color: "text-primary",
             groupStart: true,
           },
           {
-            label: t(
-              "components.randomVariableCharts.quantileSlider.badgeX",
-              "HCI+ Skóre (x)",
-            ),
+            label: t("components.randomVariableCharts.quantileSlider.badgeX"),
             value: `${target.x.toFixed(2)}`,
             color: "text-success",
             groupStart: true,
@@ -336,7 +330,7 @@ const QuantileFunctionSlider = () => {
         <StyledLineChart
           data={chartData}
           xLabel="p (%)"
-          yLabel="HCI+ Skóre"
+          yLabel="HCI+"
           lineType="stepBefore"
           type="cdf"
           hoverX={hoverX}

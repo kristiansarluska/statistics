@@ -10,7 +10,7 @@ function Introduction() {
   return (
     <section className="mb-5">
       {/* 1. Zvýraznený prvý odstavec */}
-      <p className="lead">{t("parameterEstimation.intro.p1")}</p>
+      <p className="fst-italic lead">{t("parameterEstimation.intro.p1")}</p>
 
       {/* 2. Druhý bežný odstavec */}
       <p>

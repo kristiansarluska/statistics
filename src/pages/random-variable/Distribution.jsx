@@ -14,7 +14,7 @@ const Distribution = () => {
 
   return (
     <section id="distribution">
-      <h2 className="mb-4">{t("randomVariable.distribution.title")}</h2>
+      <h2 className="mb-4 fw-bold">{t("randomVariable.distribution.title")}</h2>
 
       <p className="mb-5">{t("randomVariable.distribution.description")}</p>
 

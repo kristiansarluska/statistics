@@ -63,7 +63,7 @@
     },
     "hypothesisTesting": {
       "procedure": "Obecný postup",
-      "interactiveTest": "Interaktivní ukázka"
+      "interactiveTest": "Interaktivní t-test"
     },
     "correlation": {
       "analysis": "Principy korelační analýzy",
@@ -132,6 +132,14 @@
 
     "methodology": {
       "title": "Metodika výuky",
+      "guideDescription": "Pro maximální porozumění probírané problematice doporučujeme u každého tématu dodržovat následující postup:",
+      "step1Title": "Teoretický základ",
+      "step1Desc": "Přečtěte si definice a pochopte matematický princip.",
+      "step2Title": "Kontext problému",
+      "step2Desc": "Seznamte se se zadáním praktického geoinformatického příkladu.",
+      "step3Title": "Interakce a experiment",
+      "step3Desc": "Měňte parametry, sledujte změny v grafech a upevněte si své znalosti.",
+      "guideConnection": "Níže jsou představeny tři základní moduly, které se vyskytují u jednotlivých témat obsažených v aplikaci. Kliknutím na kartu si můžete otevřít jejich ukázku.",
       "loadingMap": "Načítám mapová data...",
       "table": {
         "title": "Ukázka reálných dat (NUTS 3 Regiony)",
@@ -424,7 +432,7 @@
       "semEffect": "Z tohoto vztahu vyplývá, že s rostoucí velikostí vzorku se střední chyba snižuje. Čím více pozorování máme, tím méně kolísá výběrový průměr kolem skutečné střední hodnoty a náš odhad je přesnější.",
       "simulation": {
         "exampleTitle": "Určení nadmořské výšky bodu GNSS měřením",
-        "exampleDesc": "Představme si, že opakovaně měříme nadmořskou výšku hory Praděd pomocí GPS přístroje. Skutečná výška (<m1/>) je <bold>1492 m</bold>, přičemž přístroj má danou přesnost, která představuje směrodatnou odchylku populace (<m2/> m). V simulaci níže můžete sledovat, jak se při různé velikosti výběru (<m3/> měření) chová bodový odhad střední hodnoty (<m4/>) a výběrové směrodatné odchylky (<m5/>). Přidáváním dalších výběrů zjistíte, jak jednotlivé odhady kolísají kolem skutečné hodnoty.",
+        "exampleDesc": "Představme si, že opakovaně měříme nadmořskou výšku hory Praděd pomocí GPS přístroje. Skutečná výška (<m1/>) je <bold>1492 m</bold>, přičemž přístroj má danou přesnost, která představuje směrodatnou odchylku populace (<m2/> m). V simulaci níže můžete sledovat, <bold>jak se při různé velikosti výběru (<m3/> měření) chová bodový odhad</bold> střední hodnoty (<m4/>) a výběrové směrodatné odchylky (<m5/>). <bold>Přidáváním dalších výběrů zjistíte, jak jednotlivé odhady kolísají</bold> kolem skutečné hodnoty.",
         "controls": {
           "target": "Odhadovaný parametr:",
           "targetMean": "Střední hodnota (μ)",
@@ -452,7 +460,7 @@
       },
       "realDataTitle": "Bodový odhad mediánového věku obyvatelstva v regionech EU",
       "realDataP1": "V grafu výše byl bodový odhad a SEM ilustrován na syntetických datech. V tomto případě je <bold>základním souborem</bold> všech <bold>1 113 NUTS3 regionů Evropské unie</bold>, pro které Eurostat v roce 2025 eviduje údaj o mediánu věku obyvatelstva.",
-      "realDataP2": "Jelikož máme k dispozici celou populaci, známe její skutečné parametry: střední hodnotu <mu/> let a směrodatnou odchylku <sigma/> let. Díky tomu je možné pozorovat přesnost odhadu v závislosti na velikosti výběru. Pomocí nástroje níže je možné generovat náhodné výběry různých velikostí a sledovat, jak se výběrový průměr x̄ a SEM chovají v závislosti na n."
+      "realDataP2": "Jelikož máme k dispozici celou populaci, známe její skutečné parametry: střední hodnotu <mu/> let a směrodatnou odchylku <sigma/> let. Díky tomu je možné pozorovat přesnost odhadu v závislosti na velikosti výběru. Pomocí nástroje níže je možné <bold>generovat náhodné výběry různých velikostí a sledovat, jak se výběrový průměr a rozptyl chovají v závislosti na n.</bold>"
     },
     "intervalEstimation": {
       "title": "Intervalový odhad",
@@ -470,7 +478,7 @@
       "typeRightDesc": "Parametr je menší než horní hranice. Testuje se, zda hodnota není příliš velká.",
       "p3": "Pokud je směrodatná odchylka populace <m1/> <bold>neznámá</bold> (běžný případ v praxi), nahrazujeme <m2/>-skóre kvantily <bold>Studentova t-rozdělení</bold> a populační <m3/> výběrovým <m4/>. Toto rozdělení má těžší chvosty (větší nejistotu) a s rostoucím <m5/> konverguje k normálnímu rozdělení.",
       "simTitle": "Intervalový odhad mediánového věku obyvatelstva v regionech EU",
-      "simDesc": "Simulace odhadu používá stejná data jako bodový odhad — mediány věku 1 113 regionů NUTS3 EU (Eurostat 2025), s populační střední hodnotou <bold>μ = 46,22 let</bold> a směrodatnou odchylkou <bold>σ = 3,76 let</bold>. Přidávejte výběry a sledujte, kolik intervalů skutečně pokryje μ. Po změně nastavení (hladina, typ, σ) se <italic>všechny existující intervaly automaticky přepočítají</italic> — můžete tak přímo porovnat, jak nastavení ovlivňují pokryvnost.",
+      "simDesc": "Simulace odhadu používá stejná data jako bodový odhad — mediány věku 1 113 regionů NUTS3 EU (Eurostat 2025), s populační střední hodnotou <bold>μ = 46,22 let</bold> a směrodatnou odchylkou <bold>σ = 3,76 let</bold>. Přidávejte výběry a <bold>sledujte, kolik intervalů skutečně pokryje μ</bold>. Po změně nastavení (hladina, typ, σ) se <italic>všechny existující intervaly automaticky přepočítají</italic> — můžete tak přímo porovnat, jak nastavení ovlivňují pokryvnost.",
       "simulation": {
         "infoZvsT": "Zajímavost: Všimněte si, že pokud je zapnuto <bold>Z-skóre (známé σ)</bold>, osy obou grafů a svislé čáry jsou pod sebou zarovnány dokonale. Pokud však přepnete na <bold>t-skóre (neznámé σ)</bold>, na okrajích uvidíte odchylky. Není to chyba, ale přímý důsledek toho, že u t-skóre dělíme výběrovou odchylkou <m1/>, která je pro každý výběr jiná. Vztah mezi <m2/> a <m3/> je tedy pro každý výběr mírně odlišný.",
         "controls": {
@@ -487,7 +495,8 @@
         "actions": {
           "addCount": "+ {{count}}",
           "samplesCount": "výběrů",
-          "clearAll": "Vymazat všechny výběry"
+          "clearAll": "Vymazat všechny výběry",
+          "limitReached": "Maximum je {{max}} výběrů"
         },
         "coverage": {
           "contains": "Obsahuje μ:",
@@ -563,7 +572,7 @@
 
     "generalProcedure": {
       "title": "Obecný postup testování",
-      "description": "Testování hypotéz vždy probíhá v několika standardizovaných krocích. K demonstraci budou využita data obcí Moravskoslezského kraje (zdroj: <1>ArcČR 4.3</1>). Bude zjišťováno, zda je podíl obyvatelstva nad 65 let v těchto obcích srovnatelný s celorepublikovým průměrem.",
+      "description": "Testování hypotéz vždy probíhá v několika standardizovaných krocích. Obdobný postup lze použít na zjišťování normality dat, porovnávání statistických vzorků, zkoumání vztahů mezi skupinami atd. K demonstraci budou v tomto případě využita data obcí Moravskoslezského kraje (zdroj: <1>ArcČR 4.3</1>). Bude zjišťováno, zda je podíl obyvatelstva nad 65 let v těchto obcích srovnatelný s celorepublikovým průměrem.",
       "dataPreview": {
         "subtitle": "Vstupní data",
         "description": "Náhled načtených dat z Moravskoslezského kraje. Podíl obyvatel nad 65 let byl vypočítán z atributů <c1>poc_obyv_SLDB_2021</c1> a <c2>poc_obyv_nad_65</c2>.",
@@ -619,7 +628,7 @@
     },
 
     "tTestDashboard": {
-      "title": "Interaktivní ukázka t-testu",
+      "title": "Interaktivní jednovýběrový t-test",
       "description": "V předchozích částech byl představen obecný postup testování hypotéz a byly formovány konkrétní hypotézy pro podíl obyvatel nad 65 let v obcích Moravskoslezského kraje. Nyní si celý proces můžete vyzkoušet interaktivně — vyberte okres, nastavte referenční hodnotu <m/> a sledujte, jak se mění výsledek testu i vizualizace rozdělení.",
       "interpretiveNote": "Všimněte si, že výsledek testu nezávisí jen na skutečném <bold>výběrovém průměru</bold>, ale i na <bold>variabilitě (s)</bold> a <bold>velikosti vzorku (n)</bold>. Právě proto může nastat situace, kdy v jednom okrese hypotéza není zamítnuta navzdory většímu rozdílu od μ₀, zatímco v jiném je zamítnuta při menším rozdílu — jednoduše proto, že tam je nižší variabilita nebo větší počet obcí.",
       "controls": {

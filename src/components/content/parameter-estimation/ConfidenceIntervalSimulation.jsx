@@ -8,7 +8,7 @@ import CIIntervalsChart from "../../charts/parameter-estimation/CIIntervalsChart
 import CIFormulaPanel from "./CIFormulaPanel";
 import { buildCI, POP_MEAN, POP_STD } from "../../../utils/ciMath";
 
-const MAX_SAMPLES = 100;
+const MAX_SAMPLES = 30;
 
 function ConfidenceIntervalSimulation() {
   const { t } = useTranslation();
@@ -55,6 +55,11 @@ function ConfidenceIntervalSimulation() {
 
   const draw = (count) => {
     if (!geoJson) return;
+
+    const remaining = MAX_SAMPLES - rawSamples.length;
+    const actualCount = Math.min(count, remaining);
+    if (actualCount <= 0) return;
+
     const newRaw = [];
     for (let i = 0; i < count; i++) {
       const vals = [...geoJson.features]
@@ -67,9 +72,7 @@ function ConfidenceIntervalSimulation() {
       );
       newRaw.push({ mean, sd, n: vals.length });
     }
-    setRawSamples((prev) =>
-      [...newRaw.reverse(), ...prev].slice(0, MAX_SAMPLES),
-    );
+    setRawSamples((prev) => [...newRaw.reverse(), ...prev]);
   };
 
   const total = computedSamples.length;
@@ -245,24 +248,41 @@ function ConfidenceIntervalSimulation() {
           />
         </div>
         <div className="btn-group rounded-pill overflow-hidden">
-          {[1, 5, 10].map((cnt, i, arr) => (
-            <button
-              key={cnt}
-              type="button"
-              className="btn btn-primary btn-sm px-3"
-              style={
-                i < arr.length - 1
-                  ? { borderRight: "1px solid rgba(255,255,255,0.3)" }
-                  : {}
-              }
-              onClick={() => draw(cnt)}
-            >
-              {t(
-                "parameterEstimation.intervalEstimation.simulation.actions.addCount",
-                { count: cnt },
-              )}
-            </button>
-          ))}
+          {[1, 5, 10].map((cnt, i, arr) => {
+            const isDisabled = total + cnt > MAX_SAMPLES;
+
+            return (
+              <button
+                key={cnt}
+                type="button"
+                className="btn btn-primary btn-sm px-3"
+                style={{
+                  borderRight:
+                    i < arr.length - 1
+                      ? "1px solid rgba(255,255,255,0.3)"
+                      : "none",
+                  opacity: isDisabled ? 0.65 : 1,
+                  cursor: isDisabled ? "not-allowed" : "pointer",
+                }}
+                onClick={() => {
+                  if (!isDisabled) draw(cnt);
+                }}
+                title={
+                  isDisabled
+                    ? t(
+                        "parameterEstimation.intervalEstimation.simulation.actions.limitReached",
+                        { max: MAX_SAMPLES },
+                      )
+                    : undefined
+                }
+              >
+                {t(
+                  "parameterEstimation.intervalEstimation.simulation.actions.addCount",
+                  { count: cnt },
+                )}
+              </button>
+            );
+          })}
         </div>
         <span
           className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill"

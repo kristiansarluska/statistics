@@ -440,17 +440,11 @@ function FiveNumberSummaryBoxplot() {
     () => [
       {
         value: "Continent",
-        label: t(
-          "components.randomVariableCharts.boxplot.groups.continent",
-          "Kontinent",
-        ),
+        label: t("components.randomVariableCharts.boxplot.groups.continent"),
       },
       {
         value: "Income.Group",
-        label: t(
-          "components.randomVariableCharts.boxplot.groups.incomeGroup",
-          "Príjmová skupina",
-        ),
+        label: t("components.randomVariableCharts.boxplot.groups.incomeGroup"),
       },
     ],
     [t],
@@ -558,24 +552,15 @@ function FiveNumberSummaryBoxplot() {
     () => [
       {
         key: "Country.Name",
-        label: t(
-          "components.randomVariableCharts.boxplot.columns.country",
-          "Krajina",
-        ),
+        label: t("components.randomVariableCharts.boxplot.columns.country"),
       },
       {
         key: "Continent",
-        label: t(
-          "components.randomVariableCharts.boxplot.groups.continent",
-          "Kontinent",
-        ),
+        label: t("components.randomVariableCharts.boxplot.groups.continent"),
       },
       {
         key: "Income.Group",
-        label: t(
-          "components.randomVariableCharts.boxplot.groups.incomeGroup",
-          "Príjmová skupina",
-        ),
+        label: t("components.randomVariableCharts.boxplot.groups.incomeGroup"),
       },
       { key: "Y1960", label: "1960" },
       { key: "Y1980", label: "1980" },
@@ -597,7 +582,6 @@ function FiveNumberSummaryBoxplot() {
 
   return (
     <div className="p-3 p-md-4">
-      {/* Header + controls */}
       {/* Header + controls */}
       <div className="d-flex justify-content-center mb-4">
         <div className="d-flex flex-row gap-4 flex-wrap justify-content-center">
@@ -638,7 +622,7 @@ function FiveNumberSummaryBoxplot() {
                   <button
                     key={y}
                     type="button"
-                    className={`btn btn-sm px-2 ${isActive ? "btn-primary" : "btn-outline-primary text-primary"} ${
+                    className={`btn btn-sm px-2 ${isActive ? "btn-primary" : "btn-outline-primary text-contrast"} ${
                       i === 0
                         ? "rounded-start-pill"
                         : i === arr.length - 1

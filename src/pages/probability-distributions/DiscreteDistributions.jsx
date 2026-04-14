@@ -12,7 +12,9 @@ function DiscreteDistributions() {
 
   return (
     <section id="discrete-distributions">
-      <h2 className="mb-4">{t("probabilityDistributions.discrete.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("probabilityDistributions.discrete.title")}
+      </h2>
       <p className="mb-5">
         {t("probabilityDistributions.discrete.description")}
       </p>

@@ -8,7 +8,7 @@ function Introduction() {
 
   return (
     <section id="introduction" className="mb-5">
-      <p className="lead">
+      <p className="fst-italic lead">
         <Trans
           i18nKey="correlation.introduction.p1"
           components={{ bold: <strong /> }}

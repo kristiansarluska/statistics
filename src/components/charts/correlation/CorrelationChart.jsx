@@ -3,7 +3,7 @@ import React, { useState, useMemo } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import StyledScatterChart from "../helpers/StyledScatterChart";
-import InfoIcon from "../../content/helpers/InfoIcon";
+import StatsBadge from "../../content/helpers/StatsBadge";
 import CalcPanel from "../../content/helpers/CalcPanel";
 import {
   generateCorrelatedData,
@@ -37,15 +37,7 @@ const CorrelationChart = () => {
   const alpha = 0.05;
   const isSignificant = pValue < alpha;
 
-  // InfoIcon rendered as JSX value — StatsBadge renders `value` as ReactNode when provided
-  const actualRValue = (
-    <span className="d-inline-flex align-items-center gap-1">
-      <strong className={actualR >= 0 ? "text-success" : "text-danger"}>
-        {actualR.toFixed(3)}
-      </strong>
-      <InfoIcon>{t("correlation.simulator.rDiffInfo")}</InfoIcon>
-    </span>
-  );
+  const actualRValue = actualR.toFixed(3);
 
   const badgeItems = [
     {
@@ -56,13 +48,11 @@ const CorrelationChart = () => {
     },
     {
       label: t("correlation.simulator.badgeActualR"),
-      // Pass raw string — we render InfoIcon via custom wrapper below
-      value: actualR.toFixed(3),
-      color: actualR >= 0 ? "text-success" : "text-danger",
+      value: actualRValue,
       groupStart: false,
     },
     {
-      label: "T",
+      label: "t",
       value: tStat.toFixed(3),
       color: "text-primary",
       groupStart: true,
@@ -70,7 +60,7 @@ const CorrelationChart = () => {
     {
       label: "p",
       value: pValue < 0.001 ? "< 0.001" : pValue.toFixed(4),
-      color: isSignificant ? "text-danger" : "text-success",
+      color: isSignificant ? "text-success" : "text-danger",
       groupStart: false,
     },
     {
@@ -167,70 +157,9 @@ const CorrelationChart = () => {
         </div>
       </div>
 
-      {/* Stats badge — custom footer renders InfoIcon next to r vypočítané label */}
+      {/* Stats badge — now using the shared component */}
       <div className="mb-4 text-center">
-        <div
-          className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2 d-inline-block"
-          style={{ fontSize: "0.88rem", maxWidth: "100%" }}
-        >
-          <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
-            {/* r cieľ */}
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">
-                {t("correlation.simulator.badgeTargetR")}:
-              </span>
-              <strong className="text-body">{targetR.toFixed(2)}</strong>
-            </div>
-
-            {/* r vypočítané + InfoIcon */}
-            <div className="d-flex align-items-center gap-1 px-2 py-1">
-              <span className="text-muted">
-                {t("correlation.simulator.badgeActualR")}:
-              </span>
-              <strong className={actualR >= 0 ? "text-success" : "text-danger"}>
-                {actualR.toFixed(3)}
-              </strong>
-              <InfoIcon>
-                <Trans
-                  i18nKey="correlation.simulator.rDiffInfo"
-                  components={{ bold: <strong className="text-primary" /> }}
-                />
-              </InfoIcon>
-            </div>
-
-            <div
-              className="d-none d-sm-block mx-3 border-start align-self-stretch"
-              style={{ minHeight: "1.4rem" }}
-            />
-
-            {/* T */}
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">T:</span>
-              <strong className="text-primary">{tStat.toFixed(3)}</strong>
-            </div>
-
-            {/* p */}
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">p:</span>
-              <strong
-                className={isSignificant ? "text-danger" : "text-success"}
-              >
-                {pValue < 0.001 ? "< 0.001" : pValue.toFixed(4)}
-              </strong>
-            </div>
-
-            <div
-              className="d-none d-sm-block mx-3 border-start align-self-stretch"
-              style={{ minHeight: "1.4rem" }}
-            />
-
-            {/* n */}
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">n:</span>
-              <strong className="text-body">{n}</strong>
-            </div>
-          </div>
-        </div>
+        <StatsBadge items={badgeItems} />
       </div>
 
       {/* Chart */}
@@ -246,6 +175,19 @@ const CorrelationChart = () => {
           fillColor="var(--bs-primary)"
           height={300}
         />
+      </div>
+
+      <div
+        className="alert alert-info border-0 shadow-sm mt-3 mb-2 small d-flex align-items-start gap-3"
+        style={{ maxWidth: "600px", width: "100%" }}
+      >
+        <i className="bi bi-info-circle-fill text-primary fs-5 mt-1"></i>
+        <div>
+          <Trans
+            i18nKey="correlation.simulator.rDiffInfo"
+            components={{ bold: <strong /> }}
+          />
+        </div>
       </div>
 
       {/* Calculation toggle — shown BEFORE result block */}

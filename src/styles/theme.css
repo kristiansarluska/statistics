@@ -192,6 +192,8 @@ body {
   background-position: center center;
 }
 
-[data-bs-theme="light"] .hero-grid-bg h1 {
+[data-bs-theme="light"] .hero-grid-bg h1,
+[data-bs-theme="light"] .sidebar-logo .sidebar-brand-text,
+[data-bs-theme="light"] .sidebar-logo span.text-body {
   color: #495057 !important;
 }

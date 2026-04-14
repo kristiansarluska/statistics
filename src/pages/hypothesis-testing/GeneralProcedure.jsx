@@ -94,7 +94,9 @@ function GeneralProcedure() {
 
   return (
     <section id="procedure" className="mb-5">
-      <h2 className="mb-4">{t("hypothesisTesting.generalProcedure.title")}</h2>
+      <h2 className="mb-4 fw-bold">
+        {t("hypothesisTesting.generalProcedure.title")}
+      </h2>
       <p>
         <Trans
           i18nKey="hypothesisTesting.generalProcedure.description"
