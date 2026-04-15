@@ -36,12 +36,12 @@ function MeanDeviationCalc() {
         }
 
         return {
-          formulaMath: `\\text{MD} = \\frac{1}{n} \\sum_{i=1}^{n} |x_i - \\bar{x}|`,
+          formulaMath: `\\bar{d}_{\\bar{x}} = \\frac{1}{n} \\sum_{i=1}^{n} |x_i - \\bar{x}|`,
           blockMath: `\\begin{gathered} 
-            \\bar{x} = ${meanStr} \\text{ m} \\\\ 
-            \\text{MD} = \\frac{${devString}}{${n}} = ${mad.toFixed(4)} 
-          \\end{gathered}`,
-          inlineMath: `\\text{MD} = `,
+    \\bar{x} = ${meanStr} \\text{ m} \\\\ 
+    \\bar{d}_{\\bar{x}} = \\frac{${devString}}{${n}} = ${mad.toFixed(4)} 
+  \\end{gathered}`,
+          inlineMath: `\\bar{d}_{\\bar{x}} = `,
           resultText: `${mad.toFixed(4)} m`,
           isExpandable,
         };

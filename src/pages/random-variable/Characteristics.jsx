@@ -14,7 +14,7 @@ import MeanDifferenceCalc from "../../components/content/characteristics/MeanDif
 import VarianceCalc from "../../components/content/characteristics/VarianceCalc";
 import StandardDeviationCalc from "../../components/content/characteristics/StandardDeviationCalc";
 import CoefficientOfVariationCalc from "../../components/content/characteristics/CoefficientOfVariationCalc";
-import InterquartileRangeCalc from "../../components/content/characteristics/InterquartileRangeCalc";
+import QuartileDeviationCalc from "../../components/content/characteristics/QuartileDeviationCalc";
 import SkewnessChart from "../../components/charts/random-variable/characteristics/SkewnessChart";
 import KurtosisChart from "../../components/charts/random-variable/characteristics/KurtosisChart";
 import FiveNumberSummaryBoxplot from "../../components/charts/random-variable/characteristics/FiveNumberSummaryBoxplot";
@@ -233,7 +233,7 @@ const Characteristics = () => {
         <p className="mb-4">
           <Trans
             i18nKey="randomVariable.characteristics.variability.meanDeviation.description"
-            components={{ m: <InlineMath math="\bar{d}" /> }}
+            components={{ m: <InlineMath math="\bar{d}_{\bar{x}}" /> }}
           />
         </p>
 
@@ -287,7 +287,7 @@ const Characteristics = () => {
           <Trans
             i18nKey="randomVariable.characteristics.variability.variance.description"
             components={{
-              m1: <InlineMath math="s^2" />,
+              m1: <InlineMath math="s_x^2" />,
               m2: <InlineMath math="\sigma^2" />,
               bold: <strong />,
             }}
@@ -318,7 +318,7 @@ const Characteristics = () => {
           <Trans
             i18nKey="randomVariable.characteristics.variability.standardDeviation.description"
             components={{
-              m1: <InlineMath math="s" />,
+              m1: <InlineMath math="s_x" />,
               m2: <InlineMath math="\sigma" />,
               bold: <strong />,
             }}
@@ -349,7 +349,7 @@ const Characteristics = () => {
           <Trans
             i18nKey="randomVariable.characteristics.variability.coefficientOfVariation.description"
             components={{
-              m: <InlineMath math="v_k" />,
+              m: <InlineMath math="v_x" />,
               bold: <strong />,
             }}
           />
@@ -369,15 +369,17 @@ const Characteristics = () => {
           <CoefficientOfVariationCalc />
         </div>
 
-        {/* IQR */}
+        {/* Quartile Deviation */}
         <h4 className="mt-4">
-          {t("randomVariable.characteristics.variability.iqr.title")}
+          {t(
+            "randomVariable.characteristics.variability.quartileDeviation.title",
+          )}
         </h4>
         <p className="mb-4">
           <Trans
-            i18nKey="randomVariable.characteristics.variability.iqr.description"
+            i18nKey="randomVariable.characteristics.variability.quartileDeviation.description"
             components={{
-              m1: <InlineMath math="IQR" />,
+              m1: <InlineMath math="Q_x" />,
               m2: <InlineMath math="Q_3" />,
               m3: <InlineMath math="Q_1" />,
               bold: <strong />,
@@ -387,18 +389,20 @@ const Characteristics = () => {
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
-            {t("randomVariable.characteristics.variability.iqr.exampleTitle")}
+            {t(
+              "randomVariable.characteristics.variability.quartileDeviation.exampleTitle",
+            )}
           </h5>
           <p className="text-muted mb-4 small">
             <Trans
-              i18nKey="randomVariable.characteristics.variability.iqr.exampleDesc"
+              i18nKey="randomVariable.characteristics.variability.quartileDeviation.exampleDesc"
               components={{
-                m1: <InlineMath math="IQR" />,
-                m2: <InlineMath math="IQR" />,
+                m1: <InlineMath math="Q_x" />,
+                m2: <InlineMath math="Q_x" />,
               }}
             />
           </p>
-          <InterquartileRangeCalc />
+          <QuartileDeviationCalc />
         </div>
       </div>
 
@@ -484,7 +488,7 @@ const Characteristics = () => {
           {t("randomVariable.characteristics.fiveNumber.title")}
         </h3>
 
-        <p className="mb-4">
+        <div className="mb-4">
           <Trans
             i18nKey="randomVariable.characteristics.fiveNumber.description"
             components={{
@@ -495,7 +499,7 @@ const Characteristics = () => {
               li: <li />,
             }}
           />
-        </p>
+        </div>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">

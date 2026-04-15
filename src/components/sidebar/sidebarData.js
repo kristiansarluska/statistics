@@ -152,10 +152,4 @@ export const sidebarData = [
       },
     ],
   },
-  /*
-  {
-    labelKey: "topics.spatialAutocorrelation",
-    path: "/spatial-autocorrelation",
-  },
-  { labelKey: "topics.regression", path: "/regression" },*/
 ];

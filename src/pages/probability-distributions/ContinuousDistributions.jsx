@@ -98,7 +98,7 @@ function ContinuousDistributions() {
       <h3 id="normal" className="mb-3">
         {t("probabilityDistributions.continuous.normal.title")}
       </h3>
-      <p className="mb-4">
+      <div className="mb-4">
         <Trans
           i18nKey="probabilityDistributions.continuous.normal.description"
           components={{
@@ -110,7 +110,7 @@ function ContinuousDistributions() {
             m2: <InlineMath math="\sigma" />,
           }}
         />
-      </p>
+      </div>
 
       <div className="overflow-x-auto mb-4">
         <BlockMath

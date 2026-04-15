@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "title": "StatTerra",
+    "description": "Interaktívna webová aplikácia pre výučbu štatistických metód v geoinformatike. Obsahuje teóriu, grafy a dáta z praxe.",
+    "keywords": "štatistika, geoinformatika, GIS, analýza dát, interaktívne grafy, bakalárska práca, StatTerra"
+  },
   "navbar": {
     "home": "Úvod",
     "about": "O bakalárskej práci",
@@ -7,25 +12,14 @@
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
-    "randomVariable.description": "Náhodná veličina",
 
     "probabilityDistributions": "Rozdelenia pravdepodobnosti",
-    "probabilityDistributions.description": "Rozdělení pravděpodobnosti",
 
     "parameterEstimation": "Odhady parametrov",
-    "parameterEstimation.description": "Odhady parametrů",
 
     "hypothesisTesting": "Testovanie hypotéz",
-    "hypothesisTesting.description": "Testování hypotéz",
 
     "correlation": "Korelácia",
-    "correlation.description": "Korelace",
-
-    "spatialAutocorrelation": "Priestorová autokorelácia",
-    "spatialAutocorrelation.description": "Prostorová autokorelace",
-
-    "regression": "Regresia",
-    "regression.description": "Regrese",
 
     "statisticalMethods": "Štatistické metódy v geoinformatike"
   },
@@ -292,11 +286,11 @@
           "exampleTitle": "Priestorová nestálosť zrážok",
           "exampleDesc": "V hydrológii a klimatológii sa variačný koeficient často využíva na zhodnotenie stability zrážok. Nasledujúce dáta predstavujú ročné úhrny zrážok (v mm) na piatich rôznych zrážkomerných staniciach v sledovanej oblasti. Ak je výsledný koeficient vysoký (napr. nad 30 %), hovorí nám to, že zrážky sú v území priestorovo veľmi nevyrovnané a nepredvídateľné. Vyskúšajte zmeniť hodnoty tak, aby boli zrážky vyrovnanejšie (napríklad všetkým staniciam nastavte hodnoty okolo 500 mm) a sledujte pokles percentuálnej variability."
         },
-        "iqr": {
-          "title": "Medzikvartilové rozpätie",
-          "description": "Medzikvartilové rozpätie (<m1/>) sa zameriava výhradne na <bold>stredných 50 % dát</bold>. Vypočíta sa ako rozdiel medzi tretím (<m2/>) a prvým kvartilom (<m3/>). Keďže do výpočtu vôbec nevstupuje dolných ani horných 25 % hodnôt, táto charakteristika je extrémne odolná voči hrubým chybám a odľahlým hodnotám (tzv. outlierom).",
+        "quartileDeviation": {
+          "title": "Medzikvartilová odchýlka",
+          "description": "Medzikvartilová odchýlka (<m1/>) je definovaná ako polovica medzikvartilového rozpätia. Zameriava sa výhradne na <bold>stredných 50 % dát</bold>. Vypočíta sa ako polovičný rozdiel medzi tretím (<m2/>) a prvým kvartilom (<m3/>). Keďže do výpočtu nevstupujú extrémy (dolných ani horných 25 % hodnôt), táto charakteristika je vysoko odolná voči odľahlým hodnotám.",
           "exampleTitle": "Trhové ceny pozemkov a vplyv extrémov",
-          "exampleDesc": "Katastrálne a cenové mapy často obsahujú anomálie. Predstavme si analýzu cien pozemkov (v €/m²) v jednej záhradkárskej osade. Medzi bežnými predajmi sa nachádza jeden extrém (napríklad špekulatívny nákup s hodnotou 145 €/m²). Kým obyčajné variačné rozpätie by pre tieto dáta vystrelilo nad 130 €, <m1/> extrém odignoruje a vráti reálnu variabilitu stredu trhu. Skúste extrém (145) zmazať a všimnite si, že <m2/> sa takmer nezmení."
+          "exampleDesc": "Katastrálne a cenové mapy často obsahujú anomálie. Predstavme si analýzu cien pozemkov (v €/m²) v jednej záhradkárskej osade. Medzi bežnými predajmi sa nachádza jeden extrém (napr. špekulatívny nákup 145 €/m²). Kým obyčajné variačné rozpätie by pre tieto dáta vystrelilo do výšin, <m1/> extrém odignoruje a stabilne popíše variabilitu strednej časti trhu. Skúste extrém (145) zmazať a všimnite si, že hodnota <m2/> sa takmer nezmení."
         }
       },
       "otherMeasures": {
@@ -1045,8 +1039,8 @@
         "errorDivZero": "Nedefinované (priemer je 0)",
         "errorDivZeroMath": "Delenie nulou"
       },
-      "iqr": {
-        "title": "Výpočet medzikvartilového rozpätia: Ceny pozemkov",
+      "quartileDeviation": {
+        "title": "Výpočet medzikvartilovej odchýlky: Ceny pozemkov",
         "inputLabel": "Jednotkové ceny (€/m²):",
         "placeholder": "Cena",
         "errorMin4": "Nedostatok dát (n ≥ 4)",

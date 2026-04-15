@@ -11,8 +11,8 @@ function CoefficientOfVariationCalc() {
     const n = data.length;
     if (n < 2) {
       return {
-        blockMath: "v_k = ?",
-        inlineMath: "v_k = ",
+        blockMath: "v_x = ?",
+        inlineMath: "v_x = ",
         resultText: t(
           "components.characteristics.coefficientOfVariation.errorMin2",
         ),
@@ -28,7 +28,7 @@ function CoefficientOfVariationCalc() {
         blockMath: t(
           "components.characteristics.coefficientOfVariation.errorDivZeroMath",
         ),
-        inlineMath: "v_k = ",
+        inlineMath: "v_x = ",
         resultText: t(
           "components.characteristics.coefficientOfVariation.errorDivZero",
         ),
@@ -56,12 +56,12 @@ function CoefficientOfVariationCalc() {
     }
 
     return {
-      formulaMath: `v_k = \\frac{s}{|\\bar{x}|} \\cdot 100\\%`,
+      formulaMath: `v_x = \\frac{s_x}{|\\bar{x}|} \\cdot 100\\%`,
       blockMath: `\\begin{aligned}
         ${formulaExpanded}
-        v_k &= \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
+        v_x &= \\frac{${stdDevStr}}{|${meanStr}|} \\cdot 100\\%
       \\end{aligned}`,
-      inlineMath: "v_k \\approx ",
+      inlineMath: "v_x \\approx ",
       resultText: `${cv.toFixed(2)} %`,
       isExpandable: true,
     };

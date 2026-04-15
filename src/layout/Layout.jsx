@@ -4,14 +4,20 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import ScrollToTopButton from "../components/ScrollToTopButton";
+import { useGlobalHashScroll } from "../hooks/useGlobalHashScroll";
+import { useDynamicMeta } from "../hooks/useDynamicMeta";
 import Footer from "../components/Footer";
 
 function Layout({ children }) {
+  useDynamicMeta();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const closeSidebar = () => setSidebarOpen(false);
+
+  useGlobalHashScroll();
 
   useEffect(() => {
     if (sidebarOpen) {

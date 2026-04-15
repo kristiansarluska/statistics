@@ -50,12 +50,12 @@ function VarianceCalc() {
         }
 
         return {
-          formulaMath: `s^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2`,
+          formulaMath: `s_x^2 = \\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2`,
           blockMath: `\\begin{gathered} 
             \\bar{x} = ${meanStr} \\\\ 
-            s^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
+            s_x^2 = \\frac{${devString}}{${n} - 1} = ${variance.toFixed(3)} 
           \\end{gathered}`,
-          inlineMath: `s^2 = `,
+          inlineMath: `s_x^2 = `,
           resultText: `${variance.toFixed(3)} ${t("randomVariable.characteristics.variability.variance.unit")}`,
           isExpandable,
         };

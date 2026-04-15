@@ -97,6 +97,13 @@ function Sidebar({ closeSidebar }) {
                 contentWrapper.scrollTo({ top: 0, behavior: "smooth" });
               }
             }
+
+            if (window.innerWidth < 768) {
+              closeSidebar();
+            }
+
+            setActivePath("/");
+            setExpandedPath("/");
           }}
         >
           <img

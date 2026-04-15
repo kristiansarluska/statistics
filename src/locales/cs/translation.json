@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "title": "StatTerra",
+    "description": "Interaktivní webová aplikace pro výučbu statistických metód v geoinformatice. Obsahuje teorii, grafy a data z praxe.",
+    "keywords": "statistika, geoinformatika, GIS, analýza dat, interaktivní grafy, bakalářská práce, StatTerra"
+  },
   "navbar": {
     "home": "Úvod",
     "about": "O bakalářské práci",
@@ -7,25 +12,14 @@
   },
   "topics": {
     "randomVariable": "Náhodná veličina",
-    "randomVariable.description": "Náhodná veličina",
 
     "probabilityDistributions": "Rozdělení pravděpodobnosti",
-    "probabilityDistributions.description": "Rozdělení pravděpodobnosti",
 
     "parameterEstimation": "Odhady parametrů",
-    "parameterEstimation.description": "Odhady parametrů",
 
     "hypothesisTesting": "Testování hypotéz",
-    "hypothesisTesting.description": "Testování hypotéz",
 
     "correlation": "Korelace",
-    "correlation.description": "Korelace",
-
-    "spatialAutocorrelation": "Prostorová autokorelace",
-    "spatialAutocorrelation.description": "Prostorová autokorelace",
-
-    "regression": "Regrese",
-    "regression.description": "Regrese",
 
     "statisticalMethods": "Statistické metody v geoinformatice"
   },
@@ -292,11 +286,11 @@
           "exampleTitle": "Prostorová nestálost srážek",
           "exampleDesc": "V hydrologii a klimatologii se variační koeficient často využívá ke zhodnocení stability srážek. Následující data představují roční úhrny srážek (v mm) na pěti různých srážkoměrných stanicích ve sledované oblasti. Pokud je výsledný koeficient vysoký (např. nad 30 %), říká nám to, že srážky jsou v území prostorově velmi nevyrovnané a nepředvídatelné. Vyzkoušejte změnit hodnoty tak, aby byly srážky vyrovnanější (například všem stanicím nastavte hodnoty kolem 500 mm) a sledujte pokles procentuální variability."
         },
-        "iqr": {
-          "title": "Mezikvartilové rozpětí",
-          "description": "Mezikvartilové rozpětí (<m1/>) se zaměřuje výhradně na <bold>středních 50 % dat</bold>. Vypočítá se jako rozdíl mezi třetím (<m2/>) a prvním kvartilem (<m3/>). Jelikož do výpočtu vůbec nevstupuje dolních ani horních 25 % hodnot, tato charakteristika je extrémně odolná vůči hrubým chybám a odlehlým hodnotám (tzv. outlierům).",
+        "quartileDeviation": {
+          "title": "Mezikvartilová odchylka",
+          "description": "Mezikvartilová odchylka (<m1/>) je definována jako polovina mezikvartilového rozpětí. Zaměřuje se výhradně na <bold>středních 50 % dat</bold>. Vypočítá se jako poloviční rozdíl mezi třetím (<m2/>) a prvním kvartilem (<m3/>). Jelikož do výpočtu nevstupují extrémy (dolních ani horních 25 % hodnot), je tato charakteristika vysoce odolná vůči odlehlým hodnotám.",
           "exampleTitle": "Tržní ceny pozemků a vliv extrémů",
-          "exampleDesc": "Katastrální a cenové mapy často obsahují anomálie. Představme si analýzu cen pozemků (v €/m²) v jedné zahrádkářské osadě. Mezi běžnými prodeji se nachází jeden extrém (například spekulativní nákup s hodnotou 145 €/m²). Zatímco obyčejné variační rozpětí by pro tato data vystřelilo nad 130 €, <m1/> extrém odignoruje a vrátí reálnou variabilitu středu trhu. Zkuste extrém (145) smazat a všimněte si, že <m2/> se téměř nezmění."
+          "exampleDesc": "Katastrální a cenové mapy často obsahují anomálie. Představme si analýzu cen pozemků (v €/m²) v jedné zahrádkářské osadě. Mezi běžnými prodeji se nachází jeden extrém (např. spekulativní nákup 145 €/m²). Zatímco obyčejné variační rozpětí by pro tato data vystřelilo do výšin, <m1/> extrém ignoruje a stabilně popíše variabilitu střední části trhu. Zkuste extrém (145) smazat a všimněte si, že hodnota <m2/> se téměř nezmění."
         }
       },
       "otherMeasures": {
@@ -1045,8 +1039,8 @@
         "errorDivZero": "Nedefinováno (průměr je 0)",
         "errorDivZeroMath": "Dělení nulou"
       },
-      "iqr": {
-        "title": "Výpočet mezikvartilového rozpětí: Ceny pozemků",
+      "quartileDeviation": {
+        "title": "Výpočet mezikvartilové odchylky: Ceny pozemků",
         "inputLabel": "Jednotkové ceny (€/m²):",
         "placeholder": "Cena",
         "errorMin4": "Nedostatek dat (n ≥ 4)",

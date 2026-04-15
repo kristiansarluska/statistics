@@ -36,12 +36,12 @@ function StandardDeviationCalc() {
     }
 
     return {
-      formulaMath: `s = \\sqrt{\\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2}`,
+      formulaMath: `s_x = \\sqrt{\\frac{1}{n-1} \\sum_{i=1}^{n} (x_i - \\bar{x})^2}`,
       blockMath: `\\begin{aligned}
         ${formulaExpanded}
-        s &= \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
+        s_x &= \\sqrt{\\frac{${sumSquaredStr}}{${n - 1}}} = \\sqrt{${variance.toFixed(4)}}
       \\end{aligned}`,
-      inlineMath: "s \\approx ",
+      inlineMath: "s_x \\approx ",
       resultText: `${stdDev.toFixed(4)} °C`,
       isExpandable: n > 3,
     };
