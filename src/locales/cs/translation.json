@@ -515,6 +515,7 @@
           "tooltipContains": "Obsahuje μ",
           "tooltipNotContains": "Neobsahuje μ"
         },
+        "explanation": "Tento grafický panel propojuje <bold>dva koncepty</bold>: Horní graf nezobrazuje rozdělení původních dat populace, ale <bold>teoretické rozdělení všech možných výběrových průměrů</bold> (transformovaných na Z/t-skóre). Spodní graf vynáší <bold>konkrétní realizované výběry</bold>. Ve středu úsečky se nachází <bold>výběrový průměr a její délka reprezentuje velikost SEM</bold>. Pokud tento střed padne do bílého pásma v horním grafu (mimo kritickou oblast), jeho interval spolehlivosti pokryje skutečnou populační hodnotu μ.",
         "formula": {
           "show": "Zobrazit vzorec a výpočet ▼",
           "hide": "Skrýt vzorec ▲",

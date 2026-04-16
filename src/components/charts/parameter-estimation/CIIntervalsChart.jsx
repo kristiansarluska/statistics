@@ -258,6 +258,7 @@ function CIIntervalsChart({ samples, n, t }) {
                 "parameterEstimation.intervalEstimation.simulation.charts.tooltipSelection",
                 { num: samples.length - i },
               ),
+              `n = ${s.n}`,
               `x̄ = ${s.mean.toFixed(3)}`,
               ...(s.lower !== -Infinity
                 ? [
