@@ -498,14 +498,14 @@
           "theoretical": "Teoretická pokryvnost:"
         },
         "charts": {
-          "distTitle": "{{dist}} — kritické oblasti a {{score}}-skóre výběrů",
+          "distTitle": "Rozdělení výběrových průměrů ({{dist}}) a kritické oblasti",
           "legendCrit": "■ kritická oblast (α)",
           "legendLast": "│ {{score}}-skóre posl. výběru",
-          "xLabelDist": "{{score}}-skóre  {{dist}}",
+          "xLabelDist": "{{score}}-skóre (normovaný výběrový průměr)",
           "ciTitle": "Intervaly spolehlivosti ({{cl}} %) — μ = {{mu}} r.",
           "legendContains": "— obsahuje μ",
           "legendNotContains": "— neobsahuje μ",
-          "legendMean": "● x̄",
+          "legendMean": "● x̄ (výběrový průměr)",
           "emptyState": "Zatím žádné výběry. Klikněte na „+ výběr\".",
           "xAxisLabel": "medián věku (r.)",
           "tooltipF": "F({{score}})",

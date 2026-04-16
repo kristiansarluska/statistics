@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { POP_MEAN, POP_STD } from "../../../utils/ciMath";
+import React, { useState, useEffect, useRef } from "react";
+import { POP_MEAN } from "../../../utils/ciMath"; // POP_STD už nie je potrebné
 
 function CIIntervalsChart({ samples, n, t }) {
   if (!samples.length) {
@@ -21,19 +21,10 @@ function CIIntervalsChart({ samples, n, t }) {
 
   const [tooltip, setTooltip] = useState(null);
 
-  const popSE = POP_STD / Math.sqrt(n);
-  const CLAMP_MIN = POP_MEAN - 4 * popSE;
-  const CLAMP_MAX = POP_MEAN + 4 * popSE;
-
-  const X_TICKS = useMemo(() => {
-    return [
-      POP_MEAN - 4 * popSE,
-      POP_MEAN - 2 * popSE,
-      POP_MEAN,
-      POP_MEAN + 2 * popSE,
-      POP_MEAN + 4 * popSE,
-    ];
-  }, [popSE]);
+  // Fixné hranice osi X a zoznam značiek (ticks)
+  const CLAMP_MIN = 41;
+  const CLAMP_MAX = 51;
+  const X_TICKS = [42, 44, 46, 48, 50];
 
   const ROW_H = 20;
   const ML = 65;
@@ -58,11 +49,14 @@ function CIIntervalsChart({ samples, n, t }) {
 
   const plotW = svgW - ML - MR;
   const plotH = samples.length * ROW_H;
+
+  // toX funkcia zostáva, orezáva čiary, ktoré by vystrelili mimo 41 - 51
   const toX = (v) =>
     ML +
     ((Math.max(CLAMP_MIN, Math.min(CLAMP_MAX, v)) - CLAMP_MIN) /
       (CLAMP_MAX - CLAMP_MIN)) *
       plotW;
+
   const rowCY = (i) => MT + (i + 0.5) * ROW_H;
 
   const handleMouseEnter = (e, s, i) => {
@@ -128,7 +122,7 @@ function CIIntervalsChart({ samples, n, t }) {
               fill="var(--bs-body-color)"
               opacity={0.7}
             >
-              {v.toFixed(2)}
+              {v}
             </text>
           </g>
         ))}

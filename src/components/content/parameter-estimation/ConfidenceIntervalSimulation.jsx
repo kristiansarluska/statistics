@@ -104,6 +104,25 @@ function ConfidenceIntervalSimulation() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      <div
+        className="alert border-0 shadow-sm mt-4 mb-4"
+        style={{
+          fontSize: "0.9rem",
+          backgroundColor: "var(--bs-info-bg-subtle)",
+          color: "var(--bs-info-text-emphasis)",
+        }}
+      >
+        <div className="d-flex">
+          <div>
+            <p className="mb-0">
+              <Trans
+                i18nKey="parameterEstimation.intervalEstimation.simulation.explanation"
+                components={{ bold: <strong /> }}
+              />
+            </p>
+          </div>
+        </div>
+      </div>
       {/* ── Controls ── */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4 w-100"
@@ -375,13 +394,14 @@ function ConfidenceIntervalSimulation() {
               )}
             </span>
           </div>
+
           <CIDistributionChart
             cl={cl}
             type={type}
             knowSigma={knowSigma}
             n={n}
-            lastZScore={lastZScore}
-            allZScores={allZScores}
+            lastMean={lastSample ? lastSample.mean : null}
+            allMeans={computedSamples.map((s) => s.mean)}
             computedSamples={computedSamples}
             t={t}
           />

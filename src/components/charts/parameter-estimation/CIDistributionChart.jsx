@@ -2,131 +2,92 @@ import React, { useState, useMemo } from "react";
 import { ReferenceArea, ReferenceLine } from "recharts";
 import StyledLineChart from "../../charts/helpers/StyledLineChart";
 import AnimatedRefLine from "../../charts/helpers/AnimatedRefLine";
-import {
-  normalPDF,
-  studentTPDF,
-  normalCDF,
-  studentTCDF,
-} from "../../../utils/distributions";
-import { getCrit } from "../../../utils/ciMath";
+import { normalPDF, studentTPDF } from "../../../utils/distributions";
+import { getCrit, POP_MEAN, POP_STD } from "../../../utils/ciMath";
 
 const DIST_STEPS = 300;
+const CLAMP_MIN = 41;
+const CLAMP_MAX = 51;
 
 function CIDistributionChart({
   cl,
   type,
   knowSigma,
   n,
-  lastZScore,
-  allZScores,
+  lastMean,
+  allMeans,
   computedSamples,
   t,
 }) {
   const [hoverX, setHoverX] = useState(null);
   const df = n - 1;
-  const alpha = { 90: 0.1, 95: 0.05, 99: 0.01 }[cl];
-  const crit = getCrit(cl, type, knowSigma, df);
+  const sem = POP_STD / Math.sqrt(n);
+  const critZ = getCrit(cl, type, knowSigma, df);
 
-  const pdfFn = useMemo(
-    () => (knowSigma ? (x) => normalPDF(x) : (x) => studentTPDF(x, df)),
-    [knowSigma, df],
-  );
-  const cdfFn = useMemo(
-    () => (knowSigma ? (x) => normalCDF(x) : (x) => studentTCDF(x, df)),
-    [knowSigma, df],
-  );
+  const critLow = POP_MEAN - critZ * sem;
+  const critHigh = POP_MEAN + critZ * sem;
+
+  const pdfFn = useMemo(() => {
+    return (x) => {
+      const z = (x - POP_MEAN) / sem;
+      const prob = knowSigma ? normalPDF(z) : studentTPDF(z, df);
+      return prob / sem;
+    };
+  }, [knowSigma, df, sem]);
 
   const data = useMemo(() => {
-    const pts = [];
+    const arr = [];
+    const step = (CLAMP_MAX - CLAMP_MIN) / DIST_STEPS;
     for (let i = 0; i <= DIST_STEPS; i++) {
-      const x = -4 + (i / DIST_STEPS) * 8;
-      pts.push({ x: parseFloat(x.toFixed(3)), y: pdfFn(x) });
+      const x = CLAMP_MIN + i * step;
+      arr.push({ x, y: pdfFn(x) });
     }
-    return pts;
+    return arr;
   }, [pdfFn]);
 
-  const alphaLabel =
-    type === "two"
-      ? `α/2 = ${((alpha / 2) * 100).toFixed(1)} %`
-      : `α = ${(alpha * 100).toFixed(0)} %`;
-
-  const extraRows = useMemo(() => {
-    if (hoverX === null) return [];
-    return [
-      {
-        label: t(
-          "parameterEstimation.intervalEstimation.simulation.charts.tooltipF",
-          { score: knowSigma ? "z" : "t" },
-        ),
-        value: `${(cdfFn(hoverX) * 100).toFixed(2)} %`,
-        color: "var(--bs-secondary-color)",
-      },
-    ];
-  }, [hoverX, cdfFn, knowSigma, t]);
-
-  const lastHit = computedSamples[0]?.hit ?? true;
-  const lastScoreColor = lastHit ? "var(--bs-success)" : "var(--bs-danger)";
+  const maxY = useMemo(() => {
+    const peak = knowSigma ? normalPDF(0) : studentTPDF(0, df);
+    return (peak / sem) * 1.15;
+  }, [sem, knowSigma, df]);
 
   return (
     <StyledLineChart
       data={data}
-      xLabel={t(
-        "parameterEstimation.intervalEstimation.simulation.charts.xLabelDist",
-        {
-          score: knowSigma ? "z" : "t",
-          dist: knowSigma ? "N(0,1)" : `t(${df})`,
-        },
-      )}
-      yLabel="f"
-      lineClass="chart-line-primary"
-      hoverX={hoverX}
+      minX={CLAMP_MIN} // Využijeme vnútornú logiku StyledLineChart pre os X
+      maxX={CLAMP_MAX}
+      yAxisDomain={[0, maxY]} // Využijeme vnútornú logiku StyledLineChart pre os Y
+      hoverX={hoverX} // Prebratá ReferenceLine pri hoveri
       setHoverX={setHoverX}
-      minX={-4}
-      maxX={4}
-      yAxisDomain={[0, "auto"]}
-      type="pdf"
-      showReferenceArea={false}
-      extraRows={extraRows}
-      height={220}
-      margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+      xLabel={t(
+        "parameterEstimation.intervalEstimation.simulation.charts.xAxisLabel",
+      )}
     >
+      {/* Pevné prichytenie oblastí k osiam */}
       {type !== "right" && (
         <ReferenceArea
-          x1={-4}
-          x2={-crit}
+          x1={CLAMP_MIN}
+          x2={critLow}
           fill="var(--bs-danger)"
-          fillOpacity={0.2}
-          label={{
-            value: alphaLabel,
-            position: "insideTopLeft",
-            fontSize: 10,
-            fill: "var(--bs-danger)",
-          }}
+          fillOpacity={0.15}
         />
       )}
       {type !== "left" && (
         <ReferenceArea
-          x1={crit}
-          x2={4}
+          x1={critHigh}
+          x2={CLAMP_MAX}
           fill="var(--bs-danger)"
-          fillOpacity={0.2}
-          label={{
-            value: alphaLabel,
-            position: "insideTopRight",
-            fontSize: 10,
-            fill: "var(--bs-danger)",
-          }}
+          fillOpacity={0.15}
         />
       )}
 
       {type !== "right" && (
         <ReferenceLine
-          x={-crit}
+          x={critLow}
           stroke="var(--bs-danger)"
           strokeWidth={1.5}
           strokeDasharray="4 3"
           label={{
-            value: `-${crit.toFixed(2)}`,
+            value: `-${critZ.toFixed(2)}`,
             position: "top",
             fontSize: 10,
             fill: "var(--bs-danger)",
@@ -135,12 +96,12 @@ function CIDistributionChart({
       )}
       {type !== "left" && (
         <ReferenceLine
-          x={crit}
+          x={critHigh}
           stroke="var(--bs-danger)"
           strokeWidth={1.5}
           strokeDasharray="4 3"
           label={{
-            value: `+${crit.toFixed(2)}`,
+            value: `+${critZ.toFixed(2)}`,
             position: "top",
             fontSize: 10,
             fill: "var(--bs-danger)",
@@ -148,14 +109,14 @@ function CIDistributionChart({
         />
       )}
 
-      {allZScores &&
-        allZScores.slice(1).map((z, i) => {
-          if (z < -4 || z > 4) return null;
+      {allMeans &&
+        allMeans.slice(1).map((m, i) => {
+          if (m < CLAMP_MIN || m > CLAMP_MAX) return null;
           const hit = computedSamples[i + 1]?.hit;
           return (
             <ReferenceLine
               key={i}
-              x={z}
+              x={m}
               stroke={hit ? "var(--bs-success)" : "var(--bs-danger)"}
               strokeWidth={1.5}
               opacity={0.35}
@@ -163,14 +124,19 @@ function CIDistributionChart({
           );
         })}
 
-      {lastZScore !== null && lastZScore >= -4 && lastZScore <= 4 && (
+      {lastMean !== null && lastMean >= CLAMP_MIN && lastMean <= CLAMP_MAX && (
         <ReferenceLine
-          x={lastZScore}
+          x={lastMean}
+          stroke={
+            computedSamples[0]?.hit ? "var(--bs-success)" : "var(--bs-danger)"
+          }
           shape={
             <AnimatedRefLine
-              lineColor={lastScoreColor}
-              labelText={`${knowSigma ? "z" : "t"} = ${lastZScore.toFixed(2)}`}
-              labelPosition={lastZScore > 1.5 ? "left" : "right"}
+              color={
+                computedSamples[0]?.hit
+                  ? "var(--bs-success)"
+                  : "var(--bs-danger)"
+              }
             />
           }
         />

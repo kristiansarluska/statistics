@@ -498,14 +498,14 @@
           "theoretical": "Teoretická pokryvnosť:"
         },
         "charts": {
-          "distTitle": "{{dist}} — kritické oblasti a {{score}}-skóre výberov",
+          "distTitle": "Rozdelenie výberových priemerov ({{dist}}) a kritické oblasti",
           "legendCrit": "■ kritická oblasť (α)",
           "legendLast": "│ {{score}}-skóre posl. výberu",
-          "xLabelDist": "{{score}}-skóre  {{dist}}",
+          "xLabelDist": "{{score}}-skóre (normovaný výberový priemer)",
           "ciTitle": "Intervaly spoľahlivosti ({{cl}} %) — μ = {{mu}} r.",
           "legendContains": "— obsahuje μ",
           "legendNotContains": "— neobsahuje μ",
-          "legendMean": "● x̄",
+          "legendMean": "● x̄ (výberový priemer)",
           "emptyState": "Zatiaľ žiadne výbery. Kliknite na „+ výber\".",
           "xAxisLabel": "medián veku (r.)",
           "tooltipF": "F({{score}})",
@@ -515,6 +515,7 @@
           "tooltipContains": "Obsahuje μ",
           "tooltipNotContains": "Neobsahuje μ"
         },
+        "explanation": "Tento grafický panel prepája <bold>dva koncepty</bold>: Horný graf nezobrazuje rozdelenie pôvodných dát populácie, ale <bold>teoretické rozdelenie všetkých možných výberových priemerov</bold> (transformovaných na Z/t-skóre). Spodný graf vynáša <bold>konkrétne realizované výbery</bold>. V strede úsečky sa nachádza <bold>výberový priemer a jej dĺžka reprezentuje veľkosť SEM</bold>. Ak tento stred padne do bieleho pásma v hornom grafe (mimo kritickej oblasti), jeho interval spoľahlivosti pokryje skutočnú populačnú hodnotu μ.",
         "formula": {
           "show": "Zobraziť vzorec a výpočet ▼",
           "hide": "Skryť vzorec ▲",
