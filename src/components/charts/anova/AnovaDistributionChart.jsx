@@ -1,6 +1,6 @@
 // src/components/content/anova/AnovaDistributionChart.jsx
 import React, { useState } from "react";
-import StyledLineChart from "../../charts/helpers/StyledLineChart";
+import StyledLineChart from "../helpers/StyledLineChart";
 
 const AnovaDistributionChart = ({ data }) => {
   // Track X-axis hover position for vertical reference line

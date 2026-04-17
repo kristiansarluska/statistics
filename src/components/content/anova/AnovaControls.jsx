@@ -7,7 +7,7 @@ const AnovaControls = ({ params, onParamChange }) => {
       {params.map((group, index) => (
         <div key={group.name} className="col-md-4">
           <div
-            className="card shadow-sm border-0"
+            className="card border-0"
             style={{ borderTop: `4px solid ${group.color}` }}
           >
             <div className="card-body">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { POP_MEAN } from "../../../utils/ciMath"; // POP_STD už nie je potrebné
+import { POP_MEAN } from "../../../utils/ciMath";
 
 function CIIntervalsChart({ samples, n, t }) {
   if (!samples.length) {

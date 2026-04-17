@@ -4,12 +4,14 @@ import {
   generateSample,
   calculateKDE,
   calculateANOVA,
+  calculateTukeyHSD,
 } from "../../../utils/anovaMath";
 import AnovaControls from "./AnovaControls";
-import AnovaDistributionChart from "./AnovaDistributionChart";
+import AnovaDistributionChart from "../../charts/anova/AnovaDistributionChart";
 import AnovaTable from "./AnovaTable";
+import TukeyChart from "../../charts/anova/TukeyChart";
 
-const SAMPLE_SIZE = 30;
+const SAMPLE_SIZE = 50;
 const X_MIN = 0;
 const X_MAX = 100;
 const KDE_BANDWIDTH = 4;
@@ -28,9 +30,9 @@ const createGroup = (name, mean, std, color) => {
 
 const AnovaSimulation = () => {
   const [groups, setGroups] = useState([
-    createGroup("A", 40, 9, "var-bs-primary"),
+    createGroup("A", 45, 8, "var-bs-primary"),
     createGroup("B", 50, 4, "var-bs-info"),
-    createGroup("C", 60, 6, "var-bs-success"),
+    createGroup("C", 52, 6, "var-bs-success"),
   ]);
 
   const handleParamChange = (index, key, value) => {
@@ -63,15 +65,18 @@ const AnovaSimulation = () => {
     return calculateANOVA(rawDataGroups);
   }, [groups]);
 
+  const tukeyResults = useMemo(() => {
+    if (!anovaStats) return [];
+    // Spustíme post-hoc len ak máme štatistiky
+    return calculateTukeyHSD(anovaStats.groupStats, anovaStats.msW);
+  }, [anovaStats]);
+
   return (
     <div className="anova-simulation">
       <AnovaControls params={groups} onParamChange={handleParamChange} />
       <AnovaDistributionChart data={chartData} />
-
-      {/* NOVÉ: Vykreslenie ANOVA tabuľky */}
       <AnovaTable stats={anovaStats} />
-
-      {/* Ďalší krok: Post-hoc Tukey graf */}
+      <TukeyChart results={tukeyResults} />{" "}
     </div>
   );
 };
