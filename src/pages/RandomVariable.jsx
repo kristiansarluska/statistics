@@ -33,7 +33,7 @@ const RandomVariable = () => {
   return (
     <div className="container-fluid mb-5">
       <h1 id="random-variable" className="mb-4">
-        Náhodná veličina
+        {t("topics.randomVariable")}
       </h1>
 
       <Introduction />

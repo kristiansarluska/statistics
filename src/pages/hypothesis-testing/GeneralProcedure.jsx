@@ -26,7 +26,7 @@ function GeneralProcedure() {
             const props = feature.properties;
             const pocet = props.Poc_obyv_SLDB_2021 || 0;
             const nad65 = props.poc_obyv_nad_65 || 0;
-            const podiel = pocet > 0 ? (nad65 / pocet) * 100 : null;
+            const podil = pocet > 0 ? (nad65 / pocet) * 100 : null;
 
             return {
               kod: props.kod,
@@ -34,7 +34,7 @@ function GeneralProcedure() {
               okres: props.okres,
               Poc_obyv_SLDB_2021: pocet,
               poc_obyv_nad_65: nad65,
-              podiel_nad65: podiel,
+              podil_nad65: podil,
             };
           });
 
@@ -78,7 +78,7 @@ function GeneralProcedure() {
       render: (val) => val.toLocaleString("sk-SK"),
     },
     {
-      key: "podiel_nad65",
+      key: "podil_nad65",
       label: t(
         "hypothesisTesting.generalProcedure.dataPreview.columns.share65",
       ),

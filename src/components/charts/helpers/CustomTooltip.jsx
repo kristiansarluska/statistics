@@ -18,7 +18,6 @@ function CustomTooltip({
   yLabel = "f(x)",
   overrideY = null,
   areaValue = null,
-  // Array of { label, value, color } — injected externally (e.g. empirical histogram density)
   extraRows = [],
 }) {
   if (active && payload && payload.length) {
@@ -42,6 +41,9 @@ function CustomTooltip({
     const formattedX =
       typeof xVal === "number" ? formatNumberSmart(xVal) : xVal;
 
+    // Determine if rendering single or multiple lines
+    const isMultiSeries = validPayload.length > 1;
+
     return (
       <div
         className="custom-tooltip bg-body border rounded shadow-sm p-2"
@@ -50,16 +52,18 @@ function CustomTooltip({
         <p className="mb-0 fw-bold">{`${xLabel}: ${formattedX}`}</p>
 
         {validPayload.map((entry, index) => {
+          // Disable overrideY logic if multi-series is active to let Recharts handle exact Y values
           const val =
-            index === 0 && overrideY !== null
+            !isMultiSeries && index === 0 && overrideY !== null
               ? overrideY
               : entry.value !== undefined
                 ? entry.value
-                : point.y;
+                : (point[entry.dataKey] ?? point.y);
 
           const formattedY =
             typeof val === "number" ? formatNumberSmart(val) : val;
 
+          // Default label fallback logic
           const labelName =
             entry.name && entry.name !== "y" ? entry.name : yLabel;
 
@@ -76,7 +80,6 @@ function CustomTooltip({
           );
         })}
 
-        {/* Extra rows injected from parent (e.g. empirical histogram density snapped to bin) */}
         {extraRows.map(({ label, value, color }, i) => (
           <p
             key={`extra-${i}`}

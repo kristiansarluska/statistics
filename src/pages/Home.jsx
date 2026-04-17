@@ -7,7 +7,7 @@ import Methodology from "./home/Methodology";
 
 function Home() {
   return (
-    <div className="container-fluid px-0">
+    <div className="container-fluid mb-5">
       <Hero />
       <About />
       <Topics />

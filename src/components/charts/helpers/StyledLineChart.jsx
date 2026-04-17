@@ -34,6 +34,7 @@ function StyledLineChart({
   hoverLineType = "segment",
   areaValue = null,
   extraRows = [],
+  series = null, // Added series prop
   children,
 }) {
   const [animated, setAnimated] = useState(true);
@@ -67,7 +68,7 @@ function StyledLineChart({
   const handleMouseLeave = () => setHoverX(null);
 
   const hoverY = useMemo(() => {
-    if (hoverX === null || !data || data.length === 0) return null;
+    if (hoverX === null || !data || data.length === 0 || series) return null;
 
     let minDiff = Infinity;
     for (let i = 0; i < data.length; i++) {
@@ -75,7 +76,6 @@ function StyledLineChart({
       if (diff < minDiff) minDiff = diff;
     }
 
-    // Všetky indexy, ktoré sa zhodujú s hoverX
     const closestIndices = [];
     for (let i = 0; i < data.length; i++) {
       if (Math.abs(Math.abs(data[i].x - hoverX) - minDiff) < 1e-6) {
@@ -85,29 +85,24 @@ function StyledLineChart({
 
     if (closestIndices.length === 0) return null;
 
-    // Najvyššie Y z nájdených bodov
     let bestY = data[closestIndices[0]].y;
     for (let idx of closestIndices) {
       if (data[idx].y > bestY) bestY = data[idx].y;
     }
 
-    // Trik pre Recharts: Pri step-grafoch sa skok deje vizuálne,
-    // hoci vrchný bod nemusí byť v dátach na danom X fyzicky prítomný.
     const firstIdx = closestIndices[0];
     const lastIdx = closestIndices[closestIndices.length - 1];
 
     if (lineType === "stepBefore" && lastIdx < data.length - 1) {
-      // Skok pri stepBefore ide z aktuálneho Y na NASLEDUJÚCE Y
       const nextY = data[lastIdx + 1].y;
       if (nextY > bestY) bestY = nextY;
     } else if (lineType === "stepAfter" && firstIdx > 0) {
-      // Skok pri stepAfter ide z PREDCHÁDZAJÚCEHO Y na aktuálne Y
       const prevY = data[firstIdx - 1].y;
       if (prevY > bestY) bestY = prevY;
     }
 
     return bestY;
-  }, [data, hoverX, lineType]);
+  }, [data, hoverX, lineType, series]);
 
   const minDataX = useMemo(() => {
     if (!data || data.length === 0) return 0;
@@ -121,8 +116,14 @@ function StyledLineChart({
 
   const maxDataY = useMemo(() => {
     if (!data || data.length === 0) return 0.1;
+    if (series) {
+      // Find max Y across all active series keys
+      return Math.max(
+        ...data.map((d) => Math.max(...series.map((s) => d[s.key] || 0))),
+      );
+    }
     return Math.max(...data.map((d) => d.y || 0));
-  }, [data]);
+  }, [data, series]);
 
   const yDomainMin = Array.isArray(yAxisDomain) ? yAxisDomain[0] : 0;
   const yDomainMax = Array.isArray(yAxisDomain) ? yAxisDomain[1] : "auto";
@@ -158,19 +159,19 @@ function StyledLineChart({
   }, [hoverX, chartDomainMin, chartDomainMax]);
 
   const calculatedArea = useMemo(() => {
-    // Vypočítame plochu iba vtedy, ak zobrazujeme referenčnú plochu (Area)
+    // Disabled calculation for multi-series graphs to avoid array mismatches
     if (
       !showReferenceArea ||
       type !== "pdf" ||
       hoverX === null ||
       !data ||
-      data.length < 2
+      data.length < 2 ||
+      series
     ) {
       return null;
     }
 
     let area = 0;
-    // Zoradíme dáta podľa x pre prípad, že nie sú
     const sortedData = [...data].sort((a, b) => a.x - b.x);
 
     for (let i = 1; i < sortedData.length; i++) {
@@ -178,20 +179,16 @@ function StyledLineChart({
       const curr = sortedData[i];
 
       if (curr.x <= hoverX) {
-        // Lichobežníkové pravidlo pre integráciu: (x2 - x1) * (y1 + y2) / 2
         area += (curr.x - prev.x) * ((prev.y + curr.y) / 2);
       } else if (prev.x < hoverX) {
-        // Interpolácia pre posledný čiastočný úsek
         const ratio = (hoverX - prev.x) / (curr.x - prev.x);
         const interpolatedY = prev.y + ratio * (curr.y - prev.y);
         area += (hoverX - prev.x) * ((prev.y + interpolatedY) / 2);
         break;
       }
     }
-
-    // Zaistíme, aby kvôli odchýlkam numerickej integrácie plocha nepretiekla mimo <0, 1>
     return Math.max(0, Math.min(1, area));
-  }, [data, hoverX, showReferenceArea, type]);
+  }, [data, hoverX, showReferenceArea, type, series]);
 
   const finalAreaValue = areaValue !== null ? areaValue : calculatedArea;
 
@@ -268,22 +265,52 @@ function StyledLineChart({
 
           {children}
 
-          {showReferenceArea && type === "pdf" && hoverX !== null && (
-            <Area
-              type={lineType}
-              dataKey="y"
-              data={data}
-              fill={`url(#${gradientId})`}
-              stroke="none"
-              isAnimationActive={false}
-              activeDot={false}
-              style={{ pointerEvents: "none" }}
+          {!series &&
+            showReferenceArea &&
+            type === "pdf" &&
+            hoverX !== null && (
+              <Area
+                type={lineType}
+                dataKey="y"
+                data={data}
+                fill={`url(#${gradientId})`}
+                stroke="none"
+                isAnimationActive={false}
+                activeDot={false}
+                style={{ pointerEvents: "none" }}
+              />
+            )}
+
+          {/* Vertical Reference Line */}
+          {hoverX !== null && (
+            <ReferenceLine
+              x={hoverX}
+              stroke="var(--bs-danger, red)"
+              strokeWidth={1}
+              strokeDasharray="5 5"
+              // For single series we can use segment, for multi-series full vertical line is clearer
+              {...(!series && hoverLineType === "segment" && hoverY !== null
+                ? {
+                    segment: [
+                      { x: hoverX, y: chartDomainYMin },
+                      { x: hoverX, y: hoverY },
+                    ],
+                  }
+                : {})}
+              ifOverflow="visible"
             />
           )}
 
-          {hoverX !== null && hoverY !== null && (
+          {/* Vertikálna ReferenceLine - zobrazí sa vždy pri hoveri */}
+          {hoverX !== null && (
             <ReferenceLine
-              {...(hoverLineType === "segment"
+              stroke="var(--bs-danger, red)"
+              strokeWidth={1}
+              strokeDasharray="5 5"
+              isFront={true}
+              // Ak máme series, chceme plnú čiaru (cez x).
+              // Ak nie a máme segment mód, vykreslíme úsečku po hoverY.
+              {...(!series && hoverLineType === "segment" && hoverY !== null
                 ? {
                     segment: [
                       { x: hoverX, y: chartDomainYMin },
@@ -291,17 +318,16 @@ function StyledLineChart({
                     ],
                   }
                 : { x: hoverX })}
-              stroke="var(--bs-danger, red)"
-              strokeWidth={1}
-              strokeDasharray="5 5"
-              ifOverflow={hoverLineType === "full" ? "extendDomain" : "hidden"}
             />
           )}
 
-          {hoverX !== null &&
+          {/* Horizontálna ReferenceLine - len pre jednu krivku */}
+          {!series &&
+            hoverX !== null &&
             hoverY !== null &&
             !(showReferenceArea && type === "pdf") && (
               <ReferenceLine
+                isFront={true}
                 {...(hoverLineType === "segment"
                   ? {
                       segment: [
@@ -313,24 +339,46 @@ function StyledLineChart({
                 stroke="var(--bs-danger, red)"
                 strokeWidth={1}
                 strokeDasharray="5 5"
-                ifOverflow={
-                  hoverLineType === "full" ? "extendDomain" : "hidden"
-                }
               />
             )}
 
-          <Line
-            type={lineType}
-            dataKey="y"
-            className={lineClass}
-            strokeWidth={2}
-            dot={false}
-            activeDot={false}
-            isAnimationActive={animated}
-            animationDuration={animated ? 700 : 0}
-          />
+          {/* Vykreslenie kriviek */}
+          {series ? (
+            series.map((s) => (
+              <Line
+                key={s.key}
+                type={lineType}
+                dataKey={s.key}
+                name={s.name}
+                stroke={s.color}
+                strokeWidth={2}
+                dot={false}
+                // activeDot zabezpečí zobrazenie bodu na každej krivke pri hoveri
+                activeDot={{
+                  r: 4,
+                  fill: s.color,
+                  stroke: "var(--bs-body-bg, white)",
+                  strokeWidth: 2,
+                }}
+                isAnimationActive={animated}
+                animationDuration={animated ? 700 : 0}
+              />
+            ))
+          ) : (
+            <Line
+              type={lineType}
+              dataKey="y"
+              className={lineClass}
+              strokeWidth={2}
+              dot={false}
+              activeDot={false}
+              isAnimationActive={animated}
+              animationDuration={animated ? 700 : 0}
+            />
+          )}
 
-          {hoverX !== null && hoverY !== null && (
+          {/* Custom reference dot - only for single series */}
+          {!series && hoverX !== null && hoverY !== null && (
             <ReferenceDot
               x={hoverX}
               y={hoverY}

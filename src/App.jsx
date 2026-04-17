@@ -8,8 +8,7 @@ import ProbabilityDistributions from "./pages/ProbabilityDistributions";
 import ParameterEstimation from "./pages/ParameterEstimation";
 import HypothesisTesting from "./pages/HypothesisTesting";
 import Correlation from "./pages/Correlation";
-import SpatialAutocorrelation from "./pages/SpatialAutocorrelation";
-import Regression from "./pages/Regression";
+import Anova from "./pages/Anova";
 
 import "./styles/bootstrap.css";
 import "./styles/sidebar.css";
@@ -33,11 +32,7 @@ function App() {
           />
           <Route path="/hypothesis-testing" element={<HypothesisTesting />} />
           <Route path="/correlation" element={<Correlation />} />
-          <Route
-            path="/spatial-autocorrelation"
-            element={<SpatialAutocorrelation />}
-          />
-          <Route path="/regression" element={<Regression />} />
+          <Route path="/anova" element={<Anova />} />
         </Routes>
       </Layout>
     </Router>

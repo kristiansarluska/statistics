@@ -152,4 +152,22 @@ export const sidebarData = [
       },
     ],
   },
+  {
+    labelKey: "topics.anova",
+    path: "/anova",
+    children: [
+      {
+        labelKey: "sidebar.anova.singleFactor",
+        path: "/anova#single-factor",
+      },
+      {
+        labelKey: "sidebar.anova.postHoc",
+        path: "/anova#post-hoc",
+      },
+      {
+        labelKey: "sidebar.anova.violation",
+        path: "/anova#violation",
+      },
+    ],
+  },
 ];
