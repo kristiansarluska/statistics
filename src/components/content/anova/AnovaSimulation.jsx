@@ -1,8 +1,13 @@
 // src/components/content/anova/AnovaSimulation.jsx
 import React, { useState, useMemo } from "react";
-import { generateSample, calculateKDE } from "../../../utils/anovaMath";
+import {
+  generateSample,
+  calculateKDE,
+  calculateANOVA,
+} from "../../../utils/anovaMath";
 import AnovaControls from "./AnovaControls";
 import AnovaDistributionChart from "./AnovaDistributionChart";
+import AnovaTable from "./AnovaTable";
 
 const SAMPLE_SIZE = 30;
 const X_MIN = 0;
@@ -23,9 +28,9 @@ const createGroup = (name, mean, std, color) => {
 
 const AnovaSimulation = () => {
   const [groups, setGroups] = useState([
-    createGroup("A", 40, 5, "var-bs-primary"),
-    createGroup("B", 50, 5, "var-bs-info"),
-    createGroup("C", 60, 5, "var-bs-success"),
+    createGroup("A", 40, 9, "var-bs-primary"),
+    createGroup("B", 50, 4, "var-bs-info"),
+    createGroup("C", 60, 6, "var-bs-success"),
   ]);
 
   const handleParamChange = (index, key, value) => {
@@ -52,14 +57,21 @@ const AnovaSimulation = () => {
     }));
   }, [groups]);
 
+  const anovaStats = useMemo(() => {
+    // Extract raw samples from group objects
+    const rawDataGroups = groups.map((g) => g.sample);
+    return calculateANOVA(rawDataGroups);
+  }, [groups]);
+
   return (
     <div className="anova-simulation">
       <AnovaControls params={groups} onParamChange={handleParamChange} />
-      <AnovaDistributionChart
-        data={chartData}
-        colors={groups.map((g) => g.color)}
-      />
-      {/* Next: ANOVA Table and Tukey Chart will go here */}
+      <AnovaDistributionChart data={chartData} />
+
+      {/* NOVÉ: Vykreslenie ANOVA tabuľky */}
+      <AnovaTable stats={anovaStats} />
+
+      {/* Ďalší krok: Post-hoc Tukey graf */}
     </div>
   );
 };

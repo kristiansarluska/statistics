@@ -40,7 +40,7 @@ const PostHocTests = () => {
       </div>
 
       {/* Placeholder for Interactive Element */}
-      <div className="bg-light p-5 rounded border text-center shadow-sm mt-5">
+      <div className="p-5 rounded border text-center shadow-sm mt-5">
         <h4 className="text-muted">Interaktívna simulácia ANOVY a Tukey HSD</h4>
         <AnovaSimulation />
       </div>

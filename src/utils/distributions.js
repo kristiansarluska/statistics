@@ -4,7 +4,8 @@
  * Generates human-readable "pretty" ticks for chart axes.
  */
 export const getAxisConfig = (maxValue, userMin, userMax, dataMin = 0) => {
-  const min = userMin !== null ? userMin : dataMin;
+  const min =
+    userMin !== null && typeof userMin === "number" ? userMin : dataMin;
   const max =
     userMax !== null && typeof userMax === "number" ? userMax : maxValue;
 
@@ -16,38 +17,41 @@ export const getAxisConfig = (maxValue, userMin, userMax, dataMin = 0) => {
       formatTick: (v) => v,
     };
 
-  // Calculate a nice step size
-  const targetTicks = 5;
+  // Znížime cieľový počet tikov pre širšie, prehľadnejšie medzery (napr. 0.02 namiesto 0.01)
+  const targetTicks = 4;
   const rawStep = range / targetTicks;
   const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
   const normalizedStep = rawStep / magnitude;
 
   let niceStep;
+  // Upravené medze, aby algoritmus častejšie skočil na krok 2 alebo 5
   if (normalizedStep < 1.5) niceStep = 1;
-  else if (normalizedStep < 3) niceStep = 2;
-  else if (normalizedStep < 7) niceStep = 5;
+  else if (normalizedStep < 3.5) niceStep = 2;
+  else if (normalizedStep < 7.5) niceStep = 5;
   else niceStep = 10;
 
   const step = niceStep * magnitude;
 
-  // Generate ticks starting from the first multiple of step below or at min
   const startTick = Math.floor(min / step) * step;
+  const endTick = Math.ceil(max / step) * step;
+
   const ticks = [];
-  for (let tick = startTick; tick <= max + step * 0.5; tick += step) {
-    if (tick >= min) ticks.push(Number(tick.toFixed(10))); // avoid floating point errors
+  for (let tick = startTick; tick <= endTick + step * 1e-6; tick += step) {
+    if (tick >= min) ticks.push(Number(tick.toFixed(10)));
   }
 
+  const finalDomainMax =
+    userMax !== null && typeof userMax === "number"
+      ? userMax
+      : ticks[ticks.length - 1];
+
   return {
-    domain: [
-      min,
-      userMax !== null ? userMax : Math.max(max, ticks[ticks.length - 1]),
-    ],
+    domain: [min, finalDomainMax],
     ticks: ticks,
     formatTick: (val) => {
       if (val === 0) return "0";
       const absVal = Math.abs(val);
       if (absVal < 0.001 || absVal >= 10000) return val.toExponential(1);
-      // Dynamic precision based on step magnitude
       const precision =
         step < 1 ? Math.max(0, Math.ceil(-Math.log10(step))) : 0;
       return val.toFixed(precision);

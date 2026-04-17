@@ -1,9 +1,12 @@
 // src/components/content/anova/AnovaDistributionChart.jsx
-import React from "react";
+import React, { useState } from "react";
 import StyledLineChart from "../../charts/helpers/StyledLineChart";
 
 const AnovaDistributionChart = ({ data }) => {
-  // Definovanie jednotlivých výberových súborov a farieb podľa tvojho dizajnu
+  // Track X-axis hover position for vertical reference line
+  const [hoverX, setHoverX] = useState(null);
+
+  // Define groups and their matching styling
   const series = [
     { key: "A", name: "Skupina A", color: "var(--bs-primary)" },
     { key: "B", name: "Skupina B", color: "var(--bs-info)" },
@@ -17,6 +20,8 @@ const AnovaDistributionChart = ({ data }) => {
       xLabel="Hodnota"
       yLabel="Hustota"
       series={series}
+      hoverX={hoverX}
+      setHoverX={setHoverX}
     />
   );
 };
