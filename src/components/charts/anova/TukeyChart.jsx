@@ -1,4 +1,4 @@
-// src/components/content/anova/TukeyChart.jsx
+// src/components/charts/anova/TukeyChart.jsx
 import React from "react";
 import {
   BarChart,
@@ -24,35 +24,35 @@ const TukeyChart = ({ results }) => {
   const rawMin = Math.min(0, ...chartData.map((d) => d.ciLower));
   const rawMax = Math.max(0, ...chartData.map((d) => d.ciUpper));
 
-  // Logic for generating ticks relative to 0
-  const step = 5; // Adjust step size based on expected data range
+  // Dynamic step calculation to prevent X-axis clutter on large intervals
+  const valueRange = rawMax - rawMin;
+  let step = 5;
+  if (valueRange > 100) step = 25;
+  else if (valueRange > 50) step = 10;
+  else if (valueRange < 10) step = 1;
+
   const minVal = Math.floor(rawMin / step) * step - step;
   const maxVal = Math.ceil(rawMax / step) * step + step;
 
   const ticks = [];
-  // Generate ticks from 0 down to minVal
   for (let i = 0; i >= minVal; i -= step) ticks.unshift(i);
-  // Generate ticks from step up to maxVal
   for (let i = step; i <= maxVal; i += step) ticks.push(i);
 
-  // Adaptér pre využitie globálneho CustomTooltip
   const TukeyTooltipAdapter = ({ active, payload }) => {
     if (!active || !payload || !payload.length) return null;
 
     const data = payload[0].payload;
 
-    // Vytvoríme "falošný" payload, aby CustomTooltip správne prečítal xLabel a hlavnú hodnotu
     const customPayload = [
       {
         dataKey: "meanDiff",
         name: "Rozdiel priemerov",
         value: data.meanDiff,
         color: data.isSignificant ? "var(--bs-danger)" : "var(--bs-success)",
-        payload: { x: data.pair }, // Vynútenie xLabelu
+        payload: { x: data.pair },
       },
     ];
 
-    // Využitie extraRows pre interval a textové zhodnotenie
     const extraRows = [
       {
         label: "95% interval spoľahlivosti",
@@ -91,19 +91,33 @@ const TukeyChart = ({ results }) => {
             <BarChart
               layout="vertical"
               data={chartData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+              margin={{ top: 20, right: 20, left: 0, bottom: 25 }}
               barSize={12}
             >
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+
+              {/* Removed interval={0} to let Recharts hide overlapping ticks on mobile */}
               <XAxis
                 type="number"
                 domain={[minVal, maxVal]}
                 ticks={ticks}
-                interval={0}
+                label={{
+                  value: "Rozdiel teplôt (°C)",
+                  position: "insideBottom",
+                  offset: -5,
+                }}
               />
-              <YAxis type="category" dataKey="pair" width={60} />
-
-              {/* Nasadenie nášho upraveného Tooltipu */}
+              <YAxis
+                type="category"
+                dataKey="pair"
+                width={30}
+                tick={{
+                  fontSize: 12,
+                  dx: -10,
+                }}
+                angle={-90}
+                textAnchor="middle"
+              />
               <Tooltip
                 content={<TukeyTooltipAdapter />}
                 cursor={{ fill: "rgba(204, 204, 204, 0.1)" }}
@@ -111,7 +125,8 @@ const TukeyChart = ({ results }) => {
 
               <ReferenceLine x={0} stroke="var(--bs-success)" strokeWidth={2} />
 
-              <Bar dataKey="range" radius={[10, 10, 10, 10]}>
+              {/* Reduced radius to prevent visual glitches on narrow bars */}
+              <Bar dataKey="range" radius={[4, 4, 4, 4]}>
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}

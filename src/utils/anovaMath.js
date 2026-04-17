@@ -83,12 +83,11 @@ export const calculateANOVA = (groups) => {
 
 /**
  * Calculates Tukey HSD Post-hoc comparisons
- * Note: qCritical is approximated for k=3, df=147 (n=50 per group), alpha=0.05
+ * Note: qCritical is approximated for k=3, df=90 (n=31 per group), alpha=0.05
  */
 export const calculateTukeyHSD = (groupStats, msW) => {
-  const qCritical = 3.34; // Approximate Studentized Range Statistic
+  const qCritical = 3.38;
   const results = [];
-  const groupNames = ["A", "B", "C"];
 
   for (let i = 0; i < groupStats.length; i++) {
     for (let j = i + 1; j < groupStats.length; j++) {
@@ -99,13 +98,13 @@ export const calculateTukeyHSD = (groupStats, msW) => {
       const absMeanDiff = Math.abs(meanDiff);
       const se = Math.sqrt((msW / 2) * (1 / g1.n + 1 / g2.n));
       const hsd = qCritical * se;
-      const isSignificant = absMeanDiff > hsd;
 
       results.push({
-        pair: `${groupNames[i]} - ${groupNames[j]}`,
+        group1: i,
+        group2: j,
         meanDiff,
         hsd,
-        isSignificant,
+        isSignificant: absMeanDiff > hsd,
         ciLower: meanDiff - hsd,
         ciUpper: meanDiff + hsd,
       });
