@@ -789,6 +789,17 @@
       }
     }
   },
+  "anova": {
+    "postHoc": {
+      "simulation": {
+        "title": "Priemerné denné teploty",
+        "intro": "V nasledujúcej simulácii sú načítané <bold>historické dáta (OpenMeteo) pre júl 2025</bold> v troch moravských mestách. Cieľom analýzy je zistiť, či je prítomná preukázateľná odlišnosť v ich priemerných teplotách za daný mesiac.",
+        "cityOlomoucPrerov": "<bold>Olomouc a Přerov:</bold> Obe mestá ležia blízko seba v nížinatej oblasti Hornomoravského úvalu. Predpokladáme, že teplotné rozdiely medzi nimi budú minimálne.",
+        "cityJesenik": "<bold>Jeseník:</bold> Mesto situované v horskom prostredí vo väčšej nadmorskej výške. Očakávame, že ANOVA zamietne nulovú hypotézu a post-hoc test potvrdí významný rozdiel voči obom nížinným mestám.",
+        "tryIt": "<bold>Vyskúšajte si:</bold> V grafe Tukey HSD si všimnite, že interval rozdielu medzi Olomoucom a Přerovom pretína nulovú líniu (rozdiel nie je štatisticky významný). Následne skúste pomocou posuvníkov zvýšiť teplotu v Jeseníku. Sledujte, kedy sa jeho teploty priblížia tým na nížine a ako na to zareaguje výsledok post-hoc testu a p-hodnota."
+      }
+    }
+  },
 
   "components": {
     "dataPreviewTable": {
@@ -1055,6 +1066,46 @@
         "placeholder": "Cena",
         "errorMin4": "Nedostatok dát (n ≥ 4)",
         "sortedData": "Zoradené dáta:"
+      }
+    },
+    "anovaSimulation": {
+      "city": "Mesto {{name}}",
+      "fetchError": "Nepodarilo sa načítať CSV súbor.",
+      "loading": "Načítavam klimatické dáta...",
+      "errorPrefix": "Chyba:",
+      "dayOfMonth": "Deň v mesiaci",
+      "simulatedDataWarning": "Zobrazujú sa simulované dáta",
+      "resetTitle": "Obnoviť reálne namerané dáta",
+      "simulationTitle": "Simulácia (upravené: {{cities}})",
+      "historicalTitle": "Historické merania (OpenMeteo)",
+      "downloadBtn": "Stiahnuť pôvodné CSV",
+      "distributionChart": {
+        "xAxis": "Teplota (°C)",
+        "yAxis": "Hustota pravdepodobnosti"
+      },
+      "tukeyChart": {
+        "title": "Tukey HSD (post-hoc analýza)",
+        "description": "Intervaly spoľahlivosti pre rozdiely stredných hodnôt. Ak interval nepretína nulu (zelená línia), rozdiel je štatisticky významný.",
+        "xAxisLabel": "Rozdiel teplôt (°C)",
+        "meanDiff": "Rozdiel priemerov",
+        "confInterval": "95% interval spoľahlivosti",
+        "resultLabel": "Výsledok",
+        "reject": "Zamietame H₀",
+        "fail": "Nezamietame H₀",
+        "comparison": "Porovnanie"
+      },
+      "anovaTable": {
+        "colSource": "Zdroj variability",
+        "colSS": "Suma štvorcov",
+        "colDF": "Stupne voľnosti",
+        "colMS": "Priemerná suma štvorcov",
+        "colF": "Testovacie kritérium",
+        "rowBetween": "Medzi skupinami",
+        "rowWithin": "Vnútri skupín",
+        "rowTotal": "Celkovo",
+        "decision": "Rozhodnutie",
+        "rejectH0": "Zamietame H₀ (významný rozdiel)",
+        "acceptH0": "Nezamietame H₀ (rozdiely nie sú významné)"
       }
     }
   },

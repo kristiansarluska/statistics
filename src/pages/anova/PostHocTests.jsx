@@ -1,8 +1,10 @@
 // src/pages/anova/PostHocTests.jsx
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 import AnovaSimulation from "../../components/content/anova/AnovaSimulation";
 
 const PostHocTests = () => {
+  const { t } = useTranslation();
   return (
     <section id="post-hoc" className="mb-5">
       <h2 className="mb-4">Testy mnohonásobného porovnávania</h2>
@@ -40,36 +42,37 @@ const PostHocTests = () => {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5>Priemerné denné teploty</h5>
+        <h5>{t("anova.postHoc.simulation.title")}</h5>
+
         <div className="text-muted mb-3 small">
           <p>
-            V nasledujúcej simulácii sú načítané
-            <strong> historické dáta (OpenMeteo) pre júl 2025</strong> v troch
-            moravských mestách. Cieľom analýzy je zistiť, či je prítomná
-            preukázateľná odlišnosť v ich priemerných teplotách za daný mesiac.
+            <Trans
+              i18nKey="anova.postHoc.simulation.intro"
+              components={{ bold: <strong /> }}
+            />
           </p>
           <ul>
             <li>
-              <strong>Olomouc a Přerov:</strong> Obe mestá ležia blízko seba v
-              nížinatej oblasti Hornomoravského úvalu. Predpokladáme, že
-              teplotné rozdiely medzi nimi budú minimálne.
+              <Trans
+                i18nKey="anova.postHoc.simulation.cityOlomoucPrerov"
+                components={{ bold: <strong /> }}
+              />
             </li>
             <li>
-              <strong>Jeseník:</strong> Mesto situované v horskom prostredí vo
-              väčšej nadmorskej výške. Očakávame, že ANOVA zamietne nulovú
-              hypotézu a post-hoc test potvrdí významný rozdiel voči obom
-              nížinným mestám.
+              <Trans
+                i18nKey="anova.postHoc.simulation.cityJesenik"
+                components={{ bold: <strong /> }}
+              />
             </li>
           </ul>
         </div>
+
         <div>
-          <div className="alert alert-info">
-            <strong>Vyskúšajte si:</strong> V grafe Tukey HSD si všimnite, že
-            interval rozdielu medzi Olomoucom a Přerovom pretína nulovú líniu
-            (rozdiel nie je štatisticky významný). Následne skúste pomocou
-            posuvníkov zvýšiť teplotu v Jeseníku. Sledujte, kedy sa jeho teploty
-            priblížia tým na nížine a ako na to zareaguje výsledok post-hoc
-            testu a p-hodnota.
+          <div className="text-muted mb-3 small">
+            <Trans
+              i18nKey="anova.postHoc.simulation.tryIt"
+              components={{ bold: <strong /> }}
+            />
           </div>
           <AnovaSimulation />
         </div>

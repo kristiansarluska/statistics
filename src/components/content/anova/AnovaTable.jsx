@@ -1,10 +1,12 @@
 // src/components/content/anova/AnovaTable.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import { fisherFCDF } from "../../../utils/distributions";
 
 const AnovaTable = ({ stats }) => {
+  const { t } = useTranslation();
   if (!stats) return null;
 
   const { sst, ssw, ssb, dfB, dfW, msB, msW, fStat, groupStats } = stats;
@@ -20,17 +22,28 @@ const AnovaTable = ({ stats }) => {
       <table className="table text-center align-middle mb-0">
         <thead className="table-active border fw-normal">
           <tr>
-            <th style={{ width: "20%" }}>Zdroj variability</th>
-            <th style={{ width: "25%" }}>Suma štvorcov</th>
-            <th style={{ width: "15%" }}>Stupne voľnosti</th>
-            <th style={{ width: "20%" }}>Priemerná suma štvorcov</th>
-            <th style={{ width: "20%" }}>Testovacie kritérium</th>
+            <th style={{ width: "20%" }}>
+              {t("components.anovaSimulation.anovaTable.colSource")}
+            </th>
+            <th style={{ width: "20%" }}>
+              {t("components.anovaSimulation.anovaTable.colSS")}
+            </th>
+            <th style={{ width: "15%" }}>
+              {t("components.anovaSimulation.anovaTable.colDF")}
+            </th>
+            <th style={{ width: "20%" }}>
+              {t("components.anovaSimulation.anovaTable.colMS")}
+            </th>
+            <th style={{ width: "20%" }}>
+              {t("components.anovaSimulation.anovaTable.colF")}
+            </th>
           </tr>
         </thead>
         <tbody>
+          {/* BETWEEN GROUPS */}
           <tr>
             <td className="border-start border-end text-start fw-bold px-3 small">
-              Medzi skupinami (faktor)
+              {t("components.anovaSimulation.anovaTable.rowBetween")}{" "}
             </td>
             <td className="border-start border-end">
               <div className="mb-1">
@@ -65,9 +78,11 @@ const AnovaTable = ({ stats }) => {
               </div>
             </td>
           </tr>
+
+          {/* WITHIN GROUPS */}
           <tr>
             <td className="border-start border-end text-start fw-bold px-3 small">
-              Vnútri skupín (reziduálna)
+              {t("components.anovaSimulation.anovaTable.rowWithin")}{" "}
             </td>
             <td className="border-start border-end">
               <div className="mb-1">
@@ -94,9 +109,11 @@ const AnovaTable = ({ stats }) => {
               </div>
             </td>
           </tr>
+
+          {/* TOTAL */}
           <tr>
             <td className="border-start border-end text-start fw-bold px-3 small">
-              Celkový
+              {t("components.anovaSimulation.anovaTable.rowTotal")}
             </td>
             <td>
               <div className="mb-1">
@@ -114,6 +131,8 @@ const AnovaTable = ({ stats }) => {
                 <InlineMath math={`DF_T = ${n - 1}`} />
               </div>
             </td>
+
+            {/* DECISION */}
             <td
               colSpan="2"
               className={`border-start border-end align-middle ${
@@ -122,7 +141,8 @@ const AnovaTable = ({ stats }) => {
             >
               <div className="d-flex flex-column justify-content-center h-100">
                 <span className="fw-bold mb-1">
-                  Rozhodnutie (<InlineMath math="\alpha = 0.05" />)
+                  {t("components.anovaSimulation.anovaTable.decision")} (
+                  <InlineMath math="\alpha = 0.05" />)
                 </span>
                 <span className="small mb-1">
                   <InlineMath
@@ -137,8 +157,8 @@ const AnovaTable = ({ stats }) => {
                   }`}
                 >
                   {rejectH0
-                    ? "Zamietame H₀ (významný rozdiel)"
-                    : "Nezamietame H₀ (rozdiely nie sú významné)"}
+                    ? t("components.anovaSimulation.anovaTable.rejectH0")
+                    : t("components.anovaSimulation.anovaTable.acceptH0")}
                 </span>
               </div>
             </td>

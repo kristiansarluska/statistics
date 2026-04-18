@@ -1,5 +1,6 @@
 // src/components/charts/anova/TukeyChart.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   BarChart,
   Bar,
@@ -14,6 +15,8 @@ import {
 import CustomTooltip from "../helpers/CustomTooltip";
 
 const TukeyChart = ({ results }) => {
+  const { t } = useTranslation();
+
   if (!results || results.length === 0) return null;
 
   const chartData = results.map((r) => ({
@@ -46,7 +49,7 @@ const TukeyChart = ({ results }) => {
     const customPayload = [
       {
         dataKey: "meanDiff",
-        name: "Rozdiel priemerov",
+        name: t("components.anovaSimulation.tukeyChart.meanDiff"),
         value: data.meanDiff,
         color: data.isSignificant ? "var(--bs-danger)" : "var(--bs-success)",
         payload: { x: data.pair },
@@ -55,13 +58,15 @@ const TukeyChart = ({ results }) => {
 
     const extraRows = [
       {
-        label: "95% interval spoľahlivosti",
+        label: t("components.anovaSimulation.tukeyChart.confInterval"),
         value: `[${data.ciLower.toFixed(2)}, ${data.ciUpper.toFixed(2)}]`,
         color: "var(--text-secondary)",
       },
       {
-        label: "Výsledok",
-        value: data.isSignificant ? "Zamietame H₀" : "Nezamietame H₀",
+        label: t("components.anovaSimulation.tukeyChart.resultLabel"),
+        value: data.isSignificant
+          ? t("components.anovaSimulation.tukeyChart.reject")
+          : t("components.anovaSimulation.tukeyChart.fail"),
         color: data.isSignificant ? "var(--bs-danger)" : "var(--bs-success)",
       },
     ];
@@ -70,7 +75,7 @@ const TukeyChart = ({ results }) => {
       <CustomTooltip
         active={active}
         payload={customPayload}
-        xLabel="Porovnanie"
+        xLabel={t("components.anovaSimulation.tukeyChart.comparison")}
         extraRows={extraRows}
       />
     );
@@ -80,11 +85,10 @@ const TukeyChart = ({ results }) => {
     <div className="card mb-4 border-0 fade-in">
       <div className="card-body">
         <h5 className="card-title text-center mb-1 text-muted">
-          Tukeyho HSD (Post-hoc analýza)
+          {t("components.anovaSimulation.tukeyChart.title")}
         </h5>
-        <p className="text-center small text-secondary mb-4">
-          Intervaly spoľahlivosti pre rozdiely stredných hodnôt. Ak interval
-          nepretína nulu (zelená línia), rozdiel je štatisticky významný.
+        <p className="text-center small mb-4">
+          {t("components.anovaSimulation.tukeyChart.description")}
         </p>
         <div className="chart-container" style={{ width: "100%", height: 250 }}>
           <ResponsiveContainer>
@@ -96,13 +100,12 @@ const TukeyChart = ({ results }) => {
             >
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
 
-              {/* Removed interval={0} to let Recharts hide overlapping ticks on mobile */}
               <XAxis
                 type="number"
                 domain={[minVal, maxVal]}
                 ticks={ticks}
                 label={{
-                  value: "Rozdiel teplôt (°C)",
+                  value: t("components.anovaSimulation.tukeyChart.xAxisLabel"),
                   position: "insideBottom",
                   offset: -5,
                 }}
@@ -125,7 +128,6 @@ const TukeyChart = ({ results }) => {
 
               <ReferenceLine x={0} stroke="var(--bs-success)" strokeWidth={2} />
 
-              {/* Reduced radius to prevent visual glitches on narrow bars */}
               <Bar dataKey="range" radius={[4, 4, 4, 4]}>
                 {chartData.map((entry, index) => (
                   <Cell

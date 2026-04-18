@@ -1,12 +1,13 @@
 // src/components/content/anova/AnovaControls.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const AnovaControls = ({ params, onParamChange }) => {
+  const { t } = useTranslation();
+
   return (
     <>
-      {/* Lokálny style pre override Bootstrapových pseudo-elementov slidera. 
-        Využíva CSS premennú dynamicky dosadenú v inline štýloch nižšie.
-      */}
+      {/* Local style for overriding Bootstrap slider pseudo-elements */}
       <style>
         {`
           .colored-slider::-webkit-slider-thumb {
@@ -30,7 +31,7 @@ const AnovaControls = ({ params, onParamChange }) => {
                   className="card-title fw-bold"
                   style={{ color: group.color }}
                 >
-                  Mesto {group.name}
+                  {t("components.anovaSimulation.city", { name: group.name })}
                 </h6>
 
                 <label className="form-label small mb-0">μ: {group.mean}</label>

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/assets/images/logo_left_dark.svg" alt="StatTerra Logo" width="300" />
+  <img src="public/assets/images/logo_left.svg" alt="StatTerra Logo" width="300" />
 </p>
 
 # StatTerra

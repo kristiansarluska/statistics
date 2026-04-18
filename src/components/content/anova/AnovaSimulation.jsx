@@ -1,5 +1,6 @@
 // src/components/content/anova/AnovaSimulation.jsx
 import React, { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateSample,
   calculateKDE,
@@ -38,6 +39,7 @@ const createGroup = (name, initialSample, color) => {
 };
 
 const AnovaSimulation = () => {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [originalGroups, setOriginalGroups] = useState([]);
   const [isModified, setIsModified] = useState(false);
@@ -50,7 +52,8 @@ const AnovaSimulation = () => {
         const response = await fetch(
           `${import.meta.env.BASE_URL}data/OpenMeteo.csv`,
         );
-        if (!response.ok) throw new Error("Nepodarilo sa načítať CSV súbor.");
+        if (!response.ok)
+          throw new Error(t("components.anovaSimulation.fetchError"));
 
         const csvText = await response.text();
         const rows = csvText.trim().split("\n").slice(1);
@@ -68,6 +71,7 @@ const AnovaSimulation = () => {
           }
         });
 
+        // City names kept as data values (proper nouns)
         const initialData = [
           createGroup("Olomouc", olomouc, "var(--bs-danger)"),
           createGroup("Přerov", prerov, "var(--bs-warning)"),
@@ -85,9 +89,9 @@ const AnovaSimulation = () => {
     };
 
     fetchData();
-  }, []);
+  }, [t]);
 
-  const [modifiedGroups, setModifiedGroups] = useState(new Set()); // Použijeme Set pre unikátne mená
+  const [modifiedGroups, setModifiedGroups] = useState(new Set());
 
   const handleParamChange = (index, key, value) => {
     const groupName = groups[index].name;
@@ -103,13 +107,12 @@ const AnovaSimulation = () => {
       return updatedGroups;
     });
 
-    // Pridáme meno mesta do zoznamu upravených
     setModifiedGroups((prev) => new Set(prev).add(groupName));
   };
 
   const handleReset = () => {
     setGroups(originalGroups);
-    setModifiedGroups(new Set()); // Vyčistíme zoznam úprav
+    setModifiedGroups(new Set());
   };
 
   const chartData = useMemo(() => {
@@ -135,7 +138,6 @@ const AnovaSimulation = () => {
     const rawResults = calculateTukeyHSD(anovaStats.groupStats, anovaStats.msW);
 
     return rawResults.map((res) => {
-      // Vezmeme prvé 3 písmená z mena (napr. Olo-Pře)
       const short1 = groups[res.group1].name.substring(0, 3);
       const short2 = groups[res.group2].name.substring(0, 3);
 
@@ -146,16 +148,12 @@ const AnovaSimulation = () => {
     });
   }, [anovaStats, groups]);
 
-  // ----------------------------------------------------
-  // Transformácia dát pre DataPreviewTable
-  // ----------------------------------------------------
   const tableData = useMemo(() => {
     if (groups.length === 0) return [];
     const rows = [];
     for (let i = 0; i < SAMPLE_SIZE; i++) {
       const row = { day: i + 1 };
       groups.forEach((g) => {
-        // Zaokrúhlenie len vizuálne na 2 desatinné miesta
         row[g.name] = Number(g.sample[i]).toFixed(2);
       });
       rows.push(row);
@@ -166,7 +164,9 @@ const AnovaSimulation = () => {
   const tableColumns = useMemo(() => {
     if (groups.length === 0) return [];
 
-    const cols = [{ key: "day", label: "Deň v mesiaci" }];
+    const cols = [
+      { key: "day", label: t("components.anovaSimulation.dayOfMonth") },
+    ];
 
     groups.forEach((g) => {
       const isThisGroupModified = modifiedGroups.has(g.name);
@@ -193,13 +193,12 @@ const AnovaSimulation = () => {
     });
 
     return cols;
-  }, [groups, modifiedGroups]);
+  }, [groups, modifiedGroups, t]);
 
-  // Vytvorenie linku pre stiahnutie VŽDY ORIGINÁLNYCH (reálnych) dát
   const realDataBlobUrl = useMemo(() => {
     if (originalGroups.length === 0) return null;
     const headers = [
-      "Deň v mesiaci",
+      t("components.anovaSimulation.dayOfMonth"),
       ...originalGroups.map((g) => g.name),
     ].join(",");
     const rows = [];
@@ -215,7 +214,7 @@ const AnovaSimulation = () => {
       type: "text/csv;charset=utf-8;",
     });
     return URL.createObjectURL(blob);
-  }, [originalGroups]);
+  }, [originalGroups, t]);
 
   if (isLoading) {
     return (
@@ -224,13 +223,17 @@ const AnovaSimulation = () => {
           className="spinner-border spinner-border-sm me-2"
           role="status"
         ></div>
-        Načítavam klimatické dáta...
+        {t("components.anovaSimulation.loading")}
       </div>
     );
   }
 
   if (error) {
-    return <div className="alert alert-danger">Chyba: {error}</div>;
+    return (
+      <div className="alert alert-danger">
+        {t("components.anovaSimulation.errorPrefix")} {error}
+      </div>
+    );
   }
 
   return (
@@ -239,13 +242,15 @@ const AnovaSimulation = () => {
 
       <div className="d-flex justify-content-end align-items-center mb-4 mt-n2 gap-2 text-muted small">
         {modifiedGroups.size > 0 && (
-          <span className="fst-italic">Zobrazujú sa simulované dáta</span>
+          <span className="fst-italic">
+            {t("components.anovaSimulation.simulatedDataWarning")}
+          </span>
         )}
 
         <ResetButton
           onClick={handleReset}
           disabled={modifiedGroups.size === 0}
-          title="Obnoviť reálne namerané dáta"
+          title={t("components.anovaSimulation.resetTitle")}
         />
       </div>
       <div className="charts-wrapper w-100">
@@ -257,7 +262,6 @@ const AnovaSimulation = () => {
         />
       </div>
 
-      {/* Kontajner pre tabuľku s podmieneným štýlovaním titulu podľa toho či ide o simuláciu */}
       <div
         className="mb-4 mx-auto"
         style={{ maxWidth: "800px", width: "100%" }}
@@ -276,13 +280,15 @@ const AnovaSimulation = () => {
                 className={`bi ${modifiedGroups.size > 0 ? "bi-exclamation-triangle-fill" : "bi-check-circle-fill"} me-2`}
               ></i>
               {modifiedGroups.size > 0
-                ? `Simulácia (upravené: ${Array.from(modifiedGroups).join(", ")})`
-                : "Historické merania (OpenMeteo)"}
+                ? t("components.anovaSimulation.simulationTitle", {
+                    cities: Array.from(modifiedGroups).join(", "),
+                  })
+                : t("components.anovaSimulation.historicalTitle")}
             </span>
           }
           originalFileUrl={`${import.meta.env.BASE_URL}data/OpenMeteo.csv`}
           originalFileName="OpenMeteo.csv"
-          downloadBtnLabel="Stiahnuť pôvodné CSV"
+          downloadBtnLabel={t("components.anovaSimulation.downloadBtn")}
         />
       </div>
 
