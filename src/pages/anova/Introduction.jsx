@@ -12,20 +12,20 @@ const Introduction = () => {
         možno pripísať sledovanému faktoru, alebo ide len o náhodné kolísanie.
       </p>
 
-      <div className="alert alert-info shadow-sm mb-4">
-        <strong>Príklad:</strong> Porovnávame úspešnosť študentov piatich
-        stredných škôl v celoplošnom teste. Zaujíma nás, či má{" "}
-        <em>typ školy</em> (faktor) štatisticky významný vplyv na dosiahnuté
-        skóre — alebo sú rozdiely medzi školami len dôsledkom náhodného
-        kolísania.
-      </div>
-
-      {/* WHERE ANOVA FITS */}
-      <h4 className="mt-4 mb-3">Kam ANOVA patrí?</h4>
+      <p>
+        {" "}
+        <strong>Príkladom môže byť</strong> porovnávanie úspešnosti skupín v
+        riešení úloh na mape pri eye-tracking experimente. Zaujíma nás, či má
+        dosiahnuté vzdelanie (faktor) štatisticky významný vplyv na dosiahnutú
+        úspešnosť — alebo sú rozdiely medzi príslušníkmi skupín len dôsledkom
+        náhodného kolísania.
+      </p>
+      {/* ANOVA USAGE */}
+      <h4 className="mt-4 mb-3">Použitie ANOVY</h4>
       <p>
         Výber správneho testu závisí od{" "}
-        <strong>počtu porovnávaných skupín</strong>. ANOVA je prirodzeným
-        rozšírením t-testu pre prípad troch a viacerých skupín.
+        <strong>počtu porovnávaných skupín</strong>. Nižšie sa nachádza prehľad
+        testov podľa počtu skupín, vždy s uvedením neparametrickej alternatívy:
       </p>
       <div className="row mb-4 g-3">
         <div className="col-md-4">
@@ -37,7 +37,9 @@ const Introduction = () => {
               <p className="small mb-0">
                 Jednovýberový t-test
                 <br />
-                <span className="text-muted">Wilcoxonov test</span>
+                <span className="text-muted">
+                  Jednovýberový Wilcoxonov test
+                </span>
               </p>
             </div>
           </div>
@@ -51,7 +53,9 @@ const Introduction = () => {
               <p className="small mb-0">
                 Párový / dvojvýberový t-test
                 <br />
-                <span className="text-muted">Mann-Whitneyho test</span>
+                <span className="text-muted">
+                  Wilcoxonov / Mann-Whitneyho test
+                </span>
               </p>
             </div>
           </div>
@@ -73,15 +77,14 @@ const Introduction = () => {
       </div>
 
       {/* WHY NOT MULTIPLE T-TESTS */}
-      <h4 className="mt-5 mb-3">Prečo nestačí séria t-testov?</h4>
       <p>
-        Zdalo by sa, že pri <InlineMath math="k = 3" /> skupinách možno
+        Mohlo by sa zdať, že pri <InlineMath math="k = 3" /> skupinách možno
         jednoducho vykonať <InlineMath math="\binom{k}{2} = \binom{3}{2} = 3" />{" "}
         nezávislé t-testy. Každý test pracuje s hladinou spoľahlivosti 95 %, no
         celková spoľahlivosť pri viacerých súčasných testoch klesá:
       </p>
       <div className="text-center overflow-auto my-4">
-        <BlockMath math="0{,}95 \times 0{,}95 \times 0{,}95 = 0{,}857 \quad \Rightarrow \quad \alpha_{\text{celkové}} = 0{,}143" />
+        <BlockMath math=" 0{,}95^3 = 0{,}857 \quad \Rightarrow \quad \alpha = 0{,}143" />
       </div>
       <p>
         Reálna chyba I. druhu tým narastie na <strong>14,3 %</strong> — takmer
@@ -94,14 +97,15 @@ const Introduction = () => {
       {/* PREREQUISITES */}
       <h4 className="mt-5 mb-3">Predpoklady ANOVY</h4>
       <p>
-        Platnosť ANOVY závisí od troch kľúčových predpokladov. Ich overenie
-        patrí vždy na začiatok analýzy, ešte pred samotným testom.
+        Spoľahlivosť ANOVY závisí od troch základných predpokladov. K ich
+        overeniudochádza na začiatku analýzy, ešte pred vykonaním samotnej
+        ANOVY.
       </p>
       <div className="row g-3 mb-2">
         <div className="col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h6 className="mb-2">Nezávislosť meraní</h6>
+              <h6 className="mb-2 text-primary">Nezávislosť meraní</h6>
               <p className="small text-muted mb-0">
                 Pozorovania sú navzájom nezávislé — vnútri skupín aj medzi
                 skupinami. Ide o dizajnový predpoklad závislý od spôsobu zberu
@@ -113,11 +117,10 @@ const Introduction = () => {
         <div className="col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h6 className="mb-2">Normalita rozdelenia</h6>
+              <h6 className="mb-2 text-primary">Normalita rozdelenia</h6>
               <p className="small text-muted mb-0">
-                Dáta každej skupiny pochádzajú z normálneho rozdelenia{" "}
-                <InlineMath math="N(\mu, \sigma^2)" />. Pri väčších výberoch je
-                ANOVA voči odchýlkam pomerne robustná.
+                Dáta každej skupiny pochádzajú z normálneho rozdelenia. Pri
+                väčších výberoch je ANOVA voči odchýlkam pomerne robustná.
               </p>
             </div>
           </div>
@@ -125,10 +128,10 @@ const Introduction = () => {
         <div className="col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
-              <h6 className="mb-2">Homoskedasticita</h6>
+              <h6 className="mb-2 text-primary">Homoskedasticita</h6>
               <p className="small text-muted mb-0">
-                Rozptyly všetkých skupín sú rovnaké — rozptyl nezávisí od
-                skupiny. Porušenie zvyšuje riziko chyby I. druhu. Overíme
+                Rozptyly všetkých skupín sú rovnaké – rozptyl nezávisí od
+                skupiny. Silnejší predpoklad než normalita. Overenie
                 Bartlettovým alebo Leveneho testom.
               </p>
             </div>
@@ -136,16 +139,49 @@ const Introduction = () => {
         </div>
       </div>
 
-      <div className="bg-body-tertiary border rounded-3 p-4 shadow-sm mt-4">
-        <h6 className="mb-2">Typy ANOVY</h6>
-        <p className="mb-0 small text-muted">
-          Podľa počtu sledovaných faktorov rozlišujeme{" "}
-          <strong className="text-body">jednofaktorovú ANOVU</strong> (one-way
-          ANOVA) — sleduje vplyv jedného faktora, a{" "}
-          <strong className="text-body">viacfaktorovú ANOVU</strong> (two-way a
-          vyššie) — súčasne sleduje vplyv dvoch a viacerých faktorov vrátane ich
-          vzájomných interakcií.
-        </p>
+      {/* HOMOGENEITY TESTS */}
+      <h5 className="mt-4 mb-3">Testy homogenity rozptylov</h5>
+      <p>
+        Tieto testy skúmajú rovnakú hypotézu o zhode rozptylov a líšia sa
+        citlivosťou na porušenie normality:
+      </p>
+      <div className="text-center overflow-auto my-4">
+        <BlockMath math="H_0\colon \sigma_1^2 = \sigma_2^2 = \cdots = \sigma_k^2" />
+      </div>
+
+      <div className="row g-3 mb-5">
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm border-info border-2 ">
+            <div className="card-body">
+              <h5 className="card-title text-info">Bartlettov test</h5>
+              <p className="card-text small">
+                Presnejší a silnejší test, no vyžaduje splnený predpoklad
+                normality. Ak normalita nebola zamietnutá, uprednostňujeme
+                Bartlettov test pred Leveneho.
+              </p>
+              <p className="card-text small text-muted mb-0">
+                Testová štatistika má <InlineMath math="\chi^2" /> rozdelenie s{" "}
+                <InlineMath math="k - 1" /> stupňami voľnosti.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm border-success border-2">
+            <div className="card-body">
+              <h5 className="card-title text-success">Leveneho test</h5>
+              <p className="card-text small">
+                Robustnejšia alternatíva — menej citlivý na porušenie normality.
+                Vhodný, keď normalita dát nie je istá alebo bola zamietnutá.
+              </p>
+              <p className="card-text small text-muted mb-0">
+                Testová štatistika má F-rozdelenie so stupňami voľnosti{" "}
+                <InlineMath math="k - 1" /> v čitateli a{" "}
+                <InlineMath math="n - k" /> v menovateli.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

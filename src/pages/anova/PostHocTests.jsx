@@ -11,21 +11,13 @@ const PostHocTests = () => {
       <h2 className="mb-4 fw-bold">Testy mnohonásobného porovnávania</h2>
       <p>
         Ak ANOVA zamietne nulovú hypotézu (<InlineMath math="p < \alpha" />
-        ), vieme, že aspoň jedna dvojica stredných hodnôt sa líši. Nerozlíši
-        však, ktorá to je. Na to slúžia <strong>post-hoc testy</strong> —
-        vykonávajú sa vždy <em>po</em> zamietnutí <InlineMath math="H_0" /> v
-        ANOVE a upravujú hladinu významnosti tak, aby celková chyba I. druhu
-        zostala pod zvoleným <InlineMath math="\alpha" />.
+        ), vieme, že aspoň jedna dvojica stredných hodnôt sa líši. ANOVA však
+        neidentifikuje, o ktorú sa jedná. Na to slúžia{" "}
+        <strong>post-hoc testy</strong> – vykonávajú sa <em>po</em> zamietnutí{" "}
+        <InlineMath math="H_0" /> v ANOVE a upravujú hladinu významnosti tak,
+        aby celková chyba I. druhu zostala pod zvoleným{" "}
+        <InlineMath math="\alpha" />.
       </p>
-
-      <div className="alert alert-danger shadow-sm mb-5">
-        <strong>Prečo nepoužiť sériu t-testov?</strong> Pri viacerých súčasných
-        t-testoch dochádza k nekontrolovanému zvyšovaniu chyby I. druhu.
-        Napríklad pri <InlineMath math="k = 5" /> skupinách by sme testovali{" "}
-        <InlineMath math="\binom{5}{2} = 10" /> párov a celková chyba by
-        narástla na <InlineMath math="1 - 0{,}95^{10} \approx 0{,}40" /> — teda
-        40 %!
-      </div>
 
       {/* TEST CARDS */}
       <div className="row mb-5 g-3">
@@ -34,17 +26,17 @@ const PostHocTests = () => {
             <div className="card-body">
               <h5 className="card-title text-primary">Tukeyho HSD test</h5>
               <p className="card-text small">
-                Najpoužívanejší post-hoc test. Porovnáva všetky možné dvojice
-                skupín a zachováva zvolenú hladinu <InlineMath math="\alpha" />{" "}
-                pre celú rodinu testov. Vhodný pre vyvážené aj nevyvážené
-                výbery.
+                <strong>Najpoužívanejší post-hoc test.</strong> Porovnáva všetky
+                možné dvojice skupín a zachováva zvolenú hladinu{" "}
+                <InlineMath math="\alpha" /> pre celú rodinu testov. Vhodný pre
+                vyvážené aj nevyvážené výbery.
               </p>
               <div className="text-center overflow-auto mt-3">
-                <BlockMath math="\mathrm{HSD} = q \sqrt{\frac{MS_\varepsilon}{n_k}}" />
+                <BlockMath math="\mathrm{HSD} = q \sqrt{\frac{S_\varepsilon}{n_k}}" />
               </div>
               <p className="text-muted small mb-0">
-                <InlineMath math="q" /> — štatistika studentizovaného rozdelenia
-                (z tabuliek), <InlineMath math="n_k" /> — veľkosť skupiny.
+                <InlineMath math="q" /> – štatistika studentizovaného rozdelenia
+                (z tabuliek), <InlineMath math="n_k" /> – veľkosť skupiny.
               </p>
             </div>
           </div>

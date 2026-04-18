@@ -66,7 +66,7 @@
     "anova": {
       "singleFactor": "Jednofaktorová ANOVA",
       "postHoc": "Testy mnohonásobného porovnávania",
-      "violation": "Narušenie predpokladov ANOVY"
+      "violation": "Narušenie predpokladov"
     }
   },
 
@@ -794,7 +794,7 @@
       "simulation": {
         "title": "Priemerné denné teploty",
         "intro": "V nasledujúcej simulácii sú načítané <bold>historické dáta (OpenMeteo) pre júl 2025</bold> v troch moravských mestách. Cieľom analýzy je zistiť, či je prítomná preukázateľná odlišnosť v ich priemerných teplotách za daný mesiac.",
-        "cityOlomoucPrerov": "<bold>Olomouc a Přerov:</bold> Obe mestá ležia blízko seba v nížinatej oblasti Hornomoravského úvalu. Predpokladáme, že teplotné rozdiely medzi nimi budú minimálne.",
+        "cityOlomoucPrerov": "<bold>Olomouc a Přerov:</bold> Obe mestá ležia v nížinatej oblasti Hornomoravského úvalu. Predpokladáme, že teplotné rozdiely medzi nimi budú minimálne.",
         "cityJesenik": "<bold>Jeseník:</bold> Mesto situované v horskom prostredí vo väčšej nadmorskej výške. Očakávame, že ANOVA zamietne nulovú hypotézu a post-hoc test potvrdí významný rozdiel voči obom nížinným mestám.",
         "tryIt": "<bold>Vyskúšajte si:</bold> V grafe Tukey HSD si všimnite, že interval rozdielu medzi Olomoucom a Přerovom pretína nulovú líniu (rozdiel nie je štatisticky významný). Následne skúste pomocou posuvníkov zvýšiť teplotu v Jeseníku. Sledujte, kedy sa jeho teploty priblížia tým na nížine a ako na to zareaguje výsledok post-hoc testu a p-hodnota."
       }
@@ -1085,7 +1085,7 @@
       },
       "tukeyChart": {
         "title": "Tukey HSD (post-hoc analýza)",
-        "description": "Intervaly spoľahlivosti pre rozdiely stredných hodnôt. Ak interval nepretína nulu (zelená línia), rozdiel je štatisticky významný.",
+        "description": "Intervaly spoľahlivosti pre rozdiely stredných hodnôt. Ak interval nepretína nulu (zelená línia), rozdiel vo dvojici je štatisticky významný.",
         "xAxisLabel": "Rozdiel teplôt (°C)",
         "meanDiff": "Rozdiel priemerov",
         "confInterval": "95% interval spoľahlivosti",
@@ -1095,6 +1095,7 @@
         "comparison": "Porovnanie"
       },
       "anovaTable": {
+        "title": "Výpočet ANOVA testového kritéria",
         "colSource": "Zdroj variability",
         "colSS": "Suma štvorcov",
         "colDF": "Stupne voľnosti",
@@ -1103,9 +1104,9 @@
         "rowBetween": "Medzi skupinami",
         "rowWithin": "Vnútri skupín",
         "rowTotal": "Celkovo",
-        "decision": "Rozhodnutie",
-        "rejectH0": "Zamietame H₀ (významný rozdiel)",
-        "acceptH0": "Nezamietame H₀ (rozdiely nie sú významné)"
+        "decision": "Výsledok testu",
+        "rejectH0": "Zamietame H₀ (medzi skupinami existuje významný rozdiel)",
+        "acceptH0": "Nezamietame H₀ (rozdiely medzi skupinami nie sú významné)"
       }
     }
   },
