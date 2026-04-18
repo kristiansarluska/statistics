@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ReferenceLine, ReferenceArea } from "recharts";
 import StyledLineChart from "../helpers/StyledLineChart";
 
-const TDistributionChart = ({ data, tValue, tCrit, df, isSignificant }) => {
+function TDistributionChart({ data, tValue, tCrit, df, isSignificant }) {
   const { t } = useTranslation();
   const [hoverX, setHoverX] = useState(null);
 
@@ -92,6 +92,6 @@ const TDistributionChart = ({ data, tValue, tCrit, df, isSignificant }) => {
       </StyledLineChart>
     </div>
   );
-};
+}
 
 export default TDistributionChart;

@@ -19,7 +19,7 @@ import SkewnessChart from "../../components/charts/random-variable/characteristi
 import KurtosisChart from "../../components/charts/random-variable/characteristics/KurtosisChart";
 import FiveNumberSummaryBoxplot from "../../components/charts/random-variable/characteristics/FiveNumberSummaryBoxplot";
 
-const Characteristics = () => {
+export function Characteristics() {
   const { t } = useTranslation();
 
   return (
@@ -517,6 +517,6 @@ const Characteristics = () => {
       </div>
     </section>
   );
-};
+}
 
 export default Characteristics;

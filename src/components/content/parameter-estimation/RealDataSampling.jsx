@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import NutsMap from "../../maps/NutsMap";
 import DataPreviewTable from "../../charts/helpers/DataPreviewTable";
 import ResetButton from "../../charts/helpers/ResetButton";
+import StatsBadge from "../helpers/StatsBadge";
 
 const POP_MEAN = 46.2226;
 const POP_STD = 3.7576;
@@ -18,139 +19,6 @@ const computeStats = (vals) => {
   return { mean, std: Math.sqrt(variance), variance, sem, n };
 };
 
-function StatsBadge({
-  currentStats,
-  targetParam,
-  sampledStats,
-  grandEstimate,
-  t,
-}) {
-  const isVariance = targetParam === "variance";
-  const popVal = isVariance ? POP_VARIANCE : POP_MEAN;
-  const sampleVal = isVariance ? currentStats.variance : currentStats.mean;
-  const estimateLabel = isVariance ? "s²" : "x̄";
-  const unit = isVariance ? "r.²" : "r.";
-
-  const hasMultipleSamples = sampledStats.length > 1 && grandEstimate !== null;
-  const activeEstimate = hasMultipleSamples ? grandEstimate : sampleVal;
-  const activeEstimateLabel = hasMultipleSamples
-    ? `${estimateLabel}̄`
-    : estimateLabel;
-  const error = Math.abs(activeEstimate - popVal);
-
-  const m = Math.max(1, sampledStats.length);
-  const errorThreshold = isVariance
-    ? (POP_VARIANCE * Math.sqrt(2 / (currentStats.n - 1))) / Math.sqrt(m)
-    : currentStats.sem / Math.sqrt(m);
-
-  const rows = isVariance
-    ? [
-        {
-          label: "s²",
-          value: `${currentStats.variance.toFixed(3)} r.²`,
-          color: "text-primary",
-          groupStart: true,
-        },
-        {
-          label: "s",
-          value: `${currentStats.std.toFixed(2)} r.`,
-          color: "text-warning",
-          groupStart: false,
-        },
-        {
-          label: "σ²",
-          value: `${POP_VARIANCE.toFixed(3)} r.²`,
-          color: "text-secondary",
-          groupStart: true,
-        },
-        {
-          label: `|${activeEstimateLabel} − σ²|`,
-          value: `${error.toFixed(3)} r.²`,
-          color: error <= errorThreshold ? "text-success" : "text-danger",
-          groupStart: true,
-        },
-      ]
-    : [
-        {
-          label: "x̄",
-          value: `${currentStats.mean.toFixed(2)} r.`,
-          color: "text-primary",
-          groupStart: true,
-        },
-        {
-          label: "s",
-          value: `${currentStats.std.toFixed(2)} r.`,
-          color: "text-warning",
-          groupStart: false,
-        },
-        {
-          label: "SEM",
-          value: currentStats.sem.toFixed(3),
-          color: "text-success",
-          groupStart: false,
-        },
-        {
-          label: "μ",
-          value: `${POP_MEAN.toFixed(2)} r.`,
-          color: "text-secondary",
-          groupStart: true,
-        },
-        {
-          label: "σ",
-          value: `${POP_STD.toFixed(2)} r.`,
-          color: "text-secondary",
-          groupStart: false,
-        },
-        {
-          label: `|${activeEstimateLabel} − μ|`,
-          value: `${error.toFixed(3)} r.`,
-          color: error <= errorThreshold ? "text-success" : "text-danger",
-          groupStart: true,
-        },
-      ];
-
-  return (
-    <div
-      className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2"
-      style={{ fontSize: "0.88rem", display: "inline-block", maxWidth: "100%" }}
-    >
-      <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
-        {rows.map(({ label, value, color, groupStart }, i) => (
-          <React.Fragment key={label}>
-            {groupStart && i !== 0 && (
-              <div
-                className="d-none d-sm-block mx-3 border-start align-self-stretch"
-                style={{ minHeight: "1.4rem" }}
-              />
-            )}
-            <div className="d-flex align-items-baseline gap-1 px-2">
-              <span className="text-muted" style={{ whiteSpace: "nowrap" }}>
-                {label}:
-              </span>
-              <strong className={`${color} text-nowrap`}>{value}</strong>
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-      {hasMultipleSamples && (
-        <div
-          className="border-top mt-2 pt-1 text-center"
-          style={{ fontSize: "0.85rem" }}
-        >
-          <span className="text-muted me-1">
-            {t("parameterEstimation.realDataSampling.stats.grandMean", {
-              count: sampledStats.length,
-            })}
-          </span>
-          <strong style={{ color: "var(--bs-primary)" }}>
-            {activeEstimateLabel} = {grandEstimate.toFixed(3)} {unit}
-          </strong>
-        </div>
-      )}
-    </div>
-  );
-}
-
 function RealDataSampling() {
   const { t } = useTranslation();
   const [geoJsonData, setGeoJsonData] = useState(null);
@@ -161,6 +29,7 @@ function RealDataSampling() {
   const [sampledStats, setSampledStats] = useState([]);
   const [hoveredNuts, setHoveredNuts] = useState(null);
 
+  // ... columns definition remains same ...
   const SAMPLE_COLUMNS = useMemo(
     () => [
       {
@@ -236,6 +105,111 @@ function RealDataSampling() {
     );
     return vals.reduce((a, b) => a + b, 0) / vals.length;
   }, [sampledStats, targetParam]);
+
+  // Logic for the shared StatsBadge component
+  const badgeData = useMemo(() => {
+    if (!currentStats) return { items: [], footer: null };
+
+    const isVariance = targetParam === "variance";
+    const popVal = isVariance ? POP_VARIANCE : POP_MEAN;
+    const sampleVal = isVariance ? currentStats.variance : currentStats.mean;
+    const estimateLabel = isVariance ? "s²" : "x̄";
+    const unit = isVariance ? "r.²" : "r.";
+
+    const hasMultipleSamples =
+      sampledStats.length > 1 && grandEstimate !== null;
+    const activeEstimate = hasMultipleSamples ? grandEstimate : sampleVal;
+    const activeEstimateLabel = hasMultipleSamples
+      ? `${estimateLabel}̄`
+      : estimateLabel;
+    const error = Math.abs(activeEstimate - popVal);
+
+    const m = Math.max(1, sampledStats.length);
+    const errorThreshold = isVariance
+      ? (POP_VARIANCE * Math.sqrt(2 / (currentStats.n - 1))) / Math.sqrt(m)
+      : currentStats.sem / Math.sqrt(m);
+
+    const items = isVariance
+      ? [
+          {
+            label: "s²",
+            value: `${currentStats.variance.toFixed(3)} r.²`,
+            color: "text-primary",
+            groupStart: true,
+          },
+          {
+            label: "s",
+            value: `${currentStats.std.toFixed(2)} r.`,
+            color: "text-warning",
+            groupStart: false,
+          },
+          {
+            label: "σ²",
+            value: `${POP_VARIANCE.toFixed(3)} r.²`,
+            color: "text-secondary",
+            groupStart: true,
+          },
+          {
+            label: `|${activeEstimateLabel} − σ²|`,
+            value: `${error.toFixed(3)} r.²`,
+            color: error <= errorThreshold ? "text-success" : "text-danger",
+            groupStart: true,
+          },
+        ]
+      : [
+          {
+            label: "x̄",
+            value: `${currentStats.mean.toFixed(2)} r.`,
+            color: "text-primary",
+            groupStart: true,
+          },
+          {
+            label: "s",
+            value: `${currentStats.std.toFixed(2)} r.`,
+            color: "text-warning",
+            groupStart: false,
+          },
+          {
+            label: "SEM",
+            value: currentStats.sem.toFixed(3),
+            color: "text-success",
+            groupStart: false,
+          },
+          {
+            label: "μ",
+            value: `${POP_MEAN.toFixed(2)} r.`,
+            color: "text-secondary",
+            groupStart: true,
+          },
+          {
+            label: "σ",
+            value: `${POP_STD.toFixed(2)} r.`,
+            color: "text-secondary",
+            groupStart: false,
+          },
+          {
+            label: `|${activeEstimateLabel} − μ|`,
+            value: `${error.toFixed(3)} r.`,
+            color: error <= errorThreshold ? "text-success" : "text-danger",
+            groupStart: true,
+          },
+        ];
+
+    const footer = hasMultipleSamples ? (
+      <>
+        <span className="text-muted me-1">
+          {t("parameterEstimation.realDataSampling.stats.grandMean", {
+            count: sampledStats.length,
+          })}
+        </span>
+        <strong style={{ color: "var(--bs-primary)" }}>
+          {activeEstimateLabel} = {grandEstimate.toFixed(3)} {unit}
+        </strong>
+      </>
+    ) : null;
+
+    return { items, footer };
+  }, [currentStats, targetParam, sampledStats, grandEstimate, t]);
 
   const tableRows = useMemo(
     () => currentSample.map((f) => ({ ...f.properties })),
@@ -340,13 +314,7 @@ function RealDataSampling() {
           className="w-100 mb-3 d-flex justify-content-center px-2"
           style={{ maxWidth: "1100px" }}
         >
-          <StatsBadge
-            currentStats={currentStats}
-            targetParam={targetParam}
-            sampledStats={sampledStats}
-            grandEstimate={grandEstimate}
-            t={t}
-          />
+          <StatsBadge items={badgeData.items} footer={badgeData.footer} />
         </div>
       )}
 

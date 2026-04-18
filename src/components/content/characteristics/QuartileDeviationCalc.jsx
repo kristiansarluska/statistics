@@ -3,9 +3,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [12, 15, 14, 18, 145, 16, 17];
+
 function QuartileDeviationCalc() {
   const { t } = useTranslation();
-  const defaultPrices = [12, 15, 14, 18, 145, 16, 17];
 
   const getMathContent = (data, isExpanded) => {
     const n = data.length;
@@ -66,7 +67,7 @@ function QuartileDeviationCalc() {
     <CalculatorTemplate
       title={t("components.characteristics.quartileDeviation.title")}
       inputLabel={t("components.characteristics.quartileDeviation.inputLabel")}
-      defaultData={defaultPrices}
+      defaultData={DEFAULT_DATA}
       getMathContent={getMathContent}
       min={0}
       max={1000}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import StyledLineChart from "../helpers/StyledLineChart";
 
-const AnovaDistributionChart = ({ data, groups, minX, maxX }) => {
+function AnovaDistributionChart({ data, groups, minX, maxX }) {
   const [hoverX, setHoverX] = useState(null);
   const { t } = useTranslation();
 
@@ -25,6 +25,6 @@ const AnovaDistributionChart = ({ data, groups, minX, maxX }) => {
       maxX={maxX}
     />
   );
-};
+}
 
 export default AnovaDistributionChart;

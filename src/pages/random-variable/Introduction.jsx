@@ -2,7 +2,7 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
-const Introduction = () => {
+function Introduction() {
   const { t } = useTranslation();
 
   return (
@@ -16,6 +16,6 @@ const Introduction = () => {
       </p>
     </section>
   );
-};
+}
 
 export default Introduction;

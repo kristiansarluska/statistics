@@ -6,7 +6,7 @@ import SingleFactorAnova from "./anova/SingleFactorAnova";
 import PostHocTests from "./anova/PostHocTests";
 import AssumptionViolations from "./anova/AssumptionViolations";
 
-const Anova = () => {
+function Anova() {
   const { t } = useTranslation();
 
   return (
@@ -30,6 +30,6 @@ const Anova = () => {
       <AssumptionViolations />
     </div>
   );
-};
+}
 
 export default Anova;

@@ -2,7 +2,7 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
-const ContinuousDiscrete = () => {
+function ContinuousDiscrete() {
   const { t } = useTranslation();
 
   return (
@@ -81,6 +81,6 @@ const ContinuousDiscrete = () => {
       </div>
     </section>
   );
-};
+}
 
 export default ContinuousDiscrete;

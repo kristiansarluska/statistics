@@ -10,7 +10,7 @@ const DEFAULT_DATA = [
   8, 8, 12,
 ];
 
-const ModeCalc = () => {
+function ModeCalc() {
   const { t } = useTranslation();
   const [data, setData] = useState(DEFAULT_DATA);
 
@@ -130,6 +130,6 @@ const ModeCalc = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ModeCalc;

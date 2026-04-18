@@ -3,6 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [15.2, 12.5, 18.0];
+
 function HarmonicMeanCalc() {
   const { t } = useTranslation();
 
@@ -10,7 +12,7 @@ function HarmonicMeanCalc() {
     <CalculatorTemplate
       title={t("components.characteristics.harmonic.title")}
       inputLabel={t("components.characteristics.harmonic.inputLabel")}
-      defaultData={[15.2, 12.5, 18.0]}
+      defaultData={DEFAULT_DATA}
       onValidate={(val) => !isNaN(val) && val > 0}
       getMathContent={(data) => {
         const n = data.length;

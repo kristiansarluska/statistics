@@ -58,7 +58,7 @@ const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
 };
 
 // Zvyšok komponentu StyledScatterChart zostáva nezmenený, len pridáva nové rekvizity pre Tooltip
-const StyledScatterChart = ({
+function StyledScatterChart({
   data,
   xDataKey = "x",
   yDataKey = "y",
@@ -81,7 +81,7 @@ const StyledScatterChart = ({
   crosshairColor = "var(--bs-warning)",
   onClick,
   cursor = "default",
-}) => {
+}) {
   return (
     <ResponsiveContainer width="100%" height={height}>
       <ScatterChart
@@ -191,6 +191,6 @@ const StyledScatterChart = ({
       </ScatterChart>
     </ResponsiveContainer>
   );
-};
+}
 
 export default StyledScatterChart;

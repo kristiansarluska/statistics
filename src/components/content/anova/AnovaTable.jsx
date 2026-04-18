@@ -5,7 +5,7 @@ import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import { fisherFCDF } from "../../../utils/distributions";
 
-const AnovaTable = ({ stats }) => {
+function AnovaTable({ stats }) {
   const { t } = useTranslation();
   if (!stats) return null;
 
@@ -167,6 +167,6 @@ const AnovaTable = ({ stats }) => {
       </table>
     </div>
   );
-};
+}
 
 export default AnovaTable;

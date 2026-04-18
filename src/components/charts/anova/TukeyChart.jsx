@@ -14,7 +14,7 @@ import {
 } from "recharts";
 import CustomTooltip from "../helpers/CustomTooltip";
 
-const TukeyChart = ({ results }) => {
+function TukeyChart({ results }) {
   const { t } = useTranslation();
 
   if (!results || results.length === 0) return null;
@@ -146,6 +146,6 @@ const TukeyChart = ({ results }) => {
       </div>
     </div>
   );
-};
+}
 
 export default TukeyChart;

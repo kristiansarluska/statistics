@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect, useRef, useContext } from "react";
 import ThemeToggle from "./ThemeToggle";
-import { LanguageSwitcher } from "./LanguageSwitcher.jsx";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { Link, useLocation } from "react-router-dom";

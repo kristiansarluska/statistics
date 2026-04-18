@@ -1,3 +1,4 @@
+//src/utils/ciMath.js
 import { normalCDF, studentTCDF } from "./distributions";
 
 export const POP_MEAN = 46.2226;

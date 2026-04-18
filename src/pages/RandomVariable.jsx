@@ -6,7 +6,7 @@ import ContinuousDiscrete from "./random-variable/ContinuousDiscrete";
 import Distribution from "./random-variable/Distribution";
 import Characteristics from "./random-variable/Characteristics";
 
-const RandomVariable = () => {
+function RandomVariable() {
   const { t } = useTranslation();
 
   return (
@@ -30,6 +30,6 @@ const RandomVariable = () => {
       <Characteristics />
     </div>
   );
-};
+}
 
 export default RandomVariable;

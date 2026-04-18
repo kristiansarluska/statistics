@@ -13,13 +13,13 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const VariabilityScatterChart = ({
+function VariabilityScatterChart({
   data,
   expectedValue,
   mean,
   hoveredObec,
   setHoveredObec,
-}) => {
+}) {
   const { t } = useTranslation();
 
   const highlightedPoint = useMemo(() => {
@@ -173,6 +173,6 @@ const VariabilityScatterChart = ({
       </ResponsiveContainer>
     </div>
   );
-};
+}
 
 export default VariabilityScatterChart;

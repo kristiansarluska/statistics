@@ -1,7 +1,7 @@
 // src/components/charts/helpers/AnimatedRefLine.jsx
 import React from "react";
 
-const AnimatedRefLine = (props) => {
+function AnimatedRefLine(props) {
   const {
     x1,
     y1,
@@ -56,6 +56,6 @@ const AnimatedRefLine = (props) => {
       )}
     </g>
   );
-};
+}
 
 export default AnimatedRefLine;

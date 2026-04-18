@@ -38,7 +38,7 @@ const createGroup = (name, initialSample, color) => {
   };
 };
 
-const AnovaSimulation = () => {
+function AnovaSimulation() {
   const { t } = useTranslation();
   const [groups, setGroups] = useState([]);
   const [originalGroups, setOriginalGroups] = useState([]);
@@ -299,6 +299,6 @@ const AnovaSimulation = () => {
       <TukeyChart results={tukeyResults} />
     </div>
   );
-};
+}
 
 export default AnovaSimulation;

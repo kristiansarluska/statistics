@@ -2,7 +2,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const AnovaControls = ({ params, onParamChange }) => {
+function AnovaControls({ params, onParamChange }) {
   const { t } = useTranslation();
 
   return (
@@ -70,6 +70,6 @@ const AnovaControls = ({ params, onParamChange }) => {
       </div>
     </>
   );
-};
+}
 
 export default AnovaControls;

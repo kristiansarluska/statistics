@@ -9,7 +9,7 @@ import QuantileFunctionSlider from "../../components/charts/random-variable/dist
 import QuantileFunctionInput from "../../components/charts/random-variable/distribution/QuantileFunctionInput";
 import NormalChart from "../../components/charts/probability-distributions/continuous/NormalChart";
 
-const Distribution = () => {
+function Distribution() {
   const { t } = useTranslation();
 
   return (
@@ -198,6 +198,6 @@ const Distribution = () => {
       </div>
     </section>
   );
-};
+}
 
 export default Distribution;

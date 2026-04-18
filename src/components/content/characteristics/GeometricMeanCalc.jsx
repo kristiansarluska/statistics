@@ -3,6 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [1.05, 1.02, 1.08];
+
 function GeometricMeanCalc() {
   const { t } = useTranslation();
 
@@ -10,7 +12,7 @@ function GeometricMeanCalc() {
     <CalculatorTemplate
       title={t("components.characteristics.geometric.title")}
       inputLabel={t("components.characteristics.geometric.inputLabel")}
-      defaultData={[1.05, 1.02, 1.08]}
+      defaultData={DEFAULT_DATA}
       onValidate={(val) => !isNaN(val) && val > 0}
       getMathContent={(data) => {
         const n = data.length;

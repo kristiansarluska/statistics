@@ -7,7 +7,7 @@ import DataPreviewTable from "../../helpers/DataPreviewTable";
 import StatsBadge from "../../../content/helpers/StatsBadge";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
-const QuantileFunctionSlider = () => {
+function QuantileFunctionSlider() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [rawRows, setRawRows] = useState([]);
@@ -364,6 +364,6 @@ const QuantileFunctionSlider = () => {
       </div>
     </div>
   );
-};
+}
 
 export default QuantileFunctionSlider;

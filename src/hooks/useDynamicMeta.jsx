@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import { sidebarData } from "../components/sidebar/sidebarData"; // Skontroluj správnosť cesty k importu
+import { sidebarData } from "../components/sidebar/sidebarData";
 
 export function useDynamicMeta() {
   const { t, i18n } = useTranslation();

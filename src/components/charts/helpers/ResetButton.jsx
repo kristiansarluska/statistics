@@ -1,12 +1,7 @@
 // src/components/charts/helpers/ResetButton.jsx
 import React, { useState } from "react";
 
-const ResetButton = ({
-  onClick,
-  disabled,
-  title = "Reset",
-  className = "",
-}) => {
+function ResetButton({ onClick, disabled, title = "Reset", className = "" }) {
   const [rotation, setRotation] = useState(0);
 
   const handleClick = (e) => {
@@ -40,6 +35,6 @@ const ResetButton = ({
       />
     </button>
   );
-};
+}
 
 export default ResetButton;

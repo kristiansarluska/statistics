@@ -2,7 +2,7 @@
 import React from "react";
 import { Area, Line } from "recharts";
 
-const BackgroundArea = ({
+function BackgroundArea({
   data,
   dataKey = "y",
   type = "stepBefore",
@@ -12,13 +12,13 @@ const BackgroundArea = ({
   showLine = true,
   isAnimationActive = false,
   animationDuration = 500,
-}) => {
+}) {
   return (
     <>
       <Area
         data={data}
         dataKey={dataKey}
-        name="ignore_tooltip" // Marker pre CustomTooltip
+        name="ignore_tooltip"
         type={type}
         fill={color}
         fillOpacity={fillOpacity}
@@ -31,7 +31,7 @@ const BackgroundArea = ({
         <Line
           data={data}
           dataKey={dataKey}
-          name="ignore_tooltip" // Marker pre CustomTooltip
+          name="ignore_tooltip"
           type={type}
           stroke={color}
           strokeWidth={strokeWidth}
@@ -43,6 +43,6 @@ const BackgroundArea = ({
       )}
     </>
   );
-};
+}
 
 export default BackgroundArea;

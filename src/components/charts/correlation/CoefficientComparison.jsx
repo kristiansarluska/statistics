@@ -35,7 +35,7 @@ const parseCSV = (str) => {
   return result;
 };
 
-const CoefficientComparison = () => {
+function CoefficientComparison() {
   const { t } = useTranslation();
   const [rawData, setRawData] = useState([]);
   const [outliers, setOutliers] = useState([]);
@@ -402,6 +402,6 @@ const CoefficientComparison = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CoefficientComparison;

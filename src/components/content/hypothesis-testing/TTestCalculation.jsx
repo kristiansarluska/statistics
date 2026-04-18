@@ -4,13 +4,13 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import CalcPanel from "../helpers/CalcPanel";
 
-const TTestCalculation = ({
+function TTestCalculation({
   stats,
   expectedValue,
   alpha,
   selectedOkres,
   isSignificant,
-}) => {
+}) {
   const { t } = useTranslation();
   const se = stats.sd / Math.sqrt(stats.n);
 
@@ -96,6 +96,6 @@ const TTestCalculation = ({
       </div>
     </CalcPanel>
   );
-};
+}
 
 export default TTestCalculation;

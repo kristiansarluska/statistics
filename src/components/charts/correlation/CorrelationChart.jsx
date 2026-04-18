@@ -14,7 +14,7 @@ import {
 // Fixed axis domain — prevents chart from jumping when data changes
 const AXIS_DOMAIN = [0, 100];
 
-const CorrelationChart = () => {
+function CorrelationChart() {
   const { t } = useTranslation();
 
   const [targetR, setTargetR] = useState(0.8);
@@ -253,6 +253,6 @@ const CorrelationChart = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CorrelationChart;

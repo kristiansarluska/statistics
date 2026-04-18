@@ -3,9 +3,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [450, 320, 610, 200, 550];
+
 function CoefficientOfVariationCalc() {
   const { t } = useTranslation();
-  const defaultPrecipitation = [450, 320, 610, 200, 550];
 
   const getMathContent = (data, isExpanded) => {
     const n = data.length;
@@ -73,7 +74,7 @@ function CoefficientOfVariationCalc() {
       inputLabel={t(
         "components.characteristics.coefficientOfVariation.inputLabel",
       )}
-      defaultData={defaultPrecipitation}
+      defaultData={DEFAULT_DATA}
       getMathContent={getMathContent}
       min={0}
       max={3000}

@@ -3,6 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [420.15, 420.18, 420.12];
+
 function ArithmeticMeanCalc() {
   const { t } = useTranslation();
 
@@ -10,7 +12,7 @@ function ArithmeticMeanCalc() {
     <CalculatorTemplate
       title={t("components.characteristics.arithmetic.title")}
       inputLabel={t("components.characteristics.arithmetic.inputLabel")}
-      defaultData={[420.15, 420.18, 420.12]}
+      defaultData={DEFAULT_DATA}
       getMathContent={(data) => {
         const n = data.length;
         const sum = data.reduce((acc, val) => acc + val, 0);

@@ -10,7 +10,7 @@ const DEFAULT_DATA = [
   22.8, 23.4, 24.1, 25.6, 26.2, 27.5, 29.8,
 ];
 
-const QuantileFunctionInput = () => {
+function QuantileFunctionInput() {
   const { t } = useTranslation();
   const [data, setData] = useState(DEFAULT_DATA);
   const [activeQuantile, setActiveQuantile] = useState("none");
@@ -182,6 +182,6 @@ const QuantileFunctionInput = () => {
       </div>
     </div>
   );
-};
+}
 
 export default QuantileFunctionInput;

@@ -3,9 +3,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+const DEFAULT_DATA = [22.1, 23.5, 21.8, 24.2, 22.9];
+
 function StandardDeviationCalc() {
   const { t } = useTranslation();
-  const defaultTemperatures = [22.1, 23.5, 21.8, 24.2, 22.9];
 
   const getMathContent = (data, isExpanded) => {
     const n = data.length;
@@ -51,7 +52,7 @@ function StandardDeviationCalc() {
     <CalculatorTemplate
       title={t("components.characteristics.standardDeviation.title")}
       inputLabel={t("components.characteristics.standardDeviation.inputLabel")}
-      defaultData={defaultTemperatures}
+      defaultData={DEFAULT_DATA}
       getMathContent={getMathContent}
       min={-50}
       max={60}
