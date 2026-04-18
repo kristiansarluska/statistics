@@ -136,14 +136,7 @@ const QuantileFunctionSlider = () => {
         quantileVal = data[Math.min(Math.max(idx, 0), length - 1)];
       }
 
-      let count = 0;
-      for (let i = 0; i < length; i++) {
-        if (data[i] <= x) count++;
-        else break;
-      }
-      const cdfY = (count / length) * 100;
-
-      return { x, y: quantileVal, cdfY };
+      return { x, y: quantileVal };
     });
 
     return {
@@ -332,7 +325,6 @@ const QuantileFunctionSlider = () => {
           xLabel="p (%)"
           yLabel="HCI+"
           lineType="stepBefore"
-          type="cdf"
           hoverX={hoverX}
           setHoverX={setHoverX}
           minX={0}
@@ -366,8 +358,8 @@ const QuantileFunctionSlider = () => {
             "components.randomVariableCharts.quantileSlider.dataTableTitle",
           )}
           previewRows={5}
-          downloadUrl={csvUrl}
-          downloadFilename="HCI_2025.csv"
+          originalFileUrl={csvUrl}
+          originalFileName="World_HCI.csv"
         />
       </div>
     </div>

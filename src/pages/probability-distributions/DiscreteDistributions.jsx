@@ -11,7 +11,7 @@ function DiscreteDistributions() {
   const { t } = useTranslation();
 
   return (
-    <section id="discrete-distributions">
+    <section id="discrete-distributions" className="mb-5">
       <h2 className="mb-4 fw-bold">
         {t("probabilityDistributions.discrete.title")}
       </h2>
@@ -19,7 +19,7 @@ function DiscreteDistributions() {
         {t("probabilityDistributions.discrete.description")}
       </p>
 
-      {/* ALTERNATÍVNE ROZDELENIE */}
+      {/* BERNOULLI */}
       <h3 id="bernoulli" className="mb-3">
         {t("probabilityDistributions.discrete.bernoulli.title")}
       </h3>
@@ -61,7 +61,7 @@ function DiscreteDistributions() {
         <BernoulliChart />
       </div>
 
-      {/* ROVNOMERNÉ ROZDELENIE */}
+      {/* UNIFORM DISCRETE */}
       <h3 id="uniform-discrete" className="mb-3">
         {t("probabilityDistributions.discrete.uniform.title")}
       </h3>
@@ -103,7 +103,7 @@ function DiscreteDistributions() {
         <UniformDiscreteChart />
       </div>
 
-      {/* BINOMICKÉ ROZDELENIE */}
+      {/* BINOMIAL */}
       <h3 id="binomial" className="mb-3">
         {t("probabilityDistributions.discrete.binomial.title")}
       </h3>
@@ -149,7 +149,7 @@ function DiscreteDistributions() {
         <BinomialChart />
       </div>
 
-      {/* POISSONOVO ROZDELENIE */}
+      {/* POISSON */}
       <h3 id="poisson" className="mb-3">
         {t("probabilityDistributions.discrete.poisson.title")}
       </h3>

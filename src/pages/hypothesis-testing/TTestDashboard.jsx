@@ -7,8 +7,6 @@ import ChoroplethMap from "../../components/maps/ChoroplethMap";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import StatsBadge from "../../components/content/helpers/StatsBadge";
-
-// Sub-components
 import VariabilityScatterChart from "../../components/charts/hypothesis-testing/VariabilityScatterChart";
 import TDistributionChart from "../../components/charts/hypothesis-testing/TDistributionChart";
 import TTestCalculation from "../../components/content/hypothesis-testing/TTestCalculation";
@@ -170,7 +168,7 @@ function TTestDashboard() {
         />
       </p>
 
-      {/* Controls */}
+      {/* CONTROLS */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-start gap-5 w-100">
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
@@ -190,7 +188,7 @@ function TTestDashboard() {
           </select>
         </div>
 
-        {/* Expected value: replaced number input with slider */}
+        {/* EXPECTED VALUE */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
             {t("hypothesisTesting.tTestDashboard.controls.expectedValue")}
@@ -218,6 +216,7 @@ function TTestDashboard() {
           </div>
         </div>
 
+        {/* SIGNIFICANCE LEVEL */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
             {t("hypothesisTesting.tTestDashboard.controls.alpha")}
@@ -237,12 +236,12 @@ function TTestDashboard() {
         </div>
       </div>
 
-      {/* Key stats summary */}
+      {/* STATS SUMMARY */}
       <div className="text-center mt-5 mb-3">
         <StatsBadge items={statsBadgeItems} />
       </div>
 
-      {/* Charts */}
+      {/* CHARTS */}
       <div
         className="charts-wrapper w-100 mb-4"
         style={{ alignItems: "flex-end" }}
@@ -263,6 +262,7 @@ function TTestDashboard() {
         />
       </div>
 
+      {/* MAP */}
       <ChoroplethMap
         geoJsonData={geoJson}
         attribute="podiel_nad65"
@@ -273,7 +273,7 @@ function TTestDashboard() {
         pivot={expectedValue}
       />
 
-      {/* Interpretive note */}
+      {/* INTERPRETIVE NOTE */}
       <div className="alert alert-secondary border-0 shadow-sm mb-4 small">
         <Trans
           i18nKey="hypothesisTesting.tTestDashboard.interpretiveNote"
@@ -281,7 +281,7 @@ function TTestDashboard() {
         />
       </div>
 
-      {/* Calculation breakdown toggle */}
+      {/* CALCULATION BREAKDOWN */}
       <div className="mb-4">
         <button
           className="btn btn-outline-secondary btn-sm rounded-pill px-4 mx-auto d-block"
@@ -311,7 +311,7 @@ function TTestDashboard() {
         </div>
       </div>
 
-      {/* Test result alert — moved below charts */}
+      {/* TEST RESULT ALERT */}
       <div
         className={`alert ${isSignificant ? "alert-danger" : "alert-success"} shadow-sm border-0 mb-3`}
       >

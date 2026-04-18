@@ -11,8 +11,8 @@ function DataPreviewTable({
   columns = [],
   previewRows = 5,
   title,
-  downloadUrl,
-  downloadFilename,
+  originalFileUrl,
+  originalFileName,
   downloadBtnLabel,
   rowKey = null,
   hoveredRowKey = null,
@@ -28,13 +28,10 @@ function DataPreviewTable({
   if (!data.length || !columns.length) return null;
 
   const handleDownload = () => {
-    if (downloadUrl) {
+    if (originalFileUrl) {
       const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute(
-        "download",
-        downloadFilename || downloadUrl.split("/").pop() || "data",
-      );
+      link.href = originalFileUrl;
+      link.download = originalFileName || "data_original";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

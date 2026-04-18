@@ -111,7 +111,8 @@ function GeneralProcedure() {
           }}
         />
       </p>
-      {/* Data Preview Section */}
+
+      {/* DATA PREVIEW */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <div className="card shadow-sm mt-4">
           <div className="card-body">
@@ -140,8 +141,8 @@ function GeneralProcedure() {
                 title={t(
                   "hypothesisTesting.generalProcedure.dataPreview.tableTitle",
                 )}
-                downloadUrl={`${import.meta.env.BASE_URL}data/MS_kraj.json`}
-                downloadFilename="MS_kraj.json"
+                originalFileUrl={`${import.meta.env.BASE_URL}data/MS_kraj.json`}
+                originalFileName="MS_kraj.json"
                 downloadBtnLabel="Stiahnuť GeoJSON"
               />
             )}
@@ -149,7 +150,7 @@ function GeneralProcedure() {
         </div>
       </div>
 
-      {/* Step 1: Formulation */}
+      {/* STEP 1: FORMULATION */}
       <div className="mt-5">
         <h4>{t("hypothesisTesting.generalProcedure.step1.title")}</h4>
         <p>
@@ -195,7 +196,7 @@ function GeneralProcedure() {
         </div>
       </div>
 
-      {/* Step 2: Significance Level */}
+      {/* STEP 2: SIGNIFICANCE LEVEL */}
       <div className="mt-5">
         <h4>
           <Trans
@@ -225,7 +226,7 @@ function GeneralProcedure() {
         </div>
       </div>
 
-      {/* Step 3: Test Statistic */}
+      {/* STEP 3: TEST STATISTIC */}
       <div className="mt-5">
         <h4>{t("hypothesisTesting.generalProcedure.step3.title")}</h4>
         <p>{t("hypothesisTesting.generalProcedure.step3.description")}</p>
@@ -260,7 +261,7 @@ function GeneralProcedure() {
         </div>
       </div>
 
-      {/* Step 4: Evaluation */}
+      {/* STEP 4: EVALUATION */}
       <div className="mt-5">
         <h4>{t("hypothesisTesting.generalProcedure.step4.title")}</h4>
         <p>

@@ -23,7 +23,7 @@ const Characteristics = () => {
   const { t } = useTranslation();
 
   return (
-    <section id="characteristics">
+    <section id="characteristics" className="mb-5">
       <h2 className="mb-4 fw-bold">
         {t("randomVariable.characteristics.title")}
       </h2>

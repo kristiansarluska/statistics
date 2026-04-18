@@ -9,6 +9,7 @@ function CorrelationAnalysis() {
 
   return (
     <section id="analysis" className="mb-5">
+      {/* INTRODUCTION */}
       <h2 className="mb-4 fw-bold">{t("correlation.analysis.title")}</h2>
       <p className="mb-4">
         <Trans
@@ -21,6 +22,7 @@ function CorrelationAnalysis() {
       </p>
 
       <div className="row mb-4">
+        {/* POSITIVE CORRELATION */}
         <div className="col-md-6 mb-3">
           <div className="card h-100 shadow-sm border-success">
             <div className="card-body">
@@ -43,6 +45,7 @@ function CorrelationAnalysis() {
           </div>
         </div>
 
+        {/* NEGATIVE CORRELATION */}
         <div className="col-md-6 mb-3">
           <div className="card h-100 shadow-sm border-danger">
             <div className="card-body">
@@ -66,7 +69,7 @@ function CorrelationAnalysis() {
         </div>
       </div>
 
-      {/* Causality Alert matching IntervalEstimation style */}
+      {/* CAUSALITY ALERT */}
       <div className="alert alert-info border-info-subtle shadow-sm mb-5">
         <h5 className="alert-heading fs-6 fw-bold">
           {t("correlation.analysis.alertCausalityTitle")}
@@ -83,6 +86,7 @@ function CorrelationAnalysis() {
         </p>
       </div>
 
+      {/* PRACTICAL EXAMPLE */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">{t("correlation.simulator.exampleTitle")}</h5>
         <p className="text-muted mb-3 small">
@@ -113,6 +117,7 @@ function CorrelationAnalysis() {
         <CorrelationChart />
       </div>
 
+      {/* SIGNIFICANCE TESTING */}
       <div className="mb-4">
         <h4>{t("correlation.analysis.testingTitle")}</h4>
         <p>
@@ -121,6 +126,8 @@ function CorrelationAnalysis() {
             components={{ m1: <InlineMath math="r_{xy} = 0{,}15" /> }}
           />
         </p>
+
+        {/* HYPOTHESES AND FORMULA */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "900px" }}>
           <div className="card shadow-sm mt-3">
             <div className="card-body">
@@ -158,6 +165,7 @@ function CorrelationAnalysis() {
         </div>
       </div>
 
+      {/* CHART REMINDER */}
       <div className="mx-auto w-100 mt-4">
         <div className="bg-body-tertiary border rounded-3 p-4 shadow-sm">
           <h6 className="mb-2">

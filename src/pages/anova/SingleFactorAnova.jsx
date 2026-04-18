@@ -3,7 +3,7 @@ import React from "react";
 
 const SingleFactorAnova = () => {
   return (
-    <section id="single-factor">
+    <section id="single-factor" className="mb-5">
       <h2 className="mb-4">Jednofaktorová ANOVA</h2>
       <p>
         Skúma vplyv jedného faktora na spojitú náhodnú veličinu. Testujeme

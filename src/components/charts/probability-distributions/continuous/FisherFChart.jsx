@@ -8,8 +8,8 @@ import "../../../../styles/charts.css";
 
 function FisherFChart() {
   const { t } = useTranslation();
-  const [d1, setD1] = useState(5);
-  const [d2, setD2] = useState(5);
+  const [d1, setD1] = useState(4);
+  const [d2, setD2] = useState(10);
   const [hoverX, setHoverX] = useState(null);
 
   const minX = 0;

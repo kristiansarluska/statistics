@@ -8,11 +8,10 @@ function Introduction() {
   const { t } = useTranslation();
 
   return (
-    <section className="mb-5">
-      {/* 1. Zvýraznený prvý odstavec */}
+    <section id="introduction" className="mb-5">
+      {/* INTRODUCTION */}
       <p className="fst-italic lead">{t("parameterEstimation.intro.p1")}</p>
 
-      {/* 2. Druhý bežný odstavec */}
       <p>
         <Trans
           i18nKey="parameterEstimation.intro.p2"
@@ -22,8 +21,8 @@ function Introduction() {
         />
       </p>
 
-      {/* 3. Cards: Populácia vs. Vzorka */}
       <div className="row mt-4 mb-4 g-4">
+        {/* POPULATION */}
         <div className="col-md-6">
           <div className="card shadow-sm h-100 border-primary border-opacity-50">
             <div className="card-body">
@@ -36,6 +35,8 @@ function Introduction() {
             </div>
           </div>
         </div>
+
+        {/* SAMPLE */}
         <div className="col-md-6">
           <div className="card shadow-sm h-100 border-success border-opacity-50">
             <div className="card-body">
@@ -50,10 +51,9 @@ function Introduction() {
         </div>
       </div>
 
-      {/* 4. Bežný prepojovací odstavec pred tabuľkou */}
       <p>{t("parameterEstimation.intro.p3")}</p>
 
-      {/* 5. Tabuľka porovnania znakov */}
+      {/* TABLE */}
       <div className="mx-auto w-100 my-4" style={{ maxWidth: "1000px" }}>
         <div className="card-body">
           <h6 className="card-subtitle mb-3 text-muted">
@@ -121,7 +121,6 @@ function Introduction() {
         </div>
       </div>
 
-      {/* 6. Záverečný odstavec prepájajúci teóriu s bodovým odhadom */}
       <p>{t("parameterEstimation.intro.p4")}</p>
     </section>
   );

@@ -12,6 +12,7 @@ function Introduction() {
         {t("hypothesisTesting.introduction.leadText")}
       </p>
 
+      {/* NULL AND ALTERNATIVE HYPOTHESIS */}
       <div className="card shadow-sm mt-4">
         <div className="card-body">
           <h5 className="card-title">

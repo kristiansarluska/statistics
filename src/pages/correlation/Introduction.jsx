@@ -24,6 +24,7 @@ function Introduction() {
         />
       </p>
 
+      {/* CORRELATION USAGE TABLE */}
       <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "800px" }}>
         <div className="card-body">
           <h6 className="card-subtitle mb-3 text-muted">

@@ -13,7 +13,7 @@ function ContinuousDistributions() {
   const { t } = useTranslation();
 
   return (
-    <section id="continuous-distributions">
+    <section id="continuous-distributions" className="mb-5">
       <h2 className="mb-4 fw-bold">
         {t("probabilityDistributions.continuous.title")}
       </h2>
@@ -24,7 +24,7 @@ function ContinuousDistributions() {
         />
       </p>
 
-      {/* ROVNOMERNÉ SPOJITÉ ROZDELENIE */}
+      {/* CONTINUOUS UNIFORM */}
       <h3 id="uniform-continuous" className="mb-3">
         {t("probabilityDistributions.continuous.uniform.title")}
       </h3>
@@ -61,7 +61,7 @@ function ContinuousDistributions() {
         <UniformContinuousChart />
       </div>
 
-      {/* EXPONENCIÁLNE ROZDELENIE */}
+      {/* EXPONENTIAL */}
       <h3 id="exponential" className="mb-3">
         {t("probabilityDistributions.continuous.exponential.title")}
       </h3>
@@ -94,7 +94,7 @@ function ContinuousDistributions() {
         <ExponentialChart />
       </div>
 
-      {/* NORMÁLNE ROZDELENIE */}
+      {/* NORMAL */}
       <h3 id="normal" className="mb-3">
         {t("probabilityDistributions.continuous.normal.title")}
       </h3>
@@ -139,7 +139,7 @@ function ContinuousDistributions() {
         <NormalChart />
       </div>
 
-      {/* CHÍ-KVADRÁT ROZDELENIE */}
+      {/* CHI SQUARED */}
       <h4 id="chi-square" className="mb-3">
         {t("probabilityDistributions.continuous.chiSquare.title")}
       </h4>
@@ -181,7 +181,7 @@ function ContinuousDistributions() {
         <ChiSquareChart />
       </div>
 
-      {/* STUDENTOVO T-ROZDELENIE */}
+      {/* STUDENT T */}
       <h4 id="student-t" className="mb-3">
         {t("probabilityDistributions.continuous.studentT.title")}
       </h4>
@@ -215,7 +215,7 @@ function ContinuousDistributions() {
         <StudentTChart />
       </div>
 
-      {/* FISHEROVO F-ROZDELENIE */}
+      {/* FISHER F */}
       <h4 id="fisher-f" className="mb-3">
         {t("probabilityDistributions.continuous.fisherF.title")}
       </h4>
@@ -247,7 +247,9 @@ function ContinuousDistributions() {
               bold: <strong />,
               m1: <InlineMath math="PM_{10}" />,
               m2: <InlineMath math="v_1" />,
-              m3: <InlineMath math="v_2" />,
+              m3: <InlineMath math="k - 1" />,
+              m4: <InlineMath math="v_2" />,
+              m5: <InlineMath math="n - k" />,
             }}
           />
         </p>

@@ -53,17 +53,16 @@ function CIDistributionChart({
   return (
     <StyledLineChart
       data={data}
-      minX={CLAMP_MIN} // Využijeme vnútornú logiku StyledLineChart pre os X
+      minX={CLAMP_MIN}
       maxX={CLAMP_MAX}
-      yAxisDomain={[0, maxY]} // Využijeme vnútornú logiku StyledLineChart pre os Y
-      hoverX={hoverX} // Prebratá ReferenceLine pri hoveri
+      yAxisDomain={[0, maxY]}
+      hoverX={hoverX}
       setHoverX={setHoverX}
       xLabel={t(
         "parameterEstimation.intervalEstimation.simulation.charts.xAxisLabel",
       )}
     >
-      {/* Pevné prichytenie oblastí k osiam */}
-      {type !== "right" && (
+      {type !== "left" && (
         <ReferenceArea
           x1={CLAMP_MIN}
           x2={critLow}
@@ -71,7 +70,7 @@ function CIDistributionChart({
           fillOpacity={0.15}
         />
       )}
-      {type !== "left" && (
+      {type !== "right" && (
         <ReferenceArea
           x1={critHigh}
           x2={CLAMP_MAX}
@@ -80,7 +79,7 @@ function CIDistributionChart({
         />
       )}
 
-      {type !== "right" && (
+      {type !== "left" && (
         <ReferenceLine
           x={critLow}
           stroke="var(--bs-danger)"
@@ -94,7 +93,7 @@ function CIDistributionChart({
           }}
         />
       )}
-      {type !== "left" && (
+      {type !== "right" && (
         <ReferenceLine
           x={critHigh}
           stroke="var(--bs-danger)"

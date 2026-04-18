@@ -3,7 +3,7 @@ import React from "react";
 
 const Introduction = () => {
   return (
-    <section>
+    <section id="introduction" className="mb-5">
       <p className="fst-italic lead">
         ANOVA (Analysis of Variance) je štatistická metóda určená na testovanie
         rozdielov medzi strednými hodnotami troch alebo viacerých výberových

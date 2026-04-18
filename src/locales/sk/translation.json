@@ -62,6 +62,11 @@
     "correlation": {
       "analysis": "Princípy korelačnej analýzy",
       "coefficients": "Korelačné koeficienty"
+    },
+    "anova": {
+      "singleFactor": "Jednofaktorová ANOVA",
+      "postHoc": "Testy mnohonásobného porovnávania",
+      "violation": "Narušenie predpokladov ANOVY"
     }
   },
 
@@ -102,6 +107,10 @@
         "correlation": {
           "title": "Korelácia",
           "desc": "Skúmanie vzťahov medzi premennými a korelačné koeficienty."
+        },
+        "anova": {
+          "title": "ANOVA",
+          "desc": "Jednofaktorová ANOVA, post-hoc testy a narušenie predpokladov."
         }
       },
       "methodologyModules": {
@@ -388,9 +397,9 @@
       },
       "fisherF": {
         "title": "Fisherovo F-rozdelenie",
-        "description": "Fisherovo rozdelenie popisuje variabilitu dvoch výberových rozptylov odvodených z normálneho rozdelenia. Je definované dvoma parametrami stupňov voľnosti: <m1/> (pre čitateľa) a <m2/> (pre menovateľa). Je kľúčové pre analýzu rozptylu (ANOVA).",
+        "description": "Fisherovo rozdelenie popisuje pomer dvoch nezávislých odhadov rozptylu. Je definované dvoma parametrami stupňov voľnosti: <m1/> (čitateľ – variabilita medzi skupinami) a <m2/> (menovateľ – variabilita vnútri skupín). Je kľúčové pre analýzu rozptylu (ANOVA).",
         "exampleTitle": "Porovnanie kvality ovzdušia v rôznych zónach mesta",
-        "exampleDesc": "Predstavme si, že porovnávame priemerné koncentrácie prachu <m1/> v priemyselnej, rezidenčnej a parkovej zóne. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi týmito zónami <bold>štatisticky významné</bold> vzhľadom na prirodzené kolísanie hodnôt vnútri každej zóny. Sledujte, ako zmena kombinácie stupňov voľnosti <bold><m2/></bold> a <bold><m3/></bold> mení asymetriu a \"špičatosť\" rozdelenia."
+        "exampleDesc": "Predstavme si, že porovnávame priemerné koncentrácie prachu <m1/> v 5 zónach. Parameter <m2/> sa počíta ako <m3/> (počet zón mínus jedna) a reprezentuje rozdiely medzi nimi. Parameter <m4/> je rovný <m5/> (celkový počet meraní v zónach mínus počet zón) a odráža prirodzené kolísanie hodnôt vnútri každej zóny. F-rozdelenie nám pomáha rozhodnúť, či sú rozdiely medzi zónami <bold>štatisticky významné</bold> vzhľadom na tento náhodný šum."
       }
     }
   },

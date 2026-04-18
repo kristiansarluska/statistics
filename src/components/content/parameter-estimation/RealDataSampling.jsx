@@ -409,8 +409,8 @@ function RealDataSampling() {
             rowKey="nuts_id"
             hoveredRowKey={hoveredNuts}
             onRowHover={setHoveredNuts}
-            downloadUrl={`${import.meta.env.BASE_URL}data/NUTS3_median_age_EU.geojson`}
-            downloadFilename="NUTS3_median_age_EU.geojson"
+            originalFileUrl={`${import.meta.env.BASE_URL}data/NUTS3_median_age_EU.geojson`}
+            originalFileName="NUTS3_median_age_EU.geojson"
           />
         </div>
       </div>

@@ -395,6 +395,8 @@ const CoefficientComparison = () => {
             columns={tableColumns}
             previewRows={5}
             title={t("correlation.comparison.table.title")}
+            originalFileUrl={`${import.meta.env.BASE_URL}data/NUTS2_GDPPPP_LifeExpectancy.csv`}
+            originalFileName="NUTS2_GDPPPP_LifeExpectancy.csv"
           />
         </div>
       </div>

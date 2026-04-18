@@ -280,8 +280,8 @@ const AnovaSimulation = () => {
                 : "Historické merania (OpenMeteo)"}
             </span>
           }
-          downloadUrl={realDataBlobUrl}
-          downloadFilename="Teploty_Jul_Realne.csv"
+          originalFileUrl={`${import.meta.env.BASE_URL}data/OpenMeteo.csv`}
+          originalFileName="OpenMeteo.csv"
           downloadBtnLabel="Stiahnuť pôvodné CSV"
         />
       </div>

@@ -11,6 +11,7 @@ function PointEstimation() {
 
   return (
     <section id="point-estimation" className="mb-5">
+      {/* INTRODUCTION */}
       <h2 className="mb-4 fw-bold">
         {t("parameterEstimation.pointEstimation.title")}
       </h2>
@@ -32,6 +33,7 @@ function PointEstimation() {
         />
       </p>
 
+      {/* STANDARD ERROR OF THE MEAN */}
       <h4 className="mt-5 mb-3">
         {t("parameterEstimation.pointEstimation.semTitle")}
       </h4>
@@ -51,6 +53,7 @@ function PointEstimation() {
       </div>
       <p>{t("parameterEstimation.pointEstimation.semEffect")}</p>
 
+      {/* INTERACTIVE SEM SIMULATION */}
       <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           {t("parameterEstimation.pointEstimation.simulation.exampleTitle")}
@@ -72,6 +75,7 @@ function PointEstimation() {
         <PointEstimationChart />
       </div>
 
+      {/* REAL DATA SAMPLING */}
       <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           {t("parameterEstimation.pointEstimation.realDataTitle")}

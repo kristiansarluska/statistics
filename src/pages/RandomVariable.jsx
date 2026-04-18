@@ -1,6 +1,5 @@
 // src/pages/RandomVariable.jsx
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Introduction from "./random-variable/Introduction";
 import ContinuousDiscrete from "./random-variable/ContinuousDiscrete";
@@ -9,26 +8,6 @@ import Characteristics from "./random-variable/Characteristics";
 
 const RandomVariable = () => {
   const { t } = useTranslation();
-  const location = useLocation();
-
-  // --- Smooth scroll to hash after navigation ---
-  useEffect(() => {
-    if (!location.pathname.startsWith("/random-variable")) return;
-
-    if (location.hash) {
-      const id = location.hash.replace("#", "");
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }, 50);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [location.pathname, location.hash]);
 
   return (
     <div className="container-fluid mb-5">

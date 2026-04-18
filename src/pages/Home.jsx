@@ -9,8 +9,11 @@ function Home() {
   return (
     <div className="container-fluid mb-5">
       <Hero />
+
       <About />
+
       <Topics />
+
       <Methodology />
     </div>
   );

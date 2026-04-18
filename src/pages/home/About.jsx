@@ -9,6 +9,7 @@ function About() {
 
   return (
     <section className="row mb-5 align-items-center">
+      {/* TEXT CONTENT */}
       <div className="col-md-6 mb-4 mb-md-0">
         <h2 className="mb-3">{t("home.about.title")}</h2>
         <p>{t("home.about.description")}</p>
@@ -21,6 +22,7 @@ function About() {
         </ul>
       </div>
 
+      {/* MOCKUP IMAGE */}
       <div className="col-md-6 text-center">
         <div
           className="bg-body-tertiary rounded-4 d-flex align-items-center justify-content-center p-3 shadow-sm border"

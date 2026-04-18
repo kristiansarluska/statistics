@@ -9,10 +9,12 @@ function CorrelationCoefficients() {
 
   return (
     <section id="coefficients" className="mb-5">
+      {/* INTRODUCTION */}
       <h2 className="mb-4 fw-bold">{t("correlation.coefficients.title")}</h2>
       <p className="mb-4">{t("correlation.coefficients.p1")}</p>
 
       <div className="row mb-5">
+        {/* PEARSON */}
         <div className="col-lg-6 mb-4">
           <div className="card h-100 shadow-sm border-primary border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -35,6 +37,7 @@ function CorrelationCoefficients() {
           </div>
         </div>
 
+        {/* SPEARMAN */}
         <div className="col-lg-6 mb-4">
           <div className="card h-100 shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -58,6 +61,7 @@ function CorrelationCoefficients() {
         </div>
       </div>
 
+      {/* INTERACTIVE COMPARISON */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">{t("correlation.comparison.title")}</h5>
 

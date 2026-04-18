@@ -62,6 +62,11 @@
     "correlation": {
       "analysis": "Principy korelační analýzy",
       "coefficients": "Korelační koeficienty"
+    },
+    "anova": {
+      "singleFactor": "Jednofaktorová ANOVA",
+      "postHoc": "Testy mnohonásobného porovnávání",
+      "violation": "Narušení predpokladů ANOVY"
     }
   },
 
@@ -102,6 +107,10 @@
         "correlation": {
           "title": "Korelace",
           "desc": "Zkoumání vztahů mezi proměnnými a korelační koeficienty."
+        },
+        "anova": {
+          "title": "ANOVA",
+          "desc": "Jednofaktorová ANOVA, post-hoc testy a narušení predpokladů."
         }
       },
       "methodologyModules": {
@@ -388,9 +397,9 @@
       },
       "fisherF": {
         "title": "Fisherovo F-rozdělení",
-        "description": "Fisherovo rozdělení popisuje variabilitu dvou výběrových rozptylů odvozených z normálního rozdělení. Je definováno dvěma parametry stupňů volnosti: <m1/> (pro čitatele) a <m2/> (pro jmenovatele). Je klíčové pro analýzu rozptylu (ANOVA).",
+        "description": "Fisherovo rozdělení popisuje poměr dvou nezávislých odhadů rozptylu. Je definováno dvěma parametry stupňů volnosti: <m1/> (čitatel – variabilita mezi skupinami) a <m2/> (jmenovatel – variabilita uvnitř skupín). Je klíčové pro analýzu rozptylu (ANOVA).",
         "exampleTitle": "Porovnání kvality ovzduší v různých zónách města",
-        "exampleDesc": "Představme si, že porovnáváme průměrné koncentrace prachu <m1/> v průmyslové, rezidenční a parkové zóně. F-rozdělení nám pomáhá rozhodnout, zda jsou rozdíly mezi těmito zónami <bold>statisticky významné</bold> vzhledem k přirozenému kolísání hodnot uvnitř každé zóny. Sledujte, jak změna kombinace stupňů volnosti <bold><m2/></bold> a <bold><m3/></bold> mění asymetrii a \"špičatost\" rozdělení."
+        "exampleDesc": "Představme si, že porovnáváme průměrné koncentrace prachu <m1/> v 5 zónách. Parametr <m2/> se počítá jako <m3/> (počet zón minus jedna) a reprezentuje rozdíly mezi nimi. Parametr <m4/> je roven <m5/> (celkový počet měření v zónách minus počet zón) a odráží přirozené kolísání hodnot uvnitř každé zóny. F-rozdělení nám pomáhá rozhodnout, zda jsou rozdíly mezi zónami <bold>statisticky významné</bold> vzhledem k tomuto náhodnému šumu."
       }
     }
   },

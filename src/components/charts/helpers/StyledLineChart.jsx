@@ -158,6 +158,22 @@ function StyledLineChart({
     return Math.max(0, Math.min(100, percent));
   }, [hoverX, chartDomainMin, chartDomainMax]);
 
+  // Filter for X-axis to prevent ticks from overflowing chart bounds
+  const validXTicks = useMemo(() => {
+    if (!xConfig.ticks) return undefined;
+    return xConfig.ticks.filter(
+      (t) => t >= chartDomainMin && t <= chartDomainMax,
+    );
+  }, [xConfig.ticks, chartDomainMin, chartDomainMax]);
+
+  // Force strict [0, 1] domain and ticks for CDF
+  const finalYDomain = type === "cdf" ? [0, 1] : yConfig.domain;
+  const finalYTicks = useMemo(() => {
+    if (type === "cdf" && yConfig.ticks)
+      return yConfig.ticks.filter((t) => t <= 1);
+    return yConfig.ticks;
+  }, [type, yConfig.ticks]);
+
   const calculatedArea = useMemo(() => {
     // Disabled calculation for multi-series graphs to avoid array mismatches
     if (
@@ -225,7 +241,7 @@ function StyledLineChart({
             dataKey="x"
             type="number"
             domain={xConfig.domain}
-            ticks={xConfig.ticks}
+            ticks={validXTicks}
             allowDecimals={true}
             className="chart-axis"
             tickFormatter={xConfig.formatTick}
@@ -236,9 +252,9 @@ function StyledLineChart({
           <YAxis
             className="chart-axis"
             tickFormatter={yConfig.formatTick}
-            domain={yConfig.domain}
-            ticks={yConfig.ticks}
-            allowDataOverflow={false}
+            domain={finalYDomain}
+            ticks={finalYTicks}
+            allowDataOverflow={true}
           >
             <Label
               value={displayYLabel}
@@ -284,19 +300,18 @@ function StyledLineChart({
           {/* Vertical Reference Line */}
           {hoverX !== null && (
             <ReferenceLine
-              x={hoverX}
               stroke="var(--bs-danger, red)"
               strokeWidth={1}
               strokeDasharray="5 5"
-              // For single series we can use segment, for multi-series full vertical line is clearer
-              {...(!series && hoverLineType === "segment" && hoverY !== null
+              isFront={true}
+              {...(!series && hoverY !== null
                 ? {
                     segment: [
                       { x: hoverX, y: chartDomainYMin },
                       { x: hoverX, y: hoverY },
                     ],
                   }
-                : {})}
+                : { x: hoverX })}
               ifOverflow="visible"
             />
           )}

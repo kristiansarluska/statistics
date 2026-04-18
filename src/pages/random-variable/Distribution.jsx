@@ -13,11 +13,12 @@ const Distribution = () => {
   const { t } = useTranslation();
 
   return (
-    <section id="distribution">
+    <section id="distribution" className="mb-5">
+      {/* INTRODUCTION */}
       <h2 className="mb-4 fw-bold">{t("randomVariable.distribution.title")}</h2>
-
       <p className="mb-5">{t("randomVariable.distribution.description")}</p>
 
+      {/* PMF AND PDF */}
       <div id="pmf-pdf" className="mb-5">
         <h3 className="mb-3">
           {t("randomVariable.distribution.pmfPdf.title")}
@@ -34,6 +35,7 @@ const Distribution = () => {
           />
         </p>
 
+        {/* LAW OF LARGE NUMBERS */}
         <div className="alert alert-info border-info-subtle shadow-sm mb-5">
           <h5 className="alert-heading fs-6 fw-bold">
             {t("randomVariable.distribution.pmfPdf.alertTitle")}
@@ -46,6 +48,7 @@ const Distribution = () => {
           </p>
         </div>
 
+        {/* SIMULATED PMF */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans
@@ -62,6 +65,7 @@ const Distribution = () => {
           <SimulatedPMFChart />
         </div>
 
+        {/* SIMULATED PDF */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans
@@ -79,6 +83,7 @@ const Distribution = () => {
         </div>
       </div>
 
+      {/* CUMULATIVE DISTRIBUTION FUNCTION */}
       <div id="cdf" className="mb-5">
         <h3 className="mb-3">{t("randomVariable.distribution.cdf.title")}</h3>
         <p className="mb-4">
@@ -92,6 +97,7 @@ const Distribution = () => {
           />
         </p>
 
+        {/* DISCRETE CDF SIMULATION*/}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans
@@ -111,6 +117,7 @@ const Distribution = () => {
           <DiscreteDistributionChart />
         </div>
 
+        {/* CONTINUOUS CDF SIMULATION */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans
@@ -131,6 +138,7 @@ const Distribution = () => {
         </div>
       </div>
 
+      {/* QUANTILE FUNCTION */}
       <div id="quantile" className="mb-5">
         <h3 className="mb-3">
           {t("randomVariable.distribution.quantile.title")}
@@ -149,6 +157,7 @@ const Distribution = () => {
           />
         </p>
 
+        {/* QUANTILE FUNCTION SLIDER SIMULATION */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans
@@ -170,6 +179,7 @@ const Distribution = () => {
           <QuantileFunctionSlider />
         </div>
 
+        {/* QUANTILE FUNCTION INPUT SIMULATION */}
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">
             <Trans

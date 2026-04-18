@@ -11,13 +11,22 @@ const Anova = () => {
 
   return (
     <div className="container-fluid mb-5">
-      <h1 className="mb-4"> {t("topics.anova")}</h1>
+      <h1 id="anova" className="mb-4">
+        {t("topics.anova")}
+      </h1>
+
       <Introduction />
+
       <hr className="my-5" />
+
       <SingleFactorAnova />
+
       <hr className="my-5" />
+
       <PostHocTests />
+
       <hr className="my-5" />
+
       <AssumptionViolations />
     </div>
   );

@@ -4,8 +4,8 @@ import AnovaSimulation from "../../components/content/anova/AnovaSimulation";
 
 const PostHocTests = () => {
   return (
-    <section id="post-hoc">
-      <h2 className="mb-4">Testy mnohonásobného porovnania</h2>
+    <section id="post-hoc" className="mb-5">
+      <h2 className="mb-4">Testy mnohonásobného porovnávania</h2>
       <p>
         Ak ANOVA zamietne nulovú hypotézu (p &lt; α), vieme, že aspoň jedna
         dvojica stredných hodnôt sa líši. Nerozlíši však, ktorá to je. Na to

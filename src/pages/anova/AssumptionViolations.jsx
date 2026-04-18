@@ -3,7 +3,7 @@ import React from "react";
 
 const AssumptionViolations = () => {
   return (
-    <section id="violation">
+    <section id="violation" className="mb-5">
       <h2 className="mb-4">Predpoklady a ich narušenie</h2>
       <div className="list-group shadow-sm">
         <div className="list-group-item list-group-item-action">

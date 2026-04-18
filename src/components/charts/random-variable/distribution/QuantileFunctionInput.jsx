@@ -133,7 +133,6 @@ const QuantileFunctionInput = () => {
           xLabel="p"
           yLabel="x"
           lineType="stepBefore"
-          type="cdf"
           hoverX={hoverX}
           setHoverX={setHoverX}
         >

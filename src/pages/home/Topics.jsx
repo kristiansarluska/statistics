@@ -9,6 +9,7 @@ function Topics() {
 
   return (
     <section className="mb-5">
+      {/* SECTION TITLE AND DESCRIPTION */}
       <h2 className="mb-4 border-bottom pb-2">{t("home.topicsTitle")}</h2>
       <p className=" text-center">
         <Trans
@@ -24,6 +25,8 @@ function Topics() {
           }}
         />
       </p>
+
+      {/* TOPICS GRID */}
       <div className="row g-3">
         {chapters.map((chapter, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-4">

@@ -676,8 +676,8 @@ function FiveNumberSummaryBoxplot() {
         columns={tableColumns}
         title={t("components.randomVariableCharts.boxplot.dataTableTitle")}
         previewRows={5}
-        downloadUrl={`${import.meta.env.BASE_URL}data/World_LifeExpectancy.csv`}
-        downloadFilename="World_LifeExpectancy.csv"
+        originalFileUrl={`${import.meta.env.BASE_URL}data/World_LifeExpectancy.csv`}
+        originalFileName="World_LifeExpectancy.csv"
       />
     </div>
   );

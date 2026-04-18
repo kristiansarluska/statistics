@@ -11,6 +11,7 @@ function IntervalEstimation() {
 
   return (
     <section id="interval-estimation" className="mb-5">
+      {/* TEXT INTRODUCTION */}
       <h2 className="mb-4 fw-bold">
         {t("parameterEstimation.intervalEstimation.title")}
       </h2>
@@ -38,6 +39,7 @@ function IntervalEstimation() {
         <BlockMath math="P\!\left(T_D \leq \theta \leq T_H\right) = 1 - \alpha" />
       </div>
 
+      {/* ALERT */}
       <div className="alert alert-info border-info-subtle shadow-sm mb-5">
         <h5 className="alert-heading fs-6 fw-bold">
           {t("parameterEstimation.intervalEstimation.alertTitle")}
@@ -50,7 +52,7 @@ function IntervalEstimation() {
         </p>
       </div>
 
-      {/* CI formula overview */}
+      {/* TYPES OF CONFIDENCE INTERVALS */}
       <h4 className="mb-3">
         {t("parameterEstimation.intervalEstimation.typesTitle")}
       </h4>
@@ -111,7 +113,7 @@ function IntervalEstimation() {
         />
       </p>
 
-      {/* Simulation */}
+      {/* INTERACTIVE CONFIDENCE INTERVAL SIMULATION */}
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
           {t("parameterEstimation.intervalEstimation.simTitle")}

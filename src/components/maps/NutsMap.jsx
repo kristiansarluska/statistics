@@ -7,6 +7,11 @@ import BaseMap from "./helpers/BaseMap";
 
 const SELECTED_COLORS = ["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"];
 
+const EUROPE_BOUNDS = [
+  [34.0, -25.0],
+  [71.5, 45.0],
+];
+
 const getQuantileBreaks = (vals, classes = 5) => {
   if (vals.length === 0) return [];
   const sorted = [...vals].sort((a, b) => a - b);
@@ -167,6 +172,8 @@ function NutsMap({
       maxZoom={10}
       height={420}
       legend={legend}
+      maxBounds={EUROPE_BOUNDS}
+      maxBoundsViscosity={0.8}
     >
       {geoJsonData && (
         <GeoJSON

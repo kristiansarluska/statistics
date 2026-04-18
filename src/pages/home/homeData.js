@@ -31,6 +31,12 @@ export const chapters = [
     icon: "assets/images/correlation.png",
     path: "/correlation",
   },
+  {
+    titleKey: "home.data.chapters.anova.title",
+    descKey: "home.data.chapters.anova.desc",
+    icon: "assets/images/anova.png",
+    path: "/anova",
+  },
 ];
 
 export const methodologyModules = [
