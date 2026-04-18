@@ -8,15 +8,18 @@ const PostHocTests = () => {
   const { t } = useTranslation();
   return (
     <section id="post-hoc" className="mb-5">
-      <h2 className="mb-4 fw-bold">Testy mnohonásobného porovnávania</h2>
+      <h2 className="mb-4 fw-bold">{t("anova.postHoc.title")}</h2>
       <p>
-        Ak ANOVA zamietne nulovú hypotézu (<InlineMath math="p < \alpha" />
-        ), vieme, že aspoň jedna dvojica stredných hodnôt sa líši. ANOVA však
-        neidentifikuje, o ktorú sa jedná. Na to slúžia{" "}
-        <strong>post-hoc testy</strong> – vykonávajú sa <em>po</em> zamietnutí{" "}
-        <InlineMath math="H_0" /> v ANOVE a upravujú hladinu významnosti tak,
-        aby celková chyba I. druhu zostala pod zvoleným{" "}
-        <InlineMath math="\alpha" />.
+        <Trans
+          i18nKey="anova.postHoc.intro"
+          components={{
+            bold: <strong />,
+            italic: <em />,
+            m1: <InlineMath math="p < \alpha" />,
+            m2: <InlineMath math="H_0" />,
+            m3: <InlineMath math="\alpha" />,
+          }}
+        />
       </p>
 
       {/* TEST CARDS */}
@@ -24,19 +27,29 @@ const PostHocTests = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-primary border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
-              <h5 className="card-title text-primary">Tukeyho HSD test</h5>
+              <h5 className="card-title text-primary">
+                {t("anova.postHoc.tukey.title")}
+              </h5>
               <p className="card-text small">
-                <strong>Najpoužívanejší post-hoc test.</strong> Porovnáva všetky
-                možné dvojice skupín a zachováva zvolenú hladinu{" "}
-                <InlineMath math="\alpha" /> pre celú rodinu testov. Vhodný pre
-                vyvážené aj nevyvážené výbery.
+                <Trans
+                  i18nKey="anova.postHoc.tukey.desc"
+                  components={{
+                    bold: <strong />,
+                    m: <InlineMath math="\alpha" />,
+                  }}
+                />
               </p>
               <div className="text-center overflow-auto mt-3">
                 <BlockMath math="\mathrm{HSD} = q \sqrt{\frac{S_\varepsilon}{n_k}}" />
               </div>
               <p className="text-muted small mb-0">
-                <InlineMath math="q" /> – štatistika studentizovaného rozdelenia
-                (z tabuliek), <InlineMath math="n_k" /> – veľkosť skupiny.
+                <Trans
+                  i18nKey="anova.postHoc.tukey.legend"
+                  components={{
+                    m1: <InlineMath math="q" />,
+                    m2: <InlineMath math="n_k" />,
+                  }}
+                />
               </p>
             </div>
           </div>
@@ -45,19 +58,26 @@ const PostHocTests = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
-              <h5 className="card-title text-success">Bonferroniho metóda</h5>
+              <h5 className="card-title text-success">
+                {t("anova.postHoc.bonferroni.title")}
+              </h5>
               <p className="card-text small">
-                Jednoduchá a konzervatívna korekcia — korigovaná hladina
-                významnosti sa vypočíta vydelením <InlineMath math="\alpha" />{" "}
-                celkovým počtom porovnaní <InlineMath math="m" />:
+                <Trans
+                  i18nKey="anova.postHoc.bonferroni.desc"
+                  components={{
+                    m1: <InlineMath math="\alpha" />,
+                    m2: <InlineMath math="m" />,
+                  }}
+                />
               </p>
               <div className="text-center overflow-auto mt-3">
                 <BlockMath math="\alpha^* = \frac{\alpha}{m}" />
               </div>
               <p className="text-muted small mb-0">
-                Každý párový t-test sa vyhodnocuje na upravenom{" "}
-                <InlineMath math="\alpha^*" />. Vhodná pre menší počet
-                porovnaní, kde je konzervatívnosť akceptovateľná.
+                <Trans
+                  i18nKey="anova.postHoc.bonferroni.legend"
+                  components={{ m: <InlineMath math="\alpha^*" /> }}
+                />
               </p>
             </div>
           </div>
@@ -66,14 +86,14 @@ const PostHocTests = () => {
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-warning border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
-              <h5 className="card-title">Scheffého metóda</h5>
+              <h5 className="card-title text-warning">
+                {t("anova.postHoc.scheffe.title")}
+              </h5>
               <p className="card-text small">
-                Najkonzervatívnejší test — kontroluje chybu I. druhu pri
-                všetkých možných lineárnych kontrastoch, nielen párových
-                porovnaniach. Vhodná najmä pre{" "}
-                <strong>nevyvážené výbery</strong> (rôzny počet pozorovaní v
-                skupinách). Testové kritérium sa porovnáva s kritickou hodnotou
-                odvodenú z Fisherovho F-rozdelenia.
+                <Trans
+                  i18nKey="anova.postHoc.scheffe.desc"
+                  components={{ bold: <strong /> }}
+                />
               </p>
             </div>
           </div>

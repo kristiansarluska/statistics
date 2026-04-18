@@ -790,13 +790,130 @@
     }
   },
   "anova": {
+    "introduction": {
+      "p1": "ANOVA (<italic>Analysis of Variance</italic>) je statistická metoda pro současné testování rozdílů středních hodnot <bold>tří a více</bold> výběrových souborů. Zjišťuje, zda pozorované rozdíly mezi skupinami lze připsat sledovanému faktoru, nebo zda jde pouze o náhodné kolísání.",
+      "p2": "Příkladem může být <bold>srovnávání úspěšnosti skupin při řešení úloh na mapě</bold> v rámci eye-tracking experimentu. Zajímá nás, zda má dosažené vzdělání (faktor) statisticky významný vliv na dosaženou úspěšnost — nebo jsou rozdíly mezi příslušníky skupin pouze důsledkem náhodného kolísání.",
+      "usageTitle": "Použití ANOVY",
+      "usageDesc": "Výběr správného testu závisí na <bold>počtu srovnávaných skupin</bold>. Níže se nachází přehled testů podle počtu skupin, vždy s uvedením neparametrické alternativy:",
+      "tests": {
+        "oneSample": {
+          "title": "Jeden výběr",
+          "parametric": "Jednovýběrový t-test",
+          "nonparametric": "Jednovýběrový Wilcoxonův test"
+        },
+        "twoSamples": {
+          "title": "Dva výběry",
+          "parametric": "Párový / dvouvýběrový t-test",
+          "nonparametric": "Wilcoxonův / Mann-Whitneyův test"
+        },
+        "threePlusSamples": {
+          "title": "Tři a více výběrů",
+          "parametric": "ANOVA",
+          "nonparametric": "Kruskal-Wallisův test"
+        }
+      },
+      "whyNotMultipleP1": "Mohlo by se zdát, že u <m1/> skupin lze jednoduše provést <m2/> nezávislé t-testy. Každý test pracuje s hladinou spolehlivosti 95 %, avšak celková spolehlivost při více současných testech klesá:",
+      "whyNotMultipleP2": "Reálná chyba I. druhu tím naroste na <bold>14,3 %</bold> — téměř trojnásobně oproti stanovené hodnotě <m1/>. S rostoucím počtem skupin se tento problém dále zhoršuje. ANOVA řeší celé srovnání jedním testem, který zohledňuje vzájemné vazby a násobné srovnávání.",
+      "prerequisitesTitle": "Předpoklady ANOVY",
+      "prerequisitesDesc": "Spolehlivost ANOVY závisí na třech základních předpokladech. K jejich ověření dochází na začátku analýzy, ještě před provedením samotné ANOVY.",
+      "prereqIndependence": {
+        "title": "Nezávislost měření",
+        "desc": "Pozorování jsou navzájem nezávislá — uvnitř skupin i mezi skupinami. Jde o designový předpoklad závislý na způsobu sběru dat."
+      },
+      "prereqNormality": {
+        "title": "Normalita rozdělení",
+        "desc": "Data každé skupiny pocházejí z normálního rozdělení. Při větších výběrech je ANOVA vůči odchylkám poměrně robustní."
+      },
+      "prereqHomoscedasticity": {
+        "title": "Homoskedasticita",
+        "desc": "Rozptyly všech skupin jsou stejné – rozptyl nezávisí na skupině. Silnější předpoklad než normalita. Ověření Bartlettovým nebo Leveneovým testem."
+      },
+      "homogeneityTitle": "Testy homogenity rozptylů",
+      "homogeneityDesc": "Tyto testy zkoumají stejnou hypotézu o shodě rozptylů a liší se citlivostí na porušení normality:",
+      "bartlett": {
+        "title": "Bartlettův test",
+        "desc1": "Přesnější a silnější test, avšak vyžaduje splněný předpoklad normality. Pokud normalita nebyla zamítnuta, upřednostňujeme Bartlettův test před Leveneovým.",
+        "desc2": "Testová statistika má <m1/> rozdělení s <m2/> stupni volnosti."
+      },
+      "levene": {
+        "title": "Leveneův test",
+        "desc1": "Robustnější alternativa — méně citlivý na porušení normality. Vhodný, když normalita dat není jistá nebo byla zamítnuta.",
+        "desc2": "Testová statistika má F-rozdělení se stupni volnosti <m1/> v čitateli a <m2/> ve jmenovateli."
+      }
+    },
+    "singleFactor": {
+      "title": "Jednofaktorová ANOVA",
+      "intro1": "Zkoumá vliv <bold>jednoho faktoru</bold> (kategorické proměnné) na spojitou náhodnou veličinu. Faktor definuje <m/> skupin (kategorií). Testujeme nulovou hypotézu, že všechny skupinové střední hodnoty pocházejí ze stejné populace:",
+      "intro2": "Alternativní hypotéza říká, že <bold>alespoň jedna</bold> střední hodnota pochází z jiné populace. ANOVA sama o sobě neurčuje, která dvojice se liší, tato skutečnost se zjišťuje až případnými <bold>post-hoc testy</bold>.",
+      "intro3": "Každé pozorování <m/> (j-tý prvek k-té skupiny) se rozkládá na tři složky:",
+      "legend": {
+        "mu": "– celkový průměr",
+        "alpha": "– efekt faktoru",
+        "epsilon": "– náhodná chyba"
+      },
+      "varianceTitle": "Rozklad variability",
+      "varianceDesc": "Základní myšlenkou ANOVY je, že celková variabilita dat <m/> se rozkládá na dvě nezávislé složky. Pokud je vliv faktoru skutečný, variabilita <italic>mezi skupinami</italic> bude výrazně převyšovat variabilitu <italic>uvnitř skupin</italic>.",
+      "betweenTitle": "Variabilita mezi skupinami",
+      "betweenDesc": "Měří vzdálenost skupinových průměrů od celkového průměru. Zachycuje <bold>vliv faktoru</bold>. Čím větší je, tím výraznější je efekt sledované kategorie.",
+      "withinTitle": "Variabilita uvnitř skupin",
+      "withinDesc": "Přirozená variabilita pozorování kolem jejich skupinového průměru. <bold>Náhodná</bold> složka — nezávisí na faktoru.",
+      "ftestTitle": "Testové kritérium a rozhodování",
+      "ftestDesc": "Statistika <m1/> je poměr variability <italic>mezi skupinami</italic> vůči variabilitě <italic>uvnitř skupín</italic>, oba výrazy normalizované příslušnými stupni volnosti. Za platnosti <m2/> má Fisherovo F-rozdělení s <m3/> a <m4/> stupni volnosti:",
+      "reject": "→ zamítáme",
+      "rejectDesc": "Rozdíl je statisticky významný, variabilita mezi skupinami je výrazně větší než uvnitř skupin. Alespoň jeden skupinový průměr se statisticky významně liší od ostatních.",
+      "accept": "→ nezamítáme",
+      "acceptDesc": "Rozdíl není statisticky významný, variabilita mezi skupinami je srovnatelná s variabilitou uvnitř skupin. Pozorované rozdíly průměrů lze připsat náhodným výkyvům."
+    },
     "postHoc": {
+      "title": "Testy mnohonásobného srovnávání",
+      "intro": "Pokud ANOVA zamítne nulovou hypotézu (<m1/>), víme, že alespoň jedna dvojice středních hodnot se liší. ANOVA však neidentifikuje, o kterou dvojici se jedná. K tomu slouží <bold>post-hoc testy</bold> – provádějí se <italic>po</italic> zamítnutí <m2/> v ANOVĚ a upravují hladinu významnosti tak, aby celková chyba I. druhu zůstala pod zvoleným <m3/>.",
+      "tukey": {
+        "title": "Tukeyho HSD test",
+        "desc": "<bold>Nejpoužívanější post-hoc test.</bold> Srovnává všechny možné dvojice skupin a zachovává zvolenou hladinu <m/> pro celou rodinu testů. Vhodný pro vyvážené i nevyvážené výběry.",
+        "legend": "<m1/> – statistika studentizovaného rozdělení (z tabulek), <m2/> – velikost skupiny."
+      },
+      "bonferroni": {
+        "title": "Bonferroniho metoda",
+        "desc": "Jednoduchá a konzervativní korekce — korigovaná hladina významnosti se vypočítá vydělením <m1/> celkovým počtem srovnání <m2/>:",
+        "legend": "Každý párový t-test se vyhodnocuje na upraveném <m/>. Vhodná pro menší počet srovnání, kde je konzervativnost akceptovatelná."
+      },
+      "scheffe": {
+        "title": "Scheffého metoda",
+        "desc": "Nejkonzervativnější test — kontroluje chybu I. druhu při všech možných lineárních kontrastech, nejen párových srovnáních. Vhodná zejména pro <bold>nevyvážené výběry</bold> (různý počet pozorování ve skupinách). Testové kritérium se srovnává s kritickou hodnotou odvozenou z Fisherova F-rozdělení."
+      },
       "simulation": {
         "title": "Průměrné denní teploty",
         "intro": "V následující simulaci jsou načtena <bold>historická data (OpenMeteo) pro červenec 2025</bold> ve třech moravských městech. Cílem analýzy je zjistit, zda je přítomna prokazatelná odlišnost v jejich průměrných teplotách za daný měsíc.",
         "cityOlomoucPrerov": "<bold>Olomouc a Přerov:</bold> Obě města leží v nížinaté oblasti Hornomoravského úvalu. Předpokládáme, že teplotní rozdíly mezi nimi budou minimální.",
         "cityJesenik": "<bold>Jeseník:</bold> Město situované v horském prostředí ve větší nadmořské výšce. Očekáváme, že ANOVA zamítne nulovou hypotézu a post-hoc test potvrdí významný rozdíl vůči oběma nížinným městům.",
         "tryIt": "<bold>Vyzkoušejte si:</bold> V grafu Tukey HSD si všimněte, že interval rozdílu mezi Olomoucí a Přerovem protíná nulovou linii (rozdíl není statisticky významný). Následně zkuste pomocí posuvníků zvýšit teplotu v Jeseníku. Sledujte, kdy se jeho teploty přiblíží těm v nížině a jak na to zareaguje výsledek post-hoc testu a p-hodnota."
+      }
+    },
+    "assumptionViolations": {
+      "title": "Narušení předpokladů ANOVY",
+      "intro1": "Před samotnou ANOVA analýzou je nezbytné ověřit zmíněné tři předpoklady:",
+      "list": {
+        "independence": "nezávislost měření",
+        "normality": "normalita rozdělení",
+        "homoscedasticity": "homoskedasticita"
+      },
+      "intro2": "Jejich porušení a následné použití ANOVY může vést k chybným závěrům — zejména ke zvýšenému riziku chyby I. druhu. Následující metody nahrazují klasickou ANOVU v situacích, kdy jsou některé předpoklady porušeny.",
+      "cards": {
+        "friedman": {
+          "violation": "Porušení nezávislosti měření",
+          "title": "Friedmanův test",
+          "desc": "Neparametrická alternativa pro <bold>závislá (opakovaná) měření</bold>. Test mediánu pro více než dva soubory – na rozdíl od Kruskal-Wallisova testu bere v úvahu závislost výběrů."
+        },
+        "kruskal": {
+          "violation": "Porušení normality",
+          "title": "Kruskal-Wallisův test",
+          "desc": "<bold>Neparametrická náhrada ANOVY</bold> – zobecnění Mann-Whitneyho testu pro více skupin. Namísto středních hodnot testuje shodu distribučních funkcí. Nefunguje dobře při heterogenních rozptylech."
+        },
+        "welch": {
+          "violation": "Porušení homogenity rozptylů",
+          "title": "Welchova ANOVA",
+          "desc": "Modifikace ANOVY, která <bold>nevyžaduje stejné rozptyly</bold>. Snižuje riziko chyby I. druhu při nehomogenních rozptylech. Stále <bold>předpokládá normalitu</bold> a pracuje lépe při podobných velikostech výběrů."
+        }
       }
     }
   },

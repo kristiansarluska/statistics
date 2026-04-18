@@ -1,8 +1,10 @@
 // src/pages/anova/AssumptionViolations.jsx
 import React from "react";
-import { InlineMath, BlockMath } from "react-katex";
+import { useTranslation, Trans } from "react-i18next";
 
 const AssumptionViolations = () => {
+  const { t } = useTranslation();
+
   return (
     <section
       id="violation"
@@ -12,73 +14,72 @@ const AssumptionViolations = () => {
         scrollMarginTop: "100px",
       }}
     >
-      {" "}
-      <h2 className="mb-4 fw-bold">Narušenie predpokladov ANOVY</h2>
+      <h2 className="mb-4 fw-bold">{t("anova.assumptionViolations.title")}</h2>
       <div className="mb-4">
-        Pred samotnou ANOVA analýzou je nevyhnutné overiť spomínané tri
-        predpoklady:{" "}
+        {t("anova.assumptionViolations.intro1")}
         <ul>
-          <li>nezávislosť meraní</li>
-          <li>normalita rozdelenia</li>
-          <li>homoskedasticita</li>
+          <li>{t("anova.assumptionViolations.list.independence")}</li>
+          <li>{t("anova.assumptionViolations.list.normality")}</li>
+          <li>{t("anova.assumptionViolations.list.homoscedasticity")}</li>
         </ul>
-        Ich porušenie a následné použitie ANOVY môže viesť k chybným záverom —
-        najmä k zvýšenému riziku chyby I. druhu. Nasledujúce metódy nahrádzajú
-        klasickú ANOVU v situáciách, keď sú niektoré predpoklady porušené.
+        {t("anova.assumptionViolations.intro2")}
       </div>
       <div className="row mb-5 g-3">
+        {/* Friedman */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
               <h6 className="text-danger text-uppercase small mb-1">
-                Porušenie nezávislosti meraní
+                {t("anova.assumptionViolations.cards.friedman.violation")}
               </h6>
-              <h5 className="card-title mb-2">Friedmannov test</h5>
+              <h5 className="card-title mb-2">
+                {t("anova.assumptionViolations.cards.friedman.title")}
+              </h5>
               <p className="card-text small text-muted mb-0">
-                Neparametrická alternatíva pre{" "}
-                <strong className="text-body">
-                  závislé (opakované) merania
-                </strong>
-                . Test mediánu pre viac ako dva súbory – na rozdiel od
-                Kruskal-Wallisovho testu berie do úvahy závislosť výberov.
+                <Trans
+                  i18nKey="anova.assumptionViolations.cards.friedman.desc"
+                  components={{ bold: <strong /> }}
+                ></Trans>
               </p>
             </div>
           </div>
         </div>
+
+        {/* Kruskal-Wallis */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
               <h6 className="text-danger text-uppercase small mb-1">
-                Porušenie normality
+                {t("anova.assumptionViolations.cards.kruskal.violation")}
               </h6>
-              <h5 className="card-title mb-2">Kruskal-Wallisov test</h5>
+              <h5 className="card-title mb-2">
+                {t("anova.assumptionViolations.cards.kruskal.title")}
+              </h5>
               <p className="card-text small text-muted mb-0">
-                <strong className="text-body">
-                  Neparametrická náhrada ANOVY
-                </strong>{" "}
-                – zovšeobecnenie Mann-Whitneyho testu pre viac skupín. Namiesto
-                stredných hodnôt testuje zhodu distribučných funkcií. Nefunguje
-                dobre pri heterogénnych rozptyloch.
+                <Trans
+                  i18nKey="anova.assumptionViolations.cards.kruskal.desc"
+                  components={{ bold: <strong /> }}
+                ></Trans>
               </p>
             </div>
           </div>
         </div>
+
+        {/* Welch */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
               <h6 className="text-danger text-uppercase small mb-1">
-                Porušenie homogenity rozptylov
+                {t("anova.assumptionViolations.cards.welch.violation")}
               </h6>
-              <h5 className="card-title mb-2">Welchova ANOVA</h5>
+              <h5 className="card-title mb-2">
+                {t("anova.assumptionViolations.cards.welch.title")}
+              </h5>
               <p className="card-text small text-muted mb-0">
-                Modifikácia ANOVY, ktorá{" "}
-                <strong className="text-body">
-                  nevyžaduje rovnaké rozptyly
-                </strong>
-                . Znižuje riziko chyby I. druhu pri nehomogénnych rozptyloch.
-                Stále{" "}
-                <strong className="text-body">predpokladá normalitu</strong> a
-                pracuje lepšie pri podobných veľkostiach výberov.
+                <Trans
+                  i18nKey="anova.assumptionViolations.cards.welch.desc"
+                  components={{ bold: <strong /> }}
+                ></Trans>
               </p>
             </div>
           </div>
