@@ -7,12 +7,21 @@ import DataPreviewTable from "../../helpers/DataPreviewTable";
 import StatsBadge from "../../../content/helpers/StatsBadge";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 
+/**
+ * @component QuantileFunctionSlider
+ * @description Interactive component for exploring the quantile function (inverse CDF).
+ * Allows users to input probability (p) via slider or value (x) via input to see the corresponding mapping.
+ * Uses real-world dataset (World HCI) fetched and parsed on mount.
+ */
 function QuantileFunctionSlider() {
   const { t } = useTranslation();
+
+  // Data state
   const [data, setData] = useState([]);
   const [rawRows, setRawRows] = useState([]);
   const [error, setError] = useState(null);
 
+  // Interaction state
   const [activeMode, setActiveMode] = useState("slider");
   const [sliderP, setSliderP] = useState(25);
 
@@ -21,7 +30,10 @@ function QuantileFunctionSlider() {
 
   const csvUrl = `${import.meta.env.BASE_URL}data/World_HCI.csv`;
 
-  // Vlastný CSV parser na nahradenie PapaParse
+  /**
+   * Fetches and parses CSV data on mount.
+   * Uses a custom lightweight parser instead of external libraries like PapaParse.
+   */
   useEffect(() => {
     fetch(csvUrl)
       .then((res) => {
@@ -95,6 +107,9 @@ function QuantileFunctionSlider() {
       });
   }, [t, csvUrl]);
 
+  /**
+   * Memoized column definitions for the preview table
+   */
   const tableColumns = useMemo(
     () => [
       {
@@ -110,6 +125,9 @@ function QuantileFunctionSlider() {
     [t],
   );
 
+  /**
+   * Calculates chart data points (step function) based on the sorted dataset
+   */
   const { chartData, n, minX, maxX } = useMemo(() => {
     const length = data.length;
     if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
@@ -130,6 +148,7 @@ function QuantileFunctionSlider() {
       if (x === 0) {
         quantileVal = data[0];
       } else if (isIntegerK && k > 0 && k < length) {
+        // Average the two adjacent values if exact integer
         quantileVal = (data[k - 1] + data[k]) / 2;
       } else {
         const idx = Math.ceil(exactK) - 1;
@@ -147,6 +166,9 @@ function QuantileFunctionSlider() {
     };
   }, [data]);
 
+  /**
+   * Evaluates the current active point (target p and x) based on user input mode
+   */
   const target = useMemo(() => {
     if (n === 0) return null;
 
@@ -205,6 +227,7 @@ function QuantileFunctionSlider() {
       : target?.p != null
         ? Math.round(target.p * 100)
         : sliderP;
+
   const displayPercentage =
     activeMode === "input" && target?.p != null
       ? (target.p * 100).toFixed(1)
@@ -238,6 +261,7 @@ function QuantileFunctionSlider() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      {/* Controls Section */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-5 w-100"
         style={{ maxWidth: "800px" }}
@@ -299,6 +323,7 @@ function QuantileFunctionSlider() {
         </div>
       </div>
 
+      {/* Target Status / Badges */}
       <div
         className="w-100 mb-4 text-center"
         style={{ maxWidth: "800px", minHeight: "40px" }}
@@ -308,7 +333,6 @@ function QuantileFunctionSlider() {
             {target.msg}
           </div>
         )}
-
         {target && !target.msg && <StatsBadge items={badgeItems} />}
       </div>
 
@@ -316,6 +340,7 @@ function QuantileFunctionSlider() {
         {t("components.randomVariableCharts.quantileSlider.title")}
       </h6>
 
+      {/* Chart Visualization */}
       <div
         className="charts-wrapper w-100 mx-auto mb-5"
         style={{ maxWidth: "800px" }}
@@ -350,6 +375,7 @@ function QuantileFunctionSlider() {
         </StyledLineChart>
       </div>
 
+      {/* Data Table */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <DataPreviewTable
           data={rawRows}

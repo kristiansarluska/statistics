@@ -3,8 +3,20 @@ import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
- * Reusable paginated data preview table with smooth height transition
- * and horizontal scroll support for mobile devices.
+ * @component DataPreviewTable
+ * @description Reusable paginated data preview table with smooth height transition
+ * and horizontal scroll support for mobile devices. Supports exporting data to CSV/GEOJSON.
+ * @param {Object} props
+ * @param {Array} props.data - Array of data objects to display.
+ * @param {Array} props.columns - Configuration array for table columns [{key, label, render}].
+ * @param {number} [props.previewRows=5] - Number of rows visible when collapsed.
+ * @param {string} [props.title] - Optional title for the table header.
+ * @param {string} [props.originalFileUrl] - URL for direct file download (if applicable).
+ * @param {string} [props.originalFileName] - Filename for the downloaded dataset.
+ * @param {string} [props.downloadBtnLabel] - Custom label for the download button.
+ * @param {string} [props.rowKey] - Key used to identify rows for hover interactions.
+ * @param {string|number} [props.hoveredRowKey] - Currently hovered row ID (controlled externally).
+ * @param {Function} [props.onRowHover] - Callback triggered when a row is hovered.
  */
 function DataPreviewTable({
   data = [],
@@ -19,6 +31,8 @@ function DataPreviewTable({
   onRowHover = null,
 }) {
   const { t } = useTranslation();
+
+  // Local state for tracking table expansion
   const [expanded, setExpanded] = useState(false);
   const tableRef = useRef(null);
 
@@ -27,7 +41,12 @@ function DataPreviewTable({
 
   if (!data.length || !columns.length) return null;
 
+  /**
+   * Handles dataset downloading.
+   * Uses a direct URL if provided, otherwise generates a CSV blob from current data.
+   */
   const handleDownload = () => {
+    // Direct file download
     if (originalFileUrl) {
       const link = document.createElement("a");
       link.href = originalFileUrl;
@@ -38,6 +57,7 @@ function DataPreviewTable({
       return;
     }
 
+    // CSV generation fallback with basic escaping
     const headers = columns.map((c) => `"${c.label}"`).join(";");
     const csvRows = data.map((row) =>
       columns
@@ -49,6 +69,7 @@ function DataPreviewTable({
     );
 
     const csvContent = [headers, ...csvRows].join("\n");
+    // Prepend BOM (\uFEFF) for correct UTF-8 encoding in Excel
     const blob = new Blob(["\uFEFF" + csvContent], {
       type: "text/csv;charset=utf-8;",
     });
@@ -61,6 +82,9 @@ function DataPreviewTable({
     document.body.removeChild(link);
   };
 
+  /**
+   * Toggles table expansion and resets scroll position when collapsing.
+   */
   const handleToggle = () => {
     if (expanded && tableRef.current) {
       tableRef.current.scrollTop = 0;
@@ -71,11 +95,12 @@ function DataPreviewTable({
   const btnLabel =
     downloadBtnLabel || t("components.dataPreviewTable.downloadBtn");
 
+  // Calculate collapsed height dynamically based on row count
   const collapsedHeightStr = `${38 + previewRows * 32}px`;
 
   return (
     <div className="mt-4">
-      {/* ── Header ── */}
+      {/* Header Section */}
       <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
         <div className="d-flex align-items-center gap-2">
           {title && <span className="fw-semibold small">{title}</span>}
@@ -86,6 +111,8 @@ function DataPreviewTable({
             {t("components.dataPreviewTable.records", { count: data.length })}
           </span>
         </div>
+
+        {/* Action Buttons */}
         <div className="d-flex gap-2">
           <button
             type="button"
@@ -121,7 +148,7 @@ function DataPreviewTable({
         </div>
       </div>
 
-      {/* ── Table Container s plynulou animáciou a horizontálnym scrollom ── */}
+      {/* Table Container */}
       <div
         ref={tableRef}
         className="rounded-3 border bg-body w-100"
@@ -137,7 +164,7 @@ function DataPreviewTable({
           scrollbarGutter: "stable",
         }}
       >
-        {/* Vnútorný obal pre horizontálne scrollovanie */}
+        {/* Horizontal Scroll Wrapper */}
         <div className="table-responsive w-100">
           <table
             className="table table-sm table-hover mb-0 text-nowrap"
@@ -192,7 +219,7 @@ function DataPreviewTable({
         </div>
       </div>
 
-      {/* ── Collapsed hint ── */}
+      {/* Collapsed Status Hint */}
       {!expanded && hiddenCount > 0 && (
         <p className="text-muted small text-center mt-1 mb-0">
           {t("components.dataPreviewTable.showingRows", {

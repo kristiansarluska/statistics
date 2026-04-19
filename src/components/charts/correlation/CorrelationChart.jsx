@@ -14,26 +14,41 @@ import {
 // Fixed axis domain — prevents chart from jumping when data changes
 const AXIS_DOMAIN = [0, 100];
 
+/**
+ * @component CorrelationChart
+ * @description Interactive scatter plot simulating data based on a target Pearson correlation coefficient.
+ * Includes hypothesis testing (t-test) to determine if the correlation is statistically significant.
+ */
 function CorrelationChart() {
   const { t } = useTranslation();
 
+  // Primary controls for data simulation
   const [targetR, setTargetR] = useState(0.8);
   const [n, setN] = useState(50);
+
+  // Dummy state to force data regeneration even if targetR and n remain unchanged
   const [regenTrigger, setRegenTrigger] = useState(0);
   const [showCalc, setShowCalc] = useState(false);
 
+  /**
+   * Generates a new dataset. Memoized to avoid unnecessary recalculations
+   * on every render, triggering only when controls or regen button are used.
+   */
   const data = useMemo(
     () => generateCorrelatedData(n, targetR),
     [targetR, n, regenTrigger],
   );
 
+  // Calculates the actual correlation of the generated sample (often slightly different from targetR)
   const actualR = useMemo(() => calculatePearson(data), [data]);
 
+  // Calculates test statistic and p-value for hypothesis testing (H0: rho = 0)
   const { tStat, pValue } = useMemo(
     () => calculateCorrelationSignificance(actualR, n),
     [actualR, n],
   );
 
+  // Standard significance level for the hypothesis test
   const alpha = 0.05;
   const isSignificant = pValue < alpha;
 
@@ -73,9 +88,8 @@ function CorrelationChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
-      {/* Controls — equal-width slider columns on desktop, stacked on mobile */}
+      {/* Controls Section */}
       <div className="mb-4 w-100" style={{ maxWidth: "800px" }}>
-        {/* Grid: 2 equal columns on md+, 1 column on mobile */}
         <div
           style={{
             display: "grid",
@@ -145,7 +159,7 @@ function CorrelationChart() {
           </div>
         </div>
 
-        {/* Generate button — centered below the grid */}
+        {/* Generate button */}
         <div className="text-center">
           <button
             type="button"
@@ -157,12 +171,12 @@ function CorrelationChart() {
         </div>
       </div>
 
-      {/* Stats badge — now using the shared component */}
+      {/* Stats Summary */}
       <div className="mb-4 text-center">
         <StatsBadge items={badgeItems} />
       </div>
 
-      {/* Chart */}
+      {/* Chart Visualization */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledScatterChart
           data={data}
@@ -177,6 +191,7 @@ function CorrelationChart() {
         />
       </div>
 
+      {/* Informational Alert */}
       <div
         className="alert alert-info border-0 shadow-sm mt-3 mb-2 small d-flex align-items-start gap-3"
         style={{ maxWidth: "600px", width: "100%" }}
@@ -190,7 +205,7 @@ function CorrelationChart() {
         </div>
       </div>
 
-      {/* Calculation toggle — shown BEFORE result block */}
+      {/* Calculation Details Panel */}
       <div className="mt-4" style={{ maxWidth: "800px", width: "100%" }}>
         <button
           type="button"
@@ -235,7 +250,7 @@ function CorrelationChart() {
         </div>
       </div>
 
-      {/* Significance result — green = significant, red = not significant */}
+      {/* Significance Result */}
       <div
         className={`alert ${isSignificant ? "alert-success" : "alert-danger"} shadow-sm border-0 mt-3 mb-0 text-center`}
         style={{ maxWidth: "800px", width: "100%" }}

@@ -12,6 +12,9 @@ import ResetButton from "../helpers/ResetButton";
 import StatsBadge from "../../content/helpers/StatsBadge";
 import DataPreviewTable from "../helpers/DataPreviewTable";
 
+/**
+ * Basic CSV parser to handle quotes and newlines.
+ */
 const parseCSV = (str) => {
   const result = [];
   let row = [],
@@ -35,17 +38,26 @@ const parseCSV = (str) => {
   return result;
 };
 
+/**
+ * @component CoefficientComparison
+ * @description Interactive tool comparing Pearson and Spearman correlation coefficients.
+ * Allows users to add artificial outliers to observe the robustness of Spearman vs. Pearson.
+ */
 function CoefficientComparison() {
   const { t } = useTranslation();
+
+  // Base data states
   const [rawData, setRawData] = useState([]);
   const [outliers, setOutliers] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
 
+  // Outlier placement controls
   const [newOutlierX, setNewOutlierX] = useState(145);
   const [newOutlierY, setNewOutlierY] = useState(77);
 
   const [showCalc, setShowCalc] = useState(false);
 
+  // Fetch and parse static CSV dataset on component mount
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/NUTS2_GDPPPP_LifeExpectancy.csv`)
       .then((res) => {
@@ -69,6 +81,7 @@ function CoefficientComparison() {
       .catch((err) => console.error("Chyba pri načítaní dát:", err));
   }, [t]);
 
+  // Filter dataset based on selected geographic tab
   const baseData = useMemo(() => {
     if (activeTab === "south_ro") {
       return rawData.filter((d) =>
@@ -98,12 +111,16 @@ function CoefficientComparison() {
 
   const hasOutliers = outliers.length > 0;
 
-  // Medzivýpočty pre zobrazenie dosadených hodnôt vo vzorcoch
+  /**
+   * Computes intermediate statistical values required to dynamically render LaTeX formulas.
+   * Spearman's sum of squared differences (sumD2) is reverse-engineered from the already
+   * calculated coefficient to avoid recalculating ranks purely for the UI display.
+   */
   const calcDetails = useMemo(() => {
     const n = chartData.length;
     if (n === 0) return null;
 
-    // Pearsonove sumy
+    // Pearson sums
     const meanX = chartData.reduce((acc, val) => acc + val.x, 0) / n;
     const meanY = chartData.reduce((acc, val) => acc + val.y, 0) / n;
     let sumDxDy = 0,
@@ -118,14 +135,13 @@ function CoefficientComparison() {
       sumDy2 += dy * dy;
     });
 
-    // Reverzný inžiniering pre sumu d^2 Spearmanovho koeficientu
+    // Reverse engineering sum of squared rank differences for Spearman
     const r_s = spearmanR;
     const sumD2 = ((1 - r_s) * n * (n * n - 1)) / 6;
 
     return { sumDxDy, sumDx2, sumDy2, sumD2, n };
   }, [chartData, spearmanR]);
 
-  // Dáta pre tabuľku
   const tableData = useMemo(() => {
     return chartData.map((d) => ({
       id: d.id || "—",
@@ -136,7 +152,6 @@ function CoefficientComparison() {
     }));
   }, [chartData]);
 
-  // Definícia stĺpcov
   const tableColumns = useMemo(
     () => [
       {
@@ -203,12 +218,12 @@ function CoefficientComparison() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
-      {/* Controls */}
+      {/* Controls Section */}
       <div
         className="controls mb-5 w-100 d-flex flex-column align-items-center gap-4"
         style={{ maxWidth: "1000px" }}
       >
-        {/* ROW 1: Dataset selector */}
+        {/* Dataset Selector */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
             {t("correlation.comparison.datasetLabel")}
@@ -235,9 +250,8 @@ function CoefficientComparison() {
           </div>
         </div>
 
-        {/* ROW 2: Sliders and Buttons */}
+        {/* Outlier Inputs & Actions */}
         <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 gap-md-4 w-100">
-          {/* Sliders styled like CorrelationChart */}
           <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-4 justify-content-center">
             <div style={{ width: "160px" }}>
               <div className="d-flex justify-content-between align-items-center mb-1">
@@ -280,7 +294,6 @@ function CoefficientComparison() {
             </div>
           </div>
 
-          {/* Buttons - s menšou vertikálnou medzerou na mobiloch (mt-2) */}
           <div className="d-flex align-items-center gap-2 mt-2 mt-md-0 pb-md-1">
             <button
               type="button"
@@ -299,7 +312,7 @@ function CoefficientComparison() {
         </div>
       </div>
 
-      {/* Stats badge above chart */}
+      {/* Stats Summary */}
       <div className="mb-4 text-center">
         <StatsBadge
           items={badgeItems}
@@ -314,7 +327,7 @@ function CoefficientComparison() {
         />
       </div>
 
-      {/* Chart */}
+      {/* Chart Visualization */}
       <div className="w-100 mx-auto" style={{ maxWidth: "1000px" }}>
         <StyledScatterChart
           data={chartData}
@@ -331,6 +344,7 @@ function CoefficientComparison() {
         />
       </div>
 
+      {/* Calculation Details Panel */}
       <div className="mt-4 w-100" style={{ maxWidth: "1000px" }}>
         <button
           type="button"
@@ -349,10 +363,9 @@ function CoefficientComparison() {
             transition: "grid-template-rows 0.35s ease",
           }}
         >
-          {/* FIX: minWidth: 0 prevents the grid item from stretching beyond mobile screen */}
           <div style={{ overflow: "hidden", minWidth: 0 }}>
             <CalcPanel title={t("correlation.simulator.calcTitle")}>
-              {/* Pearson */}
+              {/* Pearson Formula */}
               <CalcPanel.Row formula="r = \frac{\sum(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum(x_i-\bar{x})^2 \cdot \sum(y_i-\bar{y})^2}}" />
               {calcDetails && (
                 <CalcPanel.Row
@@ -363,7 +376,7 @@ function CoefficientComparison() {
 
               <CalcPanel.Divider />
 
-              {/* Spearman */}
+              {/* Spearman Formula */}
               <CalcPanel.Row formula="r_s = 1 - \frac{6\sum d_i^2}{n(n^2-1)}" />
               {calcDetails && (
                 <CalcPanel.Row
@@ -389,6 +402,7 @@ function CoefficientComparison() {
           </div>
         </div>
 
+        {/* Data Table */}
         <div className="mt-4 w-100" style={{ minWidth: 0 }}>
           <DataPreviewTable
             data={tableData}

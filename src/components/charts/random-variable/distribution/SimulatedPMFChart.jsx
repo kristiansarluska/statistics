@@ -5,6 +5,12 @@ import { Bar, Legend } from "recharts";
 import StyledBarChart from "../../helpers/StyledBarChart";
 import ResetButton from "../../helpers/ResetButton";
 
+/**
+ * Calculates the binomial coefficient (n choose k).
+ * @param {number} n - Total number of trials
+ * @param {number} k - Number of successful trials
+ * @returns {number} The number of combinations
+ */
 const combinations = (n, k) => {
   if (k === 0 || k === n) return 1;
   let c = 1;
@@ -12,26 +18,45 @@ const combinations = (n, k) => {
   return c;
 };
 
+/**
+ * @component SimulatedPMFChart
+ * @description Simulates and visualizes a Binomial Probability Mass Function (PMF).
+ * Users can generate random experiments to build an empirical distribution
+ * and compare it directly against the theoretical probabilities.
+ */
 function SimulatedPMFChart() {
   const { t } = useTranslation();
+
+  // Local state for tracking generated data and tooltip interactions
   const [measurements, setMeasurements] = useState([]);
   const [hoverX, setHoverX] = useState(null);
 
+  // Hardcoded Binomial distribution parameters: n (trials) and p (probability of success)
   const n = 12;
   const p = 0.45;
 
+  /**
+   * Generates a specified number of binomial random variables.
+   * Simulates 'n' independent Bernoulli trials for each measurement.
+   * @param {number} count - Number of simulated measurements to add
+   */
   const addMeasurements = (count) => {
     const newMeasurements = [];
     for (let i = 0; i < count; i++) {
       let successes = 0;
       for (let j = 0; j < n; j++) {
+        // Increment success count if random uniform value is less than 'p'
         if (Math.random() < p) successes++;
       }
       newMeasurements.push(successes);
     }
+    // Append new outcomes to the existing array
     setMeasurements((prev) => [...prev, ...newMeasurements]);
   };
 
+  /**
+   * Clears all simulated data
+   */
   const handleReset = () => setMeasurements([]);
 
   const theoreticalKey = t(
@@ -41,19 +66,27 @@ function SimulatedPMFChart() {
     "components.randomVariableCharts.simulatedPMF.empirical",
   );
 
+  /**
+   * Prepares chart data by calculating exact theoretical probabilities
+   * and empirical relative frequencies based on user simulations.
+   */
   const { chartData, customMaxY } = useMemo(() => {
     const total = measurements.length;
+    // Array to hold frequency counts for each possible outcome (0 to n)
     const bins = Array(n + 1).fill(0);
 
+    // Populate empirical frequency bins
     if (total > 0) measurements.forEach((val) => bins[val]++);
 
     let maxY = 0;
     const data = [];
 
     for (let i = 0; i <= n; i++) {
+      // Calculate Binomial probability: P(X = i) = (n choose i) * p^i * (1-p)^(n-i)
       const prob = combinations(n, i) * Math.pow(p, i) * Math.pow(1 - p, n - i);
       const empiricalProb = total > 0 ? bins[i] / total : 0;
 
+      // Track the maximum Y value to properly scale the chart's Y-axis
       maxY = Math.max(maxY, prob, empiricalProb);
 
       data.push({
@@ -63,6 +96,7 @@ function SimulatedPMFChart() {
       });
     }
 
+    // Add a 10% padding to the max Y-axis domain
     return { chartData: data, customMaxY: maxY * 1.1 };
   }, [measurements, n, p, theoreticalKey, empiricalKey]);
 
@@ -72,6 +106,7 @@ function SimulatedPMFChart() {
         {t("components.randomVariableCharts.simulatedPMF.title")}
       </h6>
 
+      {/* Controls Section */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3 w-100">
         <div className="btn-group shadow-sm rounded-pill overflow-hidden">
           <button
@@ -96,6 +131,7 @@ function SimulatedPMFChart() {
           </button>
         </div>
 
+        {/* Measurement Counter Badge */}
         <div
           className="fw-bold text-success bg-success-subtle px-3 py-1 rounded-pill shadow-sm text-nowrap"
           style={{ fontSize: "0.9rem" }}
@@ -111,6 +147,7 @@ function SimulatedPMFChart() {
         />
       </div>
 
+      {/* Chart Visualization */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <StyledBarChart
           data={chartData}

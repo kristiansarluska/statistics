@@ -846,7 +846,7 @@
       "title": "Jednofaktorová ANOVA",
       "intro1": "Zkoumá vliv <bold>jednoho faktoru</bold> (kategorické proměnné) na spojitou náhodnou veličinu. Faktor definuje <m/> skupin (kategorií). Testujeme nulovou hypotézu, že všechny skupinové střední hodnoty pocházejí ze stejné populace:",
       "intro2": "Alternativní hypotéza říká, že <bold>alespoň jedna</bold> střední hodnota pochází z jiné populace. ANOVA sama o sobě neurčuje, která dvojice se liší, tato skutečnost se zjišťuje až případnými <bold>post-hoc testy</bold>.",
-      "intro3": "Každé pozorování <m/> (j-tý prvek k-té skupiny) se rozkládá na tři složky:",
+      "intro3": "Každé pozorování <m/> (n-tý prvek k-té skupiny) se rozkládá na tři složky:",
       "legend": {
         "mu": "– celkový průměr",
         "alpha": "– efekt faktoru",

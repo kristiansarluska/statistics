@@ -5,14 +5,26 @@ import StyledLineChart from "../../helpers/StyledLineChart";
 import { studentTPDF, studentTCDF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
+/**
+ * @component StudentTChart
+ * @description Renders interactive probability density function (PDF) and cumulative distribution function (CDF) charts for the Student's t-distribution.
+ * Allows users to adjust the degrees of freedom (k) to see how the distribution approaches the Normal distribution.
+ */
 function StudentTChart() {
   const { t } = useTranslation();
+
+  // Local state for degrees of freedom (k) and synchronized hover position
   const [k, setK] = useState(5);
   const [hoverX, setHoverX] = useState(null);
 
+  // Fixed domain boundaries for the charts
   const minX = -5;
   const maxX = 5;
 
+  /**
+   * Generates data points for both PDF and CDF based on the current degrees of freedom.
+   * Computes 200 discrete points across the [-5, 5] domain.
+   */
   const { dataPDF, dataCDF } = useMemo(() => {
     const pdf = [];
     const cdf = [];
@@ -26,12 +38,18 @@ function StudentTChart() {
     return { dataPDF: pdf, dataCDF: cdf };
   }, [k]);
 
+  // Fixed Y-axis maximum for the PDF chart as t-distribution density peak is always below 0.4
   const maxY_PDF = 0.5;
 
+  /**
+   * Retrieves the exact cumulative probability (area under the curve) up to the hovered X value.
+   * Finds the closest pre-calculated CDF point to sync the visualization.
+   */
   const currentArea = useMemo(() => {
     if (hoverX === null || !dataCDF || dataCDF.length === 0) return null;
     let closest = dataCDF[0];
     let minDiff = Math.abs(dataCDF[0].x - hoverX);
+
     for (let i = 1; i < dataCDF.length; i++) {
       const diff = Math.abs(dataCDF[i].x - hoverX);
       if (diff < minDiff) {
@@ -44,6 +62,7 @@ function StudentTChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Parameter Control Panel */}
       <div className="controls mb-4 row justify-content-center w-100 mx-0">
         <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
           <label
@@ -66,7 +85,9 @@ function StudentTChart() {
         </div>
       </div>
 
+      {/* Chart Visualizations */}
       <div className="charts-wrapper w-100">
+        {/* Probability Density Function (PDF) Chart */}
         <div>
           <StyledLineChart
             data={dataPDF}
@@ -84,6 +105,8 @@ function StudentTChart() {
             showReferenceArea={true}
           />
         </div>
+
+        {/* Cumulative Distribution Function (CDF) Chart */}
         <div>
           <StyledLineChart
             data={dataCDF}

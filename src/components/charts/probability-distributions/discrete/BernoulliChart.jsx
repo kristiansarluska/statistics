@@ -5,11 +5,21 @@ import StyledBarChart from "../../helpers/StyledBarChart";
 import StyledDiscreteCDFChart from "../../helpers/StyledDiscreteCDFChart";
 import "../../../../styles/charts.css";
 
+/**
+ * @component BernoulliChart
+ * @description Renders interactive Probability Mass Function (PMF) and Cumulative Distribution Function (CDF) charts for the Bernoulli distribution.
+ * Users can adjust the success probability parameter (p) via a slider.
+ */
 function BernoulliChart() {
   const { t } = useTranslation();
+
+  // State for the success probability (p) and synchronized hover position across charts
   const [bernoulliP, setBernoulliP] = useState(0.25);
   const [hoverX, setHoverX] = useState(null);
 
+  /**
+   * Updates the success probability 'p' ensuring it stays within the valid [0, 1] range.
+   */
   const handleBernoulliPChange = (event) => {
     const value = parseFloat(event.target.value);
     if (!isNaN(value) && value >= 0 && value <= 1) {
@@ -20,6 +30,10 @@ function BernoulliChart() {
   const pVal = Number(bernoulliP);
   const qVal = 1 - pVal;
 
+  /**
+   * Prepares data for the Probability Mass Function (PMF) bar chart.
+   * Maps outcomes 0 (failure) and 1 (success) to their respective probabilities.
+   */
   const pmfData = useMemo(
     () => [
       { x: "0", "P(x)": qVal, fill: "var(--bs-info)" },
@@ -28,6 +42,10 @@ function BernoulliChart() {
     [pVal, qVal],
   );
 
+  /**
+   * Prepares the dataset for the discrete Cumulative Distribution Function (CDF).
+   * Defines the jump points for the step function.
+   */
   const cdfData = useMemo(
     () => [
       { x: 0, p: qVal },
@@ -38,6 +56,7 @@ function BernoulliChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Parameter Control Panel */}
       <div className="controls mb-4 row justify-content-center w-100 mx-0">
         <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 text-center small">
@@ -57,6 +76,7 @@ function BernoulliChart() {
       </div>
 
       <div className="charts-wrapper w-100">
+        {/* Probability Mass Function (PMF) Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.pmfTitle")}
@@ -75,6 +95,7 @@ function BernoulliChart() {
           />
         </div>
 
+        {/* Cumulative Distribution Function (CDF) Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.cdfTitle")}

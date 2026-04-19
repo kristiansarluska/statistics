@@ -5,23 +5,38 @@ import { Bar, Cell } from "recharts";
 import StyledBarChart from "../../charts/helpers/StyledBarChart";
 import DataInputControl from "../../content/helpers/DataInputControl";
 
+/**
+ * Default dataset used for initial calculation.
+ */
 const DEFAULT_DATA = [
   1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 7, 7, 7, 7, 7, 7,
   8, 8, 12,
 ];
 
+/**
+ * @component ModeCalc
+ * @description Interactive calculator for the Mode (most frequent value).
+ * Displays a frequency bar chart and allows users to modify the dataset.
+ */
 function ModeCalc() {
   const { t } = useTranslation();
   const [data, setData] = useState(DEFAULT_DATA);
 
+  // Check if current data matches original default values for reset button state
   const isDefault =
     data.length === DEFAULT_DATA.length &&
     data.every((val, idx) => val === DEFAULT_DATA[idx]);
 
+  /**
+   * Resets data to original state.
+   */
   const handleReset = () => {
     setData([...DEFAULT_DATA]);
   };
 
+  /**
+   * Calculates frequencies, identifies modes, and prepares chart data.
+   */
   const { chartData, modes, sortedData } = useMemo(() => {
     const counts = {};
     data.forEach((val) => {
@@ -52,11 +67,11 @@ function ModeCalc() {
         {t("components.characteristics.mode.title")}
       </h6>
 
+      {/* Mode Info Block */}
       <div
         className="p-3 r6unded-3 shadow-sm border bg-body-tertiary text-center w-100 mb-4"
         style={{ maxWidth: "800px" }}
       >
-        6{" "}
         <p className="mb-2 fw-bold text-muted" style={{ fontSize: "0.9rem" }}>
           {t("components.characteristics.mode.currentMode")}
         </p>
@@ -83,6 +98,7 @@ function ModeCalc() {
         </div>
       </div>
 
+      {/* Frequency Visualization */}
       <div className="w-100 mb-4" style={{ maxWidth: "800px" }}>
         <StyledBarChart
           data={chartData}
@@ -108,6 +124,8 @@ function ModeCalc() {
           </Bar>
         </StyledBarChart>
       </div>
+
+      {/* Dataset Input and Controls */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
           {t("components.characteristics.mode.inputLabel")}

@@ -4,19 +4,34 @@ import { useTranslation } from "react-i18next";
 import { ReferenceLine, ReferenceArea } from "recharts";
 import StyledLineChart from "../helpers/StyledLineChart";
 
+/**
+ * @component TDistributionChart
+ * @description Renders a Student's t-distribution chart for hypothesis testing. Visually highlights critical (rejection) regions and the calculated t-statistic.
+ * @param {Object} props
+ * @param {Array} props.data - Dataset containing x (t-values) and y (probability density) coordinates.
+ * @param {number} props.tValue - The calculated test statistic value.
+ * @param {number} props.tCrit - The critical t-value defining the boundaries of rejection regions.
+ * @param {number} props.df - Degrees of freedom associated with the t-distribution.
+ * @param {boolean} props.isSignificant - Flag indicating if the result is statistically significant (determines marker color).
+ */
 function TDistributionChart({ data, tValue, tCrit, df, isSignificant }) {
   const { t } = useTranslation();
+  // Local state for synchronized crosshair highlighting across charts
   const [hoverX, setHoverX] = useState(null);
 
+  // Safeguard against rendering errors on empty data
   if (!data || data.length === 0) return null;
 
   return (
     <div>
+      {/* Chart Title with dynamic degrees of freedom */}
       <div className="chart-title">
         {t("hypothesisTesting.tTestDashboard.charts.tChartTitle", { df })}
       </div>
 
+      {/* Legend Container */}
       <div className="d-flex justify-content-center gap-4 mb-1">
+        {/* Test Statistic Legend */}
         <span className="small d-flex align-items-center gap-1">
           <svg width="18" height="10">
             <line
@@ -36,6 +51,8 @@ function TDistributionChart({ data, tValue, tCrit, df, isSignificant }) {
             t = {tValue.toFixed(2)}
           </span>
         </span>
+
+        {/* Critical Area Legend */}
         <span className="small d-flex align-items-center gap-1">
           <svg width="18" height="10">
             <rect
@@ -66,18 +83,21 @@ function TDistributionChart({ data, tValue, tCrit, df, isSignificant }) {
         type="pdf"
         showReferenceArea={false}
       >
+        {/* Left tail critical (rejection) region */}
         <ReferenceArea
           x1={data[0]?.x}
           x2={-tCrit}
           fill="var(--bs-danger)"
           fillOpacity={0.15}
         />
+        {/* Right tail critical (rejection) region */}
         <ReferenceArea
           x1={tCrit}
           x2={data[data.length - 1]?.x}
           fill="var(--bs-danger)"
           fillOpacity={0.15}
         />
+        {/* Actual calculated t-statistic reference line */}
         <ReferenceLine
           x={tValue}
           stroke={isSignificant ? "var(--bs-danger)" : "var(--bs-success)"}

@@ -3,13 +3,30 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+/**
+ * Default dataset used for initial quartile deviation calculation.
+ */
 const DEFAULT_DATA = [12, 15, 14, 18, 145, 16, 17];
 
+/**
+ * @component QuartileDeviationCalc
+ * @description Interactive calculator for the Quartile Deviation (semi-interquartile range).
+ * It calculates the first and third quartiles using linear interpolation and determines
+ * the dispersion of the middle 50% of the data.
+ */
 function QuartileDeviationCalc() {
   const { t } = useTranslation();
 
+  /**
+   * Processes input data and generates mathematical output for the calculator.
+   * @param {number[]} data - Array of numeric values.
+   * @param {boolean} isExpanded - Flag to toggle display of detailed intermediate steps.
+   * @returns {Object} LaTeX strings and calculated results for display.
+   */
   const getMathContent = (data, isExpanded) => {
     const n = data.length;
+
+    // Minimum 4 data points are recommended for meaningful quartile calculation
     if (n < 4) {
       return {
         blockMath: "Q_x = ?",
@@ -19,9 +36,13 @@ function QuartileDeviationCalc() {
       };
     }
 
+    // Quartiles require data to be sorted in ascending order
     const sorted = [...data].sort((a, b) => a - b);
 
-    // Calculate generic p-quantile
+    /**
+     * Calculates the p-quantile using linear interpolation between the two closest observations.
+     * @param {number} p - The probability (quantile) to calculate (e.g., 0.25 for Q1).
+     */
     const calcQuantile = (p) => {
       const pos = p * (n - 1);
       const base = Math.floor(pos);
@@ -34,13 +55,16 @@ function QuartileDeviationCalc() {
 
     const q1 = calcQuantile(0.25);
     const q3 = calcQuantile(0.75);
-    // Quartile deviation is half of the interquartile range
+
+    // Quartile deviation formula: (Q3 - Q1) / 2
     const qd = (q3 - q1) / 2;
 
+    // Format numbers for display (remove trailing .00 for cleaner output)
     const q1Str = q1.toFixed(2).replace(/\.00$/, "");
     const q3Str = q3.toFixed(2).replace(/\.00$/, "");
     const qdStr = qd.toFixed(2).replace(/\.00$/, "");
 
+    // Prepare optional expanded steps showing sorted data and quartile values
     let formulaExpanded = "";
     if (isExpanded) {
       const sortedStr = sorted.join(", ");

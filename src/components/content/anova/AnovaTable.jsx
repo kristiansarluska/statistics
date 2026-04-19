@@ -5,16 +5,38 @@ import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
 import { fisherFCDF } from "../../../utils/distributions";
 
+/**
+ * @component AnovaTable
+ * @description Renders a standard Analysis of Variance (ANOVA) summary table
+ * and outputs the statistical decision (reject/fail to reject H0).
+ * @param {Object} props
+ * @param {Object} props.stats - The ANOVA statistics object calculated from the dataset
+ * @param {number} props.stats.sst - Total Sum of Squares
+ * @param {number} props.stats.ssw - Sum of Squares Within groups (Error)
+ * @param {number} props.stats.ssb - Sum of Squares Between groups (Treatment)
+ * @param {number} props.stats.dfB - Degrees of Freedom Between groups
+ * @param {number} props.stats.dfW - Degrees of Freedom Within groups
+ * @param {number} props.stats.msB - Mean Square Between groups
+ * @param {number} props.stats.msW - Mean Square Within groups
+ * @param {number} props.stats.fStat - Calculated F-statistic
+ * @param {Array} props.stats.groupStats - Statistics for each group (used to get total n)
+ */
 function AnovaTable({ stats }) {
   const { t } = useTranslation();
+
+  // Return null if stats are not provided yet
   if (!stats) return null;
 
   const { sst, ssw, ssb, dfB, dfW, msB, msW, fStat, groupStats } = stats;
+
+  // Calculate total sample size (n) by summing up the sizes of all groups
   const n = groupStats.reduce((acc, g) => acc + g.n, 0);
 
   // Calculate p-value using existing F-distribution
   const alpha = 0.05;
   const pValue = 1 - fisherFCDF(fStat, dfB, dfW);
+
+  // Evaluate the null hypothesis
   const rejectH0 = pValue < alpha;
 
   return (
@@ -23,6 +45,7 @@ function AnovaTable({ stats }) {
         {t("components.anovaSimulation.anovaTable.title")}
       </h4>
 
+      {/* ANOVA Summary Table */}
       <div className="table-responsive pb-2">
         <table className="table text-center align-middle mb-0">
           <thead className="table-active border fw-normal">
@@ -45,10 +68,10 @@ function AnovaTable({ stats }) {
             </tr>
           </thead>
           <tbody>
-            {/* BETWEEN GROUPS */}
+            {/* Between Groups Row */}
             <tr>
               <td className="border-start border-end text-start fw-bold px-3 small">
-                {t("components.anovaSimulation.anovaTable.rowBetween")}{" "}
+                {t("components.anovaSimulation.anovaTable.rowBetween")}
               </td>
               <td className="border-start border-end">
                 <div className="mb-1">
@@ -87,11 +110,10 @@ function AnovaTable({ stats }) {
                 </div>
               </td>
             </tr>
-
-            {/* WITHIN GROUPS */}
+            {/* Within Groups Row */}
             <tr>
               <td className="border-start border-end text-start fw-bold px-3 small">
-                {t("components.anovaSimulation.anovaTable.rowWithin")}{" "}
+                {t("components.anovaSimulation.anovaTable.rowWithin")}
               </td>
               <td className="border-start border-end">
                 <div className="mb-1">
@@ -118,8 +140,7 @@ function AnovaTable({ stats }) {
                 </div>
               </td>
             </tr>
-
-            {/* TOTAL */}
+            {/* Total Row */}
             <tr>
               <td className="border-start border-end text-start fw-bold px-3 small">
                 {t("components.anovaSimulation.anovaTable.rowTotal")}

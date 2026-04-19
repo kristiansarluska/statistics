@@ -6,14 +6,28 @@ import StyledDiscreteCDFChart from "../../helpers/StyledDiscreteCDFChart";
 import { poissonPMF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
+/**
+ * @component PoissonChart
+ * @description Renders interactive Probability Mass Function (PMF) and Cumulative Distribution Function (CDF) charts for the Poisson distribution.
+ * Allows users to adjust the average rate parameter (lambda) via a slider.
+ */
 function PoissonChart() {
   const { t } = useTranslation();
+
+  // State for the rate parameter (λ) and synchronized hover state across charts
   const [lambda, setLambda] = useState(5);
   const [hoverX, setHoverX] = useState(null);
 
+  /**
+   * Computes PMF and CDF datasets based on the current lambda.
+   * Dynamically adjusts the visible range (maxK) to encompass the significant part of the distribution.
+   */
   const { pmfData, cdfData } = useMemo(() => {
     const pmf = [];
     const cdf = [];
+
+    // Calculate a reasonable upper bound for X axis: mean + 4 * standard deviation
+    // Ensures at least 15 categories are shown for small lambda values
     const maxK = Math.max(15, Math.ceil(lambda + 4 * Math.sqrt(lambda)));
 
     for (let k = 0; k <= maxK; k++) {
@@ -26,6 +40,7 @@ function PoissonChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Parameter Control Panel */}
       <div className="controls mb-4 row justify-content-center w-100 mx-0">
         <div className="col-10 col-sm-8 col-md-5 col-lg-4 d-flex flex-column align-items-center">
           <label
@@ -49,6 +64,7 @@ function PoissonChart() {
       </div>
 
       <div className="charts-wrapper w-100">
+        {/* Probability Mass Function (PMF) Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.pmfTitle")}
@@ -66,6 +82,7 @@ function PoissonChart() {
           />
         </div>
 
+        {/* Cumulative Distribution Function (CDF) Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.cdfTitle")}

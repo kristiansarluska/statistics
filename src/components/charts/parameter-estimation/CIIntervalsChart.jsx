@@ -1,7 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { POP_MEAN } from "../../../utils/ciMath";
 
+/**
+ * @component CIIntervalsChart
+ * @description Custom SVG chart that visualizes multiple simulated confidence intervals.
+ * Demonstrates the concept of coverage probability by highlighting intervals that capture the true population mean.
+ * @param {Object} props
+ * @param {Array<Object>} props.samples - Array of simulated sample objects, each containing mean, lower/upper bounds, and a 'hit' boolean.
+ * @param {number} props.n - Sample size used in the simulation.
+ * @param {Function} props.t - i18n translation function.
+ */
 function CIIntervalsChart({ samples, n, t }) {
+  // Render empty state if no simulation data is available
   if (!samples.length) {
     return (
       <div
@@ -21,22 +31,25 @@ function CIIntervalsChart({ samples, n, t }) {
 
   const [tooltip, setTooltip] = useState(null);
 
-  // Fixné hranice osi X a zoznam značiek (ticks)
+  // Fixed X-axis boundaries and tick marks for consistent visual scaling
   const CLAMP_MIN = 41;
   const CLAMP_MAX = 51;
   const X_TICKS = [42, 44, 46, 48, 50];
 
+  // SVG layout configuration (Margins and Row Heights)
   const ROW_H = 20;
-  const ML = 65;
-  const MR = 30;
-  const MT = 24;
-  const MB = 36;
+  const ML = 65; // Margin Left
+  const MR = 30; // Margin Right
+  const MT = 24; // Margin Top
+  const MB = 36; // Margin Bottom
 
+  // Dynamic SVG height based on the number of simulated intervals
   const svgH = MT + samples.length * ROW_H + MB;
 
   const svgRef = useRef(null);
   const [svgW, setSvgW] = useState(600);
 
+  // Responsive SVG width recalculation using ResizeObserver
   useEffect(() => {
     if (!svgRef.current) return;
     const ro = new ResizeObserver(() => {
@@ -50,15 +63,20 @@ function CIIntervalsChart({ samples, n, t }) {
   const plotW = svgW - ML - MR;
   const plotH = samples.length * ROW_H;
 
-  // toX funkcia zostáva, orezáva čiary, ktoré by vystrelili mimo 41 - 51
+  /**
+   * Maps a data value to its corresponding X coordinate on the SVG canvas.
+   * Clamps the value to prevent rendering out of bounds (41 - 51).
+   */
   const toX = (v) =>
     ML +
     ((Math.max(CLAMP_MIN, Math.min(CLAMP_MAX, v)) - CLAMP_MIN) /
       (CLAMP_MAX - CLAMP_MIN)) *
       plotW;
 
+  // Calculates the Y center coordinate for a specific interval row
   const rowCY = (i) => MT + (i + 0.5) * ROW_H;
 
+  // Handles dynamic positioning of the custom SVG tooltip
   const handleMouseEnter = (e, s, i) => {
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -79,7 +97,7 @@ function CIIntervalsChart({ samples, n, t }) {
         style={{ display: "block", overflow: "visible" }}
         onMouseLeave={() => setTooltip(null)}
       >
-        {/* Grid vertical lines */}
+        {/* Vertical Grid Lines */}
         {X_TICKS.map((v) => (
           <line
             key={v}
@@ -93,7 +111,7 @@ function CIIntervalsChart({ samples, n, t }) {
           />
         ))}
 
-        {/* X axis line */}
+        {/* X-axis Base Line */}
         <line
           x1={ML}
           y1={MT + plotH}
@@ -103,7 +121,7 @@ function CIIntervalsChart({ samples, n, t }) {
           strokeWidth={1}
         />
 
-        {/* X axis ticks + labels */}
+        {/* X-axis Ticks and Labels */}
         {X_TICKS.map((v) => (
           <g key={v}>
             <line
@@ -127,7 +145,7 @@ function CIIntervalsChart({ samples, n, t }) {
           </g>
         ))}
 
-        {/* X axis label */}
+        {/* X-axis Title Label */}
         <text
           x={ML + plotW / 2}
           y={svgH - 4}
@@ -141,7 +159,7 @@ function CIIntervalsChart({ samples, n, t }) {
           )}
         </text>
 
-        {/* Y axis labels */}
+        {/* Y-axis Labels (Interval Enumeration) - Dynamically skipped for cleaner look when numerous */}
         {samples.map((_, i) => {
           const num = samples.length - i;
           if (
@@ -166,7 +184,7 @@ function CIIntervalsChart({ samples, n, t }) {
           );
         })}
 
-        {/* μ reference line */}
+        {/* True Population Mean (μ) Reference Line */}
         <line
           x1={toX(POP_MEAN)}
           y1={MT - 10}
@@ -187,7 +205,7 @@ function CIIntervalsChart({ samples, n, t }) {
           μ={POP_MEAN}
         </text>
 
-        {/* Interval lines */}
+        {/* Individual Confidence Interval Renderings */}
         {samples.map((s, i) => {
           const px1 = toX(s.lower === -Infinity ? CLAMP_MIN : s.lower);
           const px2 = toX(s.upper === Infinity ? CLAMP_MAX : s.upper);
@@ -195,7 +213,8 @@ function CIIntervalsChart({ samples, n, t }) {
           const cy = rowCY(i);
           const col = s.hit ? "var(--bs-success)" : "var(--bs-danger)";
           const capH = 5;
-          const sw = i === 0 ? 2.5 : 1.5;
+          const sw = i === 0 ? 2.5 : 1.5; // Thicker line for the latest (top) interval
+
           return (
             <g
               key={i}
@@ -203,6 +222,7 @@ function CIIntervalsChart({ samples, n, t }) {
               onMouseEnter={(e) => handleMouseEnter(e, s, i)}
               onMouseMove={(e) => handleMouseEnter(e, s, i)}
             >
+              {/* Invisible extended bounding box to make hovering easier */}
               <rect
                 x={px1}
                 y={cy - 8}
@@ -210,6 +230,7 @@ function CIIntervalsChart({ samples, n, t }) {
                 height={16}
                 fill="transparent"
               />
+              {/* Main Interval Line */}
               <line
                 x1={px1}
                 y1={cy}
@@ -223,6 +244,7 @@ function CIIntervalsChart({ samples, n, t }) {
                     : undefined
                 }
               />
+              {/* Left End Cap (if bounded) */}
               {s.lower !== -Infinity && (
                 <line
                   x1={px1}
@@ -233,6 +255,7 @@ function CIIntervalsChart({ samples, n, t }) {
                   strokeWidth={sw}
                 />
               )}
+              {/* Right End Cap (if bounded) */}
               {s.upper !== Infinity && (
                 <line
                   x1={px2}
@@ -243,12 +266,13 @@ function CIIntervalsChart({ samples, n, t }) {
                   strokeWidth={sw}
                 />
               )}
+              {/* Sample Mean Point */}
               <circle cx={pxMean} cy={cy} r={i === 0 ? 3.5 : 2.5} fill={col} />
             </g>
           );
         })}
 
-        {/* SVG tooltip */}
+        {/* Interactive Custom SVG Tooltip */}
         {tooltip &&
           (() => {
             const { s, i, mx, my } = tooltip;
@@ -286,10 +310,12 @@ function CIIntervalsChart({ samples, n, t }) {
             ];
             const tw = 148,
               th = lines.length * 16 + 10;
+            // Prevent tooltip from overflowing the SVG boundaries
             const tx = mx + tw + 8 > svgW ? mx - tw - 4 : mx + 8;
             const ty = Math.min(my - 4, svgH - th - 4);
             return (
               <g style={{ pointerEvents: "none" }}>
+                {/* Tooltip Background Box */}
                 <rect
                   x={tx}
                   y={ty}
@@ -301,6 +327,7 @@ function CIIntervalsChart({ samples, n, t }) {
                   strokeWidth={1}
                   filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"
                 />
+                {/* Render Tooltip Text Lines */}
                 {lines.map((ln, li) => (
                   <text
                     key={li}

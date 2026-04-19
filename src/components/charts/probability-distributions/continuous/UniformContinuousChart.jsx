@@ -25,51 +25,62 @@ import StyledLineChart from "../../helpers/StyledLineChart";
 import { getAxisConfig } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
+/**
+ * @component UniformContinuousChart
+ * @description Renders an interactive visualization of the Continuous Uniform Distribution.
+ * Includes a custom dual-range slider for parameters 'a' and 'b', and synchronized PDF/CDF charts.
+ */
 function UniformContinuousChart() {
   const { t } = useTranslation();
+
+  // Distribution parameters: 'a' (lower bound) and 'b' (upper bound)
   const [a, setA] = useState(12);
   const [b, setB] = useState(20);
   const [hoverX, setHoverX] = useState(null);
   const [animated, setAnimated] = useState(true);
 
   const prevDataRef = useRef([]);
-  const sliderRef = useRef(null); // Ref pre zachytenie kliknutí na slider
+  const sliderRef = useRef(null);
   const gradientId = useId();
 
   const minX = 0;
   const maxX = 30;
   const step = 1;
 
+  /**
+   * Updates the lower bound 'a', ensuring it doesn't exceed 'b'.
+   */
   const handleAChange = (e) => {
     const value = Math.min(Number(e.target.value), b - step);
     setA(value);
   };
 
+  /**
+   * Updates the upper bound 'b', ensuring it doesn't fall below 'a'.
+   */
   const handleBChange = (e) => {
     const value = Math.max(Number(e.target.value), a + step);
     setB(value);
   };
 
-  // Spracovanie kliknutia priamo na dráhu slidera
+  /**
+   * Logic for clicking on the slider track to move the nearest thumb (a or b).
+   */
   const handleTrackClick = (e) => {
     if (!sliderRef.current) return;
-
-    // Ignorujeme kliknutie, ak užívateľ klikol priamo na bežca (input)
-    // aby sme nenarušili plynulé ťahanie
     if (e.target.tagName.toLowerCase() === "input") return;
 
     const rect = sliderRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const percent = clickX / rect.width;
 
-    // Výpočet kliknutej hodnoty z percenta
     const clickedValue = Math.round(minX + percent * (maxX - minX));
     const safeValue = Math.max(minX, Math.min(maxX, clickedValue));
 
     const distA = Math.abs(safeValue - a);
     const distB = Math.abs(safeValue - b);
 
-    // Posunieme toho bežca, ktorý je bližšie ku kliknutiu
+    // Move the thumb that is closer to the click position
     if (distA < distB) {
       setA(Math.min(safeValue, b - step));
     } else if (distB < distA) {
@@ -92,6 +103,10 @@ function UniformContinuousChart() {
     return Math.max(0, Math.min(100, percent));
   }, [hoverX, minX, maxX]);
 
+  /**
+   * Generates technical data points for PDF (step function) and CDF (linear ramp).
+   * Uses epsilon values to simulate perfectly vertical lines in Recharts.
+   */
   const {
     chartData,
     areaData,
@@ -103,6 +118,7 @@ function UniformContinuousChart() {
     const height = 1 / (b - a);
     const epsilon = 1e-7;
 
+    // PDF line points including discontinuities
     const lData = [
       { x: minX, y: 0 },
       { x: a - epsilon, y: 0 },
@@ -114,6 +130,7 @@ function UniformContinuousChart() {
       { x: maxX, y: 0 },
     ];
 
+    // Background area polygon for highlighting
     const aData = [
       { x: minX, y: 0 },
       { x: a, y: 0 },
@@ -123,11 +140,11 @@ function UniformContinuousChart() {
       { x: maxX, y: 0 },
     ];
 
+    // Marks for open/closed intervals at boundaries
     const cData = [
       { x: a, y: height },
       { x: b, y: height },
     ];
-
     const oData = [
       { x: a, y: 0 },
       { x: b, y: 0 },
@@ -138,6 +155,7 @@ function UniformContinuousChart() {
     const numPoints = 300;
     const stepSize = (maxX - minX) / numPoints;
 
+    // Calculate CDF values: 0 before 'a', ramp between 'a' and 'b', 1 after 'b'
     for (let i = 0; i <= numPoints; i++) {
       const x = i === numPoints ? maxX : minX + i * stepSize;
       let y = 0;
@@ -160,6 +178,7 @@ function UniformContinuousChart() {
     };
   }, [a, b, minX, maxX]);
 
+  // Handle re-triggering of animations only on structural data changes
   useEffect(() => {
     if (JSON.stringify(prevDataRef.current) !== JSON.stringify(chartData)) {
       setAnimated(true);
@@ -177,6 +196,9 @@ function UniformContinuousChart() {
   const xConfig = getAxisConfig(maxX, minX, maxX, minX);
   const yConfig = getAxisConfig(maxY, 0, maxY, 0);
 
+  /**
+   * Syncs chart interaction with the local hoverX state.
+   */
   const handleChartInteraction = (state) => {
     if (state && state.activePayload && state.activePayload.length > 0) {
       const currentX = state.activePayload[0].payload.x;
@@ -215,6 +237,7 @@ function UniformContinuousChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Parameter Selection (Dual Slider) */}
       <div className="controls mb-4 row justify-content-center w-100 mx-0">
         <div className="col-11 col-sm-9 col-md-7 col-lg-5 d-flex flex-column align-items-center">
           <div className="d-flex justify-content-between w-100 mb-2 fw-bold small">
@@ -271,6 +294,7 @@ function UniformContinuousChart() {
       </div>
 
       <div className="charts-wrapper w-100">
+        {/* PDF Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.pdfTitle")}
@@ -285,6 +309,7 @@ function UniformContinuousChart() {
               onMouseLeave={() => setHoverX(null)}
             >
               <defs>
+                {/* Gradient for area highlight up to hover position */}
                 <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
                   <stop
                     offset={`${hoverPercent}%`}
@@ -381,6 +406,7 @@ function UniformContinuousChart() {
                 connectNulls={false}
               />
 
+              {/* Render marks for the open interval limit */}
               <Line
                 data={openCircleData}
                 type="linear"
@@ -406,6 +432,7 @@ function UniformContinuousChart() {
                 }}
               />
 
+              {/* Render marks for the closed interval exact value */}
               <Line
                 data={closedCircleData}
                 type="linear"
@@ -451,6 +478,7 @@ function UniformContinuousChart() {
           </ResponsiveContainer>
         </div>
 
+        {/* CDF Visualization */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.cdfTitle")}

@@ -10,12 +10,21 @@ const DEFAULT_DATA = [
   22.8, 23.4, 24.1, 25.6, 26.2, 27.5, 29.8,
 ];
 
+/**
+ * @component QuantileFunctionInput
+ * @description An interactive tool for visualizing the empirical quantile function.
+ * Users can input custom datasets and observe how specific quantiles (median, quartiles, deciles)
+ * are calculated and positioned on the cumulative probability scale (p).
+ */
 function QuantileFunctionInput() {
   const { t } = useTranslation();
+
+  // State for raw data, currently active quantile visualization type, and hover position
   const [data, setData] = useState(DEFAULT_DATA);
   const [activeQuantile, setActiveQuantile] = useState("none");
   const [hoverX, setHoverX] = useState(null);
 
+  // Checks if current data matches default for ResetButton visibility/state
   const isDefault =
     data.length === DEFAULT_DATA.length &&
     data.every((val, idx) => val === DEFAULT_DATA[idx]);
@@ -24,6 +33,10 @@ function QuantileFunctionInput() {
     setData([...DEFAULT_DATA]);
   };
 
+  /**
+   * Processes the raw dataset: sorts it and generates points for the step-function chart.
+   * X-axis represents the cumulative probability p = k/n.
+   */
   const { sortedData, chartData, n } = useMemo(() => {
     const sorted = [...data].sort((a, b) => a - b);
     const length = sorted.length;
@@ -34,16 +47,23 @@ function QuantileFunctionInput() {
       index: idx,
     }));
 
+    // Start the step function from x=0
     const fullPoints =
       length > 0 ? [{ x: 0, y: sorted[0], index: -1 }, ...points] : [];
     return { sortedData: sorted, chartData: fullPoints, n: length };
   }, [data]);
 
+  /**
+   * Calculates specific quantile values based on the selected type (median, quartiles, deciles).
+   * Implements the statistical logic: if k=p*n is an integer, take the average of k and k+1.
+   * Otherwise, take the value at the ceiling(k) position.
+   */
   const quantileData = useMemo(() => {
     if (n === 0 || activeQuantile === "none") {
       return { lines: [], activeIndices: [], injectedValues: [] };
     }
 
+    // Define probabilities p for each quantile type
     const ps =
       activeQuantile === "median"
         ? [0.5]
@@ -62,11 +82,13 @@ function QuantileFunctionInput() {
 
       let value;
       if (isIntegerK && k > 0 && k < n) {
+        // Statistical rule for integer k: Average of adjacent sorted values
         const rawValue = (sortedData[k - 1] + sortedData[k]) / 2;
         value = Math.round(rawValue * 1000) / 1000;
         activeIndices.push(k - 1, k);
         injectedValues.push({ p, value, insertAfterIdx: k - 1 });
       } else {
+        // Standard rule: Value at ceiling(p*n)
         const idx = Math.ceil(exactK) - 1;
         value = sortedData[idx];
         activeIndices.push(idx);
@@ -77,6 +99,7 @@ function QuantileFunctionInput() {
     return { lines, activeIndices, injectedValues };
   }, [n, activeQuantile, sortedData]);
 
+  // Map calculated quantile coordinates to SVG ReferenceLines
   const referenceLines = quantileData.lines.map((lineData, i) => (
     <React.Fragment key={`ref-${i}`}>
       <ReferenceLine
@@ -100,6 +123,7 @@ function QuantileFunctionInput() {
         {t("components.randomVariableCharts.quantileInput.title")}
       </h6>
 
+      {/* Control buttons for switching quantile types */}
       <div className="controls mb-4 d-flex flex-wrap justify-content-center align-items-center gap-3">
         <div className="btn-group" role="group">
           {["none", "median", "quartiles", "deciles"].map(
@@ -127,6 +151,7 @@ function QuantileFunctionInput() {
         </div>
       </div>
 
+      {/* Main step-function chart visualization */}
       <div className="w-100 mb-5" style={{ maxWidth: "800px" }}>
         <StyledLineChart
           data={chartData}
@@ -140,6 +165,7 @@ function QuantileFunctionInput() {
         </StyledLineChart>
       </div>
 
+      {/* Data entry and manipulation section */}
       <div className="w-100 mx-auto" style={{ maxWidth: "800px" }}>
         <h6 className="mb-3 text-start" style={{ fontSize: "0.95rem" }}>
           {t("components.randomVariableCharts.quantileInput.inputDataLabel")}
@@ -155,11 +181,13 @@ function QuantileFunctionInput() {
           placeholder={t(
             "components.randomVariableCharts.quantileInput.placeholder",
           )}
+          // Highlight items used in the current quantile calculation
           itemClassName={(_, idx) =>
             quantileData.activeIndices.includes(idx)
               ? "btn-success"
               : "btn-outline-secondary text-body"
           }
+          // Inject badges showing calculated values for integer-k quantiles
           renderExtra={(_, idx) => {
             const injected = quantileData.injectedValues.filter(
               (q) => q.insertAfterIdx === idx,

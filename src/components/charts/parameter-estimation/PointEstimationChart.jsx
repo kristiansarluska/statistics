@@ -10,11 +10,15 @@ import StatsBadge from "../../content/helpers/StatsBadge";
 import ResetButton from "../helpers/ResetButton";
 import { randomNormal, normalPdf } from "../../../utils/distributions";
 
-// Fixed population parameters for Mount Praděd height measurement
+// Fixed population parameters for Mount Praděd height measurement simulation
 const PRADED_MEAN = 1492.0;
 const PRADED_STD = 5.0;
 const MAX_SAMPLES = 100;
 
+/**
+ * @component PointEstimationChart
+ * @description Simulates and visualizes the process of point estimation by repeatedly drawing random samples from a known normal distribution. It compares empirical sample distributions against the theoretical population distribution.
+ */
 function PointEstimationChart() {
   const { t } = useTranslation();
 
@@ -23,12 +27,17 @@ function PointEstimationChart() {
   const [samplesHistory, setSamplesHistory] = useState([]);
   const [hoverX, setHoverX] = useState(null);
 
-  // Function to draw new samples
+  /**
+   * Generates new random samples based on the current sample size (n).
+   * Calculates the sample mean and sample standard deviation for each draw.
+   * @param {number} count - Number of independent samples to draw.
+   */
   const draw = (count) => {
     const newSamples = [];
     for (let j = 0; j < count; j++) {
       const data = [];
       let sum = 0;
+      // Generate individual random data points
       for (let i = 0; i < n; i++) {
         const val = randomNormal(PRADED_MEAN, PRADED_STD);
         data.push(val);
@@ -36,6 +45,7 @@ function PointEstimationChart() {
       }
       const sampleMean = sum / n;
 
+      // Calculate unbiased sample standard deviation (n-1)
       let sumSq = 0;
       for (let i = 0; i < n; i++) {
         sumSq += Math.pow(data[i] - sampleMean, 2);
@@ -44,11 +54,11 @@ function PointEstimationChart() {
 
       newSamples.push({ mean: sampleMean, std: sampleStd, data });
     }
-    // Add to the end of the array (newest records on the right)
+    // Append new samples and keep history within the maximum limit
     setSamplesHistory((prev) => [...prev, ...newSamples].slice(-MAX_SAMPLES));
   };
 
-  // Reset and draw 1 initial sample when sample size changes
+  // Reset history and draw 1 initial sample whenever sample size changes
   useEffect(() => {
     setSamplesHistory([]);
     draw(1);
@@ -61,14 +71,20 @@ function PointEstimationChart() {
     data: [],
   };
   const totalSamples = samplesHistory.length;
+  // Calculate Standard Error of the Mean (SEM)
   const sem = PRADED_STD / Math.sqrt(n);
 
+  /**
+   * Constructs the dataset for the Recharts visualization.
+   * Includes both the theoretical PDF curve and empirical density steps (histogram approximation).
+   */
   const chartData = useMemo(() => {
     if (lastSample.data.length === 0) return [];
 
     const minX = PRADED_MEAN - 4 * PRADED_STD;
     const maxX = PRADED_MEAN + 4 * PRADED_STD;
 
+    // Create frequency bins for the empirical distribution area
     const numBins = 30;
     const binWidth = (maxX - minX) / numBins;
     const bins = new Array(numBins).fill(0);
@@ -82,6 +98,7 @@ function PointEstimationChart() {
     const numPoints = 200;
     const step = (maxX - minX) / numPoints;
 
+    // Generate smooth line points and align them with step-area empirical bins
     for (let i = 0; i <= numPoints; i++) {
       const x = minX + i * step;
       const binIdx = Math.max(
@@ -100,7 +117,7 @@ function PointEstimationChart() {
     return points;
   }, [lastSample.data, n]);
 
-  // Calculate precise local maximum for Y-axis to remove top gap
+  // Calculate precise local maximum for Y-axis to dynamically remove excessive top gap
   const maxY = useMemo(() => {
     if (chartData.length === 0) return 0.1;
     return Math.max(...chartData.map((d) => Math.max(d.y, d.empirical || 0)));
@@ -133,11 +150,12 @@ function PointEstimationChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-5 w-100">
+      {/* Simulation Controls Panel */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4 w-100"
         style={{ maxWidth: "800px" }}
       >
-        {/* Target Parameter Toggle */}
+        {/* Target Parameter Toggle (Mean vs Std) */}
         <div className="d-flex flex-column align-items-center">
           <label
             className="form-label fw-bold mb-2 text-center"
@@ -174,7 +192,7 @@ function PointEstimationChart() {
           </div>
         </div>
 
-        {/* Action Buttons & Sample Size */}
+        {/* Action Buttons & Sample Size Slider */}
         <div className="d-flex flex-wrap align-items-center justify-content-center gap-4 mt-2 w-100">
           <div className="d-flex align-items-center gap-2">
             <label className="fw-bold small mb-0 text-nowrap">
@@ -216,12 +234,12 @@ function PointEstimationChart() {
       </div>
 
       <div className="w-100 mb-4 text-center" style={{ maxWidth: "800px" }}>
-        {/* StatsBadge */}
+        {/* Real-time Current Sample Statistics Badge */}
         <div className="mb-3">
           <StatsBadge items={badgeItems} />
         </div>
 
-        {/* History of recorded samples (Badges) */}
+        {/* History of recorded sample means/stds presented as small pill badges */}
         {samplesHistory.length > 0 && (
           <div className="w-100 mb-3 text-center d-flex justify-content-center">
             <div
@@ -261,7 +279,7 @@ function PointEstimationChart() {
           </div>
         )}
 
-        {/* SEM Formula */}
+        {/* Dynamic SEM Formula block */}
         <div className="overflow-auto py-1">
           <BlockMath
             math={`\\sigma_{\\bar{x}} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{${PRADED_STD}}{\\sqrt{${n}}} = ${sem.toFixed(4)}`}
@@ -269,6 +287,7 @@ function PointEstimationChart() {
         </div>
       </div>
 
+      {/* Main Chart Visualization */}
       <div
         className="charts-wrapper w-100 mx-auto"
         style={{ maxWidth: "800px" }}
@@ -285,11 +304,12 @@ function PointEstimationChart() {
           lineClass="chart-line-secondary"
           hoverX={hoverX}
           setHoverX={setHoverX}
-          minX={PRADED_MEAN - 4 * PRADED_STD} // Enforced domain boundaries for perfect centering
+          minX={PRADED_MEAN - 4 * PRADED_STD}
           maxX={PRADED_MEAN + 4 * PRADED_STD}
           yAxisDomain={[0, maxY * 1.05]}
-          margin={{ top: 10, right: 30, left: 20, bottom: 5 }} // Match padding with other charts
+          margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
         >
+          {/* Renders the background step-area histogram of the empirical sample */}
           <BackgroundArea
             dataKey="empirical"
             type="stepBefore"
@@ -300,7 +320,7 @@ function PointEstimationChart() {
             animationDuration={600}
           />
 
-          {/* Ghost lines for history (excluding the very last sample) */}
+          {/* Ghost lines representing historical samples (excluding the most recent one) */}
           {samplesHistory.slice(0, -1).map((s, i) => (
             <React.Fragment key={i}>
               {targetParam === "mean" ? (
@@ -329,7 +349,7 @@ function PointEstimationChart() {
             </React.Fragment>
           ))}
 
-          {/* Last sample - Custom animated SVG reference line so color & text positioning is preserved */}
+          {/* Highlight line for the newest, currently active sample */}
           {targetParam === "mean" ? (
             <ReferenceLine
               x={lastSample.mean}

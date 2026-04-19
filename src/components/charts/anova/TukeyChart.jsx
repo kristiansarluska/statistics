@@ -14,11 +14,19 @@ import {
 } from "recharts";
 import CustomTooltip from "../helpers/CustomTooltip";
 
+/**
+ * @component TukeyChart
+ * @description Renders a horizontal bar chart visualizing Tukey's HSD test results.
+ * Displays confidence intervals for pairwise mean differences. Intervals not crossing zero are statistically significant.
+ * @param {Object} props
+ * @param {Array} props.results - Array of pairwise comparison results containing ciLower, ciUpper, meanDiff, pair, and isSignificant flags.
+ */
 function TukeyChart({ results }) {
   const { t } = useTranslation();
 
   if (!results || results.length === 0) return null;
 
+  // Format data for Recharts floating bars (requires an array of [min, max])
   const chartData = results.map((r) => ({
     ...r,
     range: [r.ciLower, r.ciUpper],
@@ -27,7 +35,7 @@ function TukeyChart({ results }) {
   const rawMin = Math.min(0, ...chartData.map((d) => d.ciLower));
   const rawMax = Math.max(0, ...chartData.map((d) => d.ciUpper));
 
-  // Dynamic step calculation to prevent X-axis clutter on large intervals
+  // Dynamically calculate X-axis step to prevent label overlap based on data spread
   const valueRange = rawMax - rawMin;
   let step = 5;
   if (valueRange > 100) step = 25;
@@ -37,10 +45,15 @@ function TukeyChart({ results }) {
   const minVal = Math.floor(rawMin / step) * step - step;
   const maxVal = Math.ceil(rawMax / step) * step + step;
 
+  // Generate ticks anchored around zero to ensure the reference line aligns perfectly with axis labels
   const ticks = [];
   for (let i = 0; i >= minVal; i -= step) ticks.unshift(i);
   for (let i = step; i <= maxVal; i += step) ticks.push(i);
 
+  /**
+   * Custom tooltip adapter to map Recharts payload to the CustomTooltip format,
+   * injecting translated labels and applying colors based on statistical significance.
+   */
   const TukeyTooltipAdapter = ({ active, payload }) => {
     if (!active || !payload || !payload.length) return null;
 
@@ -84,12 +97,15 @@ function TukeyChart({ results }) {
   return (
     <div className="card mb-4 border-0 fade-in">
       <div className="card-body">
+        {/* Header Section */}
         <h5 className="card-title text-center mb-1 text-muted">
           {t("components.anovaSimulation.tukeyChart.title")}
         </h5>
         <p className="text-center small mb-4">
           {t("components.anovaSimulation.tukeyChart.description")}
         </p>
+
+        {/* Chart Visualization */}
         <div className="chart-container" style={{ width: "100%", height: 250 }}>
           <ResponsiveContainer>
             <BarChart
@@ -100,6 +116,7 @@ function TukeyChart({ results }) {
             >
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
 
+              {/* Axes */}
               <XAxis
                 type="number"
                 domain={[minVal, maxVal]}
@@ -121,13 +138,16 @@ function TukeyChart({ results }) {
                 angle={-90}
                 textAnchor="middle"
               />
+
               <Tooltip
                 content={<TukeyTooltipAdapter />}
                 cursor={{ fill: "rgba(204, 204, 204, 0.1)" }}
               />
 
+              {/* Zero Reference Line */}
               <ReferenceLine x={0} stroke="var(--bs-success)" strokeWidth={2} />
 
+              {/* Confidence Interval Bars */}
               <Bar dataKey="range" radius={[4, 4, 4, 4]}>
                 {chartData.map((entry, index) => (
                   <Cell

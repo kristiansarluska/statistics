@@ -13,6 +13,16 @@ import {
   CartesianGrid,
 } from "recharts";
 
+/**
+ * @component VariabilityScatterChart
+ * @description Renders a 1D scatter plot (using Y-axis jitter for visual separation) to display data distribution. It highlights the expected population mean versus the actual sample mean.
+ * @param {Object} props
+ * @param {Array} props.data - Dataset containing municipalities with their values and pre-calculated jitter.
+ * @param {number} props.expectedValue - The expected mean under the null hypothesis (μ₀).
+ * @param {number} props.mean - The calculated sample mean (x̄).
+ * @param {string|null} props.hoveredObec - The ID of the currently hovered municipality for cross-component synchronization.
+ * @param {Function} props.setHoveredObec - Callback to update the active hovered municipality.
+ */
 function VariabilityScatterChart({
   data,
   expectedValue,
@@ -22,6 +32,7 @@ function VariabilityScatterChart({
 }) {
   const { t } = useTranslation();
 
+  // Retrieve the specific data point currently being hovered to render its highlight
   const highlightedPoint = useMemo(() => {
     return data.find((d) => d.kod === hoveredObec) || null;
   }, [data, hoveredObec]);
@@ -32,7 +43,9 @@ function VariabilityScatterChart({
         {t("hypothesisTesting.tTestDashboard.charts.scatterTitle")}
       </div>
 
+      {/* Custom Legend Container */}
       <div className="d-flex justify-content-center gap-4 mb-1">
+        {/* Null Hypothesis Mean (μ₀) Legend */}
         <span className="small d-flex align-items-center gap-1">
           <svg width="18" height="10">
             <line
@@ -48,6 +61,8 @@ function VariabilityScatterChart({
             μ₀ = {expectedValue} %
           </span>
         </span>
+
+        {/* Actual Sample Mean (x̄) Legend */}
         <span className="small d-flex align-items-center gap-1">
           <svg width="18" height="10">
             <line
@@ -99,6 +114,7 @@ function VariabilityScatterChart({
               offset: -15,
             }}
           />
+          {/* Y-Axis is hidden as it only serves for random jitter to prevent point overlap */}
           <YAxis
             type="number"
             dataKey="jitter"
@@ -115,6 +131,7 @@ function VariabilityScatterChart({
             }}
           />
 
+          {/* Custom tooltip displaying location name and exact value */}
           <RechartsTooltip
             cursor={false}
             content={({ active, payload }) => {
@@ -138,6 +155,7 @@ function VariabilityScatterChart({
               return null;
             }}
           />
+
           <Scatter
             name="Obce"
             data={data}
@@ -146,6 +164,7 @@ function VariabilityScatterChart({
             onMouseOver={(payload) => setHoveredObec(payload?.kod ?? null)}
           />
 
+          {/* Render a secondary distinct dot over the highlighted point to emphasize selection */}
           {highlightedPoint && (
             <ReferenceDot
               x={highlightedPoint.podiel_nad65}
@@ -158,11 +177,13 @@ function VariabilityScatterChart({
             />
           )}
 
+          {/* Expected null hypothesis mean reference line */}
           <ReferenceLine
             x={expectedValue}
             stroke="var(--bs-danger)"
             strokeWidth={2}
           />
+          {/* Actual sample mean reference line */}
           <ReferenceLine
             x={mean}
             stroke="var(--bs-success)"

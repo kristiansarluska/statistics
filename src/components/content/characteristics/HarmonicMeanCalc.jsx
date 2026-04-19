@@ -3,8 +3,18 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import CalculatorTemplate from "../helpers/CalculatorTemplate";
 
+/**
+ * Default dataset for initial calculation.
+ * Harmonic mean is often used for average speeds or rates.
+ */
 const DEFAULT_DATA = [15.2, 12.5, 18.0];
 
+/**
+ * @component HarmonicMeanCalc
+ * @description Interactive calculator for the Harmonic Mean.
+ * Specifically useful for datasets representing rates or ratios (e.g., speed, density).
+ * Ensures all input values are strictly positive.
+ */
 function HarmonicMeanCalc() {
   const { t } = useTranslation();
 
@@ -13,11 +23,23 @@ function HarmonicMeanCalc() {
       title={t("components.characteristics.harmonic.title")}
       inputLabel={t("components.characteristics.harmonic.inputLabel")}
       defaultData={DEFAULT_DATA}
+      /**
+       * Validates that values are positive, as the harmonic mean
+       * is undefined for zero or negative values in most practical contexts.
+       */
       onValidate={(val) => !isNaN(val) && val > 0}
+      /**
+       * Logic for calculating the harmonic mean and generating LaTeX formulas.
+       * @param {number[]} data - Array of positive numeric values.
+       * @returns {Object} Math formatting for display.
+       */
       getMathContent={(data) => {
         const n = data.length;
+        // Sum of reciprocal values (1/x)
         const sumOfInverses = data.reduce((acc, val) => acc + 1 / val, 0);
+        // Harmonic mean formula: n / sum(1/x_i)
         const harmonicMean = n / sumOfInverses;
+
         return {
           formulaMath: `\\bar{x}_H = \\frac{ n }{ \\sum_{i=1}^{n} \\frac{1}{x_i} }`,
           blockMath: `\\bar{x}_H = \\frac{ ${n} }{ ${data.map((x) => `\\frac{1}{${x}}`).join(" + ")} }`,

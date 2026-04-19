@@ -7,23 +7,32 @@ import {
   calculateANOVA,
   calculateTukeyHSD,
 } from "../../../utils/anovaMath";
-import AnovaControls from "./AnovaControls";
-import AnovaDistributionChart from "../../charts/anova/AnovaDistributionChart";
 import AnovaTable from "./AnovaTable";
 import TukeyChart from "../../charts/anova/TukeyChart";
 import ResetButton from "../../charts/helpers/ResetButton";
 import DataPreviewTable from "../../charts/helpers/DataPreviewTable";
+import StyledLineChart from "../../charts/helpers/StyledLineChart";
 
 const SAMPLE_SIZE = 31;
 const X_MIN = 5;
 const X_MAX = 40;
 const KDE_BANDWIDTH = 1.4;
 
+/**
+ * Helper function to create a standardized group object from an initial data array.
+ * Calculates descriptive statistics and Kernel Density Estimation (KDE) curve points.
+ * * @param {string} name - The name of the group (e.g., city name)
+ * @param {Array<number>} initialSample - Array of numeric data points
+ * @param {string} color - CSS color variable or hex code for visualizations
+ * @returns {Object} Structured group object with computed stats and KDE data
+ */
 const createGroup = (name, initialSample, color) => {
   const n = initialSample.length;
+  // Calculate sample mean
   const mean = Number(
     (initialSample.reduce((a, b) => a + b, 0) / n).toFixed(1),
   );
+  // Calculate sample variance (n - 1)
   const variance =
     initialSample.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (n - 1);
   const std = Number(Math.sqrt(variance).toFixed(1));
@@ -38,14 +47,28 @@ const createGroup = (name, initialSample, color) => {
   };
 };
 
+/**
+ * @component AnovaSimulation
+ * @description Interactive ANOVA dashboard. Loads historical meteorological data,
+ * allows users to simulate changes in mean and standard deviation via sliders,
+ * and visualizes the results using KDE distributions, ANOVA tables, and Tukey HSD charts.
+ */
 function AnovaSimulation() {
   const { t } = useTranslation();
+
+  // State for dataset management
   const [groups, setGroups] = useState([]);
   const [originalGroups, setOriginalGroups] = useState([]);
-  const [isModified, setIsModified] = useState(false);
+  const [modifiedGroups, setModifiedGroups] = useState(new Set());
+
+  // UI states
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hoverX, setHoverX] = useState(null);
 
+  /**
+   * Fetches and parses initial CSV data on mount.
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,6 +85,7 @@ function AnovaSimulation() {
         const prerov = [];
         const jesenik = [];
 
+        // Manual CSV parsing assuming fixed column indices
         rows.forEach((row) => {
           const cols = row.split(",");
           if (cols.length >= 4) {
@@ -71,7 +95,7 @@ function AnovaSimulation() {
           }
         });
 
-        // City names kept as data values (proper nouns)
+        // Initialize groups. City names are kept as proper nouns.
         const initialData = [
           createGroup("Olomouc", olomouc, "var(--bs-danger)"),
           createGroup("Přerov", prerov, "var(--bs-warning)"),
@@ -91,8 +115,13 @@ function AnovaSimulation() {
     fetchData();
   }, [t]);
 
-  const [modifiedGroups, setModifiedGroups] = useState(new Set());
-
+  /**
+   * Updates a specific group parameter (mean or std) based on slider input.
+   * Generates a new random sample and recalculates the KDE curve.
+   * @param {number} index - Index of the group being modified
+   * @param {string} key - Parameter to modify ('mean' or 'std')
+   * @param {number} value - New parameter value
+   */
   const handleParamChange = (index, key, value) => {
     const groupName = groups[index].name;
 
@@ -100,6 +129,7 @@ function AnovaSimulation() {
       const updatedGroups = [...prev];
       const group = { ...updatedGroups[index], [key]: value };
 
+      // Generate new simulated dataset based on updated parameters
       const newSample = generateSample(group.mean, group.std, SAMPLE_SIZE);
       const newKde = calculateKDE(newSample, KDE_BANDWIDTH, X_MIN, X_MAX);
 
@@ -107,14 +137,21 @@ function AnovaSimulation() {
       return updatedGroups;
     });
 
+    // Track which groups have been altered from their historical state
     setModifiedGroups((prev) => new Set(prev).add(groupName));
   };
 
+  /**
+   * Restores all groups to their original historical datasets
+   */
   const handleReset = () => {
     setGroups(originalGroups);
     setModifiedGroups(new Set());
   };
 
+  /**
+   * Flattens KDE data for the Recharts line chart component
+   */
   const chartData = useMemo(() => {
     if (groups.length === 0) return [];
     return groups[0].kde.map((point, i) => {
@@ -126,12 +163,29 @@ function AnovaSimulation() {
     });
   }, [groups]);
 
+  /**
+   * Prepares series metadata for the distribution chart
+   */
+  const chartSeries = useMemo(() => {
+    return groups.map((g) => ({
+      key: g.name,
+      name: `${g.name}`,
+      color: g.color,
+    }));
+  }, [groups]);
+
+  /**
+   * Computes one-way ANOVA statistics dynamically when data changes
+   */
   const anovaStats = useMemo(() => {
     if (groups.length === 0) return null;
     const rawDataGroups = groups.map((g) => g.sample);
     return calculateANOVA(rawDataGroups);
   }, [groups]);
 
+  /**
+   * Computes Tukey's Honestly Significant Difference (HSD) post-hoc test
+   */
   const tukeyResults = useMemo(() => {
     if (!anovaStats) return [];
 
@@ -148,6 +202,9 @@ function AnovaSimulation() {
     });
   }, [anovaStats, groups]);
 
+  /**
+   * Prepares raw data rows for the preview table
+   */
   const tableData = useMemo(() => {
     if (groups.length === 0) return [];
     const rows = [];
@@ -161,6 +218,9 @@ function AnovaSimulation() {
     return rows;
   }, [groups]);
 
+  /**
+   * Defines column structure for the preview table, adding visual cues for modified data
+   */
   const tableColumns = useMemo(() => {
     if (groups.length === 0) return [];
 
@@ -181,12 +241,6 @@ function AnovaSimulation() {
             }
           >
             {value}
-            {isThisGroupModified && (
-              <small
-                className="ms-1"
-                style={{ fontSize: "0.65rem", verticalAlign: "top" }}
-              ></small>
-            )}
           </span>
         ),
       });
@@ -194,27 +248,6 @@ function AnovaSimulation() {
 
     return cols;
   }, [groups, modifiedGroups, t]);
-
-  const realDataBlobUrl = useMemo(() => {
-    if (originalGroups.length === 0) return null;
-    const headers = [
-      t("components.anovaSimulation.dayOfMonth"),
-      ...originalGroups.map((g) => g.name),
-    ].join(",");
-    const rows = [];
-    for (let i = 0; i < SAMPLE_SIZE; i++) {
-      const rowVals = [
-        i + 1,
-        ...originalGroups.map((g) => Number(g.sample[i]).toFixed(2)),
-      ];
-      rows.push(rowVals.join(","));
-    }
-    const csvContent = [headers, ...rows].join("\n");
-    const blob = new Blob(["\uFEFF" + csvContent], {
-      type: "text/csv;charset=utf-8;",
-    });
-    return URL.createObjectURL(blob);
-  }, [originalGroups, t]);
 
   if (isLoading) {
     return (
@@ -238,8 +271,71 @@ function AnovaSimulation() {
 
   return (
     <div className="anova-simulation">
-      <AnovaControls params={groups} onParamChange={handleParamChange} />
+      {/* Inline styles for custom slider colors */}
+      {/* Note: In a larger app, prefer CSS modules or styled-components to avoid global scope pollution */}
+      <style>
+        {`
+          .colored-slider::-webkit-slider-thumb {
+            background-color: var(--slider-color) !important;
+          }
+          .colored-slider::-moz-range-thumb {
+            background-color: var(--slider-color) !important;
+          }
+        `}
+      </style>
 
+      {/* Controls Section */}
+      <div className="row g-3 mb-4">
+        {groups.map((group, index) => (
+          <div key={group.name} className="col-md-4">
+            <div
+              className="card border-0"
+              style={{ borderTop: `4px solid ${group.color}` }}
+            >
+              <div className="card-body">
+                <h6
+                  className="card-title fw-bold"
+                  style={{ color: group.color }}
+                >
+                  {t("components.anovaSimulation.city", { name: group.name })}
+                </h6>
+
+                <label className="form-label small mb-0">μ: {group.mean}</label>
+                <input
+                  type="range"
+                  className="form-range colored-slider"
+                  style={{ "--slider-color": group.color }}
+                  min="8"
+                  max="32"
+                  step="0.1"
+                  value={group.mean}
+                  onChange={(e) =>
+                    handleParamChange(index, "mean", Number(e.target.value))
+                  }
+                />
+
+                <label className="form-label small mb-0 mt-2">
+                  σ: {group.std}
+                </label>
+                <input
+                  type="range"
+                  className="form-range colored-slider"
+                  style={{ "--slider-color": group.color }}
+                  min="0.5"
+                  max="5"
+                  step="0.1"
+                  value={group.std}
+                  onChange={(e) =>
+                    handleParamChange(index, "std", Number(e.target.value))
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Reset Area */}
       <div className="d-flex justify-content-end align-items-center mb-4 mt-n2 gap-2 text-muted small">
         {modifiedGroups.size > 0 && (
           <span className="fst-italic">
@@ -253,15 +349,25 @@ function AnovaSimulation() {
           title={t("components.anovaSimulation.resetTitle")}
         />
       </div>
+
+      {/* Distribution Chart Visualization */}
       <div className="charts-wrapper w-100">
-        <AnovaDistributionChart
+        <StyledLineChart
           data={chartData}
-          groups={groups}
+          xLabel={t("components.anovaSimulation.distributionChart.xAxis")}
+          yLabel={t("components.anovaSimulation.distributionChart.yAxis")}
+          series={chartSeries}
+          hoverX={hoverX}
+          setHoverX={setHoverX}
           minX={X_MIN}
           maxX={X_MAX}
+          yDomain={[0, "dataMax"]}
+          yTickCount={8}
+          yTickFormatter={(val) => val.toFixed(2)}
         />
       </div>
 
+      {/* Data Table Preview */}
       <div
         className="mb-4 mx-auto"
         style={{ maxWidth: "800px", width: "100%" }}
@@ -292,6 +398,7 @@ function AnovaSimulation() {
         />
       </div>
 
+      {/* Statistics Tables and Post-Hoc Analysis */}
       <div className="pt-4 pb-4">
         <AnovaTable stats={anovaStats} />
       </div>

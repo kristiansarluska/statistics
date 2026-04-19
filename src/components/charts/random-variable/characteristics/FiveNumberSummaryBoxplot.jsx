@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
 
+// Color mapping for different years in the dataset
 const yearColors = {
   Y1960: "var(--bs-gray-500)",
   Y1980: "var(--bs-pink)",
@@ -17,7 +18,12 @@ const yearLabels = {
   Y2023: "2023",
 };
 
-// Custom CSV parser (handles quoted fields with commas)
+/**
+ * Custom CSV parser that handles quoted fields containing commas.
+ * Required for parsing geographic and economic datasets.
+ * @param {string} str - Raw CSV string content
+ * @returns {Array<Array<string>>} 2D array of parsed rows and columns
+ */
 const parseCSV = (str) => {
   const result = [];
   let row = [],
@@ -41,9 +47,17 @@ const parseCSV = (str) => {
   return result;
 };
 
+/**
+ * Calculates boxplot statistics (Min, Q1, Median, Q3, Max, Whiskers, Outliers).
+ * Uses linear interpolation for quartiles calculation.
+ * @param {Array<number>} values - Array of numerical data points
+ * @returns {Object|null} Statistical summary object
+ */
 const calculateStats = (values) => {
   if (!values?.length) return null;
   const sorted = [...values].sort((a, b) => a - b);
+
+  // Percentile calculation using linear interpolation
   const q = (p) => {
     const pos = p * (sorted.length - 1),
       base = Math.floor(pos),
@@ -52,13 +66,18 @@ const calculateStats = (values) => {
       ? sorted[base] + rest * (sorted[base + 1] - sorted[base])
       : sorted[base];
   };
+
   const q1 = q(0.25),
     median = q(0.5),
     q3 = q(0.75),
     iqr = q3 - q1;
+
+  // Tukey's fences for whiskers and outliers (1.5 * IQR)
   const lf = q1 - 1.5 * iqr,
     uf = q3 + 1.5 * iqr;
+
   const reg = sorted.filter((v) => v >= lf && v <= uf);
+
   return {
     min: sorted[0],
     max: sorted[sorted.length - 1],
@@ -71,13 +90,22 @@ const calculateStats = (values) => {
   };
 };
 
-// Chart margin constants
+// SVG Chart margin constants
 const ML = 40,
   MR = 16,
   MT = 12,
   MB = 32;
-const CAP_RATIO = 0.5; // whisker cap as fraction of box width
+const CAP_RATIO = 0.5; // Width of whisker cap relative to box width
 
+/**
+ * @component BoxplotSVG
+ * @description Renders the core SVG boxplot visualization, including axes, grid lines, boxes, and interactive tooltips.
+ * @param {Object} props
+ * @param {Array} props.chartData - Aggregated statistics per category (continent/income group)
+ * @param {Array} props.activeSeries - Currently selected years to compare
+ * @param {number} props.yMin - Minimum value for the Y-axis scale
+ * @param {number} props.yMax - Maximum value for the Y-axis scale
+ */
 function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
   const { t } = useTranslation();
   const svgRef = useRef(null);
@@ -85,6 +113,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
   const [tooltip, setTooltip] = useState(null);
   const SVG_H = 320;
 
+  // Handle responsive resizing of the SVG container
   useEffect(() => {
     const el = svgRef.current;
     if (!el) return;
@@ -97,13 +126,14 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
   const plotW = svgW - ML - MR;
   const plotH = SVG_H - MT - MB;
 
+  // Coordinate mapping from data value to SVG pixels (inverted Y-axis)
   const toY = (v) => MT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
 
   const categories = chartData.map((d) => d.label);
   const nCats = categories.length;
   const nSeries = activeSeries.length;
 
-  // Y axis ticks
+  // Dynamic Y-axis ticks generation based on data range
   const yTicks = useMemo(() => {
     const range = yMax - yMin;
     const step = range <= 20 ? 5 : range <= 50 ? 10 : 20;
@@ -115,18 +145,17 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
 
   const bandW = nCats > 0 ? plotW / nCats : plotW;
 
-  // OPRAVA: Dynamický výpočet šírky aby nevytekali boxy
-  const availableBandW = bandW * 0.85; // Necháme 15% priestoru na medzeru medzi kategóriami
-  const gapRatio = 0.25; // Medzera medzi rokmi je 25% šírky boxu
+  // Dynamic width calculation to prevent box overlap on smaller screens
+  const availableBandW = bandW * 0.85;
+  const gapRatio = 0.25;
   const denominator = nSeries > 0 ? nSeries + (nSeries - 1) * gapRatio : 1;
   const maxBoxW = availableBandW / denominator;
 
-  const boxW = Math.max(2, Math.min(maxBoxW, 40)); // Dynamická šírka zastropená na 40px
+  const boxW = Math.max(2, Math.min(maxBoxW, 40));
   const seriesGap = nSeries > 1 ? boxW * gapRatio : 0;
   const totalSeriesW = nSeries * boxW + (nSeries - 1) * seriesGap;
 
   return (
-    // OPRAVA: overflowX a paddingBottom na obal
     <div
       style={{
         position: "relative",
@@ -139,11 +168,10 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
         ref={svgRef}
         width="100%"
         height={SVG_H}
-        // OPRAVA: minWidth zaručí že sa graf na úzkych mobiloch prestane zmenšovať a radšej spraví scrollbar
         style={{ display: "block", overflow: "visible", minWidth: "650px" }}
         onMouseLeave={() => setTooltip(null)}
       >
-        {/* Y grid lines */}
+        {/* Horizontal grid lines */}
         {yTicks.map((t) => (
           <line
             key={t}
@@ -157,7 +185,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
           />
         ))}
 
-        {/* Y axis */}
+        {/* Y Axis line */}
         <line
           x1={ML}
           y1={MT}
@@ -167,7 +195,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
           strokeWidth={1}
         />
 
-        {/* Y ticks + labels */}
+        {/* Y Axis ticks and labels */}
         {yTicks.map((t) => (
           <g key={t}>
             <line
@@ -191,7 +219,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
           </g>
         ))}
 
-        {/* X axis */}
+        {/* X Axis line */}
         <line
           x1={ML}
           y1={MT + plotH}
@@ -201,14 +229,14 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
           strokeWidth={1}
         />
 
-        {/* Boxplots per category */}
+        {/* Grouped Boxplots rendering */}
         {chartData.map((entry, ci) => {
           const bandStart = ML + ci * bandW;
           const bandCx = bandStart + bandW / 2;
 
           return (
             <g key={entry.label}>
-              {/* X category label */}
+              {/* Category label on X axis */}
               <text
                 x={bandCx}
                 y={MT + plotH + 18}
@@ -220,12 +248,11 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                 {entry.label}
               </text>
 
-              {/* One box per active series, sorted by year (ascending) */}
+              {/* Individual series boxes within a category */}
               {activeSeries.map(({ id, color }, si) => {
                 const stats = entry[`stats_${id}`];
                 if (!stats) return null;
 
-                // Center each series box within the band
                 const seriesStart = bandCx - totalSeriesW / 2;
                 const bx = seriesStart + si * (boxW + seriesGap);
                 const bcx = bx + boxW / 2;
@@ -267,7 +294,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       );
                     }}
                   >
-                    {/* Lower whisker line */}
+                    {/* Whisker lines */}
                     <line
                       x1={bcx}
                       y1={yQ1}
@@ -276,7 +303,6 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       stroke={color}
                       strokeWidth={1.5}
                     />
-                    {/* Lower whisker cap */}
                     <line
                       x1={bx + capOff}
                       y1={yWMin}
@@ -286,7 +312,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       strokeWidth={1.5}
                     />
 
-                    {/* IQR box bottom half (Q1 → median) */}
+                    {/* IQR Boxes (split by median for individual coloring/opacity) */}
                     <rect
                       x={bx}
                       y={yMed}
@@ -297,8 +323,6 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       stroke={color}
                       strokeWidth={1.5}
                     />
-
-                    {/* IQR box top half (median → Q3) */}
                     <rect
                       x={bx}
                       y={yQ3}
@@ -310,7 +334,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       strokeWidth={1.5}
                     />
 
-                    {/* Median line (highlighted) */}
+                    {/* Median marker */}
                     <line
                       x1={bx}
                       y1={yMed}
@@ -320,7 +344,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       strokeWidth={2.5}
                     />
 
-                    {/* Upper whisker line */}
+                    {/* Upper whiskers */}
                     <line
                       x1={bcx}
                       y1={yQ3}
@@ -329,7 +353,6 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       stroke={color}
                       strokeWidth={1.5}
                     />
-                    {/* Upper whisker cap */}
                     <line
                       x1={bx + capOff}
                       y1={yWMax}
@@ -339,7 +362,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       strokeWidth={1.5}
                     />
 
-                    {/* Outlier dots */}
+                    {/* Individual outlier points */}
                     {stats.outliers.map((ov, oi) => (
                       <circle
                         key={oi}
@@ -358,7 +381,7 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
         })}
       </svg>
 
-      {/* Tooltip */}
+      {/* Floating Statistical Tooltip */}
       {tooltip &&
         (() => {
           const { stats, id, color, x, y } = tooltip;
@@ -420,6 +443,12 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
   );
 }
 
+/**
+ * @component FiveNumberSummaryBoxplot
+ * @description Main container component for the life expectancy boxplot feature.
+ * Fetches real-world data from CSV, manages grouping and year filtering states,
+ * and orchestrates the statistical visualization.
+ */
 function FiveNumberSummaryBoxplot() {
   const { t } = useTranslation();
   const [groupBy, setGroupBy] = useState("Continent");
@@ -450,6 +479,7 @@ function FiveNumberSummaryBoxplot() {
     [t],
   );
 
+  // Fetch and parse life expectancy data from the public folder
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -501,16 +531,16 @@ function FiveNumberSummaryBoxplot() {
         if (prev.length === 1) return prev;
         return prev.filter((v) => v !== y);
       }
-      return [...prev, y].sort(); // always ascending
+      return [...prev, y].sort();
     });
   };
 
-  // activeSeries sorted ascending by year key
   const activeSeries = useMemo(
     () => selectedYears.map((id) => ({ id, color: yearColors[id] })),
     [selectedYears],
   );
 
+  // Perform statistical calculations based on selected grouping and years
   const { chartData, yMin, yMax } = useMemo(() => {
     if (!rawData.length) return { chartData: [], yMin: 0, yMax: 100 };
 
@@ -582,10 +612,9 @@ function FiveNumberSummaryBoxplot() {
 
   return (
     <div className="p-3 p-md-4">
-      {/* Header + controls */}
+      {/* UI Controls for grouping and year selection */}
       <div className="d-flex justify-content-center mb-4">
         <div className="d-flex flex-row gap-4 flex-wrap justify-content-center">
-          {/* Group selector */}
           <div className="d-flex flex-column align-items-center gap-2">
             <span className="small text-muted text-nowrap fw-medium">
               {t("components.randomVariableCharts.boxplot.groupLabel")}
@@ -595,13 +624,7 @@ function FiveNumberSummaryBoxplot() {
                 <button
                   key={value}
                   type="button"
-                  className={`btn btn-sm px-3 btn-outline-primary ${groupBy === value ? "active" : ""} ${
-                    i === 0
-                      ? "rounded-start-pill"
-                      : i === arr.length - 1
-                        ? "rounded-end-pill"
-                        : ""
-                  }`}
+                  className={`btn btn-sm px-3 btn-outline-primary ${groupBy === value ? "active" : ""} ${i === 0 ? "rounded-start-pill" : i === arr.length - 1 ? "rounded-end-pill" : ""}`}
                   onClick={() => setGroupBy(value)}
                 >
                   {label}
@@ -610,7 +633,6 @@ function FiveNumberSummaryBoxplot() {
             </div>
           </div>
 
-          {/* Year multi-select */}
           <div className="d-flex flex-column align-items-center gap-2">
             <span className="small text-muted text-nowrap fw-medium">
               {t("components.randomVariableCharts.boxplot.yearLabel")}
@@ -622,13 +644,7 @@ function FiveNumberSummaryBoxplot() {
                   <button
                     key={y}
                     type="button"
-                    className={`btn btn-sm px-2 ${isActive ? "btn-primary" : "btn-outline-primary text-contrast"} ${
-                      i === 0
-                        ? "rounded-start-pill"
-                        : i === arr.length - 1
-                          ? "rounded-end-pill"
-                          : ""
-                    }`}
+                    className={`btn btn-sm px-2 ${isActive ? "btn-primary" : "btn-outline-primary text-contrast"} ${i === 0 ? "rounded-start-pill" : i === arr.length - 1 ? "rounded-end-pill" : ""}`}
                     onClick={() => toggleYear(y)}
                   >
                     {yearLabels[y]}
@@ -640,7 +656,7 @@ function FiveNumberSummaryBoxplot() {
         </div>
       </div>
 
-      {/* Color legend */}
+      {/* Series Legend */}
       <div className="d-flex gap-4 mb-3 justify-content-center flex-wrap pb-3">
         {activeSeries.map(({ id, color }) => (
           <span
@@ -662,7 +678,7 @@ function FiveNumberSummaryBoxplot() {
         ))}
       </div>
 
-      {/* SVG boxplot */}
+      {/* Boxplot SVG Visualization */}
       <BoxplotSVG
         chartData={chartData}
         activeSeries={activeSeries}
@@ -670,7 +686,7 @@ function FiveNumberSummaryBoxplot() {
         yMax={yMax}
       />
 
-      {/* Data table */}
+      {/* Complementary data table for raw value inspection */}
       <DataPreviewTable
         data={rawRows}
         columns={tableColumns}

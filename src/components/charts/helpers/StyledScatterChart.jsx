@@ -13,13 +13,21 @@ import {
   Label,
 } from "recharts";
 
-// ZMENA: Kompletná prerábka pre lepšiu podporu geografických dát (name, id)
+/**
+ * @component ScatterTooltip
+ * @description Custom tooltip designed to prioritize and display geographic dataset attributes (e.g., Region_Name, NUTS2_Code) alongside standard X/Y values.
+ * @param {Object} props
+ * @param {boolean} props.active - Determines if tooltip is currently active
+ * @param {Array} props.payload - Data payload injected by Recharts
+ * @param {string} props.xLabel - Label for the X axis value
+ * @param {string} props.yLabel - Label for the Y axis value
+ */
 const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
   if (!active || !payload?.length) return null;
   const point = payload[0]?.payload;
   if (!point) return null;
 
-  // Hľadáme priestorové identifikátory
+  // Extract spatial identifiers from the dataset if present
   const regionName = point.name || point.Region_Name || null;
   const regionId = point.id || point.NUTS2_Code || null;
 
@@ -28,7 +36,7 @@ const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
       className="custom-tooltip bg-body border rounded shadow-sm p-3"
       style={{ fontSize: "0.85rem", maxWidth: "250px" }}
     >
-      {/* Hlavička s názvom a kódom, ak existujú */}
+      {/* Header displaying region name and identification code */}
       {regionName && (
         <p className="mb-1 fw-bold text-wrap border-bottom pb-2">
           {regionName}
@@ -40,7 +48,7 @@ const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
         </p>
       )}
 
-      {/* Samotné hodnoty (X a Y), zaokrúhlené */}
+      {/* Display rounded X and Y coordinate values */}
       <div className="d-flex justify-content-between mt-2 pt-1">
         <span className="text-muted pe-3">{xLabel ?? "X"}:</span>
         <strong className="text-body-emphasis">
@@ -57,7 +65,21 @@ const ScatterTooltip = ({ active, payload, xLabel, yLabel }) => {
   );
 };
 
-// Zvyšok komponentu StyledScatterChart zostáva nezmenený, len pridáva nové rekvizity pre Tooltip
+/**
+ * @component StyledScatterChart
+ * @description A highly customizable wrapper for Recharts ScatterChart, supporting dynamic reference lines, conditional axes, and a custom SVG crosshair.
+ * @param {Object} props
+ * @param {Array} props.data - Dataset containing x and y coordinates.
+ * @param {string} [props.xDataKey="x"] - Key for X axis data.
+ * @param {string} [props.yDataKey="y"] - Key for Y axis data.
+ * @param {Array} [props.xAxisDomain=["auto", "auto"]] - Extents for the X axis.
+ * @param {Array} [props.yAxisDomain=["auto", "auto"]] - Extents for the Y axis.
+ * @param {string} [props.xLabel] - Label for the X axis.
+ * @param {string} [props.yLabel] - Label for the Y axis.
+ * @param {Array} [props.referenceLines=[]] - Array of configuration objects for ReferenceLines.
+ * @param {Object} [props.crosshairPoint=null] - Specific coordinate object {x, y} to render the custom crosshair.
+ * @param {string} [props.crosshairColor="var(--bs-warning)"] - Color override for the crosshair point.
+ */
 function StyledScatterChart({
   data,
   xDataKey = "x",
@@ -79,7 +101,6 @@ function StyledScatterChart({
   referenceLines = [],
   crosshairPoint = null,
   crosshairColor = "var(--bs-warning)",
-  onClick,
   cursor = "default",
 }) {
   return (
@@ -97,7 +118,7 @@ function StyledScatterChart({
           allowDataOverflow
           hide={hideXAxis}
           tickFormatter={xTickFormatter}
-          className="chart-axischart-x-axis"
+          className="chart-axis chart-x-axis"
         >
           {xLabel && (
             <Label
@@ -158,7 +179,9 @@ function StyledScatterChart({
           ))}
         </Scatter>
 
-        {/* NOVÉ: Nedeformovateľný kríž vykreslený presne na pixel vďaka SVG <g> */}
+        {/* Render non-scaling crosshair using an SVG group. 
+          Prevents the shape from distorting upon resizing.
+        */}
         {crosshairPoint && (
           <Scatter
             data={[crosshairPoint]}
@@ -168,19 +191,19 @@ function StyledScatterChart({
               return (
                 <g style={{ pointerEvents: "none" }}>
                   <line
-                    x1={cx - 8}
+                    x1={cx - 12}
                     y1={cy}
-                    x2={cx + 8}
+                    x2={cx + 12}
                     y2={cy}
-                    stroke={crosshairColor} // <-- ZMENA: namiesto "var(--bs-secondary)"
+                    stroke={crosshairColor}
                     strokeWidth={2}
                   />
                   <line
                     x1={cx}
-                    y1={cy - 8}
+                    y1={cy - 12}
                     x2={cx}
-                    y2={cy + 8}
-                    stroke={crosshairColor} // <-- ZMENA: namiesto "var(--bs-secondary)"
+                    y2={cy + 12}
+                    stroke={crosshairColor}
                     strokeWidth={2}
                   />
                 </g>

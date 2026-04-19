@@ -6,12 +6,23 @@ import StyledDiscreteCDFChart from "../../helpers/StyledDiscreteCDFChart";
 import { binomialPMF } from "../../../../utils/distributions";
 import "../../../../styles/charts.css";
 
+/**
+ * @component BinomialChart
+ * @description Renders interactive Probability Mass Function (PMF) and Cumulative Distribution Function (CDF) charts for the Binomial distribution.
+ * Allows users to dynamically adjust the number of trials (n) and the probability of success (p).
+ */
 function BinomialChart() {
   const { t } = useTranslation();
+
+  // State for distribution parameters and synchronized hover state
   const [n, setN] = useState(10);
   const [p, setP] = useState(0.5);
   const [hoverX, setHoverX] = useState(null);
 
+  /**
+   * Computes PMF and CDF datasets based on current n and p.
+   * PMF is formatted for a bar chart (labels as strings), CDF for a discrete step chart (labels as numbers).
+   */
   const { pmfData, cdfData } = useMemo(() => {
     const pmf = [];
     const cdf = [];
@@ -25,7 +36,9 @@ function BinomialChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
+      {/* Parameter Controls Panel */}
       <div className="controls mb-4 row justify-content-center gx-4 gy-3 w-100 mx-0">
+        {/* Number of trials (n) slider */}
         <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
           <label
             htmlFor="nRangeBinom"
@@ -46,6 +59,7 @@ function BinomialChart() {
           />
         </div>
 
+        {/* Probability of success (p) slider */}
         <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
           <label
             htmlFor="pRangeBinom"
@@ -68,6 +82,7 @@ function BinomialChart() {
       </div>
 
       <div className="charts-wrapper w-100">
+        {/* Probability Mass Function (PMF) section */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.pmfTitle")}
@@ -85,6 +100,7 @@ function BinomialChart() {
           />
         </div>
 
+        {/* Cumulative Distribution Function (CDF) section */}
         <div>
           <h6 className="mb-3 text-center">
             {t("components.probabilityCharts.cdfTitle")}

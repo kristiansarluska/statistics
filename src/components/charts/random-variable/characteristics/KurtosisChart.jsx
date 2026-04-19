@@ -3,31 +3,48 @@ import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 
+/**
+ * @component KurtosisChart
+ * @description Visualizes the concept of kurtosis (peakedness of a distribution).
+ * It dynamically generates a Generalized Normal Distribution curve where the shape
+ * parameter is controlled by a user-facing slider.
+ */
 function KurtosisChart() {
   const { t } = useTranslation();
+
+  // State for controlling the shape of the distribution and cross-chart hover sync
   const [kurtosisValue, setKurtosisValue] = useState(0);
   const [hoverX, setHoverX] = useState(null);
 
+  /**
+   * Generates chart data points based on the kurtosis value.
+   * Uses an exponential power distribution formula to simulate different levels of peakedness.
+   */
   const chartData = useMemo(() => {
+    // Map kurtosis slider value to the power parameter 'p'
     const p = kurtosisValue >= 0 ? 2 - kurtosisValue : 2 - 2 * kurtosisValue;
 
     let sum = 0;
     const rawData = [];
 
+    // Calculate unnormalized values across the domain [-5, 5]
     for (let x = -5; x <= 5; x += 0.1) {
       const y = Math.exp(-Math.pow(Math.abs(x), p));
       rawData.push({ x: Number(x.toFixed(1)), y });
       sum += y;
     }
 
+    // Normalize values to represent relative probability percentages
     return rawData.map((point) => ({
       x: point.x,
       y: sum > 0 ? Number(((point.y / sum) * 100).toFixed(2)) : 0,
     }));
   }, [kurtosisValue]);
 
+  // Determine the statistical classification and UI color based on the value
   let kurtosisText = t("components.randomVariableCharts.kurtosis.mesokurtic");
   let kurtosisColor = "text-success";
+
   if (kurtosisValue > 0.2) {
     kurtosisText = t("components.randomVariableCharts.kurtosis.leptokurtic");
     kurtosisColor = "text-info";
@@ -38,11 +55,13 @@ function KurtosisChart() {
 
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center w-100 mt-2">
+      {/* Header showing dynamic kurtosis classification */}
       <h6 className="mb-4 text-center">
         {t("components.randomVariableCharts.kurtosis.title")}{" "}
         <span className={kurtosisColor}>{kurtosisText}</span>
       </h6>
 
+      {/* Control panel for the kurtosis slider */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4"
         style={{ width: "100%", maxWidth: "300px" }}
@@ -65,6 +84,7 @@ function KurtosisChart() {
             value={kurtosisValue}
             onChange={(e) => setKurtosisValue(parseFloat(e.target.value))}
           />
+          {/* Slider legend for better UX */}
           <div
             className="d-flex justify-content-between text-muted small mt-1"
             style={{ fontSize: "0.8rem" }}
@@ -79,6 +99,7 @@ function KurtosisChart() {
         </div>
       </div>
 
+      {/* Main visualization using the reusable StyledLineChart */}
       <div className="charts-wrapper w-100">
         <StyledLineChart
           data={chartData}

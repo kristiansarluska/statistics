@@ -13,6 +13,10 @@ import {
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 
+/**
+ * Custom tooltip renderer for the discrete CDF chart.
+ * Calculates the exact cumulative probability up to the hovered X value.
+ */
 const renderCDFTooltip = ({
   active,
   label,
@@ -56,6 +60,16 @@ const renderCDFTooltip = ({
   return null;
 };
 
+/**
+ * @component StyledDiscreteCDFChart
+ * @description Renders a discrete Cumulative Distribution Function (CDF) chart using Recharts. It generates step-function lines and handles open/closed interval visualization.
+ * @param {Object} props
+ * @param {Array} props.data - Dataset containing discrete values (x) and probabilities (p).
+ * @param {number|string|null} props.hoverX - Active X value for cross-chart highlight synchronization.
+ * @param {Function} props.setHoverX - Callback to update the hover state.
+ * @param {string} [props.xLabel="x"] - Label for the X-axis.
+ * @param {string} [props.yLabel="F(x)"] - Label for the Y-axis.
+ */
 function StyledDiscreteCDFChart({
   data,
   hoverX,
@@ -63,12 +77,14 @@ function StyledDiscreteCDFChart({
   xLabel = "x",
   yLabel = "F(x)",
 }) {
+  // Calculate domain boundaries based on the dataset
   const { minX, maxX } = useMemo(() => {
     if (!data || data.length === 0) return { minX: 0, maxX: 1 };
     const sortedX = data.map((d) => d.x).sort((a, b) => a - b);
     return { minX: sortedX[0], maxX: sortedX[sortedX.length - 1] };
   }, [data]);
 
+  // Generate points for step lines, open/closed interval circles, and dynamic X-axis ticks
   const { cdfPoints, openCircleData, closedCircleData, xTicks } =
     useMemo(() => {
       if (!data || data.length === 0)
@@ -128,6 +144,10 @@ function StyledDiscreteCDFChart({
       };
     }, [data, minX]);
 
+  /**
+   * Extracts hovered label and updates shared state.
+   * Required for highlighting reference lines across multiple synchronized charts.
+   */
   const handleChartInteraction = (state) => {
     if (
       state &&
@@ -152,6 +172,7 @@ function StyledDiscreteCDFChart({
         onClick={handleChartInteraction}
         onMouseLeave={() => setHoverX && setHoverX(null)}
       >
+        {/* Base Grid & Axes */}
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis
           dataKey="x"
@@ -170,6 +191,7 @@ function StyledDiscreteCDFChart({
             style={{ textAnchor: "middle" }}
           />
         </YAxis>
+
         <Tooltip
           cursor={false}
           content={(props) =>
@@ -183,6 +205,8 @@ function StyledDiscreteCDFChart({
             })
           }
         />
+
+        {/* Continuous step lines connecting intervals */}
         <Line
           data={cdfPoints}
           type="linear"
@@ -195,6 +219,8 @@ function StyledDiscreteCDFChart({
           isAnimationActive={true}
           animationDuration={700}
         />
+
+        {/* Open interval circles (limits) */}
         <Line
           data={openCircleData}
           type="linear"
@@ -219,6 +245,8 @@ function StyledDiscreteCDFChart({
             );
           }}
         />
+
+        {/* Closed interval circles (exact values) */}
         <Line
           data={closedCircleData}
           type="linear"
@@ -244,6 +272,8 @@ function StyledDiscreteCDFChart({
             );
           }}
         />
+
+        {/* Synchronized Reference Line */}
         {hoverX !== null && (
           <ReferenceLine
             x={Number(hoverX)}
