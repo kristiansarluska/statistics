@@ -287,9 +287,11 @@ export function Characteristics() {
           <Trans
             i18nKey="randomVariable.characteristics.variability.variance.description"
             components={{
-              m1: <InlineMath math="s_x^2" />,
-              m2: <InlineMath math="\sigma^2" />,
               bold: <strong />,
+              m1: <InlineMath math="s^2" />,
+              m2: <InlineMath math="\sigma^2" />,
+              m3: <InlineMath math="n-1" />,
+              m4: <InlineMath math="N" />,
             }}
           />
         </p>
@@ -318,9 +320,9 @@ export function Characteristics() {
           <Trans
             i18nKey="randomVariable.characteristics.variability.standardDeviation.description"
             components={{
-              m1: <InlineMath math="s_x" />,
-              m2: <InlineMath math="\sigma" />,
               bold: <strong />,
+              m1: <InlineMath math="s" />,
+              m2: <InlineMath math="\sigma" />,
             }}
           />
         </p>
@@ -500,6 +502,9 @@ export function Characteristics() {
             }}
           />
         </div>
+        <p className="mb-4 small fst-italic">
+          {t("randomVariable.characteristics.fiveNumber.note")}
+        </p>
 
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <h5 className="mb-3">

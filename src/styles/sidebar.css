@@ -1,11 +1,10 @@
-/* ====== Base layout ====== */
 #wrapper {
   height: 100%;
   overflow-x: hidden;
   width: 100%;
   position: relative;
 }
-/* ====== Sidebar container ====== */
+
 #sidebar-wrapper {
   width: 15rem;
   flex-shrink: 0;
@@ -14,20 +13,17 @@
   overflow-x: hidden;
   transition: margin 0.25s ease-out;
   border-right: 1px solid rgba(0, 0, 0, 0.125);
-  background-color: var(--bs-body-bg) !important; /* Odstráni sivý podmaz */
+  background-color: var(--bs-body-bg) !important;
   color: var(--bs-body-color);
-  margin-left: -15rem; /* hidden by default for mobile */
+  margin-left: -15rem;
 
-  /* Zabráni poskakovaniu textu pri zobrazení scrollbaru */
   scrollbar-gutter: stable;
 }
 
-/* ====== Sidebar visibility toggle (core logic) ====== */
 body.sb-sidenav-toggled #sidebar-wrapper {
   margin-left: 0 !important;
 }
 
-/* Desktop defaults — sidebar open by default */
 @media (min-width: 768px) {
   #sidebar-wrapper {
     margin-left: 0;
@@ -38,7 +34,6 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   }
 }
 
-/* ====== List group & buttons ====== */
 #sidebar-wrapper .list-group-item,
 #sidebar-wrapper .btn.sidebar-btn {
   background-color: transparent;
@@ -48,14 +43,12 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   cursor: pointer;
 }
 
-/* Hover efekt */
 #sidebar-wrapper .list-group-item:hover,
 #sidebar-wrapper .btn.sidebar-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: var(--bs-primary);
 }
 
-/* Aktívna položka */
 #sidebar-wrapper .list-group-item.active,
 #sidebar-wrapper .btn.sidebar-btn.active {
   background-color: var(--bs-secondary-bg);
@@ -63,7 +56,6 @@ body.sb-sidenav-toggled #sidebar-wrapper {
   outline-offset: -2px;
 }
 
-/* ====== Accordion Submenu (Nové správanie) ====== */
 .sidebar-submenu {
   overflow: hidden;
   transition:
@@ -88,7 +80,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ====== Sidebar arrows (vnútorné šípky akordeónu) ====== */
 #sidebar-wrapper .sidebar-arrow {
   width: 15px;
   height: 15px;
@@ -96,7 +87,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   transition: transform 0.3s ease;
 }
 
-/* ====== Page content ====== */
 #page-content-wrapper {
   min-width: 0;
   flex: 1;
@@ -108,7 +98,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   max-width: 1200px;
 }
 
-/* ====== Fixed Navbar správanie (Odsúvanie Sidebarom) ====== */
 #page-content-wrapper .navbar.fixed-top {
   position: fixed;
   left: 0;
@@ -118,7 +107,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   will-change: left, transform;
 }
 
-/* Desktop (nad 768px): Navbar sa ZÚŽI, pravá strana ostane ukotvená na okraji */
 @media (min-width: 768px) {
   #page-content-wrapper .navbar.fixed-top {
     left: 15rem;
@@ -130,9 +118,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   }
 }
 
-/* Mobily (pod 768px): Navbar si drží 100% šírku a celý sa POSUNIE mimo obrazovku */
-/* Mobile: sidebar overlays/pushes content out of viewport instead of shrinking it */
-/* Mobily (pod 768px) */
 @media (max-width: 767.98px) {
   #wrapper {
     position: relative;
@@ -140,11 +125,11 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
   }
 
   #sidebar-wrapper {
-    position: fixed; /* ZMENA: Namiesto absolute - Sidebar ostane viditeľný, aj keď si odscrollovaný dole */
+    position: fixed;
     top: 0;
     left: -15rem;
     height: 100%;
-    z-index: 1040; /* Zvýšený index, aby prekrýval okraje */
+    z-index: 1040;
     transition: left 0.25s ease-out;
   }
 
@@ -156,14 +141,13 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
     width: 100%;
     position: relative;
     left: 0;
-    transition: left 0.25s ease-out; /* ZMENA: Používame left namiesto transform */
+    transition: left 0.25s ease-out;
   }
 
   body.sb-sidenav-toggled #page-content-wrapper {
-    left: 15rem; /* Odsunie hlavný obsah bez toho, aby rozbil 'position: fixed' vnútri */
+    left: 15rem;
   }
 
-  /* NOVÉ: Vynútenie posunu samotného Navbaru, aby ostal viditeľný bok Navbaru (tlačidlo) */
   #page-content-wrapper .navbar.fixed-top {
     transition:
       left 0.25s ease-out,
@@ -173,11 +157,10 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
   body.sb-sidenav-toggled #page-content-wrapper .navbar.fixed-top {
     left: 15rem;
-    right: -15rem; /* Zabezpečí, že sa nezúži, ale iba celý posunie o 15rem doprava */
+    right: -15rem;
   }
 }
 
-/* ====== Arrow logic (Tlačidlo na otváranie sidebaru v Navbare) ====== */
 #sidebarToggle .arrow {
   width: 1rem;
   transform: rotate(0deg);

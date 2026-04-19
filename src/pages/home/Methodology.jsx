@@ -1,6 +1,7 @@
 // src/pages/home/Methodology.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { methodologyModules } from "./homeData";
 import ArithmeticMeanCalc from "../../components/content/characteristics/ArithmeticMeanCalc";
 import NormalChart from "../../components/charts/probability-distributions/continuous/NormalChart";
@@ -243,6 +244,16 @@ function Methodology() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* CTA BUTTON */}
+      <div className="text-center mt-5">
+        <Link
+          to="/random-variable"
+          className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm fw-semibold"
+        >
+          {t("home.methodology.cta")}
+        </Link>
       </div>
 
       {/* MODAL CONTENT */}

@@ -1,6 +1,5 @@
 @import "katex/dist/katex.min.css";
 
-/* Navbar - reaguje na tmavý/svetlý režim */
 .navbar {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
@@ -14,14 +13,12 @@
   color: var(--bs-emphasis-color);
 }
 
-/* Sidebar */
 #sidebar-wrapper {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
   border-right: 1px solid var(--bs-border-color);
 }
 
-/* Položky v sidebar-e (list-group) */
 #sidebar-wrapper .list-group-item {
   background-color: var(--bs-body-bg);
   color: var(--bs-body-color);
@@ -35,7 +32,7 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px; /* trochu širšie kvôli ikonám */
+  width: 60px;
   height: 30px;
 }
 
@@ -72,7 +69,7 @@
   background-color: var(--bs-white);
   border-radius: 50%;
   transition: transform 0.4s;
-  z-index: 2; /* krúžok bude nad ikonami */
+  z-index: 2;
 }
 
 input:checked + .slider {
@@ -80,10 +77,9 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(30px); /* posun doprava */
+  transform: translateX(30px);
 }
 
-/* ikonky */
 .slider .icon {
   height: 16px;
   width: 16px;
@@ -104,10 +100,8 @@ input:checked + .slider:before {
   object-fit: cover;
   border: 1px solid var(--bs-gray-400);
   border-radius: 2px;
-  /*aaa*/
 }
 
-/* ====== Global Mobile Fixes ====== */
 html,
 body {
   height: 100%;
@@ -126,11 +120,10 @@ body {
 
 .main-content {
   flex: 1;
-  overflow-y: auto; /* scrolluje iba vnútorný obsah */
+  overflow-y: auto;
   height: 100%;
 }
 
-/* ====== Page content ====== */
 #page-content-wrapper {
   overflow-y: auto;
   height: 100%;
@@ -151,7 +144,6 @@ body {
   box-shadow: none !important;
 }
 
-/* Dropdown otváracia animácia */
 .dropdown-menu {
   animation: dropDownFade 0.2s ease-out forwards;
 }
@@ -179,7 +171,6 @@ body {
   background-color: var(--bs-secondary-bg) !important;
 }
 
-/* Jemný mapový/štatistický grid do pozadia Hero sekcie */
 .hero-grid-bg {
   background-image:
     linear-gradient(rgba(var(--bs-body-color-rgb), 0.05) 1px, transparent 1px),

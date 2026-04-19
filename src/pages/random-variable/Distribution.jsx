@@ -110,7 +110,10 @@ function Distribution() {
               i18nKey="randomVariable.distribution.cdf.chart1Desc"
               components={{
                 bold: <strong />,
+                color: <span className="text-primary fw-bold" />,
                 br: <br />,
+                ul: <ul />,
+                li: <li />,
               }}
             />
           </p>
