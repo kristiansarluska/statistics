@@ -4,13 +4,19 @@ import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component Footer
+ * @description Renders the application's global footer. Displays copyright information,
+ * author details, open-source attributions, and a dynamic university logo that adapts
+ * to the current light/dark theme.
+ */
 function Footer() {
   const { darkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const basePath = import.meta.env.BASE_URL;
 
-  // Define logo based on theme
+  // Resolve the correct university logo asset based on the active theme
   const uniLogo = darkMode
     ? `${basePath}assets/images/UP_logo_dark.png`
     : `${basePath}assets/images/UP_logo_light.png`;

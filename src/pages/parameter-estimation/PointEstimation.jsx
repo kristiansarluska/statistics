@@ -6,6 +6,17 @@ import PointEstimationChart from "../../components/charts/parameter-estimation/P
 import RealDataSampling from "../../components/content/parameter-estimation/RealDataSampling";
 import "katex/dist/katex.min.css";
 
+/**
+ * @component PointEstimation
+ * @description Renders the theoretical and interactive section on statistical point estimation.
+ * It explains how sample statistics (like the sample mean x̄) serve as best estimates
+ * for unknown population parameters (like μ). Key topics include:
+ * - The definition and calculation of the Standard Error of the Mean (SEM).
+ * - An interactive simulation (PointEstimationChart) demonstrating the relationship
+ * between sample size (n) and the precision of the estimate.
+ * - A practical application (RealDataSampling) using real-world demographic data
+ * to illustrate the variability of estimates across multiple random samples.
+ */
 function PointEstimation() {
   const { t } = useTranslation();
 

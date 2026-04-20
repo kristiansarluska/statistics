@@ -12,7 +12,16 @@ import TDistributionChart from "../../components/charts/hypothesis-testing/TDist
 import TTestCalculation from "../../components/content/hypothesis-testing/TTestCalculation";
 
 const DEFAULT_EXPECTED_VALUE = 20.56;
-
+/**
+ * @function getTCritical
+ * @description Calculates the critical value of the Student's t-distribution for a two-tailed test.
+ * Since an analytical inverse CDF (Percent Point Function) is not directly available,
+ * this function uses a binary search (bisection method) to find the t-value where
+ * the CDF equals (1 - alpha/2) with high precision.
+ * * @param {number} alpha - The significance level (e.g., 0.05).
+ * @param {number} df - Degrees of freedom (n - 1).
+ * @returns {number} The positive critical t-value.
+ */
 const getTCritical = (alpha, df) => {
   const targetCdf = 1 - alpha / 2;
   let low = 0,
@@ -25,6 +34,21 @@ const getTCritical = (alpha, df) => {
   return mid;
 };
 
+/**
+ * @component TTestDashboard
+ * @description The interactive centerpiece of the Hypothesis Testing chapter.
+ * This complex dashboard performs a real-time One-Sample T-Test on demographic
+ * data from the Moravian-Silesian Region.
+ * * Key functionalities:
+ * - Reactive statistical engine: Recalculates mean, SD, t-score, and p-value as the user
+ * adjusts the expected value (mu0), significance level (alpha), or selected district.
+ * - Multi-layered visualization: Synchronizes a T-Distribution chart (showing rejection regions),
+ * a scatter plot of district variability, and a choropleth map.
+ * - Dynamic UI interaction: Supports cross-component highlighting (hovering over a map region
+ * highlights the corresponding point in the scatter chart).
+ * - Step-by-step breakdown: Includes an expandable calculation component (TTestCalculation)
+ * showing the mathematical derivation of the results.
+ */
 function TTestDashboard() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
@@ -36,13 +60,19 @@ function TTestDashboard() {
   const [hoveredObec, setHoveredObec] = useState(null);
   const [calcOpen, setCalcOpen] = useState(false);
 
+  /**
+   * Effect hook to fetch and preprocess regional GeoJSON data on component mount.
+   * It calculates the share of the elderly population (65+) for each municipality
+   * and prepares both a flat data array for statistical analysis and an updated
+   * GeoJSON for map visualization.
+   */
   useEffect(() => {
     const fetchGeoJSON = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.BASE_URL}data/MS_kraj.json`,
         );
-        if (!response.ok) throw new Error("Nepodarilo sa načítať GeoJSON");
+        if (!response.ok) throw new Error("Failed to load GeoJSON");
         const geojsonData = await response.json();
 
         const validFeatures = [];
@@ -50,10 +80,13 @@ function TTestDashboard() {
 
         geojsonData.features.forEach((feature) => {
           const props = feature.properties;
+          // Skip features without necessary identifiers
           if (!props.kod || !props.okres) return;
 
           const pocet = props.Poc_obyv_SLDB_2021 ?? null;
           const nad65 = props.poc_obyv_nad_65 ?? null;
+
+          // Calculate the target percentage attribute
           const podiel_nad65 =
             pocet > 0 && nad65 != null ? (nad65 / pocet) * 100 : null;
 
@@ -63,9 +96,11 @@ function TTestDashboard() {
               nazev: props.nazev,
               okres: props.okres,
               podiel_nad65,
+              // Jitter added for better distribution visualization in scatter charts
               jitter: Math.random(),
             });
           }
+          // Inject the calculated value back into GeoJSON properties for the Leaflet map
           feature.properties.podiel_nad65 = podiel_nad65;
           validFeatures.push(feature);
         });
@@ -74,24 +109,40 @@ function TTestDashboard() {
         setGeoJson({ ...geojsonData, features: validFeatures });
         setLoading(false);
       } catch (error) {
-        console.error("Chyba pri spracovaní dát:", error);
+        console.error("Error processing data:", error);
         setLoading(false);
       }
     };
     fetchGeoJSON();
   }, []);
 
+  /**
+   * Memoized array of unique district names for the selection dropdown.
+   */
   const okresy = useMemo(
     () => [...new Set(data.map((d) => d.okres))].sort(),
     [data],
   );
 
+  /**
+   * Core statistical calculation engine.
+   * Performs a One-Sample T-Test for the selected district.
+   * Computes: mean, variance, standard deviation, t-statistic,
+   * degrees of freedom, p-value, and critical t-value.
+   */
   const stats = useMemo(() => {
+    // Filter data for the active district
     const districtData = data.filter((d) => d.okres === selectedOkres);
     const n = districtData.length;
+
+    // T-test requires at least two observations to calculate variance
     if (n < 2) return null;
+
+    // 1. Calculate sample mean (x̄)
     const mean =
       districtData.reduce((acc, curr) => acc + curr.podiel_nad65, 0) / n;
+
+    // 2. Calculate sample variance (s²) and standard deviation (s)
     const variance =
       districtData.reduce(
         (acc, curr) => acc + Math.pow(curr.podiel_nad65 - mean, 2),
@@ -99,19 +150,33 @@ function TTestDashboard() {
       ) /
       (n - 1);
     const sd = Math.sqrt(variance);
+
+    // 3. Calculate T-statistic: t = (x̄ - μ0) / (s / √n)
     const tVal = (mean - expectedValue) / (sd / Math.sqrt(n));
     const df = n - 1;
+
+    // 4. Calculate Two-Tailed p-value using the Student's T CDF
     const pValue = 2 * (1 - studentTCDF(Math.abs(tVal), df));
+
+    // 5. Get critical value for the rejection region
     const tCrit = getTCritical(alpha, df);
+
     return { districtData, n, mean, sd, t: tVal, df, tCrit, pValue };
   }, [data, selectedOkres, expectedValue, alpha]);
 
+  /**
+   * Generates a set of coordinates for rendering the T-distribution probability density curve.
+   * The range is dynamically adjusted based on the calculated t-statistic.
+   */
   const tChartData = useMemo(() => {
     if (!stats) return [];
     const points = [];
     const limit = Math.max(4, Math.abs(stats.t) + 1);
     for (let x = -limit; x <= limit; x += 0.05) {
-      points.push({ x: parseFloat(x.toFixed(2)), y: studentTPDF(x, stats.df) });
+      points.push({
+        x: parseFloat(x.toFixed(2)),
+        y: studentTPDF(x, stats.df),
+      });
     }
     return points;
   }, [stats]);

@@ -6,6 +6,16 @@ import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { Link, useLocation } from "react-router-dom";
 
+/**
+ * @component Navbar
+ * @description The main top navigation bar. It features an auto-hide behavior on scroll,
+ * controls for toggling the sidebar, and houses the theme and language switchers.
+ * Integrates with Bootstrap's collapse plugin for mobile responsiveness.
+ * @param {Object} props
+ * @param {Function} props.onToggleSidebar - Callback to open/close the sidebar.
+ * @param {boolean} props.isSidebarOpen - Current state of the sidebar.
+ * @param {Function} props.closeSidebar - Callback specifically to force-close the sidebar (used on mobile).
+ */
 function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const { t } = useTranslation();
@@ -17,6 +27,10 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isAutoScrolling = useRef(false);
 
+  /**
+   * Handles clicks on navigation links. Scrolls to top if already on the home page,
+   * and automatically closes mobile menus to free up screen space.
+   */
   const handleHomeClick = () => {
     if (location.pathname === "/") {
       const contentWrapper = document.getElementById("page-content-wrapper");
@@ -35,6 +49,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
     }
   };
 
+  // Sync state with Bootstrap's native collapse events for the mobile menu
   useEffect(() => {
     const menu = document.getElementById("navbarSupportedContent");
     if (!menu) return;
@@ -51,6 +66,8 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
     };
   }, []);
 
+  // Listen for custom navigation events from the Sidebar to prevent navbar hiding
+  // during programmatic smooth scrolls (e.g., clicking a sub-chapter).
   useEffect(() => {
     const handleSidebarNav = (e) => {
       isAutoScrolling.current = true;
@@ -71,6 +88,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
       window.removeEventListener("sidebar-navigate", handleSidebarNav);
   }, []);
 
+  // Auto-hide navbar logic: hide on scroll down, show on scroll up.
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY =
@@ -79,6 +97,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
         document.getElementById("page-content-wrapper")?.scrollTop ||
         0;
 
+      // Skip hide/show logic if the scroll was triggered programmatically
       if (isAutoScrolling.current) {
         setLastScrollY(currentScrollY);
         return;
@@ -105,6 +124,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
         willChange: "transform",
         top: 0,
         zIndex: 1030,
+        transition: "transform 0.3s ease-in-out",
       }}
     >
       <div className="container-fluid">

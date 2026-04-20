@@ -5,6 +5,10 @@ import Introduction from "./probability-distributions/Introduction";
 import DiscreteDistributions from "./probability-distributions/DiscreteDistributions";
 import ContinuousDistributions from "./probability-distributions/ContinuousDistributions";
 
+/**
+ * @component ProbabilityDistributions
+ * @description The main page component for the Probability Distributions chapter.
+ */
 function ProbabilityDistributions() {
   const { t } = useTranslation();
 

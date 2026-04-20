@@ -2,6 +2,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component LanguageSwitcher
+ * @description A dropdown component that allows users to switch the application's language.
+ * Uses react-i18next for localization and persists the user's choice in localStorage.
+ */
 function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
@@ -25,11 +30,11 @@ function LanguageSwitcher() {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    // Uložíme výber používateľa, aby mal pri ďalšej návšteve preferovaný jazyk
+    // Save the user's selection to local storage for future visits
     localStorage.setItem("app_language", lng);
   };
 
-  // Bezpečnostná poistka pre prípad prvotného načítania
+  // Fallback in case the initial language is not fully matched
   const currentLang =
     languages.find((l) => l.code === i18n.language) || languages[0];
 

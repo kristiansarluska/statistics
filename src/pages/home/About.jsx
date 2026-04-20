@@ -3,6 +3,14 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { ThemeContext } from "../../context/ThemeContext";
 
+/**
+ * @component About
+ * @description Renders the informational section of the landing page.
+ * It describes the purpose of the application as a bachelor's thesis output,
+ * lists the target audience, and displays a responsive visual mockup of the
+ * application that automatically switches between light and dark versions
+ * based on the global theme.
+ */
 function About() {
   const { t } = useTranslation();
   const { darkMode } = useContext(ThemeContext);

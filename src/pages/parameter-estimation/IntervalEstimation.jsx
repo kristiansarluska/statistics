@@ -3,9 +3,16 @@ import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import ConfidenceIntervalSimulation from "../../components/content/parameter-estimation/ConfidenceIntervalSimulation";
-
 import "katex/dist/katex.min.css";
 
+/**
+ * @component IntervalEstimation
+ * @description Renders a comprehensive educational section on statistical interval estimation.
+ * It explains the theory of confidence intervals (reliability vs. precision), provides the
+ * mathematical formulas for one-sided and two-sided intervals, and includes an
+ * interactive simulation (ConfidenceIntervalSimulation) that demonstrates how
+ * sample size and confidence levels affect the interval's width and accuracy.
+ */
 function IntervalEstimation() {
   const { t } = useTranslation();
 

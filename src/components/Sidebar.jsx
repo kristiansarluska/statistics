@@ -7,12 +7,21 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SidebarItem from "./sidebar/SidebarItem";
 import { sidebarData } from "./sidebar/sidebarData";
 
+/**
+ * @component Sidebar
+ * @description The main navigation sidebar component. It generates a recursive menu
+ * based on `sidebarData` and implements a "ScrollSpy" feature to automatically
+ * highlight and expand the menu items as the user scrolls through the content.
+ * @param {Object} props
+ * @param {Function} props.closeSidebar - Callback function to close the sidebar (used for mobile responsiveness).
+ */
 function Sidebar({ closeSidebar }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const arrow = `${import.meta.env.BASE_URL}assets/images/small-arrow.png`;
 
+  // Internal state to track which menu item is active or expanded based on current URL and scroll
   const [activePath, setActivePath] = useState(
     location.pathname + location.hash,
   );
@@ -20,7 +29,10 @@ function Sidebar({ closeSidebar }) {
     location.pathname + location.hash,
   );
 
-  // Extract only valid IDs defined in sidebarData to ignore charts/SVGs
+  /**
+   * Memoized list of all hash IDs defined in the navigation data.
+   * This allows the ScrollSpy to focus only on content sections and ignore other elements like charts.
+   */
   const validIds = useMemo(() => {
     const getIds = (items) => {
       let ids = [];
@@ -34,7 +46,10 @@ function Sidebar({ closeSidebar }) {
     return getIds(sidebarData);
   }, []);
 
-  // Bulletproof ScrollSpy
+  /**
+   * ScrollSpy Logic: Monitors the scrolling of the content wrapper and updates
+   * the active sidebar item based on which section is currently visible in the viewport.
+   */
   useEffect(() => {
     const handleScroll = () => {
       const validElements = validIds
@@ -44,7 +59,7 @@ function Sidebar({ closeSidebar }) {
       let currentId = "";
       for (let el of validElements) {
         const rect = el.getBoundingClientRect();
-        // Zvýšený detekčný offset (250px) pre lepšie zachytenie pri scrollovaní
+        // Detection offset (250px) ensures sections are captured slightly before they hit the top
         if (rect.top <= 250) {
           currentId = el.id;
         }
@@ -62,15 +77,19 @@ function Sidebar({ closeSidebar }) {
 
     const contentEl = document.getElementById("page-content-wrapper");
     contentEl?.addEventListener("scroll", handleScroll);
-    return () => contentEl?.removeEventListener("scroll", handleScroll);
 
-    // Spustenie hneď po načítaní
+    // Initial check on mount
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll, true);
+    return () => {
+      contentEl?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
   }, [activePath, location.pathname, validIds]);
 
-  // Sync state with URL changes (e.g. initial load)
+  /**
+   * Effect to synchronize the sidebar state with manual URL changes or initial page load.
+   */
   useEffect(() => {
     const currentPath = location.pathname + location.hash;
     setActivePath(currentPath);
@@ -84,6 +103,7 @@ function Sidebar({ closeSidebar }) {
 
   return (
     <div className="border-end d-flex flex-column" id="sidebar-wrapper">
+      {/* Sidebar Header with Logo */}
       <div className="sidebar-heading border-bottom">
         <Link
           to="/"
@@ -117,6 +137,8 @@ function Sidebar({ closeSidebar }) {
           </span>
         </Link>
       </div>
+
+      {/* Navigation List */}
       <div className="list-group list-group-flush">
         {sidebarData.map((item, idx) => (
           <SidebarItem

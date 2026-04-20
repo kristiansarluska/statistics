@@ -2,7 +2,14 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
-const AssumptionViolations = () => {
+/**
+ * @component AssumptionViolations
+ * @description Renders a theoretical section focused on the assumptions of ANOVA.
+ * It details the requirements for independence, normality, and homoscedasticity,
+ * and provides a set of cards explaining alternative non-parametric tests
+ * (Friedman, Kruskal-Wallis, Welch) used when these assumptions are violated.
+ */
+function AssumptionViolations() {
   const { t } = useTranslation();
 
   return (
@@ -25,7 +32,7 @@ const AssumptionViolations = () => {
         {t("anova.assumptionViolations.intro2")}
       </div>
       <div className="row mb-5 g-3">
-        {/* Friedman */}
+        {/* FRIEDMAN */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -45,7 +52,7 @@ const AssumptionViolations = () => {
           </div>
         </div>
 
-        {/* Kruskal-Wallis */}
+        {/* KRUSKAL-WALLIS */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -65,7 +72,7 @@ const AssumptionViolations = () => {
           </div>
         </div>
 
-        {/* Welch */}
+        {/* WELCH */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-danger border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -87,6 +94,6 @@ const AssumptionViolations = () => {
       </div>
     </section>
   );
-};
+}
 
 export default AssumptionViolations;

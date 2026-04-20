@@ -1,5 +1,17 @@
 // src/pages/home/homeData.js
 
+/**
+ * @file homeData.js
+ * @description Static data configuration for the landing page.
+ * Contains definitions for interactive chapter cards and methodology modules,
+ * linking translation keys to their respective assets and application routes.
+ */
+
+/**
+ * @constant chapters
+ * @description Array of main statistical topics displayed as navigational cards.
+ * Each item includes localization keys for title and description, an icon path, and the target route.
+ */
 export const chapters = [
   {
     titleKey: "home.data.chapters.randomVariable.title",

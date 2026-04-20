@@ -2,11 +2,21 @@
 import React, { useState, useEffect } from "react";
 import "../styles/scrollToTop.css";
 
+/**
+ * @component ScrollToTopButton
+ * @description A floating action button that appears when the user scrolls down
+ * within the main content wrapper. Provides a smooth scroll-to-top animation.
+ * Target container is specifically "page-content-wrapper" due to the application's sidebar layout.
+ */
 function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
+  // ID of the scrollable container defined in the main Layout
   const scrollContainerId = "page-content-wrapper";
 
+  /**
+   * Evaluates the scroll position and toggles button visibility.
+   */
   const toggleVisibility = () => {
     const scrollContainer = document.getElementById(scrollContainerId);
     if (scrollContainer) {
@@ -18,6 +28,9 @@ function ScrollToTopButton() {
     }
   };
 
+  /**
+   * Triggers a smooth scroll animation to the top of the content container.
+   */
   const scrollToTop = () => {
     const scrollContainer = document.getElementById(scrollContainerId);
     if (scrollContainer) {
@@ -28,6 +41,7 @@ function ScrollToTopButton() {
     }
   };
 
+  // Set up event listener on the specific scrollable wrapper
   useEffect(() => {
     const scrollContainer = document.getElementById(scrollContainerId);
     if (scrollContainer) {

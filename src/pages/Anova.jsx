@@ -6,6 +6,10 @@ import SingleFactorAnova from "./anova/SingleFactorAnova";
 import PostHocTests from "./anova/PostHocTests";
 import AssumptionViolations from "./anova/AssumptionViolations";
 
+/**
+ * @component Anova
+ * @description The main page component for the Analysis of Variance (ANOVA) chapter.
+ */
 function Anova() {
   const { t } = useTranslation();
 

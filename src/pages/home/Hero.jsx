@@ -2,6 +2,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component Hero
+ * @description The landing page's primary introduction (Hero section).
+ * It features the main StatTerra logo with a drop-shadow effect,
+ * the application's primary heading, and a localized subtitle.
+ * The layout uses a grid-based background and responsive design
+ * to switch between stacked and side-by-side layouts for mobile and desktop.
+ */
 function Hero() {
   const { t } = useTranslation();
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import InfoIcon from "../helpers/InfoIcon";
+import StatsBadge from "../helpers/StatsBadge";
 import ResetButton from "../../charts/helpers/ResetButton";
 import CIDistributionChart from "../../charts/parameter-estimation/CIDistributionChart";
 import CIIntervalsChart from "../../charts/parameter-estimation/CIIntervalsChart";
@@ -10,6 +11,12 @@ import { buildCI, POP_MEAN, POP_STD } from "../../../utils/ciMath";
 
 const MAX_SAMPLES = 30;
 
+/**
+ * @component ConfidenceIntervalSimulation
+ * @description Interactive simulation for confidence intervals. Allows users to draw random samples
+ * from a real geographic dataset (NUTS3 median age) and visualizes the resulting confidence intervals
+ * to demonstrate coverage probability and the effects of various statistical parameters.
+ */
 function ConfidenceIntervalSimulation() {
   const { t } = useTranslation();
   const [geoJson, setGeoJson] = useState(null);
@@ -53,6 +60,12 @@ function ConfidenceIntervalSimulation() {
     [rawSamples, cl, type, knowSigma],
   );
 
+  /**
+   * @function draw
+   * @description Draws a specified number of random samples from the dataset, calculates
+   * their arithmetic mean and standard deviation, and prepends them to the state.
+   * @param {number} count - The number of samples to generate.
+   */
   const draw = (count) => {
     if (!geoJson) return;
 
@@ -123,11 +136,13 @@ function ConfidenceIntervalSimulation() {
           </div>
         </div>
       </div>
-      {/* ── Controls ── */}
+
+      {/* Controls Section */}
       <div
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4 w-100"
         style={{ maxWidth: 820 }}
       >
+        {/* Alpha Control */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 small text-center">
             {t(
@@ -156,6 +171,7 @@ function ConfidenceIntervalSimulation() {
           </div>
         </div>
 
+        {/* Interval Type Control */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 small text-center">
             {t(
@@ -203,6 +219,7 @@ function ConfidenceIntervalSimulation() {
           </div>
         </div>
 
+        {/* Variance Control */}
         <div className="d-flex flex-column align-items-center">
           <label className="form-label fw-bold mb-2 small text-center d-flex align-items-center">
             {t(
@@ -251,6 +268,7 @@ function ConfidenceIntervalSimulation() {
       </div>
 
       <div className="d-flex flex-wrap align-items-center justify-content-center gap-3 mb-4">
+        {/* N Slider */}
         <div className="d-flex align-items-center gap-2">
           <label className="fw-bold small mb-0 text-nowrap">
             n = <span className="parameter-value">{n}</span>
@@ -266,6 +284,8 @@ function ConfidenceIntervalSimulation() {
             style={{ width: 130 }}
           />
         </div>
+
+        {/* Draw Controls */}
         <div className="btn-group rounded-pill overflow-hidden">
           {[1, 5, 10].map((cnt, i, arr) => {
             const isDisabled = total + cnt > MAX_SAMPLES;
@@ -312,6 +332,8 @@ function ConfidenceIntervalSimulation() {
             "parameterEstimation.intervalEstimation.simulation.actions.samplesCount",
           )}
         </span>
+
+        {/* Reset Button */}
         <ResetButton
           onClick={() => setRawSamples([])}
           disabled={total === 0}
@@ -321,53 +343,47 @@ function ConfidenceIntervalSimulation() {
         />
       </div>
 
+      {/* Coverage Stats Badge */}
       {total > 0 && (
-        <div
-          className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2 mb-4"
-          style={{ fontSize: "0.88rem", display: "inline-block" }}
-        >
-          <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">
-                {t(
+        <div className="mb-4 text-center">
+          <StatsBadge
+            items={[
+              {
+                label: t(
                   "parameterEstimation.intervalEstimation.simulation.coverage.contains",
-                )}
-              </span>
-              <strong className="text-success">
-                {hits} ({((hits / total) * 100).toFixed(1)} %)
-              </strong>
-            </div>
-            <div className="d-none d-sm-block mx-2 border-start align-self-stretch" />
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">
-                {t(
+                ),
+                value: `${hits} (${((hits / total) * 100).toFixed(1)} %)`,
+                color: "text-success",
+              },
+              {
+                label: t(
                   "parameterEstimation.intervalEstimation.simulation.coverage.notContains",
-                )}
-              </span>
-              <strong className="text-danger">
-                {total - hits} ({(((total - hits) / total) * 100).toFixed(1)} %)
-              </strong>
-            </div>
-            <div className="d-none d-sm-block mx-2 border-start align-self-stretch" />
-            <div className="d-flex align-items-baseline gap-1 px-2 py-1">
-              <span className="text-muted">
-                {t(
+                ),
+                value: `${total - hits} (${(((total - hits) / total) * 100).toFixed(1)} %)`,
+                color: "text-danger",
+                groupStart: true,
+              },
+              {
+                label: t(
                   "parameterEstimation.intervalEstimation.simulation.coverage.theoretical",
-                )}
-              </span>
-              <strong className="text-body">{cl} %</strong>
-            </div>
-          </div>
+                ),
+                value: `${cl} %`,
+                color: "text-body",
+                groupStart: true,
+              },
+            ]}
+          />
         </div>
       )}
 
-      {/* ── Charts: stacked vertically with controlled height and reduced gap ── */}
+      {/* Charts Section */}
       <div
         className="d-flex flex-column gap-2 w-100 mx-auto"
         style={{ maxWidth: "1000px" }}
       >
+        {/* Distribution Chart */}
         <div className="w-100">
-          <h6 className="text-center mb-0" style={{ fontSize: "0.88rem" }}>
+          <h6 className="text-center mb-0">
             {t(
               "parameterEstimation.intervalEstimation.simulation.charts.distTitle",
               {
@@ -407,8 +423,9 @@ function ConfidenceIntervalSimulation() {
           />
         </div>
 
+        {/* Intervals Chart */}
         <div className="w-100 mt-2">
-          <h6 className="text-center mb-2" style={{ fontSize: "0.88rem" }}>
+          <h6 className="text-center mb-2">
             {t(
               "parameterEstimation.intervalEstimation.simulation.charts.ciTitle",
               { cl, mu: POP_MEAN },
@@ -438,7 +455,7 @@ function ConfidenceIntervalSimulation() {
         </div>
       </div>
 
-      {/* ── Formula toggle ── */}
+      {/* Formula Toggle Section */}
       <div className="w-100 mt-4 mx-auto" style={{ maxWidth: "1000px" }}>
         <button
           type="button"

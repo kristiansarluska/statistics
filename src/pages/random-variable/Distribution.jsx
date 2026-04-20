@@ -9,6 +9,18 @@ import QuantileFunctionSlider from "../../components/charts/random-variable/dist
 import QuantileFunctionInput from "../../components/charts/random-variable/distribution/QuantileFunctionInput";
 import NormalChart from "../../components/charts/probability-distributions/continuous/NormalChart";
 
+/**
+ * @component Distribution
+ * @description Renders the core section focused on the mathematical description of
+ * random variable distributions. It covers:
+ * 1. Probability Mass Function (PMF) and Probability Density Function (PDF):
+ * Explains how likelihood is assigned to specific values or intervals, featuring
+ * interactive simulations of the Law of Large Numbers.
+ * 2. Cumulative Distribution Function (CDF): Demonstrates the probability that
+ * a variable is less than or equal to a value, with discrete and continuous simulations.
+ * 3. Quantile Function: Explains the inverse relationship to the CDF, allowing users
+ * to interactively find values (quantiles) corresponding to specific probabilities.
+ */
 function Distribution() {
   const { t } = useTranslation();
 

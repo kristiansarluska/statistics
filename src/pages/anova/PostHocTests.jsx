@@ -4,7 +4,14 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import AnovaSimulation from "../../components/content/anova/AnovaSimulation";
 
-const PostHocTests = () => {
+/**
+ * @component PostHocTests
+ * @description Renders a section dedicated to Post-Hoc analysis following a significant ANOVA result.
+ * Explains the necessity of multiple comparison tests (Tukey HSD, Bonferroni, Scheffé)
+ * to identify specific group differences while controlling the family-wise error rate.
+ * Includes an interactive simulation (AnovaSimulation) using regional data.
+ */
+function PostHocTests() {
   const { t } = useTranslation();
   return (
     <section id="post-hoc" className="mb-5">
@@ -137,6 +144,6 @@ const PostHocTests = () => {
       </div>
     </section>
   );
-};
+}
 
 export default PostHocTests;

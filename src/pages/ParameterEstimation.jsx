@@ -5,6 +5,10 @@ import Introduction from "./parameter-estimation/Introduction";
 import PointEstimation from "./parameter-estimation/PointEstimation";
 import IntervalEstimation from "./parameter-estimation/IntervalEstimation";
 
+/**
+ * @component ParameterEstimation
+ * @description The main page component for the Parameter Estimation chapter.
+ */
 function ParameterEstimation() {
   const { t } = useTranslation();
 

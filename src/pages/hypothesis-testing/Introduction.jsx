@@ -3,6 +3,14 @@ import React from "react";
 import { InlineMath } from "react-katex";
 import { useTranslation, Trans } from "react-i18next";
 
+/**
+ * @component Introduction
+ * @description Renders the introductory section of the Hypothesis Testing chapter.
+ * It defines the fundamental logic of statistical inference, focusing on the
+ * essential distinction between the Null Hypothesis (H0), which typically assumes
+ * no effect or status quo, and the Alternative Hypothesis (HA), which represents
+ * the research claim to be supported by evidence.
+ */
 function Introduction() {
   const { t } = useTranslation();
 

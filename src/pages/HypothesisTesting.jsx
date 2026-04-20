@@ -5,6 +5,10 @@ import Introduction from "./hypothesis-testing/Introduction";
 import GeneralProcedure from "./hypothesis-testing/GeneralProcedure";
 import TTestDashboard from "./hypothesis-testing/TTestDashboard";
 
+/**
+ * @component HypothesisTesting
+ * @description The main page component for the Hypothesis Testing chapter.
+ */
 function HypothesisTesting() {
   const { t } = useTranslation();
 

@@ -2,6 +2,16 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
+/**
+ * @component ContinuousDiscrete
+ * @description Renders a comparative section that defines and distinguishes between
+ * Discrete and Continuous random variables.
+ * - Discrete: Variables with countable values, often resulting from a counting process.
+ * - Continuous: Variables that can take any value within an interval, typically resulting
+ * from a measurement process (e.g., coordinates, altitude, area).
+ * The component uses a card-based layout to contrast their definitions, processes,
+ * and practical examples relevant to statistical analysis.
+ */
 function ContinuousDiscrete() {
   const { t } = useTranslation();
 

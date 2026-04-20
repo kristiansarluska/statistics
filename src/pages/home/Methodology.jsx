@@ -8,6 +8,15 @@ import NormalChart from "../../components/charts/probability-distributions/conti
 import NutsMap from "../../components/maps/NutsMap";
 import DataPreviewTable from "../../components/charts/helpers/DataPreviewTable";
 
+/**
+ * @component Methodology
+ * @description Renders a comprehensive section on the landing page explaining
+ * the educational methodology of the application. It features a three-step guide
+ * and interactive module cards (Theory, Interaction, Data). Each card opens
+ * a modal window containing a live preview of specific application features,
+ * such as the Arithmetic Mean Calculator, the Normal Distribution Chart,
+ * or the NUTS3 Regional Map with synchronized data tables.
+ */
 function Methodology() {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState(null);

@@ -5,6 +5,10 @@ import Introduction from "./correlation/Introduction";
 import CorrelationAnalysis from "./correlation/CorrelationAnalysis";
 import CorrelationCoefficients from "./correlation/CorrelationCoefficients";
 
+/**
+ * @component Correlation
+ * @description The main page component for the Correlation chapter.
+ */
 function Correlation() {
   const { t } = useTranslation();
 

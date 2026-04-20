@@ -2,6 +2,11 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
+/**
+ * @component Introduction
+ * @description Renders the introductory section of the Probability Distributions chapter.
+ * It provides a basic overview of what probability distributions are and their role in statistics
+ */
 function Introduction() {
   const { t } = useTranslation();
 

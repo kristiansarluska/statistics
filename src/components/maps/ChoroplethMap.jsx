@@ -11,6 +11,14 @@ import BaseMap from "./helpers/BaseMap";
 const BELOW_SHADES = ["#f7ffee", "#e7f7cf", "#c2ec8c", "#80d040"];
 const ABOVE_SHADES = ["#ffecf3", "#ffdad8", "#ffaca9", "#ff8080"];
 
+/**
+ * @function getDivergentBreaks
+ * @description Computes data breaks (thresholds) for a divergent color scale based on a pivot value.
+ * @param {number[]} vals - Array of numerical values from the dataset.
+ * @param {number} pivot - The central value that separates "below" and "above" data points.
+ * @param {number} [maxClasses=5] - Maximum number of color classes per side.
+ * @returns {{ belowBreaks: number[], aboveBreaks: number[] }} Object containing arrays of break points.
+ */
 const getDivergentBreaks = (vals, pivot, maxClasses = 5) => {
   const below = vals.filter((v) => v < pivot).sort((a, b) => a - b);
   const above = vals.filter((v) => v >= pivot).sort((a, b) => a - b);
@@ -38,6 +46,15 @@ const getDivergentBreaks = (vals, pivot, maxClasses = 5) => {
   };
 };
 
+/**
+ * @function getColor
+ * @description Determines the correct hex color for a given value based on divergent breaks.
+ * @param {number} val - The numerical value to evaluate.
+ * @param {number} pivot - The central comparison value.
+ * @param {number[]} belowBreaks - Thresholds for values below the pivot.
+ * @param {number[]} aboveBreaks - Thresholds for values above the pivot.
+ * @returns {string|null} Hex color string, or null if value is missing.
+ */
 const getColor = (val, pivot, belowBreaks, aboveBreaks) => {
   if (val == null) return null;
   if (val < pivot) {
@@ -58,6 +75,15 @@ const getColor = (val, pivot, belowBreaks, aboveBreaks) => {
 
 // ── MapBoundsFitter ───────────────────────────────────────────────────────────
 
+/**
+ * @component MapBoundsFitter
+ * @description A logical (non-visual) Leaflet component that automatically adjusts the map's zoom and pan
+ * to tightly fit the geographical bounds of the currently filtered dataset.
+ * @param {Object} props
+ * @param {Object} props.geoJsonData - The full GeoJSON dataset.
+ * @param {string} props.filterKey - The property key used to filter the features.
+ * @param {string|number} props.filterValue - The value that `filterKey` must match.
+ */
 function MapBoundsFitter({ geoJsonData, filterKey, filterValue }) {
   const map = useMap();
   useEffect(() => {
@@ -80,6 +106,15 @@ function MapBoundsFitter({ geoJsonData, filterKey, filterValue }) {
 
 // ── Legend ────────────────────────────────────────────────────────────────────
 
+/**
+ * @component DivergentLegend
+ * @description Renders a color-coded legend for the choropleth map, illustrating the divergent breaks.
+ * @param {Object} props
+ * @param {number[]} props.belowBreaks - Thresholds for the lower end of the scale.
+ * @param {number[]} props.aboveBreaks - Thresholds for the upper end of the scale.
+ * @param {number} props.pivot - The baseline value separating below/above shades.
+ * @param {string} props.label - Title displayed at the top of the legend.
+ */
 function DivergentLegend({ belowBreaks, aboveBreaks, pivot, label }) {
   const rows = useMemo(() => {
     const out = [];
@@ -141,6 +176,19 @@ function DivergentLegend({ belowBreaks, aboveBreaks, pivot, label }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
+/**
+ * @component ChoroplethMap
+ * @description Interactive choropleth map visualization for geographical data. Features dynamic
+ * divergent coloring based on a pivot value, hover tooltips, and state synchronization with external tables.
+ * @param {Object} props
+ * @param {Object} props.geoJsonData - The GeoJSON dataset containing features and geometry.
+ * @param {string} props.attribute - The property key containing the numerical data to visualize.
+ * @param {string} props.filterKey - The property key to filter the dataset (e.g., district ID).
+ * @param {string|number} props.filterValue - The active filter value.
+ * @param {string|number|null} props.hoveredObec - External state indicating currently hovered region ID.
+ * @param {Function} props.setHoveredObec - Callback to update the hovered region ID.
+ * @param {number} [props.pivot] - Optional central value for divergent scaling. Defaults to 136 if absent.
+ */
 function ChoroplethMap({
   geoJsonData,
   attribute,
@@ -154,6 +202,7 @@ function ChoroplethMap({
   const { darkMode } = useContext(ThemeContext);
   const geoJsonRef = useRef(null);
 
+  // Calculate dynamic breaks whenever data, filtering, or pivot changes
   const { belowBreaks, aboveBreaks } = useMemo(() => {
     if (!geoJsonData) return { belowBreaks: [], aboveBreaks: [] };
     const vals = geoJsonData.features
@@ -163,14 +212,17 @@ function ChoroplethMap({
     return getDivergentBreaks(vals, pivot ?? 136);
   }, [geoJsonData, filterValue, attribute, filterKey, pivot]);
 
+  // Generate Leaflet style object per feature
   const style = (feature) => {
     const isInDistrict = feature.properties[filterKey] === filterValue;
     const isHovered = feature.properties.kod === hoveredObec;
     const val = feature.properties[attribute];
     let fillColor;
+
     if (!isInDistrict) fillColor = darkMode ? "#2a2a2a" : "#e0e0e0";
     else if (val == null) fillColor = darkMode ? "#606060" : "#b0b0b0";
     else fillColor = getColor(val, pivot ?? 136, belowBreaks, aboveBreaks);
+
     return {
       fillColor,
       weight: isHovered ? 2 : isInDistrict ? 1 : 0.5,
@@ -188,6 +240,7 @@ function ChoroplethMap({
     };
   };
 
+  // Synchronize styles programmatically for hover effects
   useEffect(() => {
     if (geoJsonRef.current) {
       geoJsonRef.current.setStyle(style);
@@ -200,6 +253,7 @@ function ChoroplethMap({
     }
   }, [hoveredObec, darkMode, filterValue, belowBreaks, aboveBreaks, pivot]);
 
+  // Bind interactions and tooltips to individual regions
   const onEachFeature = (feature, layer) => {
     const isInDistrict = feature.properties[filterKey] === filterValue;
     const val = feature.properties[attribute];
@@ -215,6 +269,7 @@ function ChoroplethMap({
       `<div class="text-center"><strong>${feature.properties.nazev}</strong><br/>${valLine}</div>`,
       { sticky: false, className: "shadow-sm border-0 bg-body text-body" },
     );
+
     layer.on({
       mouseover: (e) => {
         if (geoJsonRef.current)

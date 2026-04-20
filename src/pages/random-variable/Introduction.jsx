@@ -2,6 +2,13 @@
 import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 
+/**
+ * @component Introduction
+ * @description Renders the foundational introductory section for the Random Variable chapter.
+ * It formally defines a random variable as a numerical mapping of outcomes from a random
+ * experiment (sample space) to the real number line. This section sets the stage for
+ * understanding how abstract events are quantified for further statistical analysis.
+ */
 function Introduction() {
   const { t } = useTranslation();
 

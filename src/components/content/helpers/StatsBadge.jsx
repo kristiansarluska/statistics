@@ -1,5 +1,6 @@
 // src/components/content/helpers/StatsBadge.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * @component StatsBadge
@@ -14,6 +15,8 @@ import React from "react";
  * @param {React.ReactNode} [props.footer] - Optional content rendered below the statistics.
  */
 function StatsBadge({ items, footer }) {
+  const { t } = useTranslation();
+
   if (!items || items.length === 0) return null;
 
   return (

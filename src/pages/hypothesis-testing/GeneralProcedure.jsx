@@ -5,6 +5,17 @@ import { BlockMath, InlineMath } from "react-katex";
 import DataPreviewTable from "../../components/charts/helpers/DataPreviewTable";
 import { useTranslation, Trans } from "react-i18next";
 
+/**
+ * @component GeneralProcedure
+ * @description Renders a comprehensive educational section detailing the universal 4-step
+ * statistical hypothesis testing procedure. It uses a real-world example from geoinformatics
+ * (demographic data of the Moravian-Silesian Region) to demonstrate:
+ * 1. Formulation of Null (H0) and Alternative (HA) hypotheses.
+ * 2. Selection of the significance level (alpha).
+ * 3. Calculation of the test statistic (t-score).
+ * 4. Evaluation of results, including an overview of Type I and Type II errors.
+ * The component features dynamic data fetching of a GeoJSON dataset and a data preview table.
+ */
 function GeneralProcedure() {
   const { t } = useTranslation();
   const [data, setData] = useState([]);

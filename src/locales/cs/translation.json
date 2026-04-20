@@ -553,7 +553,9 @@
       "stats": {
         "grandMean": "Průměr z {{count}} výběrů:",
         "recordedMeans": "Zaznamenané průměry:",
-        "recordedVars": "Zaznamenané rozptyly:"
+        "recordedVars": "Zaznamenané rozptyly:",
+        "years": "r.",
+        "yearsSquared": "r.²"
       },
       "table": {
         "title": "Vybrané regiony",

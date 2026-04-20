@@ -3,6 +3,14 @@ import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 
+/**
+ * @component Introduction
+ * @description Renders the introductory section of the Correlation chapter.
+ * It provides an initial definition of statistical dependency and includes
+ * a cross-tabulation (matrix) that guides the user on which statistical method
+ * to choose (Contingency, ANOVA, or Correlation/Regression) based on the
+ * combination of variable types (categorical vs. quantitative).
+ */
 function Introduction() {
   const { t } = useTranslation();
 

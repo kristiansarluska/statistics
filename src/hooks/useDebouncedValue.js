@@ -2,94 +2,95 @@
 import { useState, useEffect, useRef } from "react";
 
 /**
- * Vlastný hook pre oneskorenú hodnotu s validáciou a korekciou.
- * @param {any} initialValue - Počiatočná hodnota.
- * @param {number} [delay=1000] - Oneskorenie v milisekundách.
- * @returns {[string, any, function(newValue: string, options?: {validator?: function, postValidationAction?: function}): void]}
- * Pole obsahujúce:
- * - inputValue: Aktuálna hodnota v inpute (vždy string).
- * - debouncedValue: Oneskorená (a validovaná/korigovaná) hodnota.
- * - setValue: Funkcia na nastavenie novej hodnoty z inputu.
+ * @function useDebouncedValue
+ * @description A custom hook for managing a debounced value with built-in validation and correction logic.
+ * Primarily used for text inputs that drive expensive operations like chart re-renders.
+ * It maintains an immediate string state for the input field and a delayed, validated state for the application logic.
+ * @param {any} initialValue - The starting value for both input and debounced states.
+ * @param {number} [delay=1000] - Debounce delay in milliseconds.
+ * @returns {[string, any, Function]} An array containing:
+ * - inputValue: The current raw string in the input field.
+ * - debouncedValue: The processed, validated, and delayed value.
+ * - setValue: Function to update the input and trigger the debounce timer.
  */
 function useDebouncedValue(initialValue, delay = 1000) {
-  // Stav pre hodnotu inputu (vždy string, aby zvládol aj prázdny stav)
+  // Immediate state for the input element (always stored as string)
   const [inputValue, setInputValue] = useState(String(initialValue));
-  // Stav pre oneskorenú hodnotu (môže byť string alebo number, podľa postValidationAction)
+
+  // Delayed state used for logic/charts (can be string or number)
   const [debouncedValue, setDebouncedValue] = useState(initialValue);
-  // Ref pre uloženie poslednej platnej debounced hodnoty
+
+  // Reference to persist the last known valid state for rollbacks
   const lastValidDebouncedValue = useRef(initialValue);
-  // Ref pre časovač
+
+  // Timer reference to manage the debounce lifecycle
   const debounceTimer = useRef(null);
 
+  // Cleanup timer on component unmount
   useEffect(() => {
-    // Keď sa komponent odmontuje, zrušíme časovač
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
       }
     };
-  }, []); // Spustí sa len raz
+  }, []);
 
   /**
-   * Nastaví novú hodnotu, spustí debounce a validáciu.
-   * @param {string} newValue - Nová hodnota z inputu.
-   * @param {object} [options] - Možnosti validácie a korekcie.
-   * @param {function(value: string): boolean} [options.validator=(val) => true] - Funkcia na validáciu formátu vstupu. Mala by vrátiť true pre platný formát (vrátane prázdneho stringu, ak je povolený).
-   * @param {function(value: any): any} [options.postValidationAction=(val) => val] - Funkcia, ktorá sa aplikuje na hodnotu *po* úspešnej základnej validácii (napr. clamping, konverzia na číslo). Jej výsledok sa nastaví do debouncedValue.
+   * @function setValue
+   * @description Updates the immediate input state and starts a debounce timer to process the value.
+   * @param {string} newValue - Raw value from the input event.
+   * @param {Object} [options={}] - Configuration for validation and post-processing.
+   * @param {Function} [options.validator] - Function returning boolean to check format validity.
+   * @param {Function} [options.postValidationAction] - Function to transform/clamp the value after successful validation.
    */
   const setValue = (newValue, options = {}) => {
     const { validator = (val) => true, postValidationAction = (val) => val } =
       options;
 
-    // Vždy aktualizuj okamžitú hodnotu inputu (ako string)
-    setInputValue(newValue); // Už je to string z event.target.value
+    // Always update the raw input state immediately
+    setInputValue(newValue);
 
-    // Zruš predchádzajúci časovač
+    // Clear any existing pending debounce timers
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    // Nastav nový časovač
+    // Set a new timer to process the input after the delay
     debounceTimer.current = setTimeout(() => {
-      const trimmedValue = String(newValue).trim(); // Ostriháme medzery
+      const trimmedValue = String(newValue).trim();
 
-      // Špeciálna logika pre prázdny string: nechaj input prázdny, nemen debouncedValue
+      // Handle empty input: keep the input field empty but do not update debounced logic.
+      // This allows the user to clear the field without breaking the dependent charts.
       if (trimmedValue === "") {
-        // Input zostane prázdny (už je nastavený cez setInputValue vyššie)
-        // Neaktualizuj debouncedValue ani lastValidDebouncedValue
-        // Graf bude používať poslednú platnú hodnotu z 'debouncedValue' stavu
-        return; // Ukonči spracovanie
+        return;
       }
 
-      // Validácia formátu až po uplynutí času
+      // Perform format validation
       if (validator(trimmedValue)) {
-        // Skús aplikovať post-validačnú akciu (napr. clamping, konverzia na číslo)
-        // Použijeme try-catch pre prípad, že by postValidationAction zlyhala (napr. pri parseFloat)
         try {
+          // Apply post-validation logic (e.g., converting to number, clamping to range)
           const correctedValue = postValidationAction(trimmedValue);
 
-          setDebouncedValue(correctedValue); // Nastav debounced hodnotu (môže byť string alebo number)
-          lastValidDebouncedValue.current = correctedValue; // Ulož ako poslednú platnú
+          setDebouncedValue(correctedValue);
+          lastValidDebouncedValue.current = correctedValue;
 
-          // Ak sa hodnota po korekcii zmenila oproti *ostrihanému* vstupu, aktualizuj aj input
-          // Porovnávame ako stringy
+          // If the corrected value differs from the user's raw input (e.g., due to clamping),
+          // sync the input field back to the corrected value.
           if (String(correctedValue) !== trimmedValue) {
             setInputValue(String(correctedValue));
           }
         } catch (error) {
           console.error("Error during postValidationAction:", error);
-          // Akcia zlyhala, vráť input na poslednú platnú hodnotu
+          // Rollback input to the last valid state if processing fails
           setInputValue(String(lastValidDebouncedValue.current));
         }
       } else {
-        // Ak validácia formátu zlyhala (a vstup nie je prázdny), vráť inputValue na poslednú platnú hodnotu
+        // Rollback input if validation fails
         setInputValue(String(lastValidDebouncedValue.current));
-        // DebouncedValue zostáva na poslednej platnej hodnote
       }
     }, delay);
   };
 
-  // Vrátime pole: [hodnota pre input (string), oneskorená hodnota, funkcia na nastavenie]
   return [inputValue, debouncedValue, setValue];
 }
 

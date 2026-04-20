@@ -1,7 +1,20 @@
 // src/utils/anovaMath.js
 
 /**
- * Generates a random number from a normal distribution using Box-Muller transform
+ * @file anovaMath.js
+ * @description A utility library providing mathematical and statistical functions for ANOVA simulations.
+ * It includes random number generation using the Box-Muller transform, Gaussian Kernel Density Estimation (KDE)
+ * for smoothing histograms, and the complete engine for One-Way ANOVA calculations (Sum of Squares,
+ * Mean Squares, F-statistic) and Tukey's Honestly Significant Difference (HSD) post-hoc testing.
+ */
+
+/**
+ * @function randomNormal
+ * @description Generates a random number following a normal distribution.
+ * Uses the Box-Muller transform to convert uniform random numbers into normally distributed values.
+ * @param {number} mean - The desired average of the distribution.
+ * @param {number} std - The standard deviation (spread) of the distribution.
+ * @returns {number} A single normally distributed random value.
  */
 export const randomNormal = (mean, std) => {
   let u = 0,

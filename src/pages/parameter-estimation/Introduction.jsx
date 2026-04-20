@@ -4,6 +4,15 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
+/**
+ * @component Introduction
+ * @description Renders the introductory section of the Parameter Estimation chapter.
+ * It establishes the conceptual framework of inferential statistics by:
+ * - Differentiating between a Population (total set) and a Sample (subset).
+ * - Defining the relationship between sample statistics (e.g., mean x̄, SD s)
+ * and their corresponding population parameters (e.g., mean μ, SD σ).
+ * - Providing a comparative table of notation used for populations versus samples.
+ */
 function Introduction() {
   const { t } = useTranslation();
 

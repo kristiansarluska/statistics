@@ -5,18 +5,21 @@ import "leaflet/dist/leaflet.css";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 /**
- * Shared Leaflet shell used by all choropleth maps.
- *
- * Props:
- *   center              — [lat, lng] initial centre
- *   zoom                — initial zoom level
- *   minZoom / maxZoom   — zoom constraints (defaults: 3 / 14)
- *   maxBounds           — [[s,w],[n,e]] optional pan constraint
- *   maxBoundsViscosity  — 0–1 (default 0.8)
- *   scrollWheelZoom     — default false
- *   height              — map height in px (default 420)
- *   legend              — ReactNode rendered in bottom-left overlay
- *   children            — Leaflet components (GeoJSON, MapBoundsFitter, …)
+ * @component BaseMap
+ * @description A shared, reusable Leaflet map wrapper used as the foundation for all choropleth
+ * and interactive maps in the application. It automatically handles dark/light mode tile layers,
+ * provides a custom fullscreen toggle, and offers a standardized slot for a map legend.
+ * @param {Object} props
+ * @param {number[]} [props.center=[50.5, 10.0]] - Initial geographical center of the map [latitude, longitude].
+ * @param {number} [props.zoom=4] - Initial zoom level.
+ * @param {number} [props.minZoom=3] - Minimum allowed zoom level.
+ * @param {number} [props.maxZoom=14] - Maximum allowed zoom level.
+ * @param {number[][]} [props.maxBounds] - Optional pan constraints representing [[South, West], [North, East]].
+ * @param {number} [props.maxBoundsViscosity=0.8] - How strongly the map bounces back when panning outside `maxBounds` (0-1).
+ * @param {boolean} [props.scrollWheelZoom=true] - Whether zooming with the mouse wheel is enabled.
+ * @param {number|string} [props.height=420] - Map container height in pixels or standard CSS units.
+ * @param {React.ReactNode} [props.legend] - React element to be rendered in the bottom-left overlay map legend slot.
+ * @param {React.ReactNode} props.children - Additional Leaflet components (like GeoJSON layers, markers) to render inside the map.
  */
 function BaseMap({
   center = [50.5, 10.0],
@@ -34,6 +37,7 @@ function BaseMap({
   const wrapperRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Switch base tiles based on the global theme context
   const tileUrl = darkMode
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
@@ -64,7 +68,7 @@ function BaseMap({
 
   return (
     <>
-      {/* Remove Leaflet's default focus outline */}
+      {/* Remove Leaflet's default focus outline for a cleaner UI */}
       <style>{`.leaflet-interactive:focus { outline: none; }`}</style>
 
       <div
@@ -72,7 +76,6 @@ function BaseMap({
         className={`rounded border overflow-hidden shadow-sm position-relative mt-4${isFullscreen ? " bg-body" : ""}`}
         style={{ height: isFullscreen ? "100vh" : height, width: "100%" }}
       >
-        {/* Fullscreen toggle — matches Leaflet zoom control style */}
         <button
           onClick={toggleFullscreen}
           className="d-flex align-items-center justify-content-center"
@@ -103,7 +106,6 @@ function BaseMap({
           )}
         </button>
 
-        {/* Legend slot — bottom-left overlay, rendered only when provided */}
         {legend && (
           <div
             className="position-absolute bg-body border rounded shadow-sm px-2 py-1"
@@ -120,6 +122,7 @@ function BaseMap({
         )}
 
         <MapContainer {...containerProps}>
+          {/* Key forces remounting when theme changes to ensure tiles render correctly */}
           <TileLayer key={tileUrl} url={tileUrl} attribution="&copy; CartoDB" />
           {children}
         </MapContainer>

@@ -4,6 +4,14 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import CoefficientComparison from "../../components/charts/correlation/CoefficientComparison";
 
+/**
+ * @component CorrelationCoefficients
+ * @description Renders a theoretical and interactive comparison between different types of
+ * correlation coefficients. It highlights the differences between Pearson's parametric
+ * coefficient (linear relationship) and Spearman's non-parametric rank coefficient
+ * (monotonic relationship). Includes an interactive comparison tool (CoefficientComparison)
+ * that demonstrates how both coefficients react to non-linear trends and statistical outliers.
+ */
 function CorrelationCoefficients() {
   const { t } = useTranslation();
 

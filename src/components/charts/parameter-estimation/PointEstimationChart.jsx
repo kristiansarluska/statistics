@@ -8,7 +8,7 @@ import BackgroundArea from "../helpers/BackgroundArea";
 import AnimatedRefLine from "../helpers/AnimatedRefLine";
 import StatsBadge from "../../content/helpers/StatsBadge";
 import ResetButton from "../helpers/ResetButton";
-import { randomNormal, normalPdf } from "../../../utils/distributions";
+import { randomNormal, normalPDF } from "../../../utils/distributions";
 
 // Fixed population parameters for Mount Praděd height measurement simulation
 const PRADED_MEAN = 1492.0;
@@ -109,7 +109,7 @@ function PointEstimationChart() {
 
       points.push({
         x: Number(x.toFixed(2)),
-        y: normalPdf(x, PRADED_MEAN, PRADED_STD),
+        y: normalPDF(x, PRADED_MEAN, PRADED_STD),
         empirical: empiricalDensity,
       });
     }

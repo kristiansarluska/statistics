@@ -1,4 +1,14 @@
 // src/components/sidebar/sidebarData.js
+
+/**
+ * @constant sidebarData
+ * @description Defines the hierarchical navigation structure for the application's sidebar.
+ * Each top-level item represents a main statistical topic and maps to an application route.
+ * @type {Array<Object>}
+ * * @property {string} labelKey - The i18n translation key for the navigation label.
+ * @property {string} path - The URL path or hash fragment to navigate to.
+ * @property {Array<Object>} [children] - Optional array of nested sub-navigation items.
+ */
 export const sidebarData = [
   {
     labelKey: "topics.randomVariable",

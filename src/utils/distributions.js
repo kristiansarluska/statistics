@@ -1,7 +1,16 @@
 // src/utils/distributions.js
 
 /**
+ * @section HELPERS & MATH UTILITIES
+ */
+
+/**
  * Generates human-readable "pretty" ticks for chart axes.
+ * @param {number} maxValue - Maximum data value.
+ * @param {number|null} userMin - User-defined minimum.
+ * @param {number|null} userMax - User-defined maximum.
+ * @param {number} [dataMin=0] - Minimum data value.
+ * @returns {Object} Domain, ticks array, and formatter function.
  */
 export const getAxisConfig = (maxValue, userMin, userMax, dataMin = 0) => {
   const min =
@@ -10,28 +19,26 @@ export const getAxisConfig = (maxValue, userMin, userMax, dataMin = 0) => {
     userMax !== null && typeof userMax === "number" ? userMax : maxValue;
 
   const range = max - min;
-  if (range === 0)
+  if (range === 0) {
     return {
       domain: [min, max + 1],
       ticks: [min, max + 1],
       formatTick: (v) => v,
     };
+  }
 
-  // Znížime cieľový počet tikov pre širšie, prehľadnejšie medzery (napr. 0.02 namiesto 0.01)
   const targetTicks = 4;
   const rawStep = range / targetTicks;
   const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
   const normalizedStep = rawStep / magnitude;
 
   let niceStep;
-  // Upravené medze, aby algoritmus častejšie skočil na krok 2 alebo 5
   if (normalizedStep < 1.5) niceStep = 1;
   else if (normalizedStep < 3.5) niceStep = 2;
   else if (normalizedStep < 7.5) niceStep = 5;
   else niceStep = 10;
 
   const step = niceStep * magnitude;
-
   const startTick = Math.floor(min / step) * step;
   const endTick = Math.ceil(max / step) * step;
 
@@ -59,7 +66,11 @@ export const getAxisConfig = (maxValue, userMin, userMax, dataMin = 0) => {
   };
 };
 
-// Error function approximation
+/**
+ * Error function approximation.
+ * @param {number} x
+ * @returns {number}
+ */
 export function erf(x) {
   const sign = x < 0 ? -1 : 1;
   x = Math.abs(x);
@@ -74,7 +85,7 @@ export function erf(x) {
   return sign * y;
 }
 
-// hodnoty pre Chí kvadrát rozdelenie
+// Lanczos approximation constants
 const g = 7;
 const p = [
   0.99999999999980993, 676.5203681218851, -1259.1392167224028,
@@ -82,191 +93,65 @@ const p = [
   -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7,
 ];
 
-// PDF – hustota normálneho rozdelenia
+/**
+ * Gamma function (Lanczos approximation).
+ * @param {number} z
+ * @returns {number}
+ */
+function gamma(z) {
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+  z -= 1;
+  let x = p[0];
+  for (let i = 1; i < g + 2; i++) x += p[i] / (z + i);
+  const t = z + g + 0.5;
+  return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+
+/**
+ * Calculates nCr (combinations).
+ */
+export const getCombinations = (n, k) => {
+  if (k === 0 || k === n) return 1;
+  let c = 1;
+  for (let i = 1; i <= k; i++) c = (c * (n - i + 1)) / i;
+  return c;
+};
+
+/**
+ * Calculates factorial of n.
+ */
+export const factorial = (n) => {
+  if (n === 0 || n === 1) return 1;
+  let result = 1;
+  for (let i = 2; i <= n; i++) result *= i;
+  return result;
+};
+
+/**
+ * @section CONTINUOUS DISTRIBUTIONS
+ */
+
+/**
+ * Normal Distribution PDF.
+ */
 export function normalPDF(x, mean = 0, sd = 1) {
+  const variance = sd * sd;
   return (
     (1 / (sd * Math.sqrt(2 * Math.PI))) *
     Math.exp(-0.5 * Math.pow((x - mean) / sd, 2))
   );
 }
 
-// CDF – distribučná funkcia normálneho rozdelenia
+/**
+ * Normal Distribution CDF.
+ */
 export function normalCDF(x, mean = 0, sd = 1) {
   return 0.5 * (1 + erf((x - mean) / (sd * Math.sqrt(2))));
 }
 
-//  --- Gamma funkcia (Lanczosova aproximácia) ---
-function gamma(z) {
-  if (z < 0.5) {
-    return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
-  } else {
-    z -= 1;
-    let x = p[0];
-    for (let i = 1; i < g + 2; i++) {
-      x += p[i] / (z + i);
-    }
-    const t = z + g + 0.5;
-    return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
-  }
-}
-
-export function chiSquarePDF(x, k) {
-  // k = stupne voľnosti
-  if (x <= 0 || k <= 0) {
-    return 0; // PDF je definovaná len pre x > 0 a k > 0
-  }
-  const k_half = k / 2;
-  const numerator = Math.pow(x, k_half - 1) * Math.exp(-x / 2);
-  const denominator = Math.pow(2, k_half) * gamma(k_half);
-
-  // Ošetrenie delenia nulou alebo neplatných hodnôt Gamma funkcie
-  if (denominator === 0 || isNaN(denominator) || !isFinite(denominator)) {
-    // Pre veľmi malé k/2 môže gamma(k/2) byť problematické
-    // Môžeme vrátiť 0 alebo vyhodiť chybu, podľa potreby
-    // Vrátenie 0 je bezpečnejšie pre graf
-    return 0;
-  }
-
-  const result = numerator / denominator;
-  // Ošetrenie prípadov, kedy výsledok nie je platné číslo
-  if (isNaN(result) || !isFinite(result)) {
-    return 0;
-  }
-
-  return result;
-}
-
-export function chiSquareCDF(x, k) {
-  if (x <= 0 || k <= 0) return 0;
-  const s = k / 2;
-  const z = x / 2;
-
-  // Výpočet pomocou nekonečného radu pre neúplnú gama funkciu
-  let sum = 1 / s;
-  let term = 1 / s;
-  for (let i = 1; i < 200; i++) {
-    term = (term * z) / (s + i);
-    sum += term;
-    if (term < 1e-12) break; // Zastavíme, keď je ďalší príspevok zanedbateľný
-  }
-
-  const result = ((Math.exp(-z) * Math.pow(z, s)) / gamma(s)) * sum;
-  return isNaN(result) || !isFinite(result) ? 0 : result;
-}
-
-// Helper for combinations (n choose k)
-export const getCombinations = (n, k) => {
-  if (k === 0 || k === n) return 1;
-  let c = 1;
-  for (let i = 1; i <= k; i++) {
-    c = (c * (n - i + 1)) / i;
-  }
-  return c;
-};
-
-// Binomial Probability Mass Function (PMF)
-export const binomialPMF = (k, n, p) => {
-  if (p === 0) return k === 0 ? 1 : 0;
-  if (p === 1) return k === n ? 1 : 0;
-  return getCombinations(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
-};
-
-// Pomocná funkcia pre faktoriál
-export const factorial = (n) => {
-  if (n === 0 || n === 1) return 1;
-  let result = 1;
-  for (let i = 2; i <= n; i++) {
-    result *= i;
-  }
-  return result;
-};
-
-// Pravdepodobnostná funkcia Poissonovho rozdelenia (PMF)
-export const poissonPMF = (k, lambda) => {
-  return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
-};
-
-// Exponenciálne rozdelenie (PDF)
-export const exponentialPDF = (x, lambda) => {
-  if (x < 0) return 0;
-  return lambda * Math.exp(-lambda * x);
-};
-
-// Exponenciálne rozdelenie (CDF)
-export const exponentialCDF = (x, lambda) => {
-  if (x < 0) return 0;
-  return 1 - Math.exp(-lambda * x);
-};
-
-// Hustota pravdepodobnosti Studentovho t-rozdelenia (PDF)
-export const studentTPDF = (x, k) => {
-  const numerator = gamma((k + 1) / 2);
-  const denominator = Math.sqrt(k * Math.PI) * gamma(k / 2);
-  const base = 1 + (x * x) / k;
-  const exponent = -(k + 1) / 2;
-  return (numerator / denominator) * Math.pow(base, exponent);
-};
-
-// Distribučná funkcia Studentovho t-rozdelenia (CDF) - Numerická integrácia
-export const studentTCDF = (x, k) => {
-  if (x === 0) return 0.5;
-  const isNegative = x < 0;
-  const absX = Math.abs(x);
-
-  // Simpsonovo pravidlo pre výpočet integrálu od 0 po |x|
-  const n = 100; // Počet krokov (musí byť párne)
-  const h = absX / n;
-  let sum = studentTPDF(0, k) + studentTPDF(absX, k);
-
-  for (let i = 1; i < n; i++) {
-    const t = i * h;
-    sum += (i % 2 === 0 ? 2 : 4) * studentTPDF(t, k);
-  }
-
-  const integral = (h / 3) * sum;
-  const result = 0.5 + integral;
-
-  // Využívame symetriu rozdelenia
-  return isNegative ? 1 - result : result;
-};
-
-// Hustota pravdepodobnosti Fisherovho F-rozdelenia (PDF)
-export const fisherFPDF = (x, d1, d2) => {
-  if (x <= 0) return 0;
-
-  const num1 = gamma((d1 + d2) / 2);
-  const den1 = gamma(d1 / 2) * gamma(d2 / 2);
-  const factor1 = Math.pow(d1 / d2, d1 / 2);
-  const factor2 = Math.pow(x, d1 / 2 - 1);
-  const factor3 = Math.pow(1 + (d1 * x) / d2, -(d1 + d2) / 2);
-
-  const result = (num1 / den1) * factor1 * factor2 * factor3;
-  return isNaN(result) || !isFinite(result) ? 0 : result;
-};
-
-// Cumulative Distribution Function for Fisher's F-distribution (Numerical Integration)
-export const fisherFCDF = (x, d1, d2) => {
-  if (x <= 0) return 0;
-
-  const n = 100; // Number of integration steps (must be even)
-  const h = x / n;
-
-  // For d1 < 2, PDF goes to infinity at x=0, so we start slightly above 0
-  let sum = fisherFPDF(1e-5, d1, d2) + fisherFPDF(x, d1, d2);
-
-  for (let i = 1; i < n; i++) {
-    const t = i * h;
-    sum += (i % 2 === 0 ? 2 : 4) * fisherFPDF(t, d1, d2);
-  }
-
-  const result = (h / 3) * sum;
-  // Clamp to 1 to prevent floating point inaccuracies from exceeding 100%
-  return Math.min(result, 1);
-};
-
-// Pridaj do src/utils/distributions.js
-
-// Generovanie náhodného čísla z normálneho rozdelenia (Box-Muller)
+/**
+ * Generates random number from Normal Distribution (Box-Muller).
+ */
 export const randomNormal = (mean, stdDev) => {
   let u = 1 - Math.random();
   let v = Math.random();
@@ -274,40 +159,142 @@ export const randomNormal = (mean, stdDev) => {
   return z * stdDev + mean;
 };
 
-// Hustota pravdepodobnosti normálneho rozdelenia (PDF)
-export const normalPdf = (x, mean, stdDev) => {
-  const variance = stdDev * stdDev;
-  return (
-    (1 / Math.sqrt(2 * Math.PI * variance)) *
-    Math.exp(-Math.pow(x - mean, 2) / (2 * variance))
-  );
+/**
+ * Student's t-Distribution PDF.
+ * @param {number} x - Value
+ * @param {number} k - Degrees of freedom
+ */
+export const studentTPDF = (x, k) => {
+  const numerator = gamma((k + 1) / 2);
+  const denominator = Math.sqrt(k * Math.PI) * gamma(k / 2);
+  return (numerator / denominator) * Math.pow(1 + (x * x) / k, -(k + 1) / 2);
 };
 
-// Pridaj na koniec súboru src/utils/distributions.js
+/**
+ * Student's t-Distribution CDF (Numerical integration using Simpson's rule).
+ */
+export const studentTCDF = (x, k) => {
+  if (x === 0) return 0.5;
+  const isNegative = x < 0;
+  const absX = Math.abs(x);
+  const n = 100;
+  const h = absX / n;
+  let sum = studentTPDF(0, k) + studentTPDF(absX, k);
+  for (let i = 1; i < n; i++)
+    sum += (i % 2 === 0 ? 2 : 4) * studentTPDF(i * h, k);
+  const result = 0.5 + (h / 3) * sum;
+  return isNegative ? 1 - result : result;
+};
 
-// Kvantily štandardizovaného normálneho rozdelenia (Z-skóre) pre bežné hladiny významnosti
+/**
+ * Chi-Square Distribution PDF.
+ */
+export function chiSquarePDF(x, k) {
+  if (x <= 0 || k <= 0) return 0;
+  const k_half = k / 2;
+  const denominator = Math.pow(2, k_half) * gamma(k_half);
+  if (denominator === 0 || !isFinite(denominator)) return 0;
+  const result = (Math.pow(x, k_half - 1) * Math.exp(-x / 2)) / denominator;
+  return isFinite(result) ? result : 0;
+}
+
+/**
+ * Chi-Square Distribution CDF (Infinite series approximation).
+ */
+export function chiSquareCDF(x, k) {
+  if (x <= 0 || k <= 0) return 0;
+  const s = k / 2,
+    z = x / 2;
+  let sum = 1 / s,
+    term = 1 / s;
+  for (let i = 1; i < 200; i++) {
+    term = (term * z) / (s + i);
+    sum += term;
+    if (term < 1e-12) break;
+  }
+  const result = ((Math.exp(-z) * Math.pow(z, s)) / gamma(s)) * sum;
+  return isFinite(result) ? result : 0;
+}
+
+/**
+ * Fisher-Snedecor F-Distribution PDF.
+ */
+export const fisherFPDF = (x, d1, d2) => {
+  if (x <= 0) return 0;
+  const num = gamma((d1 + d2) / 2);
+  const den = gamma(d1 / 2) * gamma(d2 / 2);
+  const factor1 = Math.pow(d1 / d2, d1 / 2);
+  const factor2 = Math.pow(x, d1 / 2 - 1);
+  const factor3 = Math.pow(1 + (d1 * x) / d2, -(d1 + d2) / 2);
+  const result = (num / den) * factor1 * factor2 * factor3;
+  return isFinite(result) ? result : 0;
+};
+
+/**
+ * Fisher-Snedecor F-Distribution CDF (Numerical integration).
+ */
+export const fisherFCDF = (x, d1, d2) => {
+  if (x <= 0) return 0;
+  const n = 100,
+    h = x / n;
+  let sum = fisherFPDF(1e-5, d1, d2) + fisherFPDF(x, d1, d2);
+  for (let i = 1; i < n; i++)
+    sum += (i % 2 === 0 ? 2 : 4) * fisherFPDF(i * h, d1, d2);
+  return Math.min((h / 3) * sum, 1);
+};
+
+/**
+ * Exponential Distribution PDF.
+ */
+export const exponentialPDF = (x, lambda) =>
+  x < 0 ? 0 : lambda * Math.exp(-lambda * x);
+
+/**
+ * Exponential Distribution CDF.
+ */
+export const exponentialCDF = (x, lambda) =>
+  x < 0 ? 0 : 1 - Math.exp(-lambda * x);
+
+/**
+ * @section DISCRETE DISTRIBUTIONS
+ */
+
+/**
+ * Binomial Distribution PMF.
+ */
+export const binomialPMF = (k, n, p) => {
+  if (p === 0) return k === 0 ? 1 : 0;
+  if (p === 1) return k === n ? 1 : 0;
+  return getCombinations(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+};
+
+/**
+ * Poisson Distribution PMF.
+ */
+export const poissonPMF = (k, lambda) =>
+  (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
+
+/**
+ * @section STATISTICAL TABLES (CRITICAL VALUES)
+ */
+
+/**
+ * Returns Z-critical value for common confidence levels.
+ */
 export const getZCriticalValue = (confidenceLevel) => {
-  if (confidenceLevel === 0.9) return 1.645;
-  if (confidenceLevel === 0.95) return 1.96;
-  if (confidenceLevel === 0.99) return 2.576;
-  return 1.96; // default 95%
+  const map = { 0.9: 1.645, 0.95: 1.96, 0.99: 2.576 };
+  return map[confidenceLevel] || 1.96;
 };
 
-// Aproximácia kvantilu Studentovho t-rozdelenia
-// Pre presné akademické účely sa často používa aproximácia cez Z-skóre pre n > 30,
-// a pre menšie n presnejší výpočet. Tu je zjednodušená presná tabuľková interpolácia/aproximácia.
+/**
+ * Approximates T-critical value using Cornish-Fisher expansion.
+ */
 export const getTCriticalValue = (confidenceLevel, df) => {
   const z = getZCriticalValue(confidenceLevel);
   if (df <= 0) return z;
-
-  // Aproximácia Cornish-Fisher / Peizer-Pratt pre t-kvantil
-  // Pre vysoké stupne voľnosti sa t blíži k Z
   if (df > 120) return z;
-
-  const z2 = z * z;
-  const z3 = z2 * z;
-  const z5 = z3 * z2;
-
-  // Zlepšená aproximácia pre menšie vzorky
+  const z2 = z * z,
+    z3 = z2 * z,
+    z5 = z3 * z2;
   return z + (z3 + z) / (4 * df) + (5 * z5 + 16 * z3 + 3 * z) / (96 * df * df);
 };

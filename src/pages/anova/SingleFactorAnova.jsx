@@ -3,7 +3,14 @@ import React from "react";
 import { InlineMath, BlockMath } from "react-katex";
 import { useTranslation, Trans } from "react-i18next";
 
-const SingleFactorAnova = () => {
+/**
+ * @component SingleFactorAnova
+ * @description Renders the core theoretical section for One-Way Analysis of Variance (ANOVA).
+ * It covers the formal hypothesis definition, the linear model equation, the principle
+ * of variance decomposition (Total, Between-group, and Within-group sums of squares),
+ * and the final F-test calculation used to determine statistical significance.
+ */
+function SingleFactorAnova() {
   const { t } = useTranslation();
 
   return (
@@ -151,6 +158,6 @@ const SingleFactorAnova = () => {
       </div>
     </section>
   );
-};
+}
 
 export default SingleFactorAnova;

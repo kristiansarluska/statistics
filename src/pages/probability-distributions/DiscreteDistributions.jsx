@@ -7,6 +7,19 @@ import UniformDiscreteChart from "../../components/charts/probability-distributi
 import BinomialChart from "../../components/charts/probability-distributions/discrete/BinomialChart";
 import PoissonChart from "../../components/charts/probability-distributions/discrete/PoissonChart";
 
+/**
+ * @component DiscreteDistributions
+ * @description Renders a comprehensive educational section on discrete probability distributions.
+ * It provides mathematical definitions (probability mass function and cumulative distribution function)
+ * and interactive visualizations for the following key models:
+ * - Bernoulli (Alternative): Modeling a single trial with two possible outcomes.
+ * - Uniform Discrete: Situations where all outcomes have equal probability.
+ * - Binomial: Modeling the number of successes in a fixed number of independent Bernoulli trials.
+ * - Poisson: Modeling the number of events occurring within a fixed interval of time or space.
+ * Each distribution includes an interactive chart (BernoulliChart, BinomialChart, etc.)
+ * allowing students to visualize how changing parameters like probability (p), number of trials (n),
+ * or the average rate (lambda) affects the distribution shape.
+ */
 function DiscreteDistributions() {
   const { t } = useTranslation();
 

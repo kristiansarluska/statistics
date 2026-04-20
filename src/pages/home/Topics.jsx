@@ -4,6 +4,14 @@ import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { chapters } from "./homeData";
 
+/**
+ * @component Topics
+ * @description Renders a grid of navigation cards on the landing page representing
+ * the main statistical chapters of the application. The content is dynamically
+ * generated from `homeData.js` and includes localized descriptions and icons.
+ * It also features a localized introductory text with an external link
+ * to the official university course syllabus.
+ */
 function Topics() {
   const { t } = useTranslation();
 

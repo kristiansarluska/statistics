@@ -9,6 +9,19 @@ import ChiSquareChart from "../../components/charts/probability-distributions/co
 import StudentTChart from "../../components/charts/probability-distributions/continuous/StudentTChart";
 import FisherFChart from "../../components/charts/probability-distributions/continuous/FisherFChart";
 
+/**
+ * @component ContinuousDistributions
+ * @description Renders a comprehensive educational section on continuous probability distributions.
+ * It provides mathematical definitions (PDF and CDF formulas) and interactive visualizations
+ * for several key distributions:
+ * - Uniform Continuous: Basics of equal probability over an interval.
+ * - Exponential: Modeling time between events.
+ * - Normal (Gaussian): The cornerstone of statistics, including standard normal transformation (Z-score).
+ * - Chi-Square, Student's t, and Fisher's F: Specialized distributions essential for
+ * inferential statistics and hypothesis testing.
+ * Each section includes an interactive chart component allowing users to manipulate
+ * parameters (like mean, variance, or degrees of freedom) to see real-time changes in the curve.
+ */
 function ContinuousDistributions() {
   const { t } = useTranslation();
 

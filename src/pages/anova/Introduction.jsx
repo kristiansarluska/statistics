@@ -3,7 +3,14 @@ import React from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 
-const Introduction = () => {
+/**
+ * @component Introduction
+ * @description Renders the introductory section for the ANOVA chapter.
+ * It provides a theoretical overview of why ANOVA is used instead of multiple t-tests,
+ * outlines the necessary prerequisites (independence, normality, homoscedasticity),
+ * and introduces tests for homogeneity of variances (Bartlett's and Levene's tests).
+ */
+function Introduction() {
   const { t } = useTranslation();
 
   return (
@@ -203,6 +210,6 @@ const Introduction = () => {
       </div>
     </section>
   );
-};
+}
 
 export default Introduction;

@@ -6,6 +6,10 @@ import ContinuousDiscrete from "./random-variable/ContinuousDiscrete";
 import Distribution from "./random-variable/Distribution";
 import Characteristics from "./random-variable/Characteristics";
 
+/**
+ * @component RandomVariable
+ * @description The main page component for the Random Variable chapter.
+ */
 function RandomVariable() {
   const { t } = useTranslation();
 

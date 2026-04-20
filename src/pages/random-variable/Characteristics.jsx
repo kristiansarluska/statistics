@@ -19,7 +19,20 @@ import SkewnessChart from "../../components/charts/random-variable/characteristi
 import KurtosisChart from "../../components/charts/random-variable/characteristics/KurtosisChart";
 import FiveNumberSummaryBoxplot from "../../components/charts/random-variable/characteristics/FiveNumberSummaryBoxplot";
 
-export function Characteristics() {
+/**
+ * @component Characteristics
+ * @description A comprehensive educational module covering the numerical characteristics
+ * of random variables. It is structured into four main sections:
+ * 1. Measures of Location: Includes interactive calculators for various means (Arithmetic,
+ * Harmonic, Geometric, Weighted), Mode, and Median.
+ * 2. Measures of Variability: Covers dispersion metrics such as Range, Mean Deviation,
+ * Variance, Standard Deviation, and Coefficient of Variation.
+ * 3. Shape Measures: Explains Skewness and Kurtosis with dynamic visual charts.
+ * 4. Five-Number Summary: Demonstrates data distribution using an interactive Boxplot.
+ * * Each subsection combines theoretical mathematical notation (KaTeX) with practical,
+ * real-time calculation tools to enhance the learning experience.
+ */
+function Characteristics() {
   const { t } = useTranslation();
 
   return (

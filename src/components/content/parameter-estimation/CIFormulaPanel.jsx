@@ -4,6 +4,25 @@ import { InlineMath } from "react-katex";
 import CalcPanel from "../helpers/CalcPanel";
 import { POP_MEAN, POP_STD } from "../../../utils/ciMath";
 
+/**
+ * @component CIFormulaPanel
+ * @description Displays the mathematical formulas and step-by-step concrete calculations for confidence intervals.
+ * Dynamically adjusts LaTeX equations based on interval type, variance knowledge, and current sample data.
+ * @param {Object} props
+ * @param {number} props.cl - Confidence level (e.g., 0.95 for 95%).
+ * @param {string} props.type - Type of the confidence interval ("two", "left", "right").
+ * @param {boolean} props.knowSigma - Flag indicating whether the population variance is known.
+ * @param {Object|null} props.lastSample - Statistics from the most recently drawn sample.
+ * @param {number} props.lastSample.mean - Sample mean.
+ * @param {number} props.lastSample.sd - Sample standard deviation.
+ * @param {number} props.lastSample.n - Sample size.
+ * @param {number} props.lastSample.lower - Lower bound of the confidence interval.
+ * @param {number} props.lastSample.upper - Upper bound of the confidence interval.
+ * @param {number} props.lastSample.crit - Critical value (z or t) used for calculation.
+ * @param {number} props.lastSample.se - Standard error.
+ * @param {boolean} props.lastSample.hit - Flag indicating if the interval successfully contains the population mean.
+ * @param {Function} props.t - i18n translation function.
+ */
 function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
   const sigStr = knowSigma ? "\\sigma" : "s";
   const critSub = type === "two" ? "1-\\alpha/2" : "1-\\alpha";
@@ -35,9 +54,9 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
     },
   );
 
-  // Build concrete calculation if a sample is available
   let calcLatex = null;
   let resultHit = null;
+
   if (lastSample) {
     const { mean, sd, n, lower, upper, crit, se } = lastSample;
     const sigVal = (knowSigma ? POP_STD : sd).toFixed(4);
@@ -68,10 +87,8 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
 
   return (
     <CalcPanel title={title}>
-      {/* General formula */}
       <CalcPanel.Row formula={formulaLatex} />
 
-      {/* Concrete calculation */}
       {calcLatex && (
         <>
           <CalcPanel.Divider />
@@ -85,7 +102,6 @@ function CIFormulaPanel({ cl, type, knowSigma, lastSample, t }) {
           </CalcPanel.Note>
           <CalcPanel.Row concrete formula={calcLatex} />
 
-          {/* Result */}
           <p className="text-center mb-0 mt-2" style={{ fontSize: "0.85rem" }}>
             {t(
               "parameterEstimation.intervalEstimation.simulation.formula.resultPrefix",

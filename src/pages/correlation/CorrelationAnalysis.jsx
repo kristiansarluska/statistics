@@ -4,7 +4,15 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath, BlockMath } from "react-katex";
 import CorrelationChart from "../../components/charts/correlation/CorrelationChart";
 
-function CorrelationAnalysis() {
+/**
+ * @component CorrelationAnalysis
+ * @description Renders a comprehensive theoretical and interactive section on correlation analysis.
+ * It explains the interpretation of the correlation coefficient, differentiates between
+ * positive and negative relationships, and provides a crucial warning about correlation
+ * vs. causality. The component includes an interactive scatter plot simulator (CorrelationChart)
+ * and details the statistical procedure for testing the significance of the correlation coefficient.
+ */
+const CorrelationAnalysis = () => {
   const { t } = useTranslation();
 
   return (
@@ -186,6 +194,6 @@ function CorrelationAnalysis() {
       </div>
     </section>
   );
-}
+};
 
 export default CorrelationAnalysis;
