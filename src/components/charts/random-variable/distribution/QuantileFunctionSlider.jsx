@@ -1,11 +1,46 @@
 // src/components/charts/random-variable/distribution/QuantileFunctionSlider.jsx
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { ReferenceLine } from "recharts";
 import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
 import StatsBadge from "../../../content/helpers/StatsBadge";
 import useDebouncedValue from "../../../../hooks/useDebouncedValue";
+import useFetch from "../../../../hooks/useFetch";
+import { parseCSV } from "../../../../utils/csvParser";
+
+/**
+ * Transforms raw CSV text into sorted numeric HCI values and display rows.
+ * Defined outside the component so useFetch receives a stable function reference.
+ */
+const transformHCI = (csvText) => {
+  const rows = parseCSV(csvText);
+  if (rows.length < 2) throw new Error("CSV neobsahuje dáta.");
+
+  const [headers, ...dataRows] = rows;
+  const scoreIdx = headers.indexOf("HCI_2025");
+  const nameIdx = headers.indexOf("Country.Name");
+
+  if (scoreIdx === -1 || nameIdx === -1) {
+    throw new Error("Nesprávny formát hlavičky v CSV.");
+  }
+
+  const parsedRows = dataRows.map((cols) => ({
+    "Country.Name": cols[nameIdx] || "",
+    HCI_2025: cols[scoreIdx] || "",
+  }));
+
+  const values = parsedRows
+    .map((row) => parseFloat(row["HCI_2025"]))
+    .filter((val) => !isNaN(val))
+    .sort((a, b) => a - b);
+
+  const sortedRows = parsedRows
+    .filter((row) => !isNaN(parseFloat(row["HCI_2025"])))
+    .sort((a, b) => parseFloat(a["HCI_2025"]) - parseFloat(b["HCI_2025"]));
+
+  return { values, sortedRows };
+};
 
 /**
  * @component QuantileFunctionSlider
@@ -16,96 +51,22 @@ import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 function QuantileFunctionSlider() {
   const { t } = useTranslation();
 
-  // Data state
-  const [data, setData] = useState([]);
-  const [rawRows, setRawRows] = useState([]);
-  const [error, setError] = useState(null);
-
   // Interaction state
   const [activeMode, setActiveMode] = useState("slider");
   const [sliderP, setSliderP] = useState(25);
-
   const [inputX, debouncedInputX, setInputX] = useDebouncedValue("", 0);
   const [hoverX, setHoverX] = useState(null);
 
   const csvUrl = `${import.meta.env.BASE_URL}data/World_HCI.csv`;
 
-  /**
-   * Fetches and parses CSV data on mount.
-   * Uses a custom lightweight parser instead of external libraries like PapaParse.
-   */
-  useEffect(() => {
-    fetch(csvUrl)
-      .then((res) => {
-        if (!res.ok) throw new Error("Chyba siete pri sťahovaní CSV");
-        return res.text();
-      })
-      .then((csvText) => {
-        const parseCsvLine = (line) => {
-          const result = [];
-          let current = "";
-          let inQuotes = false;
-          for (let i = 0; i < line.length; i++) {
-            if (line[i] === '"') {
-              inQuotes = !inQuotes;
-            } else if (line[i] === "," && !inQuotes) {
-              result.push(current.trim());
-              current = "";
-            } else {
-              current += line[i];
-            }
-          }
-          result.push(current.trim());
-          return result;
-        };
+  // useFetch + transformHCI replaces the manual fetch + custom CSV parser
+  const { data: parsed, loading, error } = useFetch(csvUrl, transformHCI);
 
-        const lines = csvText
-          .split(/\r?\n/)
-          .filter((line) => line.trim() !== "");
-        if (lines.length < 2) throw new Error("CSV neobsahuje dáta.");
-
-        const headers = parseCsvLine(lines[0]);
-        const scoreIdx = headers.indexOf("HCI_2025");
-        const nameIdx = headers.indexOf("Country.Name");
-
-        if (scoreIdx === -1 || nameIdx === -1) {
-          throw new Error("Nesprávny formát hlavičky v CSV.");
-        }
-
-        const parsedRows = lines.slice(1).map((line) => {
-          const cols = parseCsvLine(line);
-          return {
-            "Country.Name": cols[nameIdx] || "",
-            HCI_2025: cols[scoreIdx] || "",
-          };
-        });
-
-        const values = parsedRows
-          .map((row) => parseFloat(row["HCI_2025"]))
-          .filter((val) => !isNaN(val))
-          .sort((a, b) => a - b);
-
-        if (values.length > 0) {
-          setData(values);
-          const sortedRows = parsedRows
-            .filter((row) => !isNaN(parseFloat(row["HCI_2025"])))
-            .sort(
-              (a, b) => parseFloat(a["HCI_2025"]) - parseFloat(b["HCI_2025"]),
-            );
-          setRawRows(sortedRows);
-        } else {
-          setError(
-            t("components.randomVariableCharts.quantileSlider.errorNoData"),
-          );
-        }
-      })
-      .catch((err) => {
-        console.error("CSV Fetch Error:", err);
-        setError(
-          t("components.randomVariableCharts.quantileSlider.errorFetch"),
-        );
-      });
-  }, [t, csvUrl]);
+  const data = parsed?.values ?? [];
+  const rawRows = parsed?.sortedRows ?? [];
+  const n = data.length;
+  const minX = n > 0 ? data[0] : 0;
+  const maxX = n > 0 ? data[n - 1] : 0;
 
   /**
    * Memoized column definitions for the preview table
@@ -128,43 +89,34 @@ function QuantileFunctionSlider() {
   /**
    * Calculates chart data points (step function) based on the sorted dataset
    */
-  const { chartData, n, minX, maxX } = useMemo(() => {
-    const length = data.length;
-    if (length === 0) return { chartData: [], n: 0, minX: 0, maxX: 0 };
+  const chartData = useMemo(() => {
+    if (n === 0) return [];
 
     const allX = new Set([0, 100]);
-    for (let i = 0; i < length; i++) {
-      allX.add(((i + 1) / length) * 100);
+    for (let i = 0; i < n; i++) {
+      allX.add(((i + 1) / n) * 100);
     }
 
-    const sortedX = Array.from(allX).sort((a, b) => a - b);
+    return Array.from(allX)
+      .sort((a, b) => a - b)
+      .map((x) => {
+        const exactK = (x / 100) * n;
+        const k = Math.round(exactK);
+        const isIntegerK = Math.abs(exactK - k) < 1e-9;
 
-    const mergedData = sortedX.map((x) => {
-      const exactK = (x / 100) * length;
-      const k = Math.round(exactK);
-      const isIntegerK = Math.abs(exactK - k) < 1e-9;
+        let quantileVal;
+        if (x === 0) {
+          quantileVal = data[0];
+        } else if (isIntegerK && k > 0 && k < n) {
+          quantileVal = (data[k - 1] + data[k]) / 2;
+        } else {
+          const idx = Math.ceil(exactK) - 1;
+          quantileVal = data[Math.min(Math.max(idx, 0), n - 1)];
+        }
 
-      let quantileVal;
-      if (x === 0) {
-        quantileVal = data[0];
-      } else if (isIntegerK && k > 0 && k < length) {
-        // Average the two adjacent values if exact integer
-        quantileVal = (data[k - 1] + data[k]) / 2;
-      } else {
-        const idx = Math.ceil(exactK) - 1;
-        quantileVal = data[Math.min(Math.max(idx, 0), length - 1)];
-      }
-
-      return { x, y: quantileVal };
-    });
-
-    return {
-      chartData: mergedData,
-      n: length,
-      minX: data[0],
-      maxX: data[length - 1],
-    };
-  }, [data]);
+        return { x, y: quantileVal };
+      });
+  }, [data, n]);
 
   /**
    * Evaluates the current active point (target p and x) based on user input mode
@@ -188,7 +140,9 @@ function QuantileFunctionSlider() {
         val = data[idx];
       }
       return { p, x: val, msg: null };
-    } else if (activeMode === "input") {
+    }
+
+    if (activeMode === "input") {
       const val = parseFloat(debouncedInputX);
       if (isNaN(val)) return null;
 
@@ -216,8 +170,7 @@ function QuantileFunctionSlider() {
         if (data[i] <= val) count++;
         else break;
       }
-      const p = count / n;
-      return { p, x: val, msg: null };
+      return { p: count / n, x: val, msg: null };
     }
   }, [n, activeMode, sliderP, debouncedInputX, data, minX, maxX, t]);
 
@@ -251,8 +204,14 @@ function QuantileFunctionSlider() {
         ]
       : [];
 
-  if (error) return <div className="alert alert-danger p-4 mb-4">{error}</div>;
-  if (n === 0)
+  if (error)
+    return (
+      <div className="alert alert-danger p-4 mb-4">
+        {t("components.randomVariableCharts.quantileSlider.errorFetch")}
+      </div>
+    );
+
+  if (loading || n === 0)
     return (
       <div className="p-4 text-center">
         {t("components.randomVariableCharts.quantileSlider.loading")}

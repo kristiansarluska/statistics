@@ -1,5 +1,5 @@
 // src/components/content/anova/AnovaSimulation.jsx
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   generateSample,
@@ -12,6 +12,7 @@ import TukeyChart from "../../charts/anova/TukeyChart";
 import ResetButton from "../../charts/helpers/ResetButton";
 import DataPreviewTable from "../../charts/helpers/DataPreviewTable";
 import StyledLineChart from "../../charts/helpers/StyledLineChart";
+import useFetch from "../../../hooks/useFetch";
 
 const SAMPLE_SIZE = 31;
 const X_MIN = 5;
@@ -21,18 +22,12 @@ const KDE_BANDWIDTH = 1.4;
 /**
  * Helper function to create a standardized group object from an initial data array.
  * Calculates descriptive statistics and Kernel Density Estimation (KDE) curve points.
- * * @param {string} name - The name of the group (e.g., city name)
- * @param {Array<number>} initialSample - Array of numeric data points
- * @param {string} color - CSS color variable or hex code for visualizations
- * @returns {Object} Structured group object with computed stats and KDE data
  */
 const createGroup = (name, initialSample, color) => {
   const n = initialSample.length;
-  // Calculate sample mean
   const mean = Number(
     (initialSample.reduce((a, b) => a + b, 0) / n).toFixed(1),
   );
-  // Calculate sample variance (n - 1)
   const variance =
     initialSample.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / (n - 1);
   const std = Number(Math.sqrt(variance).toFixed(1));
@@ -48,6 +43,33 @@ const createGroup = (name, initialSample, color) => {
 };
 
 /**
+ * Transforms raw CSV text into the initial group definitions.
+ * Defined outside the component so useFetch receives a stable reference.
+ */
+const transformOpenMeteoCSV = (csvText) => {
+  const rows = csvText.trim().split("\n").slice(1);
+
+  const olomouc = [];
+  const prerov = [];
+  const jesenik = [];
+
+  rows.forEach((row) => {
+    const cols = row.split(",");
+    if (cols.length >= 4) {
+      olomouc.push(Number(cols[1]));
+      prerov.push(Number(cols[2]));
+      jesenik.push(Number(cols[3]));
+    }
+  });
+
+  return [
+    createGroup("Olomouc", olomouc, "var(--bs-danger)"),
+    createGroup("Přerov", prerov, "var(--bs-warning)"),
+    createGroup("Jeseník", jesenik, "var(--bs-info)"),
+  ];
+};
+
+/**
  * @component AnovaSimulation
  * @description Interactive ANOVA dashboard. Loads historical meteorological data,
  * allows users to simulate changes in mean and standard deviation via sliders,
@@ -56,80 +78,35 @@ const createGroup = (name, initialSample, color) => {
 function AnovaSimulation() {
   const { t } = useTranslation();
 
-  // State for dataset management
-  const [groups, setGroups] = useState([]);
-  const [originalGroups, setOriginalGroups] = useState([]);
-  const [modifiedGroups, setModifiedGroups] = useState(new Set());
+  const csvUrl = `${import.meta.env.BASE_URL}data/OpenMeteo.csv`;
 
-  // UI states
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // useFetch replaces the manual useEffect + fetch + state boilerplate
+  const {
+    data: originalGroups,
+    loading: isLoading,
+    error,
+  } = useFetch(csvUrl, transformOpenMeteoCSV);
+
+  // Local mutable state derived from the fetched originals
+  const [groups, setGroups] = useState(null);
+  const [modifiedGroups, setModifiedGroups] = useState(new Set());
   const [hoverX, setHoverX] = useState(null);
 
-  /**
-   * Fetches and parses initial CSV data on mount.
-   */
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.BASE_URL}data/OpenMeteo.csv`,
-        );
-        if (!response.ok)
-          throw new Error(t("components.anovaSimulation.fetchError"));
-
-        const csvText = await response.text();
-        const rows = csvText.trim().split("\n").slice(1);
-
-        const olomouc = [];
-        const prerov = [];
-        const jesenik = [];
-
-        // Manual CSV parsing assuming fixed column indices
-        rows.forEach((row) => {
-          const cols = row.split(",");
-          if (cols.length >= 4) {
-            olomouc.push(Number(cols[1]));
-            prerov.push(Number(cols[2]));
-            jesenik.push(Number(cols[3]));
-          }
-        });
-
-        // Initialize groups. City names are kept as proper nouns.
-        const initialData = [
-          createGroup("Olomouc", olomouc, "var(--bs-danger)"),
-          createGroup("Přerov", prerov, "var(--bs-warning)"),
-          createGroup("Jeseník", jesenik, "var(--bs-info)"),
-        ];
-
-        setGroups(initialData);
-        setOriginalGroups(initialData);
-        setIsLoading(false);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setError(err.message);
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [t]);
+  // Sync local groups once original data arrives (only on first load)
+  const activeGroups = groups ?? originalGroups ?? [];
 
   /**
    * Updates a specific group parameter (mean or std) based on slider input.
    * Generates a new random sample and recalculates the KDE curve.
-   * @param {number} index - Index of the group being modified
-   * @param {string} key - Parameter to modify ('mean' or 'std')
-   * @param {number} value - New parameter value
    */
   const handleParamChange = (index, key, value) => {
-    const groupName = groups[index].name;
+    const groupName = activeGroups[index].name;
 
     setGroups((prev) => {
-      const updatedGroups = [...prev];
+      const source = prev ?? originalGroups;
+      const updatedGroups = [...source];
       const group = { ...updatedGroups[index], [key]: value };
 
-      // Generate new simulated dataset based on updated parameters
       const newSample = generateSample(group.mean, group.std, SAMPLE_SIZE);
       const newKde = calculateKDE(newSample, KDE_BANDWIDTH, X_MIN, X_MAX);
 
@@ -137,7 +114,6 @@ function AnovaSimulation() {
       return updatedGroups;
     });
 
-    // Track which groups have been altered from their historical state
     setModifiedGroups((prev) => new Set(prev).add(groupName));
   };
 
@@ -145,7 +121,7 @@ function AnovaSimulation() {
    * Restores all groups to their original historical datasets
    */
   const handleReset = () => {
-    setGroups(originalGroups);
+    setGroups(null);
     setModifiedGroups(new Set());
   };
 
@@ -153,35 +129,32 @@ function AnovaSimulation() {
    * Flattens KDE data for the Recharts line chart component
    */
   const chartData = useMemo(() => {
-    if (groups.length === 0) return [];
-    return groups[0].kde.map((point, i) => {
+    if (activeGroups.length === 0) return [];
+    return activeGroups[0].kde.map((point, i) => {
       const dataPoint = { x: point.x };
-      groups.forEach((g) => {
+      activeGroups.forEach((g) => {
         dataPoint[g.name] = g.kde[i].y;
       });
       return dataPoint;
     });
-  }, [groups]);
+  }, [activeGroups]);
 
   /**
    * Prepares series metadata for the distribution chart
    */
-  const chartSeries = useMemo(() => {
-    return groups.map((g) => ({
-      key: g.name,
-      name: `${g.name}`,
-      color: g.color,
-    }));
-  }, [groups]);
+  const chartSeries = useMemo(
+    () =>
+      activeGroups.map((g) => ({ key: g.name, name: g.name, color: g.color })),
+    [activeGroups],
+  );
 
   /**
    * Computes one-way ANOVA statistics dynamically when data changes
    */
   const anovaStats = useMemo(() => {
-    if (groups.length === 0) return null;
-    const rawDataGroups = groups.map((g) => g.sample);
-    return calculateANOVA(rawDataGroups);
-  }, [groups]);
+    if (activeGroups.length === 0) return null;
+    return calculateANOVA(activeGroups.map((g) => g.sample));
+  }, [activeGroups]);
 
   /**
    * Computes Tukey's Honestly Significant Difference (HSD) post-hoc test
@@ -189,73 +162,58 @@ function AnovaSimulation() {
   const tukeyResults = useMemo(() => {
     if (!anovaStats) return [];
 
-    const rawResults = calculateTukeyHSD(anovaStats.groupStats, anovaStats.msW);
-
-    return rawResults.map((res) => {
-      const name1 = groups[res.group1].name;
-      const name2 = groups[res.group2].name;
-
-      return {
+    return calculateTukeyHSD(anovaStats.groupStats, anovaStats.msW).map(
+      (res) => ({
         ...res,
-        pair: `${name1} – ${name2}`,
-      };
-    });
-  }, [anovaStats, groups]);
+        pair: `${activeGroups[res.group1].name} – ${activeGroups[res.group2].name}`,
+      }),
+    );
+  }, [anovaStats, activeGroups]);
 
   /**
    * Prepares raw data rows for the preview table
    */
   const tableData = useMemo(() => {
-    if (groups.length === 0) return [];
-    const rows = [];
-    for (let i = 0; i < SAMPLE_SIZE; i++) {
+    if (activeGroups.length === 0) return [];
+    return Array.from({ length: SAMPLE_SIZE }, (_, i) => {
       const row = { day: i + 1 };
-      groups.forEach((g) => {
+      activeGroups.forEach((g) => {
         row[g.name] = Number(g.sample[i]).toFixed(2);
       });
-      rows.push(row);
-    }
-    return rows;
-  }, [groups]);
+      return row;
+    });
+  }, [activeGroups]);
 
   /**
    * Defines column structure for the preview table, adding visual cues for modified data
    */
   const tableColumns = useMemo(() => {
-    if (groups.length === 0) return [];
+    if (activeGroups.length === 0) return [];
 
-    const cols = [
+    return [
       { key: "day", label: t("components.anovaSimulation.dayOfMonth") },
-    ];
-
-    groups.forEach((g) => {
-      const isThisGroupModified = modifiedGroups.has(g.name);
-
-      cols.push({
+      ...activeGroups.map((g) => ({
         key: g.name,
         label: g.name,
         render: (value) => (
           <span
             className={
-              isThisGroupModified ? "text-warning fst-italic fw-medium" : ""
+              modifiedGroups.has(g.name)
+                ? "text-warning fst-italic fw-medium"
+                : ""
             }
           >
             {value}
           </span>
         ),
-      });
-    });
-
-    return cols;
-  }, [groups, modifiedGroups, t]);
+      })),
+    ];
+  }, [activeGroups, modifiedGroups, t]);
 
   if (isLoading) {
     return (
       <div className="text-center p-5 text-muted">
-        <div
-          className="spinner-border spinner-border-sm me-2"
-          role="status"
-        ></div>
+        <div className="spinner-border spinner-border-sm me-2" role="status" />
         {t("components.anovaSimulation.loading")}
       </div>
     );
@@ -272,7 +230,6 @@ function AnovaSimulation() {
   return (
     <div className="anova-simulation">
       {/* Inline styles for custom slider colors */}
-      {/* Note: In a larger app, prefer CSS modules or styled-components to avoid global scope pollution */}
       <style>
         {`
           .colored-slider::-webkit-slider-thumb {
@@ -286,7 +243,7 @@ function AnovaSimulation() {
 
       {/* Controls Section */}
       <div className="row g-3 mb-4">
-        {groups.map((group, index) => (
+        {activeGroups.map((group, index) => (
           <div key={group.name} className="col-md-4">
             <div
               className="card border-0"
@@ -342,7 +299,6 @@ function AnovaSimulation() {
             {t("components.anovaSimulation.simulatedDataWarning")}
           </span>
         )}
-
         <ResetButton
           onClick={handleReset}
           disabled={modifiedGroups.size === 0}
@@ -391,7 +347,7 @@ function AnovaSimulation() {
             >
               <i
                 className={`bi ${modifiedGroups.size > 0 ? "bi-exclamation-triangle-fill" : "bi-check-circle-fill"} me-2`}
-              ></i>
+              />
               {modifiedGroups.size > 0
                 ? t("components.anovaSimulation.simulationTitle", {
                     cities: Array.from(modifiedGroups).join(", "),
@@ -399,7 +355,7 @@ function AnovaSimulation() {
                 : t("components.anovaSimulation.historicalTitle")}
             </span>
           }
-          originalFileUrl={`${import.meta.env.BASE_URL}data/OpenMeteo.csv`}
+          originalFileUrl={csvUrl}
           originalFileName="OpenMeteo.csv"
           downloadBtnLabel={t("components.anovaSimulation.downloadBtn")}
         />

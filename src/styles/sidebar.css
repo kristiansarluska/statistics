@@ -100,11 +100,11 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
 #page-content-wrapper .navbar.fixed-top {
   position: fixed;
+  top: 0;
   left: 0;
-  transition:
-    left 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: left, transform;
+  right: 0;
+  transition: all 0.25s ease-out !important;
+  will-change: left, right, width;
 }
 
 @media (min-width: 768px) {
@@ -146,13 +146,6 @@ body[data-bs-theme="dark"] #sidebar-wrapper .list-group-item.active {
 
   body.sb-sidenav-toggled #page-content-wrapper {
     left: 15rem;
-  }
-
-  #page-content-wrapper .navbar.fixed-top {
-    transition:
-      left 0.25s ease-out,
-      right 0.25s ease-out,
-      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   body.sb-sidenav-toggled #page-content-wrapper .navbar.fixed-top {

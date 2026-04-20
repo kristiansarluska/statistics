@@ -117,7 +117,7 @@ function Distribution() {
               components={{ color: <span className="text-primary" /> }}
             />
           </h5>
-          <p className="text-muted mb-4 small">
+          <div className="text-muted mb-4 small">
             <Trans
               i18nKey="randomVariable.distribution.cdf.chart1Desc"
               components={{
@@ -128,7 +128,7 @@ function Distribution() {
                 li: <li />,
               }}
             />
-          </p>
+          </div>
           <DiscreteDistributionChart />
         </div>
 

@@ -2,6 +2,8 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
+import useFetch from "../../../../hooks/useFetch";
+import { parseCSV } from "../../../../utils/csvParser";
 
 // Color mapping for different years in the dataset
 const yearColors = {
@@ -16,35 +18,6 @@ const yearLabels = {
   Y1980: "1980",
   Y2000: "2000",
   Y2023: "2023",
-};
-
-/**
- * Custom CSV parser that handles quoted fields containing commas.
- * Required for parsing geographic and economic datasets.
- * @param {string} str - Raw CSV string content
- * @returns {Array<Array<string>>} 2D array of parsed rows and columns
- */
-const parseCSV = (str) => {
-  const result = [];
-  let row = [],
-    inQuotes = false,
-    val = "";
-  for (let i = 0; i < str.length; i++) {
-    const char = str[i];
-    if (char === '"') inQuotes = !inQuotes;
-    else if (char === "," && !inQuotes) {
-      row.push(val.trim());
-      val = "";
-    } else if (char === "\n" && !inQuotes) {
-      row.push(val.trim());
-      if (row.length > 1) result.push(row);
-      row = [];
-      val = "";
-    } else if (char !== "\r") val += char;
-  }
-  row.push(val.trim());
-  if (row.length > 1) result.push(row);
-  return result;
 };
 
 /**
@@ -100,11 +73,6 @@ const CAP_RATIO = 0.5; // Width of whisker cap relative to box width
 /**
  * @component BoxplotSVG
  * @description Renders the core SVG boxplot visualization, including axes, grid lines, boxes, and interactive tooltips.
- * @param {Object} props
- * @param {Array} props.chartData - Aggregated statistics per category (continent/income group)
- * @param {Array} props.activeSeries - Currently selected years to compare
- * @param {number} props.yMin - Minimum value for the Y-axis scale
- * @param {number} props.yMax - Maximum value for the Y-axis scale
  */
 function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
   const { t } = useTranslation();
@@ -138,8 +106,8 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
     const range = yMax - yMin;
     const step = range <= 20 ? 5 : range <= 50 ? 10 : 20;
     const ticks = [];
-    for (let t = Math.ceil(yMin / step) * step; t <= yMax; t += step)
-      ticks.push(t);
+    for (let tick = Math.ceil(yMin / step) * step; tick <= yMax; tick += step)
+      ticks.push(tick);
     return ticks;
   }, [yMin, yMax]);
 
@@ -172,13 +140,13 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
         onMouseLeave={() => setTooltip(null)}
       >
         {/* Horizontal grid lines */}
-        {yTicks.map((t) => (
+        {yTicks.map((tick) => (
           <line
-            key={t}
+            key={tick}
             x1={ML}
-            y1={toY(t)}
+            y1={toY(tick)}
             x2={svgW - MR}
-            y2={toY(t)}
+            y2={toY(tick)}
             stroke="var(--bs-border-color)"
             strokeWidth={1}
             strokeDasharray="3 3"
@@ -196,25 +164,25 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
         />
 
         {/* Y Axis ticks and labels */}
-        {yTicks.map((t) => (
-          <g key={t}>
+        {yTicks.map((tick) => (
+          <g key={tick}>
             <line
               x1={ML - 4}
-              y1={toY(t)}
+              y1={toY(tick)}
               x2={ML}
-              y2={toY(t)}
+              y2={toY(tick)}
               stroke="var(--bs-body-color)"
               strokeWidth={1}
             />
             <text
               x={ML - 7}
-              y={toY(t) + 4}
+              y={toY(tick) + 4}
               textAnchor="end"
               fontSize={10}
               fill="var(--bs-body-color)"
               opacity={0.7}
             >
-              {t}
+              {tick}
             </text>
           </g>
         ))}
@@ -257,44 +225,43 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                 const bx = seriesStart + si * (boxW + seriesGap);
                 const bcx = bx + boxW / 2;
                 const capW = boxW * CAP_RATIO;
-                const capOff = (boxW - capW) / 2;
 
-                const yWMin = toY(stats.whiskerMin);
                 const yQ1 = toY(stats.q1);
-                const yMed = toY(stats.median);
                 const yQ3 = toY(stats.q3);
+                const yMed = toY(stats.median);
+                const yWMin = toY(stats.whiskerMin);
                 const yWMax = toY(stats.whiskerMax);
 
                 return (
                   <g
                     key={id}
-                    style={{ cursor: "default" }}
                     onMouseEnter={(e) => {
-                      const svgRect = svgRef.current?.getBoundingClientRect();
-                      if (!svgRect) return;
+                      const svgRect =
+                        svgRef.current?.getBoundingClientRect() ?? {
+                          left: 0,
+                          top: 0,
+                        };
+
+                      const x = e.clientX - svgRect.left;
+                      const y = e.clientY - svgRect.top - 10;
+
+                      const showOnLeft =
+                        window.innerWidth - e.clientX < 200 || svgW - x < 200;
+
                       setTooltip({
+                        x,
+                        y,
+                        showOnLeft,
                         stats,
-                        id,
+                        year: yearLabels[id],
                         color,
-                        x: e.clientX - svgRect.left,
-                        y: e.clientY - svgRect.top,
+                        label: entry.label,
                       });
                     }}
-                    onMouseMove={(e) => {
-                      const svgRect = svgRef.current?.getBoundingClientRect();
-                      if (!svgRect) return;
-                      setTooltip((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              x: e.clientX - svgRect.left,
-                              y: e.clientY - svgRect.top,
-                            }
-                          : prev,
-                      );
-                    }}
+                    onMouseLeave={() => setTooltip(null)}
+                    style={{ cursor: "default" }}
                   >
-                    {/* Whisker lines */}
+                    {/* Whisker: lower */}
                     <line
                       x1={bcx}
                       y1={yQ1}
@@ -302,49 +269,18 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       y2={yWMin}
                       stroke={color}
                       strokeWidth={1.5}
+                      strokeDasharray="3 2"
                     />
+                    {/* Whisker cap: lower */}
                     <line
-                      x1={bx + capOff}
+                      x1={bcx - capW / 2}
                       y1={yWMin}
-                      x2={bx + boxW - capOff}
+                      x2={bcx + capW / 2}
                       y2={yWMin}
                       stroke={color}
                       strokeWidth={1.5}
                     />
-
-                    {/* IQR Boxes (split by median for individual coloring/opacity) */}
-                    <rect
-                      x={bx}
-                      y={yMed}
-                      width={boxW}
-                      height={Math.max(1, yQ1 - yMed)}
-                      fill={color}
-                      fillOpacity={0.18}
-                      stroke={color}
-                      strokeWidth={1.5}
-                    />
-                    <rect
-                      x={bx}
-                      y={yQ3}
-                      width={boxW}
-                      height={Math.max(1, yMed - yQ3)}
-                      fill={color}
-                      fillOpacity={0.18}
-                      stroke={color}
-                      strokeWidth={1.5}
-                    />
-
-                    {/* Median marker */}
-                    <line
-                      x1={bx}
-                      y1={yMed}
-                      x2={bx + boxW}
-                      y2={yMed}
-                      stroke="var(--bs-danger)"
-                      strokeWidth={2.5}
-                    />
-
-                    {/* Upper whiskers */}
+                    {/* Whisker: upper */}
                     <line
                       x1={bcx}
                       y1={yQ3}
@@ -352,17 +288,39 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                       y2={yWMax}
                       stroke={color}
                       strokeWidth={1.5}
+                      strokeDasharray="3 2"
                     />
+                    {/* Whisker cap: upper */}
                     <line
-                      x1={bx + capOff}
+                      x1={bcx - capW / 2}
                       y1={yWMax}
-                      x2={bx + boxW - capOff}
+                      x2={bcx + capW / 2}
                       y2={yWMax}
                       stroke={color}
                       strokeWidth={1.5}
                     />
-
-                    {/* Individual outlier points */}
+                    {/* IQR Box */}
+                    <rect
+                      x={bx}
+                      y={yQ3}
+                      width={boxW}
+                      height={Math.abs(yQ1 - yQ3)}
+                      fill={color}
+                      fillOpacity={0.18}
+                      stroke={color}
+                      strokeWidth={1.5}
+                      rx={2}
+                    />
+                    {/* Median line */}
+                    <line
+                      x1={bx}
+                      y1={yMed}
+                      x2={bx + boxW}
+                      y2={yMed}
+                      stroke={color}
+                      strokeWidth={2.5}
+                    />
+                    {/* Outlier dots */}
                     {stats.outliers.map((ov, oi) => (
                       <circle
                         key={oi}
@@ -370,7 +328,9 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
                         cy={toY(ov)}
                         r={3}
                         fill={color}
-                        opacity={0.7}
+                        fillOpacity={0.6}
+                        stroke={color}
+                        strokeWidth={1}
                       />
                     ))}
                   </g>
@@ -381,67 +341,89 @@ function BoxplotSVG({ chartData, activeSeries, yMin, yMax }) {
         })}
       </svg>
 
-      {/* Floating Statistical Tooltip */}
-      {tooltip &&
-        (() => {
-          const { stats, id, color, x, y } = tooltip;
-          const fmt = (v) => (v != null ? Number(v).toFixed(1) : "—");
-          const TW = 155,
-            TH = 100;
-          const tx = x + TW + 8 > svgW ? x - TW - 8 : x + 10;
-          const ty = Math.min(y - 10, SVG_H - TH - 4);
-          return (
-            <div
-              className="bg-body border rounded shadow-sm p-2"
-              style={{
-                position: "absolute",
-                top: ty,
-                left: tx,
-                fontSize: "0.8rem",
-                pointerEvents: "none",
-                width: TW,
-                zIndex: 10,
-              }}
-            >
-              <div className="mb-1" style={{ color }}>
-                {yearLabels[id]}
-              </div>
-              <div className="d-flex justify-content-between">
-                <span className="text-muted">
-                  {t("components.randomVariableCharts.boxplot.tooltip.max")}
-                </span>
-                <strong>{fmt(stats.whiskerMax)}</strong>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span className="text-muted">
-                  {t("components.randomVariableCharts.boxplot.tooltip.q3")}
-                </span>
-                <strong style={{ color }}>{fmt(stats.q3)}</strong>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span className="text-muted">
-                  {t("components.randomVariableCharts.boxplot.tooltip.median")}
-                </span>
-                <strong className="text-danger">{fmt(stats.median)}</strong>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span className="text-muted">
-                  {t("components.randomVariableCharts.boxplot.tooltip.q1")}
-                </span>
-                <strong style={{ color }}>{fmt(stats.q1)}</strong>
-              </div>
-              <div className="d-flex justify-content-between">
-                <span className="text-muted">
-                  {t("components.randomVariableCharts.boxplot.tooltip.min")}
-                </span>
-                <strong>{fmt(stats.whiskerMin)}</strong>
-              </div>
+      {/* Tooltip overlay */}
+      {tooltip && (
+        <div
+          style={{
+            position: "absolute",
+            left: tooltip.showOnLeft ? tooltip.x - 180 : tooltip.x + 12,
+            top: tooltip.y,
+            background: "var(--bs-body-bg)",
+            border: `1.5px solid ${tooltip.color}`,
+            borderRadius: 8,
+            padding: "8px 12px",
+            pointerEvents: "none",
+            fontSize: "0.82rem",
+            zIndex: 10,
+            minWidth: 160,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.13)",
+          }}
+        >
+          <div
+            className="fw-semibold mb-1"
+            style={{ color: tooltip.color, fontSize: "0.88rem" }}
+          >
+            {tooltip.label} — {tooltip.year}
+          </div>
+          {[
+            ["Max", tooltip.stats.whiskerMax],
+            ["Q3", tooltip.stats.q3],
+            [
+              t("components.randomVariableCharts.boxplot.tooltip.median"),
+              tooltip.stats.median,
+            ],
+            ["Q1", tooltip.stats.q1],
+            ["Min", tooltip.stats.whiskerMin],
+          ].map(([label, value]) => (
+            <div key={label} className="d-flex justify-content-between gap-3">
+              <span className="text-muted">{label}</span>
+              <span className="fw-medium">{value.toFixed(1)}</span>
             </div>
-          );
-        })()}
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+
+/**
+ * Transforms raw CSV text into the two data shapes needed by the component.
+ * Defined outside the component so useFetch can receive a stable reference.
+ */
+const transformLifeExpectancyCSV = (csvText) => {
+  const rows = parseCSV(csvText);
+  if (rows.length < 2) return { rawRows: [], structuredRows: [] };
+
+  const rawRows = [];
+  const structuredRows = [];
+
+  rows.slice(1).forEach((cols) => {
+    if (cols.length < 8 || !cols[0]) return;
+
+    rawRows.push({
+      "Country.Name": cols[0],
+      "Country.Code": cols[1],
+      Continent: cols[2],
+      "Income.Group": cols[3],
+      Y1960: cols[4],
+      Y1980: cols[5],
+      Y2000: cols[6],
+      Y2023: cols[7],
+    });
+
+    structuredRows.push({
+      countryName: cols[0],
+      continent: cols[2],
+      incomeGroup: cols[3],
+      Y1960: parseFloat(cols[4]),
+      Y1980: parseFloat(cols[5]),
+      Y2000: parseFloat(cols[6]),
+      Y2023: parseFloat(cols[7]),
+    });
+  });
+
+  return { rawRows, structuredRows };
+};
 
 /**
  * @component FiveNumberSummaryBoxplot
@@ -453,9 +435,17 @@ function FiveNumberSummaryBoxplot() {
   const { t } = useTranslation();
   const [groupBy, setGroupBy] = useState("Continent");
   const [selectedYears, setSelectedYears] = useState(["Y2000", "Y2023"]);
-  const [rawData, setRawData] = useState([]);
-  const [rawRows, setRawRows] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const csvUrl = `${import.meta.env.BASE_URL}data/World_LifeExpectancy.csv`;
+
+  // useFetch replaces the manual useEffect + fetch + state pattern
+  const { data: parsed, loading: isLoading } = useFetch(
+    csvUrl,
+    transformLifeExpectancyCSV,
+  );
+
+  const rawData = parsed?.structuredRows ?? [];
+  const rawRows = parsed?.rawRows ?? [];
 
   const continents = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
   const incomeGroups = [
@@ -478,52 +468,6 @@ function FiveNumberSummaryBoxplot() {
     ],
     [t],
   );
-
-  // Fetch and parse life expectancy data from the public folder
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.BASE_URL}data/World_LifeExpectancy.csv`,
-        );
-        const csvText = await response.text();
-        const rows = parseCSV(csvText);
-        if (rows.length < 2) return;
-
-        const allRows = [],
-          structuredRows = [];
-        rows.slice(1).forEach((cols) => {
-          if (cols.length < 8 || !cols[0]) return;
-          allRows.push({
-            "Country.Name": cols[0],
-            "Country.Code": cols[1],
-            Continent: cols[2],
-            "Income.Group": cols[3],
-            Y1960: cols[4],
-            Y1980: cols[5],
-            Y2000: cols[6],
-            Y2023: cols[7],
-          });
-          structuredRows.push({
-            countryName: cols[0],
-            continent: cols[2],
-            incomeGroup: cols[3],
-            Y1960: parseFloat(cols[4]),
-            Y1980: parseFloat(cols[5]),
-            Y2000: parseFloat(cols[6]),
-            Y2023: parseFloat(cols[7]),
-          });
-        });
-        setRawRows(allRows);
-        setRawData(structuredRows);
-      } catch (err) {
-        console.error("Failed to fetch Boxplot CSV:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
 
   const toggleYear = (y) => {
     setSelectedYears((prev) => {
@@ -692,7 +636,7 @@ function FiveNumberSummaryBoxplot() {
         columns={tableColumns}
         title={t("components.randomVariableCharts.boxplot.dataTableTitle")}
         previewRows={5}
-        originalFileUrl={`${import.meta.env.BASE_URL}data/World_LifeExpectancy.csv`}
+        originalFileUrl={csvUrl}
         originalFileName="World_LifeExpectancy.csv"
       />
     </div>
