@@ -223,7 +223,7 @@ function DataPreviewTable({
       {!expanded && hiddenCount > 0 && (
         <p className="text-muted small text-center mt-1 mb-0">
           {t("components.dataPreviewTable.showingRows", {
-            shown: previewRows,
+            shown: previewRows + 1,
             total: data.length,
           })}
         </p>

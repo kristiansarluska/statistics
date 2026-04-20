@@ -1,6 +1,13 @@
 // src/components/content/helpers/InfoIcon.jsx
 import React, { useState, useRef, useEffect } from "react";
 
+/**
+ * @component InfoIcon
+ * @description Renders an information icon that displays a tooltip with custom content on hover.
+ * Handles dynamic positioning to ensure the tooltip stays within the viewport.
+ * * @param {Object} props
+ * @param {React.ReactNode} props.children - The content to be displayed inside the tooltip.
+ */
 function InfoIcon({ children }) {
   const [visible, setVisible] = useState(false); // controls render
   const [animated, setAnimated] = useState(false); // drives CSS transition
@@ -9,6 +16,10 @@ function InfoIcon({ children }) {
   const tooltipRef = useRef(null);
   const hideTimer = useRef(null);
 
+  /**
+   * Calculates the optimal position for the tooltip relative to the icon and viewport.
+   * Prevents the tooltip from overflowing the left or right edges of the screen.
+   */
   const computePosition = () => {
     if (!iconRef.current || !tooltipRef.current) return;
     const icon = iconRef.current.getBoundingClientRect();
@@ -17,8 +28,10 @@ function InfoIcon({ children }) {
     const padding = 8;
 
     let left = icon.left + icon.width / 2 - tooltipW / 2;
+    // Right edge collision
     if (left + tooltipW > viewportW - padding)
       left = viewportW - padding - tooltipW;
+    // Left edge collision
     if (left < padding) left = padding;
 
     setTooltipStyle({
@@ -34,18 +47,25 @@ function InfoIcon({ children }) {
   useEffect(() => {
     if (visible) {
       computePosition();
-      // Trigger enter transition on next frame
+      // Ensure animation starts after the first position calculation
       requestAnimationFrame(() => setAnimated(true));
+    } else {
+      setAnimated(false);
     }
   }, [visible]);
 
+  /**
+   * Shows the tooltip and clears any pending hide timers.
+   */
   const handleMouseEnter = () => {
-    clearTimeout(hideTimer.current);
+    if (hideTimer.current) clearTimeout(hideTimer.current);
     setVisible(true);
   };
 
+  /**
+   * Initiates the fade-out animation and hides the tooltip after a short delay.
+   */
   const handleMouseLeave = () => {
-    // Start exit animation, then unmount after transition completes
     setAnimated(false);
     hideTimer.current = setTimeout(() => setVisible(false), 180);
   };

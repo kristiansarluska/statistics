@@ -1,6 +1,18 @@
 // src/components/content/helpers/StatsBadge.jsx
 import React from "react";
 
+/**
+ * @component StatsBadge
+ * @description A flexible container for displaying multiple statistical values in a badge-like row.
+ * Supports grouping with dividers and an optional footer for additional context.
+ * * @param {Object} props
+ * @param {Array<Object>} props.items - Array of stat objects to display.
+ * @param {string} props.items[].label - Label for the statistic (e.g., "Mean").
+ * @param {string|number} props.items[].value - The value to display.
+ * @param {string} [props.items[].color] - CSS class for the value color (e.g., "text-primary").
+ * @param {boolean} [props.items[].groupStart] - If true, renders a vertical divider before this item (except the first).
+ * @param {React.ReactNode} [props.footer] - Optional content rendered below the statistics.
+ */
 function StatsBadge({ items, footer }) {
   if (!items || items.length === 0) return null;
 
@@ -9,11 +21,11 @@ function StatsBadge({ items, footer }) {
       className="bg-body-tertiary border shadow-sm rounded-4 px-3 py-2"
       style={{ fontSize: "0.88rem", display: "inline-block", maxWidth: "100%" }}
     >
-      {/* Responzívny flex layout — na malých obrazovkách sa zalomí automaticky */}
+      {/* Responsive flex layout — wraps automatically on small screens */}
       <div className="d-flex flex-wrap justify-content-center align-items-stretch gap-0">
         {items.map(({ label, value, color, groupStart }, i) => (
           <React.Fragment key={i}>
-            {/* Vertikálny rozdeľovač pred každou skupinou (okrem prvej) */}
+            {/* Vertical divider before each group (except the first one) */}
             {groupStart && i !== 0 && (
               <div
                 className="d-none d-sm-block mx-3 border-start align-self-stretch"
@@ -34,12 +46,9 @@ function StatsBadge({ items, footer }) {
         ))}
       </div>
 
-      {/* Voliteľná spodná časť pre sumáre alebo vysvetlivky */}
+      {/* Optional bottom section for summaries or explanations */}
       {footer && (
-        <div
-          className="border-top mt-2 pt-1 text-center"
-          style={{ fontSize: "0.85rem" }}
-        >
+        <div className="mt-1 pt-1 border-top text-center text-muted small">
           {footer}
         </div>
       )}

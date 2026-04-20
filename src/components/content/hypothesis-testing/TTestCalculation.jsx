@@ -4,6 +4,16 @@ import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import CalcPanel from "../helpers/CalcPanel";
 
+/**
+ * @component TTestCalculation
+ * @description Displays the step-by-step mathematical calculation for a One-Sample T-Test.
+ * @param {Object} props
+ * @param {Object} props.stats - Calculated statistics (mean, sd, n, t, df, pValue).
+ * @param {number} props.expectedValue - Population mean under the null hypothesis (mu0).
+ * @param {number} props.alpha - Significance level.
+ * @param {string} props.selectedOkres - Label of the selected spatial unit.
+ * @param {boolean} props.isSignificant - Whether the null hypothesis is rejected.
+ */
 function TTestCalculation({
   stats,
   expectedValue,
@@ -20,13 +30,12 @@ function TTestCalculation({
         district: selectedOkres,
       })}
     >
-      {/* T statistic */}
+      {/* T statistic formulas */}{" "}
       <CalcPanel.Row formula="t = \frac{\bar{x} - \mu_0}{\dfrac{s}{\sqrt{n}}}" />
       <CalcPanel.Row
         concrete
         formula={`t = \\frac{${stats.mean.toFixed(2)} - ${expectedValue}}{\\dfrac{${stats.sd.toFixed(2)}}{\\sqrt{${stats.n}}}} = \\frac{${(stats.mean - expectedValue).toFixed(2)}}{${se.toFixed(4)}} = ${stats.t.toFixed(4)}`}
       />
-
       {/* Parameter legend */}
       <div className="row text-center small text-muted g-2 mb-1">
         {[
@@ -55,9 +64,7 @@ function TTestCalculation({
           </div>
         ))}
       </div>
-
       <CalcPanel.Divider />
-
       {/* p-value */}
       <CalcPanel.Row formula="p = 2 \cdot P(T_{df} > |t|) = 2 \cdot (1 - F_{t}(|t|))" />
       <CalcPanel.Row
@@ -73,9 +80,7 @@ function TTestCalculation({
           }}
         />
       </CalcPanel.Note>
-
       <CalcPanel.Divider />
-
       {/* Conclusion */}
       <div
         className={`rounded p-2 text-center small ${isSignificant ? "bg-danger-subtle" : "bg-success-subtle"}`}

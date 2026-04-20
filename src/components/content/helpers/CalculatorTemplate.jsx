@@ -5,6 +5,23 @@ import { InlineMath, BlockMath } from "react-katex";
 import DataInputControl from "./DataInputControl";
 import "katex/dist/katex.min.css";
 
+/*** @component CalculatorTemplate
+ * @description A reusable layout component for statistical calculators.
+ * It manages data input state, validation, and rendering of mathematical formulas using KaTeX.
+ * * @param {Object} props
+ * @param {string} props.title - Title of the calculator.
+ * @param {string} props.inputLabel - Label for the data input section.
+ * @param {Array<number>} [props.defaultData=[]] - Initial dataset.
+ * @param {Function} [props.onValidate] - Validator function for new inputs.
+ * @param {Function} props.getMathContent - Function that returns LaTeX formulas and calculation results.
+ * @param {number} [props.min] - Minimum allowed value for input.
+ * @param {number} [props.max] - Maximum allowed value for input.
+ * @param {string|number} [props.step="any"] - Step attribute for numeric input.
+ * @param {string} [props.placeholder] - Input placeholder text.
+ * @param {boolean} [props.sortData=false] - If true, data is automatically sorted ascending.
+ * @param {Function} [props.renderExtra] - Optional function to render extra UI elements near data badges.
+ * @param {Function} [props.bottomContent] - Optional function to render additional content below the calculator.
+ */
 function CalculatorTemplate({
   title,
   inputLabel,
@@ -20,16 +37,24 @@ function CalculatorTemplate({
   bottomContent,
 }) {
   const { t } = useTranslation();
+
+  // Initialize data with optional sorting
   const initData = sortData
     ? [...defaultData].sort((a, b) => a - b)
     : defaultData;
+
   const [measurements, setMeasurements] = useState(initData);
   const [isMathExpanded, setIsMathExpanded] = useState(false);
 
+  // Helper to determine if current state differs from the initial default data
   const isDefault =
     measurements.length === defaultData.length &&
     measurements.every((val, idx) => val === initData[idx]);
 
+  /**
+   * Handles adding a new numeric value to the dataset.
+   * @param {number} val - The value to add.
+   */
   const handleAdd = (val) => {
     if (onValidate(val)) {
       let newData = [...measurements, val];
@@ -38,16 +63,25 @@ function CalculatorTemplate({
     }
   };
 
+  /**
+   * Handles removing a value from the dataset by its index.
+   * @param {number} indexToRemove - Index of the item to remove.
+   */
   const handleRemove = (indexToRemove) => {
     setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
   };
 
+  /**
+   * Resets the dataset to its initial state.
+   */
   const handleReset = () => {
     setMeasurements([...initData]);
     setIsMathExpanded(false);
   };
 
   const n = measurements.length;
+
+  // Call the provided logic function to get LaTeX and results
   const mathContent =
     n > 0 ? getMathContent(measurements, isMathExpanded) : null;
   const highlightIndices = mathContent?.highlightIndices || [];
@@ -59,6 +93,7 @@ function CalculatorTemplate({
     >
       {title && <h6 className="mb-4 text-center">{title}</h6>}
 
+      {/* Data Input Section */}
       <div className="w-100 mb-4">
         {inputLabel && (
           <h6 className="mb-3" style={{ fontSize: "0.95rem" }}>
@@ -84,6 +119,7 @@ function CalculatorTemplate({
         />
       </div>
 
+      {/* Results and Mathematical Formula Section */}
       {n > 0 && mathContent && (
         <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center w-100">
           <div className="d-flex justify-content-between align-items-center mb-2">
@@ -116,17 +152,20 @@ function CalculatorTemplate({
               overflowY: "hidden",
             }}
           >
+            {/* Render general formula */}
             {mathContent.formulaMath && (
               <div style={{ paddingBottom: "10px" }}>
                 <BlockMath math={mathContent.formulaMath} />
               </div>
             )}
 
+            {/* Render concrete calculation with actual numbers */}
             <div style={{ paddingBottom: "15px" }}>
               <BlockMath math={mathContent.blockMath} />
             </div>
           </div>
 
+          {/* Final Result Display */}
           <div className="fs-5 mt-1">
             <InlineMath math={mathContent.inlineMath} />
             <strong className="text-primary">{mathContent.resultText}</strong>
@@ -134,6 +173,7 @@ function CalculatorTemplate({
         </div>
       )}
 
+      {/* Optional footer content (e.g., comparisons or warnings) */}
       {bottomContent && n > 0 && (
         <div className="w-100 mt-3">{bottomContent(measurements)}</div>
       )}

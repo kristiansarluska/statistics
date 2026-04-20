@@ -228,7 +228,7 @@ function CoefficientComparison() {
           <label className="form-label fw-bold mb-2 text-center small">
             {t("correlation.comparison.datasetLabel")}
           </label>
-          <div className="btn-group shadow-sm" role="group">
+          <div className="btn-group" role="group">
             {[
               { value: "all", label: t("correlation.comparison.tabAll") },
               {

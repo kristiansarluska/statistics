@@ -8,21 +8,7 @@ function Introduction() {
 
   return (
     <section id="introduction" className="mb-5">
-      <p className="fst-italic lead">
-        <Trans
-          i18nKey="correlation.introduction.p1"
-          components={{ bold: <strong /> }}
-        />
-      </p>
-      <p>
-        <Trans
-          i18nKey="correlation.introduction.p2"
-          components={{
-            bold: <strong />,
-            m: <InlineMath math="m = \rho \cdot V" />,
-          }}
-        />
-      </p>
+      <p className="fst-italic lead">{t("correlation.introduction.p1")}</p>
 
       {/* CORRELATION USAGE TABLE */}
       <div className="mx-auto w-100 mb-5 mt-5" style={{ maxWidth: "800px" }}>

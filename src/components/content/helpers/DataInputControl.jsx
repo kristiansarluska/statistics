@@ -3,6 +3,27 @@ import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import ResetButton from "../../charts/helpers/ResetButton";
 
+/**
+ * @component DataInputControl
+ * @description A versatile input component for managing numerical datasets, supporting weighted values, editing, and touch interactions.
+ * @param {Object} props
+ * @param {Array} props.data - Dataset values (numbers or objects with x and w properties).
+ * @param {Function} props.onAdd - Callback triggered when a new value is added.
+ * @param {Function} props.onRemove - Callback triggered when a value is removed by index.
+ * @param {Function} props.onReset - Callback to reset the dataset to its default state.
+ * @param {boolean} props.isDefault - Flag indicating if the current data is in its initial default state.
+ * @param {string} [props.placeholder] - Placeholder text for the primary input.
+ * @param {boolean} [props.isWeighted=false] - Enables a secondary input field for weights.
+ * @param {string} [props.weightPlaceholder] - Placeholder text for the weight input.
+ * @param {Function} [props.formatItem] - Formatter function for displaying items.
+ * @param {boolean} [props.editable=false] - Enables inline editing of existing values.
+ * @param {Function} [props.onEdit] - Callback for updating a value at a specific index.
+ * @param {number|string} [props.min] - Minimum allowed value.
+ * @param {number|string} [props.max] - Maximum allowed value.
+ * @param {string} [props.step="any"] - Step increment for inputs.
+ * @param {Function} [props.itemClassName] - Function returning a custom CSS class for specific data items.
+ * @param {Function} [props.renderExtra] - Function returning extra elements to render alongside an item.
+ */
 function DataInputControl({
   data,
   onAdd,
@@ -34,6 +55,7 @@ function DataInputControl({
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const containerRef = useRef(null);
 
+  // Detect touch capability and handle outside clicks/touches to close action menus
   useEffect(() => {
     setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
     const handleClickOutside = (event) => {
@@ -52,6 +74,9 @@ function DataInputControl({
     };
   }, []);
 
+  /**
+   * Parses inputs (handling comma decimals) and triggers the onAdd callback.
+   */
   const handleAdd = (e) => {
     e.preventDefault();
     const val = parseFloat(inputValue.replace(",", "."));
@@ -77,6 +102,9 @@ function DataInputControl({
     }
   };
 
+  /**
+   * Processes inline edits for an existing item and triggers the onEdit callback.
+   */
   const handleSaveEdit = (e, idx) => {
     e.preventDefault();
     const xVal = parseFloat(editX.replace(",", "."));

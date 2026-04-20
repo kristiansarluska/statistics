@@ -373,13 +373,14 @@
       },
       "exponential": {
         "title": "Exponenciálne rozdelenie",
-        "description": "Exponenciálne rozdelenie sa často používa na modelovanie času medzi náhodnými udalosťami – vyjadruje dobu čakania na náhodnú udalosť. Jesná sa o rozdelenie s \"krátkou pamäťou\" – pravdepodobnosť, že udalosť nastane v najbližšom momente, nezávisí od toho, ako dlho už čakáme.",
+        "description": "Exponenciálne rozdelenie sa často používa na modelovanie času medzi náhodnými udalosťami – vyjadruje dobu čakania na náhodnú udalosť. Jesná sa o rozdelenie s \"krátkou pamäťou\" – pravdepodobnosť, že udalosť nastane v najbližšom momente, nezávisí od toho, ako dlho už čakáme. Zatiaľ čo rovnoměrné rozdelenie znamená, že všetky hodnoty v danom intervale sú rovnako pravdepodobné, exponenciálne rozdelenie popisuje situácie, kde je najpravdepodobnejšia krátka čakacia doba a pravdepodobnosť s časom rýchlo klesá. ",
         "exampleTitle": "Spoľahlivosť monitorovacej siete",
         "exampleDesc": "Predstavme si automatickú meteostanicu v teréne. Exponenciálne rozdelenie modeluje <bold>čas medzi dvoma výpadkami</bold> odosielania dát. Parameter <bold><m1/></bold> (lambda) predstavuje intenzitu porúch – čím je vyššia, tým častejšie k výpadkom dochádza a tým kratšie sú intervaly medzi nimi. Všimnite si, že krivka začína vysoko (krátke intervaly sú najpravdepodobnejšie) a smerom doprava k dlhým časom čakania spravidla prudko klesá."
       },
       "normal": {
         "title": "Normálne rozdelenie",
-        "description": "Normálne (Gaussovo) rozdelenie je najdôležitejším spojitým rozdelením v štatistike. Je symetrické okolo strednej hodnoty <m1/> a tvar jeho \"zvonu\" je určený smerodajnou odchýlkou <m2/>. <br/><br/> Špeciálnym prípadom je <bold>normované normálne rozdelenie</bold> (tiež označované ako Z-rozdelenie), ktoré má: <ul> <li>strednú hodnotu rovnú nule (<m1/> = 0),</li> <li>smerodajnú odchýlku rovnú jednej (<m2/> = 1).</li> </ul> Každé normálne rozdelenie je možné previesť na normované pomocou procesu <bold>štandardizácie</bold>. V prírode a technike sa normálnym rozdelením riadi napríklad väčšina náhodných chýb merania.",
+        "description": "Normálne (Gaussovo) rozdelenie je najdôležitejším spojitým rozdelením v štatistike, pretože sa približuje rozdeleniu mnohých reálnych javov a má veľký význam v štatistických metódach, napríklad v štatistických odhadoch a pri testovaní hypotéz. Je symetrické okolo strednej hodnoty <m1/> a tvar jeho \"zvonu\" je určený smerodajnou odchýlkou <m2/>. V prírode a technike sa normálnym rozdelením riadi napríklad väčšina náhodných chýb merania.",
+        "standardNormalDesc": "Špeciálnym prípadom je <bold>normované normálne rozdelenie</bold> (tiež označované ako Z-rozdelenie), ktoré má: <ul> <li>strednú hodnotu rovnú nule (<m1/> = 0),</li> <li>smerodajnú odchýlku rovnú jednej (<m2/> = 1).</li> </ul> Normované normálne rozdelenie bolo zavedené, pretože vďaka zložitejšiemu výpočtu hustoty pravdepodobnosti a distribučnej funkcie by se muselo pre každú jedinečnú kombináciu parametrov počítať zvlášť. Z tohto dôvodu bol vytvorený takýto spôsob štandardizácie, ktorý všetky možné normálne rozdelenia prevádza do jednotnej podoby.",
         "exampleTitle": "Kalibrácia a presnosť GNSS prijímača",
         "exampleDesc": "Predstavme si meranie polohy stacionárneho bodu pomocou GNSS. Parameter <bold><m1/> (stredná hodnota)</bold> predstavuje systematickú chybu (napr. ak je prístroj zle kalibrovaný a vždy posúva výsledok o 1 meter). Parameter <bold><m2/> (smerodajná odchýlka)</bold> určuje presnosť prístroja – čím je menšia, tým sú merania koncentrované bližšie okolo stredu a prístroj je kvalitnejší. Všimnite si, že pri zmenšení <bold><m3/></bold> sa graf zúži a jeho vrchol prudko narastie, pretože celková plocha pod krivkou musí ostať rovná 1."
       },
@@ -406,8 +407,8 @@
 
   "parameterEstimation": {
     "intro": {
-      "p1": "Bežným prípadom pri spracovaní hromadných javov je, že máme relatívne malý počet pozorovaní (výberový súbor) a chceme urobiť závery o tom, čo by sme obdržali, keby sme mali k dispozícii celý základný súbor.",
-      "p2": "Hľadanie „všeobecnej pravdy“ o populácii pomocou náhodného výberu nazývame <bold>štatistická indukcia</bold>. Na základe hodnôt z výberového súboru odhadujeme neznáme hodnoty populácie, pričom vždy musíme akceptovať určitú mieru chyby – náš odhad má pravdepodobnostný charakter.",
+      "p1": "Bežným prípadom pri spracovaní hromadných javov je, že máme relatívne malý počet pozorovaní (výberový súbor) a chceme urobiť závery o celej populácii (základnom súbore).",
+      "p2": "Hľadanie „všeobecnej pravdy“ o populácii pomocou náhodného výberu nazývame <bold>štatistickou indukciou</bold>. Na základe hodnôt z výberového súboru odhadujeme neznáme hodnoty populácie, pričom vždy musíme akceptovať určitú mieru chyby – náš odhad má pravdepodobnostný charakter.",
       "populationTitle": "Základný súbor (populácia)",
       "populationDesc": "Základný súbor charakterizujeme pomocou parametrov. Ide o konštantné hodnoty závislé od rozdelenia pravdepodobnosti populácie, ktoré sú pre nás zväčša neznáme.",
       "sampleTitle": "Výberový súbor (vzorka)",
@@ -606,15 +607,15 @@
         "appDesc": "Pre náš test zvolíme štandardnú hladinu <bold><alpha/></bold>. Ak výsledná pravdepodobnosť (p-value) klesne pod túto hranicu, rozdiel v podiele seniorov budeme považovať za štatisticky významný a <h0/> zamietneme."
       },
       "step3": {
-        "title": "3. Výpočet testovacieho kritéria",
-        "description": "Testovacie kritérium je vzorec, pomocou ktorého z výberových dát získame konkrétnu číselnú hodnotu (testovú štatistiku). Táto štatistika sa riadi známym rozdelením pravdepodobnosti (napr. t-rozdelenie), s ktorým ju následne porovnávame, aby sme určili, či padne do kritického oboru.",
+        "title": "3. Výpočet testového kritéria",
+        "description": "Testové kritérium je vzorec, pomocou ktorého z výberových dát získame konkrétnu číselnú hodnotu (testovú štatistiku). Táto štatistika sa riadi známym rozdelením pravdepodobnosti (napr. t-rozdelenie), s ktorým ju následne porovnávame, aby sme určili, či padne do kritického oboru a tým pádom môžeme hypotézu zamietať. Naopak, ak padne do tzv. oboru prijatia, nepodarilo sa v dátach nájsť dôkaz podporujúci zamietnutie hypotézy. Hraničné hodnoty medzi kritickým oborom a oborom prijatia určujeme na základe kvantilov rozdelenia testovej štatistiky.",
         "appTitle": "Aplikácia na dáta",
         "appDesc": "Keďže porovnávame priemer jedného výberu (obce v okrese) so známou konštantou (20,56 %) a vstupné dáta sa približujú normálnemu rozdeleniu, použijeme <bold>jednovýberový Studentov t-test</bold>. Vzorec pre testovú štatistiku je:",
         "formulaDesc": "Kde <xbar/> je výberový priemer (podiel v okrese), <mu0/> je referenčná hodnota (20,56), <s/> je smerodajná odchýlka výberu a <n/> je počet obcí."
       },
       "step4": {
         "title": "4. Vyhodnotenie hypotézy a p-hodnota",
-        "description": "Na základe hodnoty testovacieho kritéria získame <bold>p-hodnotu (p-value)</bold>. Predstavuje najmenšiu hladinu významnosti, na ktorej môžeme <h0/> zamietnuť. Ak je p-hodnota menšia ako <alpha/>, nulovú hypotézu zamietame. Pri každom rozhodnutí však hrozí riziko štatistickej chyby.",
+        "description": "Na základe hodnoty testového kritéria získame <bold>p-hodnotu (p-value)</bold>. Predstavuje najmenšiu hladinu významnosti, na ktorej môžeme <h0/> zamietnuť. Ak je p-hodnota menšia ako <alpha/>, nulovú hypotézu zamietame. Pri každom rozhodnutí však hrozí riziko štatistickej chyby.",
         "appTitle": "Aplikácia na dáta (možné závery)",
         "table": {
           "col1": "Skutočnosť v populácii",
@@ -676,8 +677,7 @@
   "correlation": {
     "introduction": {
       "title": "Úvod do analýzy závislostí",
-      "p1": "V geografii a spoločenských vedách sa veľmi často stretávame so <bold>stochastickou (štatistickou) závislosťou</bold>. Neexistuje tu jednoznačný vzorec – vieme síce, že medzi premennými existuje určitý vzťah, no nevieme z neho exaktne vypočítať výsledok pre konkrétneho jednotlivca. Práve na skúmanie a kvantifikovanie takejto závislosti slúži <bold>korelačná analýza</bold>.",
-      "p2": "Tento prístup je zásadne odlišný od <bold>deterministickej (funkčnej) závislosti</bold>, ktorú poznáme napríklad z fyziky. Tam vieme hmotnosť telesa jednoznačne vypočítať, ak poznáme jeho objem a hustotu (<m/>). Výsledok je v takom prípade vždy presný a nemenný.",
+      "p1": "V geografii a spoločenských vedách se veľmi často stretávame so stochastickou (štatistickou) závislosťou. Vieme síce, že medzi premennými existuje nejaký vzťah, ale nie je presne a jednoznačne definovaný, napríklad pevným vzorcom alebo funkčnou závislosťou. Na skúmanie a kvantifikovanie takejto stochastickej závislosti slúži korelačná analýza.",
       "tableTitle": "Výber metódy podľa typu premenných",
       "tableDesc": "Výber vhodnej štatistickej metódy na hľadanie závislostí závisí od toho, s akými typmi znakov (premenných) sa pracuje. Korelačná analýza sa využíva vtedy, keď sú obe premenné kvantitatívne.",
       "typeY": "Typ znaku Y (Závislá premenná)",
@@ -825,7 +825,7 @@
         "desc": "Dáta každej skupiny pochádzajú z normálneho rozdelenia. Pri väčších výberoch je ANOVA voči odchýlkam pomerne robustná."
       },
       "prereqHomoscedasticity": {
-        "title": "Homoskedasticita",
+        "title": "Homogenita rozptylov",
         "desc": "Rozptyly všetkých skupín sú rovnaké – rozptyl nezávisí od skupiny. Silnejší predpoklad než normalita. Overenie Bartlettovým alebo Leveneho testom."
       },
       "homogeneityTitle": "Testy homogenity rozptylov",
@@ -845,14 +845,14 @@
       "title": "Jednofaktorová ANOVA",
       "intro1": "Skúma vplyv <bold>jedného faktora</bold> (kategorickej premennej) na spojitú náhodnú veličinu. Faktor definuje <m/> skupín (kategórií). Testujeme nulovú hypotézu, že všetky skupinové stredné hodnoty pochádzajú z rovnakej populácie:",
       "intro2": "Alternatívna hypotéza hovorí, že <bold>aspoň jedna</bold> stredná hodnota pochádza z inej populácie. ANOVA sama osebe neurčuje, ktorá dvojica sa líši, táto skutočnosť sa zisťuje až prípadnými <bold>post-hoc testmi</bold>.",
-      "intro3": "Každé pozorovanie <m/> (n-tý prvok k-tej skupiny) sa rozkladá na tri zložky:",
+      "intro3": "Každé pozorovanie <m/> (n-tý prvok k-tej skupiny) je možné hypoteticky rozložiť na tri zložky:",
       "legend": {
         "mu": "– celkový priemer",
         "alpha": "– efekt faktora",
         "epsilon": "– náhodná chyba"
       },
       "varianceTitle": "Rozklad variability",
-      "varianceDesc": "Základnou myšlienkou ANOVY je, že celková variabilita dát <m/> sa rozkladá na dve nezávislé zložky. Ak je vplyv faktora skutočný, variabilita <italic>medzi skupinami</italic> bude výrazne prevyšovať variabilitu <italic>vnútri skupín</italic>.",
+      "varianceDesc": "Základnou myšlienkou ANOVY je, že celková variabilita dát <m1/> sa rozkladá na dve nezávislé zložky – variabilitu medzi skupinami <m2/> a variabilitu vnútri skupín <m3/>. Ak je vplyv faktora skutočný, variabilita <italic>medzi skupinami</italic> bude výrazne prevyšovať variabilitu <italic>vnútri skupín</italic>.",
       "betweenTitle": "Variabilita medzi skupinami",
       "betweenDesc": "Meria vzdialenosť skupinových priemerov od celkového priemeru. Zachytáva <bold>vplyv faktora</bold>. Čím väčšia, tým výraznejší je efekt sledovanej kategórie.",
       "withinTitle": "Variabilita vnútri skupín",
@@ -886,7 +886,7 @@
         "intro": "V nasledujúcej simulácii sú načítané <bold>historické dáta (OpenMeteo) pre júl 2025</bold> v troch moravských mestách. Cieľom analýzy je zistiť, či je prítomná preukázateľná odlišnosť v ich priemerných teplotách za daný mesiac.",
         "cityOlomoucPrerov": "<bold>Olomouc a Přerov:</bold> Obe mestá ležia v nížinatej oblasti Hornomoravského úvalu. Predpokladáme, že teplotné rozdiely medzi nimi budú minimálne.",
         "cityJesenik": "<bold>Jeseník:</bold> Mesto situované v horskom prostredí vo väčšej nadmorskej výške. Očakávame, že ANOVA zamietne nulovú hypotézu a post-hoc test potvrdí významný rozdiel voči obom nížinným mestám.",
-        "tryIt": "<bold>Vyskúšajte si:</bold> V grafe Tukey HSD si všimnite, že interval rozdielu medzi Olomoucom a Přerovom pretína nulovú líniu (rozdiel nie je štatisticky významný). Následne skúste pomocou posuvníkov zvýšiť teplotu v Jeseníku. Sledujte, kedy sa jeho teploty priblížia tým na nížine a ako na to zareaguje výsledok post-hoc testu a p-hodnota."
+        "tryIt": "<bold>Vyskúšajte si:</bold> V grafe Tukey HSD si všimnite, že interval rozdielu medzi Olomoucom a Přerovom pretína nulovú líniu (rozdiel nie je štatisticky významný). Následne skúste pomocou posuvníkov zvýšiť teplotu v Jeseníku. Sledujte, kedy sa jeho teploty priblížia tým na nížine a ako na to zareaguje výsledok post-hoc testu a p-hodnota. Skúste si taktiež jednotlivé mestá odlíšiť pomocou priemeru, ale zvýšením smerodajnej odchýlky zariaďte, aby sa hodnoty viac prekrývali. Sledujte, kde test určí významný rozdiel a kde nie. "
       }
     },
     "assumptionViolations": {
@@ -1217,7 +1217,7 @@
         "colSS": "Suma štvorcov",
         "colDF": "Stupne voľnosti",
         "colMS": "Priemerná suma štvorcov",
-        "colF": "Testovacie kritérium",
+        "colF": "Testové kritérium",
         "rowBetween": "Medzi skupinami",
         "rowWithin": "Vnútri skupín",
         "rowTotal": "Celkovo",

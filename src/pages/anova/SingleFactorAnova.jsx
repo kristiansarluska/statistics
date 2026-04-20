@@ -50,7 +50,12 @@ const SingleFactorAnova = () => {
       <p>
         <Trans
           i18nKey="anova.singleFactor.varianceDesc"
-          components={{ m: <InlineMath math="S_T" />, italic: <em /> }}
+          components={{
+            m1: <InlineMath math="S_T" />,
+            m2: <InlineMath math="S_\alpha" />,
+            m3: <InlineMath math="S_\varepsilon" />,
+            italic: <em />,
+          }}
         />
       </p>
       <div className="text-center overflow-auto my-4">

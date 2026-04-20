@@ -26,6 +26,15 @@ function TukeyChart({ results }) {
 
   if (!results || results.length === 0) return null;
 
+  // Helper to abbreviate axis labels
+  const formatAxisLabel = (value) => {
+    if (!value) return "";
+    return value
+      .split(" – ")
+      .map((city) => city.substring(0, 3))
+      .join(" – ");
+  };
+
   // Format data for Recharts floating bars (requires an array of [min, max])
   const chartData = results.map((r) => ({
     ...r,
@@ -130,7 +139,8 @@ function TukeyChart({ results }) {
               <YAxis
                 type="category"
                 dataKey="pair"
-                width={30}
+                width={70}
+                tickFormatter={formatAxisLabel}
                 tick={{
                   fontSize: 12,
                   dx: -10,

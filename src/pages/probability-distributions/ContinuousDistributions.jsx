@@ -102,10 +102,6 @@ function ContinuousDistributions() {
         <Trans
           i18nKey="probabilityDistributions.continuous.normal.description"
           components={{
-            bold: <strong />,
-            br: <br />,
-            ul: <ul />,
-            li: <li />,
             m1: <InlineMath math="\mu" />,
             m2: <InlineMath math="\sigma" />,
           }}
@@ -119,6 +115,24 @@ function ContinuousDistributions() {
         <BlockMath
           math={`F(x) = \\int_{-\\infty}^{x} \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(t-\\mu)^2}{2\\sigma^2}} \\, dt`}
         />
+      </div>
+
+      <div className="mb-4">
+        <Trans
+          i18nKey="probabilityDistributions.continuous.normal.standardNormalDesc"
+          components={{
+            bold: <strong />,
+            br: <br />,
+            ul: <ul />,
+            li: <li />,
+            m1: <InlineMath math="\mu" />,
+            m2: <InlineMath math="\sigma" />,
+          }}
+        />
+      </div>
+
+      <div className="overflow-x-auto mb-4">
+        <BlockMath math={`Z = \\frac{X - \\mu}{\\sigma}`} />
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>

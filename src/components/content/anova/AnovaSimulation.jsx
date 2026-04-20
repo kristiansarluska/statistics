@@ -192,12 +192,12 @@ function AnovaSimulation() {
     const rawResults = calculateTukeyHSD(anovaStats.groupStats, anovaStats.msW);
 
     return rawResults.map((res) => {
-      const short1 = groups[res.group1].name.substring(0, 3);
-      const short2 = groups[res.group2].name.substring(0, 3);
+      const name1 = groups[res.group1].name;
+      const name2 = groups[res.group2].name;
 
       return {
         ...res,
-        pair: `${short1}–${short2}`,
+        pair: `${name1} – ${name2}`,
       };
     });
   }, [anovaStats, groups]);
@@ -367,6 +367,13 @@ function AnovaSimulation() {
         />
       </div>
 
+      {/* Post-Hoc Analysis and ANOVA Table */}
+      <TukeyChart results={tukeyResults} />
+
+      <div className="pt-4 pb-4">
+        <AnovaTable stats={anovaStats} />
+      </div>
+
       {/* Data Table Preview */}
       <div
         className="mb-4 mx-auto"
@@ -397,13 +404,6 @@ function AnovaSimulation() {
           downloadBtnLabel={t("components.anovaSimulation.downloadBtn")}
         />
       </div>
-
-      {/* Statistics Tables and Post-Hoc Analysis */}
-      <div className="pt-4 pb-4">
-        <AnovaTable stats={anovaStats} />
-      </div>
-
-      <TukeyChart results={tukeyResults} />
     </div>
   );
 }
