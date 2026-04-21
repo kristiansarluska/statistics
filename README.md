@@ -1,8 +1,7 @@
-<p align="center">
-  <img src="public/assets/images/logo_left.svg" alt="StatTerra Logo" width="300" />
-</p>
-
-# StatTerra
+<h1 align="center" style="display: flex; align-items: center; justify-content: center; gap: 10px; border-bottom: none;">
+  <img src="public/assets/images/logo_only.svg" alt="StatTerra Logo" width="50" />
+  <span>StatTerra</span>
+</h1>
 
 StatTerra is an interactive web application designed for teaching and learning statistical methods in geoinformatics. Developed as a part of a bachelor thesis, it provides an educational environment combining theoretical texts, mathematical formulas, interactive data visualizations, and real-world geographical data.
 
