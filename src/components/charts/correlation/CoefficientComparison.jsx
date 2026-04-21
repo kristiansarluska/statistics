@@ -300,7 +300,7 @@ function CoefficientComparison() {
               className="btn btn-primary btn-sm rounded-pill px-4 shadow-sm"
               onClick={handleAddOutlier}
             >
-              <i className="bi bi-plus-circle me-2"></i>
+              <i className="bi bi-plus-circle"></i>
               {t("correlation.comparison.outlierControls.addBtn")}
             </button>
             <ResetButton

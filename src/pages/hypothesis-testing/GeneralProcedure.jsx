@@ -154,7 +154,6 @@ function GeneralProcedure() {
                 )}
                 originalFileUrl={`${import.meta.env.BASE_URL}data/MS_kraj.json`}
                 originalFileName="MS_kraj.json"
-                downloadBtnLabel="Stiahnuť GeoJSON"
               />
             )}
           </div>
