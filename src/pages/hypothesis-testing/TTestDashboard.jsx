@@ -327,25 +327,6 @@ function TTestDashboard() {
         />
       </div>
 
-      {/* MAP */}
-      <ChoroplethMap
-        geoJsonData={geoJson}
-        attribute="podiel_nad65"
-        filterKey="okres"
-        filterValue={selectedOkres}
-        hoveredObec={hoveredObec}
-        setHoveredObec={setHoveredObec}
-        pivot={expectedValue}
-      />
-
-      {/* INTERPRETIVE NOTE */}
-      <div className="alert alert-secondary border-0 shadow-sm mb-4 small">
-        <Trans
-          i18nKey="hypothesisTesting.tTestDashboard.interpretiveNote"
-          components={{ bold: <strong /> }}
-        />
-      </div>
-
       {/* CALCULATION BREAKDOWN */}
       <div className="mb-4">
         <button
@@ -409,6 +390,25 @@ function TTestDashboard() {
                 expected: expectedValue,
               })}
         </p>
+      </div>
+
+      {/* MAP */}
+      <ChoroplethMap
+        geoJsonData={geoJson}
+        attribute="podiel_nad65"
+        filterKey="okres"
+        filterValue={selectedOkres}
+        hoveredObec={hoveredObec}
+        setHoveredObec={setHoveredObec}
+        pivot={expectedValue}
+      />
+
+      {/* INTERPRETIVE NOTE */}
+      <div className="alert alert-secondary border-0 shadow-sm mb-4 small">
+        <Trans
+          i18nKey="hypothesisTesting.tTestDashboard.interpretiveNote"
+          components={{ bold: <strong /> }}
+        />
       </div>
     </section>
   );

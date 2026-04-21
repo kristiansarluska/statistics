@@ -60,10 +60,14 @@ function QuantileFunctionInput() {
    */
   const quantileData = useMemo(() => {
     if (n === 0 || activeQuantile === "none") {
-      return { lines: [], activeIndices: [], injectedValues: [] };
+      return {
+        lines: [],
+        activeIndices: [],
+        injectedValues: [],
+        labelsByIndex: {},
+      };
     }
 
-    // Define probabilities p for each quantile type
     const ps =
       activeQuantile === "median"
         ? [0.5]
@@ -74,30 +78,51 @@ function QuantileFunctionInput() {
     const activeIndices = [];
     const lines = [];
     const injectedValues = [];
+    const labelsByIndex = {};
 
-    ps.forEach((p) => {
+    ps.forEach((p, i) => {
       const exactK = p * n;
       const isIntegerK = Math.abs(exactK - Math.round(exactK)) < 1e-9;
       const k = Math.round(exactK);
 
+      // generating label texts
+      let labelText = "";
+      const tMedian = t("components.randomVariableCharts.quantileInput.median");
+      const tQuartile = t(
+        "components.randomVariableCharts.quantileInput.quartile",
+      );
+      const tDecile = t("components.randomVariableCharts.quantileInput.decile");
+      if (activeQuantile === "median") {
+        labelText = tMedian;
+      } else if (activeQuantile === "quartiles") {
+        labelText = i === 1 ? tMedian : `${i + 1}. ` + tQuartile;
+      } else if (activeQuantile === "deciles") {
+        labelText = i === 4 ? tMedian : `${i + 1}. ` + tDecile;
+      }
+
       let value;
       if (isIntegerK && k > 0 && k < n) {
-        // Statistical rule for integer k: Average of adjacent sorted values
         const rawValue = (sortedData[k - 1] + sortedData[k]) / 2;
         value = Math.round(rawValue * 1000) / 1000;
         activeIndices.push(k - 1, k);
-        injectedValues.push({ p, value, insertAfterIdx: k - 1 });
+
+        injectedValues.push({ p, value, insertAfterIdx: k - 1, labelText });
       } else {
-        // Standard rule: Value at ceiling(p*n)
         const idx = Math.ceil(exactK) - 1;
         value = sortedData[idx];
         activeIndices.push(idx);
+
+        if (labelsByIndex[idx]) {
+          labelsByIndex[idx] += `, ${labelText}`;
+        } else {
+          labelsByIndex[idx] = labelText;
+        }
       }
       lines.push({ x: p, y: value });
     });
 
-    return { lines, activeIndices, injectedValues };
-  }, [n, activeQuantile, sortedData]);
+    return { lines, activeIndices, injectedValues, labelsByIndex };
+  }, [n, activeQuantile, sortedData, t]);
 
   // Map calculated quantile coordinates to SVG ReferenceLines
   const referenceLines = quantileData.lines.map((lineData, i) => (
@@ -181,30 +206,85 @@ function QuantileFunctionInput() {
           placeholder={t(
             "components.randomVariableCharts.quantileInput.placeholder",
           )}
-          // Highlight items used in the current quantile calculation
           itemClassName={(_, idx) =>
             quantileData.activeIndices.includes(idx)
               ? "btn-success"
               : "btn-outline-secondary text-body"
           }
-          // Inject badges showing calculated values for integer-k quantiles
           renderExtra={(_, idx) => {
             const injected = quantileData.injectedValues.filter(
               (q) => q.insertAfterIdx === idx,
             );
-            return injected.map((q, i) => (
-              <span
-                key={`inj-${i}`}
-                className="badge rounded-pill border border-success bg-success-subtle text-success"
-                style={{ fontSize: "0.8rem", userSelect: "none" }}
-                title={t(
-                  "components.randomVariableCharts.quantileInput.calculatedTitle",
-                  { p: q.p },
+            const standardLabel = quantileData.labelsByIndex[idx];
+
+            return (
+              <React.Fragment key={`extra-${idx}`}>
+                {/* Label pre štandardné zvýraznené hodnoty (posunutý nad predchádzajúci pill) */}
+                {standardLabel && (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 0,
+                      height: 0,
+                      position: "relative",
+                    }}
+                  >
+                    <span
+                      className="text-success fw-semibold"
+                      style={{
+                        position: "absolute",
+                        bottom: "22px",
+                        left: "-25px",
+                        transform: "translateX(-50%)",
+                        fontSize: "0.65rem",
+                        whiteSpace: "nowrap",
+                        pointerEvents: "none",
+                        opacity: 0.9,
+                      }}
+                    >
+                      {standardLabel}
+                    </span>
+                  </span>
                 )}
-              >
-                ={q.value.toLocaleString("sk-SK", { maximumFractionDigits: 2 })}
-              </span>
-            ));
+
+                {/* Label pre dopočítané injektované hodnoty (tie, ktoré sa vkladajú medzi 2 pills) */}
+                {injected.map((q, i) => (
+                  <span
+                    key={`inj-${i}`}
+                    className="position-relative d-inline-block mx-1"
+                  >
+                    <span
+                      className="text-success fw-semibold w-100 text-center"
+                      style={{
+                        position: "absolute",
+                        bottom: "24px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        fontSize: "0.65rem",
+                        whiteSpace: "nowrap",
+                        pointerEvents: "none",
+                        opacity: 0.9,
+                      }}
+                    >
+                      {q.labelText}
+                    </span>
+                    <span
+                      className="badge rounded-pill border border-success bg-success-subtle text-success"
+                      style={{ fontSize: "0.8rem", userSelect: "none" }}
+                      title={t(
+                        "components.randomVariableCharts.quantileInput.calculatedTitle",
+                        { p: q.p },
+                      )}
+                    >
+                      =
+                      {q.value.toLocaleString("sk-SK", {
+                        maximumFractionDigits: 2,
+                      })}
+                    </span>
+                  </span>
+                ))}
+              </React.Fragment>
+            );
           }}
         />
       </div>

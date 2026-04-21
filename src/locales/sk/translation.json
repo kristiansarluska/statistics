@@ -204,9 +204,9 @@
       "quantile": {
         "title": "Kvantilová funkcia",
         "desc": "Kvantilová funkcia je inverznou (opačnou) k distribučnej funkcii. Namiesto otázky <italic>Aká je pravdepodobnosť, že nameriame hodnotu pod <m1/>?</italic> ju otáčame: <italic>Aká je hraničná hodnota (<m2/>), pod ktorou sa nachádza presne určené percento dát (<m3/>)?</italic> Najznámejším kvantilom je <bold>medián</bold> (<m4/>), ďalšími dôležitými kvantilmi sú kvartily (delia súbor na štyri časti) a decily (delia súbor na desať častí).",
-        "chart1Title": "<color>Príklad z praxe:</color> Index ľudského kapitálu",
+        "chart1Title": "<color>Reálne dáta:</color> Index ľudského kapitálu",
         "chart1Desc": "V nasledujúcom grafe je možné vidieť kvantilovú funkciu vytvorenú z reálnych dát o indexe ľudského kapitálu (HCI+) pre rôzne krajiny sveta (rok 2025). Tento index hodnotí vplyv zdravia, vzdelania a pracovných zručností na produktivitu (škála 0 až 325). Na osi <bold>x</bold> volíme percentil (<m1/> v %) a na osi <bold>y</bold> odčítavame príslušný kvantil <m2/> (HCI+ skóre).<br/><br/><bold>Ako to čítať?</bold> Posuňte slider na pravdepodobnosť <bold>50 % (medián)</bold>. Kvantil, ktorý získate, predstavuje hraničnú hodnotu – polovica krajín má HCI+ skóre menšie alebo rovné tomuto číslu.",
-        "chart2Title": "<color>Empirická kvantilová funkcia:</color> Výška stromov v rezervácii",
+        "chart2Title": "<color>Simulované dáta:</color> Výška stromov v rezervácii",
         "chart2Desc": "Predvolené dáta reprezentujú zoradené výšky stromov (v metroch) namerané v malej fiktívnej prírodnej rezervácii. Vyskúšajte si zobraziť <bold>medián</bold> (50 % stromov je nižších alebo rovnako vysokých) alebo <bold>decily</bold> (napr. 9. decil ukáže hraničnú výšku, pod ktorou sa nachádza 90 % všetkých stromov). Dáta môžete interaktívne mazať a dopĺňať vlastnými hodnotami."
       }
     },
@@ -978,6 +978,8 @@
         "median": "Medián",
         "quartiles": "Kvartily",
         "deciles": "Decily",
+        "quartile": "kvartil",
+        "decile": "decil",
         "inputDataLabel": "Vstupné dáta (zoradené):",
         "placeholder": "Nová hodnota",
         "calculatedTitle": "Vypočítaný kvantil ({{p}})"

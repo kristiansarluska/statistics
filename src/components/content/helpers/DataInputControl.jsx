@@ -137,8 +137,8 @@ function DataInputControl({
     <div className="w-100">
       <div
         ref={containerRef}
-        className="d-flex flex-wrap gap-2 mb-3 align-items-center"
-        style={{ minHeight: "38px" }}
+        className="d-flex flex-wrap column-gap-2 mb-3 align-items-center"
+        style={{ minHeight: "38px", rowGap: "1.4rem" }}
       >
         {data.map((item, idx) => {
           const isEditing = editable && editingIdx === idx;

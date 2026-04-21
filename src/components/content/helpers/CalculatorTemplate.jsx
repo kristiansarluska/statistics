@@ -11,16 +11,22 @@ import "katex/dist/katex.min.css";
  * * @param {Object} props
  * @param {string} props.title - Title of the calculator.
  * @param {string} props.inputLabel - Label for the data input section.
- * @param {Array<number>} [props.defaultData=[]] - Initial dataset.
- * @param {Function} [props.onValidate] - Validator function for new inputs.
+ * @param {Array<number>} [props.defaultData=[]] - Initial dataset (ignored when renderInput is used).
+ * @param {Function} [props.onValidate] - Validator function for new inputs (ignored when renderInput is used).
  * @param {Function} props.getMathContent - Function that returns LaTeX formulas and calculation results.
- * @param {number} [props.min] - Minimum allowed value for input.
- * @param {number} [props.max] - Maximum allowed value for input.
- * @param {string|number} [props.step="any"] - Step attribute for numeric input.
- * @param {string} [props.placeholder] - Input placeholder text.
- * @param {boolean} [props.sortData=false] - If true, data is automatically sorted ascending.
- * @param {Function} [props.renderExtra] - Optional function to render extra UI elements near data badges.
+ *   In standard mode receives `(measurements, isMathExpanded)`.
+ *   In renderInput mode receives `(null, isMathExpanded)` — the consumer owns the data.
+ * @param {number} [props.min] - Minimum allowed value for input (ignored when renderInput is used).
+ * @param {number} [props.max] - Maximum allowed value for input (ignored when renderInput is used).
+ * @param {string|number} [props.step="any"] - Step attribute for numeric input (ignored when renderInput is used).
+ * @param {string} [props.placeholder] - Input placeholder text (ignored when renderInput is used).
+ * @param {boolean} [props.sortData=false] - If true, data is automatically sorted ascending (ignored when renderInput is used).
+ * @param {Function} [props.renderExtra] - Optional function to render extra UI elements near data badges (ignored when renderInput is used).
  * @param {Function} [props.bottomContent] - Optional function to render additional content below the calculator.
+ * @param {Function} [props.renderInput] - Optional render prop that fully replaces the default DataInputControl.
+ *   When provided, the consumer manages its own data state and passes `externalN` so the template
+ *   knows whether to render the math section.
+ * @param {number} [props.externalN] - Item count supplied by the consumer when using renderInput.
  */
 function CalculatorTemplate({
   title,
@@ -35,26 +41,27 @@ function CalculatorTemplate({
   sortData = false,
   renderExtra,
   bottomContent,
+  renderInput,
+  externalN,
 }) {
   const { t } = useTranslation();
 
-  // Initialize data with optional sorting
-  const initData = sortData
-    ? [...defaultData].sort((a, b) => a - b)
-    : defaultData;
-
-  const [measurements, setMeasurements] = useState(initData);
   const [isMathExpanded, setIsMathExpanded] = useState(false);
 
-  // Helper to determine if current state differs from the initial default data
+  // ── Interný režim (štandardný number[] dataset) ──────────────────────────
+  const initData = !renderInput
+    ? sortData
+      ? [...defaultData].sort((a, b) => a - b)
+      : defaultData
+    : [];
+
+  const [measurements, setMeasurements] = useState(initData);
+
   const isDefault =
+    !renderInput &&
     measurements.length === defaultData.length &&
     measurements.every((val, idx) => val === initData[idx]);
 
-  /**
-   * Handles adding a new numeric value to the dataset.
-   * @param {number} val - The value to add.
-   */
   const handleAdd = (val) => {
     if (onValidate(val)) {
       let newData = [...measurements, val];
@@ -63,27 +70,24 @@ function CalculatorTemplate({
     }
   };
 
-  /**
-   * Handles removing a value from the dataset by its index.
-   * @param {number} indexToRemove - Index of the item to remove.
-   */
   const handleRemove = (indexToRemove) => {
     setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
   };
 
-  /**
-   * Resets the dataset to its initial state.
-   */
   const handleReset = () => {
     setMeasurements([...initData]);
     setIsMathExpanded(false);
   };
+  // ─────────────────────────────────────────────────────────────────────────
 
-  const n = measurements.length;
+  // Ak je aktívny externý režim, počet položiek riadi volajúci cez externalN
+  const n = renderInput ? (externalN ?? 0) : measurements.length;
 
-  // Call the provided logic function to get LaTeX and results
+  // getMathContent dostane null pri externom režime — volajúci si sám počíta dáta
   const mathContent =
-    n > 0 ? getMathContent(measurements, isMathExpanded) : null;
+    n > 0
+      ? getMathContent(renderInput ? null : measurements, isMathExpanded)
+      : null;
   const highlightIndices = mathContent?.highlightIndices || [];
 
   return (
@@ -100,23 +104,30 @@ function CalculatorTemplate({
             {inputLabel}
           </h6>
         )}
-        <DataInputControl
-          data={measurements}
-          onAdd={handleAdd}
-          onRemove={handleRemove}
-          onReset={handleReset}
-          isDefault={isDefault}
-          min={min}
-          max={max}
-          step={step}
-          placeholder={placeholder}
-          itemClassName={(_, idx) =>
-            highlightIndices.includes(idx) ? "btn-info" : ""
-          }
-          renderExtra={(val, idx) =>
-            renderExtra ? renderExtra(val, idx, mathContent) : null
-          }
-        />
+
+        {renderInput ? (
+          // Externý režim — volajúci poskytne vlastný input (napr. weighted DataInputControl)
+          renderInput(mathContent)
+        ) : (
+          // Štandardný režim — interný DataInputControl pre number[]
+          <DataInputControl
+            data={measurements}
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+            onReset={handleReset}
+            isDefault={isDefault}
+            min={min}
+            max={max}
+            step={step}
+            placeholder={placeholder}
+            itemClassName={(_, idx) =>
+              highlightIndices.includes(idx) ? "btn-info" : ""
+            }
+            renderExtra={(val, idx) =>
+              renderExtra ? renderExtra(val, idx, mathContent) : null
+            }
+          />
+        )}
       </div>
 
       {/* Results and Mathematical Formula Section */}

@@ -1,9 +1,8 @@
 // src/components/content/characteristics/WeightedMeanCalc.jsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InlineMath, BlockMath } from "react-katex";
+import CalculatorTemplate from "../helpers/CalculatorTemplate";
 import DataInputControl from "../helpers/DataInputControl";
-import "katex/dist/katex.min.css";
 
 /**
  * Default dataset used for the initial state of the weighted mean calculator.
@@ -20,82 +19,64 @@ const DEFAULT_DATA = [
  * @description Interactive calculator for computing the weighted arithmetic mean.
  * Allows users to input values and their respective weights, providing a step-by-step
  * LaTeX visualization of the formula and calculation.
+ * Uses CalculatorTemplate for layout and math rendering, with a custom renderInput
+ * prop to support weighted {x, w} data instead of plain numbers.
  */
 function WeightedMeanCalc() {
   const { t } = useTranslation();
 
-  // Local state for the list of measurements (value + weight)
+  // Consumer owns the weighted dataset — CalculatorTemplate only handles number[] internally
   const [measurements, setMeasurements] = useState(DEFAULT_DATA);
 
-  // Check if current data matches the default values for UI reset state
   const isDefault =
     measurements.length === DEFAULT_DATA.length &&
     measurements.every(
       (m, idx) => m.x === DEFAULT_DATA[idx].x && m.w === DEFAULT_DATA[idx].w,
     );
 
-  /**
-   * Adds a new value-weight pair to the dataset.
-   * @param {Object} newItem - The new item {x, w}.
-   */
-  const handleAdd = (newItem) => {
-    setMeasurements([...measurements, newItem]);
-  };
+  const handleAdd = (newItem) => setMeasurements((prev) => [...prev, newItem]);
+
+  const handleRemove = (indexToRemove) =>
+    setMeasurements((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+
+  const handleEdit = (idx, newValue) =>
+    setMeasurements((prev) => {
+      const next = [...prev];
+      next[idx] = newValue;
+      return next;
+    });
+
+  const handleReset = () => setMeasurements([...DEFAULT_DATA]);
 
   /**
-   * Removes an item from the dataset by its index.
-   * @param {number} indexToRemove - Index of the item to be removed.
+   * Builds the mathContent object expected by CalculatorTemplate.
+   * Called with null as measurements (external mode) — we close over the state directly.
    */
-  const handleRemove = (indexToRemove) => {
-    setMeasurements(measurements.filter((_, idx) => idx !== indexToRemove));
+  const getMathContent = () => {
+    const sumWX = measurements.reduce((acc, m) => acc + m.x * m.w, 0);
+    const sumW = measurements.reduce((acc, m) => acc + m.w, 0);
+    const weightedMean = sumW > 0 ? sumWX / sumW : 0;
+
+    const numString = measurements
+      .map((m) => `(${m.w} \\cdot ${m.x})`)
+      .join(" + ");
+    const denString = measurements.map((m) => m.w).join(" + ");
+
+    return {
+      formulaMath: `\\bar{x}_w = \\frac{ \\sum_{i=1}^{k} w_i x_i }{ \\sum_{i=1}^{k} w_i }`,
+      blockMath: `\\bar{x}_w = \\frac{ ${numString} }{ ${denString} }`,
+      inlineMath: `\\bar{x}_w = `,
+      resultText: `${weightedMean.toFixed(3)} m`,
+    };
   };
-
-  /**
-   * Updates an existing value-weight pair.
-   * @param {number} idx - Index of the item to edit.
-   * @param {Object} newValue - The updated item {x, w}.
-   */
-  const handleEdit = (idx, newValue) => {
-    const newMeasurements = [...measurements];
-    newMeasurements[idx] = newValue;
-    setMeasurements(newMeasurements);
-  };
-
-  /**
-   * Resets the calculator to the default dataset.
-   */
-  const handleReset = () => {
-    setMeasurements([...DEFAULT_DATA]);
-  };
-
-  // Perform calculations for the weighted mean
-  const n = measurements.length;
-  // Sum of products (w_i * x_i)
-  const sumWX = measurements.reduce((acc, m) => acc + m.x * m.w, 0);
-  // Sum of weights (w_i)
-  const sumW = measurements.reduce((acc, m) => acc + m.w, 0);
-  const weightedMean = sumW > 0 ? sumWX / sumW : 0;
-
-  // Prepare strings for the numerator and denominator in LaTeX output
-  const numString = measurements
-    .map((m) => `(${m.w} \\cdot ${m.x})`)
-    .join(" + ");
-  const denString = measurements.map((m) => m.w).join(" + ");
 
   return (
-    <div
-      className="chart-with-controls-container d-flex flex-column mb-4 w-100 mx-auto"
-      style={{ maxWidth: "800px" }}
-    >
-      <h6 className="mb-4 text-center">
-        {t("components.characteristics.weighted.title")}
-      </h6>
-
-      <div className="w-100 mb-4">
-        <h6 className="mb-3" style={{ fontSize: "0.95rem" }}>
-          {t("components.characteristics.weighted.inputValuesLabel")}
-        </h6>
-
+    <CalculatorTemplate
+      title={t("components.characteristics.weighted.title")}
+      inputLabel={t("components.characteristics.weighted.inputValuesLabel")}
+      getMathContent={getMathContent}
+      externalN={measurements.length}
+      renderInput={() => (
         <DataInputControl
           data={measurements}
           onAdd={handleAdd}
@@ -104,6 +85,7 @@ function WeightedMeanCalc() {
           isDefault={isDefault}
           placeholder={t("components.characteristics.weighted.placeholder")}
           isWeighted={true}
+          editable={true}
           onEdit={handleEdit}
           formatItem={(item) => (
             <>
@@ -115,38 +97,8 @@ function WeightedMeanCalc() {
             </>
           )}
         />
-      </div>
-
-      {/* Calculation steps visualization using KaTeX */}
-      {n > 0 && sumW > 0 && (
-        <div className="p-3 rounded-3 shadow-sm border bg-body-tertiary text-center overflow-auto w-100">
-          <p
-            className="mb-2 fw-bold text-muted"
-            style={{ fontSize: "0.9rem", textAlign: "left" }}
-          >
-            {t("components.calculatorTemplate.calcSteps")}
-          </p>
-          <div className="mb-2" style={{ fontSize: "1.1rem" }}>
-            <div style={{ paddingBottom: "10px" }}>
-              <BlockMath
-                math={`\\bar{x}_w = \\frac{ \\sum_{i=1}^{k} w_i x_i }{ \\sum_{i=1}^{k} w_i }`}
-              />
-            </div>
-            <div style={{ paddingBottom: "15px" }}>
-              <BlockMath
-                math={`\\bar{x}_w = \\frac{ ${numString} }{ ${denString} }`}
-              />
-            </div>
-          </div>
-          <div className="fs-5 mt-3">
-            <InlineMath math={`\\bar{x}_w = `} />
-            <strong className="text-primary">
-              {weightedMean.toFixed(3)} m
-            </strong>
-          </div>
-        </div>
       )}
-    </div>
+    />
   );
 }
 

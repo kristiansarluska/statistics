@@ -103,6 +103,45 @@ function TukeyChart({ results }) {
     );
   };
 
+  /**
+   * @description Custom shape for Recharts Bar that draws a vertical line at the mean difference.
+   */
+  const CustomBarWithMean = (props) => {
+    const { x, y, width, height, fill, payload } = props;
+
+    // Calculate the relative X position of the mean difference within the bar
+    const totalRange = payload.ciUpper - payload.ciLower;
+    const percentage =
+      totalRange === 0
+        ? 0.5
+        : (payload.meanDiff - payload.ciLower) / totalRange;
+    const meanX = x + width * percentage;
+
+    return (
+      <g>
+        {/* Base interval bar */}
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill={fill}
+          rx={4}
+          ry={4}
+        />
+        {/* Mean difference center line (uses background color to create a cut-out effect) */}
+        <line
+          x1={meanX}
+          y1={y}
+          x2={meanX}
+          y2={y + height}
+          stroke="var(--bs-body-bg)"
+          strokeWidth={2.5}
+        />
+      </g>
+    );
+  };
+
   return (
     <div className="card mb-4 border-0 fade-in">
       <div className="card-body">
@@ -158,7 +197,7 @@ function TukeyChart({ results }) {
               <ReferenceLine x={0} stroke="var(--bs-success)" strokeWidth={2} />
 
               {/* Confidence Interval Bars */}
-              <Bar dataKey="range" radius={[4, 4, 4, 4]}>
+              <Bar dataKey="range" shape={<CustomBarWithMean />}>
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}

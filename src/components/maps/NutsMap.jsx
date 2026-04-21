@@ -185,7 +185,7 @@ function NutsMap({
       `<div class="text-center">
       <strong>${name}</strong><br/>
       <small class="text-muted">${country} · ${nuts_id}</small><br/>
-      <span style="color:var(--bs-primary)"><strong>${tooltipAgeLabel} ${median_age} {t("parameterEstimation.realDataSampling.stats.years")}</strong></span>
+      <span style="color:var(--bs-primary)"><strong>${tooltipAgeLabel} ${median_age} ${t("parameterEstimation.realDataSampling.stats.years")}</strong></span>
     </div>`,
       { sticky: false, className: "shadow-sm border-0 bg-body text-body" },
     );
