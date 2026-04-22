@@ -12,7 +12,7 @@ import CorrelationChart from "../../components/charts/correlation/CorrelationCha
  * vs. causality. The component includes an interactive scatter plot simulator (CorrelationChart)
  * and details the statistical procedure for testing the significance of the correlation coefficient.
  */
-const CorrelationAnalysis = () => {
+function CorrelationAnalysis() {
   const { t } = useTranslation();
 
   return (
@@ -194,6 +194,6 @@ const CorrelationAnalysis = () => {
       </div>
     </section>
   );
-};
+}
 
 export default CorrelationAnalysis;
