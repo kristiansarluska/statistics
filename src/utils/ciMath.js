@@ -1,3 +1,5 @@
+//src/utils/ciMath.js
+
 /**
  * @file ciMath.js
  * @description Mathematical utility module for Confidence Interval (CI) calculations.

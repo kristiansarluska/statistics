@@ -15,12 +15,23 @@ import "./styles/sidebar.css";
 import "./styles/theme.css";
 import "./styles/scrollToTop.css";
 
+/**
+ * @component App
+ * @description The root component of the application.
+ * It sets up the routing architecture using HashRouter (suitable for static hosting)
+ * and defines the main navigation paths. All pages are wrapped within a global
+ * Layout component to ensure consistent navigation and styling.
+ */
 function App() {
   return (
     <Router>
+      {/* Global layout wrapper containing Sidebar and Navigation */}
       <Layout>
         <Routes>
+          {/* Landing page */}
           <Route path="/" element={<Home />} />
+
+          {/* Main educational modules */}
           <Route path="/random-variable" element={<RandomVariable />} />
           <Route
             path="/probability-distributions"

@@ -1,3 +1,5 @@
+//src/utils/correlationMath.js
+
 /**
  * @file correlationMath.js
  * @description Utility module for correlation analysis. Provides functions for

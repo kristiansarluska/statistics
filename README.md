@@ -30,7 +30,8 @@ Follow these instructions to set up the project locally for development.
 
 Make sure you have the following installed on your machine:
 
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/)
 - `npm` (comes with Node.js)
 
 ### Installation
