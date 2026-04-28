@@ -56,7 +56,7 @@ Start the local Vite development server:
 npm run dev
 ```
 
-The application will be accessible at `http://localhost:5173`.
+The application will be accessible at `http://localhost:5173/StatTerra`.
 
 ### Building for Production
 
@@ -80,5 +80,7 @@ This project is configured for automated deployment via **GitHub Actions**. Any 
 The live application is hosted and served directly from the `gh-pages` branch.
 
 ---
+
+In case of any questions, feel free to contact me at [kikosarluska@gmail.com](mailto:kikosarluska@gmail.com).
 
 **Have fun exploring!**
