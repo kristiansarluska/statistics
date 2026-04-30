@@ -37,7 +37,7 @@ function KurtosisChart() {
     // Normalize values to represent relative probability percentages
     return rawData.map((point) => ({
       x: point.x,
-      y: sum > 0 ? Number(((point.y / sum) * 100).toFixed(2)) : 0,
+      y: sum > 0 ? Number((point.y / sum).toFixed(4)) : 0,
     }));
   }, [kurtosisValue]);
 

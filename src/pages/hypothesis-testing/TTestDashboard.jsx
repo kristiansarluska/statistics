@@ -410,6 +410,19 @@ function TTestDashboard() {
           components={{ bold: <strong /> }}
         />
       </div>
+
+      {/* Test Assumptions Note */}
+      <div
+        className="alert alert-secondary border-secondary-subtle shadow-sm mt-5 mx-auto w-100"
+        style={{ maxWidth: "1000px" }}
+      >
+        <h6 className="alert-heading fw-bold fs-6">
+          {t("hypothesisTesting.tTestDashboard.assumptions.title")}
+        </h6>
+        <p className="mb-0 small text-muted">
+          {t("hypothesisTesting.tTestDashboard.assumptions.description")}
+        </p>
+      </div>
     </section>
   );
 }

@@ -8,28 +8,27 @@ import BackgroundArea from "../helpers/BackgroundArea";
 import AnimatedRefLine from "../helpers/AnimatedRefLine";
 import StatsBadge from "../../content/helpers/StatsBadge";
 import ResetButton from "../helpers/ResetButton";
-import { randomNormal, normalPDF } from "../../../utils/distributions";
+import { randomNormal } from "../../../utils/distributions";
 
 // Fixed population parameters for Mount Praděd height measurement simulation
 const PRADED_MEAN = 1492.0;
 const PRADED_STD = 5.0;
-const MAX_SAMPLES = 100;
+const MAX_SAMPLES = 10;
 
 /**
  * @component PointEstimationChart
- * @description Simulates and visualizes the process of point estimation by repeatedly drawing random samples from a known normal distribution. It compares empirical sample distributions against the theoretical population distribution.
+ * @description Simulates and visualizes the process of point estimation by repeatedly drawing random samples from a known normal distribution.
  */
 function PointEstimationChart() {
   const { t } = useTranslation();
 
   const [n, setN] = useState(15);
-  const [targetParam, setTargetParam] = useState("mean");
   const [samplesHistory, setSamplesHistory] = useState([]);
   const [hoverX, setHoverX] = useState(null);
 
   /**
    * Generates new random samples based on the current sample size (n).
-   * Calculates the sample mean and sample standard deviation for each draw.
+   * Calculates the sample mean, sample standard deviation, and SEM for each draw.
    * @param {number} count - Number of independent samples to draw.
    */
   const draw = (count) => {
@@ -52,7 +51,15 @@ function PointEstimationChart() {
       }
       const sampleStd = Math.sqrt(sumSq / (n - 1));
 
-      newSamples.push({ mean: sampleMean, std: sampleStd, data });
+      // Calculate sample-based Standard Error of the Mean (SEM)
+      const sampleSem = sampleStd / Math.sqrt(n);
+
+      newSamples.push({
+        mean: sampleMean,
+        std: sampleStd,
+        sem: sampleSem,
+        data,
+      });
     }
     // Append new samples and keep history within the maximum limit
     setSamplesHistory((prev) => [...prev, ...newSamples].slice(-MAX_SAMPLES));
@@ -68,15 +75,16 @@ function PointEstimationChart() {
   const lastSample = samplesHistory[samplesHistory.length - 1] || {
     mean: 0,
     std: 0,
+    sem: 0,
     data: [],
   };
   const totalSamples = samplesHistory.length;
-  // Calculate Standard Error of the Mean (SEM)
-  const sem = PRADED_STD / Math.sqrt(n);
+  // Calculate Standard Error of the Mean (SEM) using sample standard deviation
+  const sem = lastSample.std / Math.sqrt(n);
 
   /**
    * Constructs the dataset for the Recharts visualization.
-   * Includes both the theoretical PDF curve and empirical density steps (histogram approximation).
+   * Includes only empirical density steps (histogram approximation).
    */
   const chartData = useMemo(() => {
     if (lastSample.data.length === 0) return [];
@@ -98,7 +106,7 @@ function PointEstimationChart() {
     const numPoints = 200;
     const step = (maxX - minX) / numPoints;
 
-    // Generate smooth line points and align them with step-area empirical bins
+    // Generate step-area empirical bins
     for (let i = 0; i <= numPoints; i++) {
       const x = minX + i * step;
       const binIdx = Math.max(
@@ -109,18 +117,16 @@ function PointEstimationChart() {
 
       points.push({
         x: Number(x.toFixed(2)),
-        y: normalPDF(x, PRADED_MEAN, PRADED_STD),
-        empirical: empiricalDensity,
+        y: empiricalDensity,
       });
     }
 
     return points;
   }, [lastSample.data, n]);
 
-  // Calculate precise local maximum for Y-axis to dynamically remove excessive top gap
   const maxY = useMemo(() => {
     if (chartData.length === 0) return 0.1;
-    return Math.max(...chartData.map((d) => Math.max(d.y, d.empirical || 0)));
+    return Math.max(...chartData.map((d) => d.y || 0.1));
   }, [chartData]);
 
   const badgeItems = [
@@ -155,43 +161,6 @@ function PointEstimationChart() {
         className="controls mb-4 d-flex flex-wrap justify-content-center gap-4 w-100"
         style={{ maxWidth: "800px" }}
       >
-        {/* Target Parameter Toggle (Mean vs Std) */}
-        <div className="d-flex flex-column align-items-center">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
-            {t(
-              "parameterEstimation.pointEstimation.simulation.controls.target",
-            )}
-          </label>
-          <div className="btn-group" role="group">
-            {[
-              {
-                value: "mean",
-                label: t(
-                  "parameterEstimation.pointEstimation.simulation.controls.targetMean",
-                ),
-              },
-              {
-                value: "std",
-                label: t(
-                  "parameterEstimation.pointEstimation.simulation.controls.targetStd",
-                ),
-              },
-            ].map(({ value, label }, i) => (
-              <button
-                key={value}
-                type="button"
-                className={`btn btn-sm px-3 btn-outline-primary ${targetParam === value ? "active" : ""} ${i === 0 ? "rounded-start-pill" : "rounded-end-pill"}`}
-                onClick={() => setTargetParam(value)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Action Buttons & Sample Size Slider */}
         <div className="d-flex flex-wrap align-items-center justify-content-center gap-4 mt-2 w-100">
           <div className="d-flex align-items-center gap-2">
@@ -214,6 +183,7 @@ function PointEstimationChart() {
             type="button"
             className="btn btn-primary btn-sm px-4 rounded-pill shadow-sm"
             onClick={() => draw(1)}
+            disabled={samplesHistory.length >= MAX_SAMPLES}
           >
             {t(
               "parameterEstimation.pointEstimation.simulation.actions.generateNew",
@@ -239,7 +209,7 @@ function PointEstimationChart() {
           <StatsBadge items={badgeItems} />
         </div>
 
-        {/* History of recorded sample means/stds presented as small pill badges */}
+        {/* History of recorded sample means/stds/sems presented as small pill badges */}
         {samplesHistory.length > 0 && (
           <div className="w-100 mb-3 text-center d-flex justify-content-center">
             <div
@@ -247,17 +217,12 @@ function PointEstimationChart() {
               style={{ fontSize: "0.85rem" }}
             >
               <span className="text-muted" style={{ fontSize: "0.82rem" }}>
-                {targetParam === "mean"
-                  ? t(
-                      "parameterEstimation.pointEstimation.simulation.results.recordedMeans",
-                    )
-                  : t(
-                      "parameterEstimation.pointEstimation.simulation.results.recordedStds",
-                    )}
+                {t(
+                  "parameterEstimation.pointEstimation.simulation.results.recordedMeans",
+                )}
               </span>
               {samplesHistory.map((s, i) => {
                 const isLatest = i === samplesHistory.length - 1;
-                const val = targetParam === "mean" ? s.mean : s.std;
                 return (
                   <span
                     key={i}
@@ -269,9 +234,11 @@ function PointEstimationChart() {
                       color: isLatest ? "#fff" : "var(--bs-body-color)",
                       border: "1px solid var(--bs-border-color)",
                       fontSize: "0.82rem",
+                      fontWeight: "normal",
                     }}
                   >
-                    {val.toFixed(2)}
+                    x̄: {s.mean.toFixed(2)} | s: {s.std.toFixed(2)} | SEM:{" "}
+                    {s.sem.toFixed(2)}
                   </span>
                 );
               })}
@@ -279,10 +246,10 @@ function PointEstimationChart() {
           </div>
         )}
 
-        {/* Dynamic SEM Formula block */}
+        {/* Dynamic SEM Formula block using sample standard deviation */}
         <div className="overflow-auto py-1">
           <BlockMath
-            math={`\\sigma_{\\bar{x}} = \\frac{\\sigma}{\\sqrt{n}} = \\frac{${PRADED_STD}}{\\sqrt{${n}}} = ${sem.toFixed(4)}`}
+            math={`s_{\\bar{x}} = \\frac{s}{\\sqrt{n}} = \\frac{${lastSample.std.toFixed(2)}}{\\sqrt{${n}}} = ${sem.toFixed(4)}`}
           />
         </div>
       </div>
@@ -301,7 +268,7 @@ function PointEstimationChart() {
             "parameterEstimation.pointEstimation.simulation.chart.yAxisLabel",
           )}
           type="pdf"
-          lineClass="chart-line-secondary"
+          lineClass="d-none"
           hoverX={hoverX}
           setHoverX={setHoverX}
           minX={PRADED_MEAN - 4 * PRADED_STD}
@@ -311,7 +278,7 @@ function PointEstimationChart() {
         >
           {/* Renders the background step-area histogram of the empirical sample */}
           <BackgroundArea
-            dataKey="empirical"
+            dataKey="y"
             type="stepBefore"
             color="var(--bs-primary)"
             fillOpacity={0.25}
@@ -322,72 +289,27 @@ function PointEstimationChart() {
 
           {/* Ghost lines representing historical samples (excluding the most recent one) */}
           {samplesHistory.slice(0, -1).map((s, i) => (
-            <React.Fragment key={i}>
-              {targetParam === "mean" ? (
-                <ReferenceLine
-                  x={s.mean}
-                  stroke="var(--bs-success)"
-                  strokeWidth={1}
-                  opacity={0.3}
-                />
-              ) : (
-                <>
-                  <ReferenceLine
-                    x={s.mean - s.std}
-                    stroke="var(--bs-warning)"
-                    strokeWidth={1}
-                    opacity={0.2}
-                  />
-                  <ReferenceLine
-                    x={s.mean + s.std}
-                    stroke="var(--bs-warning)"
-                    strokeWidth={1}
-                    opacity={0.2}
-                  />
-                </>
-              )}
-            </React.Fragment>
+            <ReferenceLine
+              key={i}
+              x={s.mean}
+              stroke="var(--bs-success)"
+              strokeWidth={1}
+              opacity={0.3}
+            />
           ))}
 
           {/* Highlight line for the newest, currently active sample */}
-          {targetParam === "mean" ? (
-            <ReferenceLine
-              x={lastSample.mean}
-              className="animated-reference"
-              shape={
-                <AnimatedRefLine
-                  lineColor="var(--bs-success)"
-                  labelText={`x̄ = ${lastSample.mean.toFixed(2)}`}
-                  labelPosition="right"
-                />
-              }
-            />
-          ) : (
-            <>
-              <ReferenceLine
-                x={lastSample.mean - lastSample.std}
-                className="animated-reference"
-                shape={
-                  <AnimatedRefLine
-                    lineColor="var(--bs-warning)"
-                    labelText={`x̄ - ${lastSample.std.toFixed(2)}`}
-                    labelPosition="left"
-                  />
-                }
+          <ReferenceLine
+            x={lastSample.mean}
+            className="animated-reference"
+            shape={
+              <AnimatedRefLine
+                lineColor="var(--bs-success)"
+                labelText={`x̄ = ${lastSample.mean.toFixed(2)}`}
+                labelPosition="right"
               />
-              <ReferenceLine
-                x={lastSample.mean + lastSample.std}
-                className="animated-reference"
-                shape={
-                  <AnimatedRefLine
-                    lineColor="var(--bs-warning)"
-                    labelText={`x̄ + ${lastSample.std.toFixed(2)}`}
-                    labelPosition="right"
-                  />
-                }
-              />
-            </>
-          )}
+            }
+          />
         </StyledLineChart>
       </div>
     </div>

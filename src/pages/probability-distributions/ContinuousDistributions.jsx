@@ -123,10 +123,10 @@ function ContinuousDistributions() {
 
       <div className="overflow-x-auto mb-4">
         <BlockMath
-          math={`f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}`}
+          math={`f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}} \\quad \\text x \\in \\ R`}
         />
         <BlockMath
-          math={`F(x) = \\int_{-\\infty}^{x} \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(t-\\mu)^2}{2\\sigma^2}} \\, dt`}
+          math={`F(x) = \\int_{-\\infty}^{x} \\frac{1}{\\sigma \\sqrt{2\\pi}} \\cdot e^{-\\frac{(t-\\mu)^2}{2\\sigma^2}} \\, dt \\quad \\text x \\in \\ R`}
         />
       </div>
 
@@ -147,6 +147,9 @@ function ContinuousDistributions() {
       <div className="overflow-x-auto mb-4">
         <BlockMath math={`Z = \\frac{X - \\mu}{\\sigma}`} />
       </div>
+      <div className="mb-4 text-center">
+        <BlockMath math="X \sim N(\mu, \sigma^2)  \\ Z \sim N(0, 1)" />
+      </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
         <h5 className="mb-3">
@@ -166,6 +169,10 @@ function ContinuousDistributions() {
         <NormalChart />
       </div>
 
+      <div className="mb-3 fst-italic">
+        {t("probabilityDistributions.continuous.normal.otherDistributions")}
+      </div>
+
       {/* CHI SQUARED */}
       <h4 id="chi-square" className="mb-3">
         {t("probabilityDistributions.continuous.chiSquare.title")}
@@ -176,7 +183,6 @@ function ContinuousDistributions() {
           components={{
             m1: <InlineMath math="\chi^2" />,
             m2: <InlineMath math="\nu" />,
-            m3: <InlineMath math="\nu = n-1" />,
             bold: <strong />,
           }}
         />
@@ -190,21 +196,6 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          {t("probabilityDistributions.continuous.chiSquare.exampleTitle")}
-        </h5>
-        <p className="text-muted mb-4 small">
-          <Trans
-            i18nKey="probabilityDistributions.continuous.chiSquare.exampleDesc"
-            components={{
-              bold: <strong />,
-              br: <br />,
-              m1: <InlineMath math="\chi^2" />,
-              m2: <InlineMath math="n-1" />,
-              m3: <InlineMath math="\nu" />,
-            }}
-          />
-        </p>
         <ChiSquareChart />
       </div>
 
@@ -227,18 +218,6 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          {t("probabilityDistributions.continuous.studentT.exampleTitle")}
-        </h5>
-        <p className="text-muted mb-4 small">
-          <Trans
-            i18nKey="probabilityDistributions.continuous.studentT.exampleDesc"
-            components={{
-              bold: <strong />,
-              m1: <InlineMath math="n" />,
-            }}
-          />
-        </p>
         <StudentTChart />
       </div>
 
@@ -264,22 +243,6 @@ function ContinuousDistributions() {
       </div>
 
       <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
-        <h5 className="mb-3">
-          {t("probabilityDistributions.continuous.fisherF.exampleTitle")}
-        </h5>
-        <p className="text-muted mb-4 small">
-          <Trans
-            i18nKey="probabilityDistributions.continuous.fisherF.exampleDesc"
-            components={{
-              bold: <strong />,
-              m1: <InlineMath math="PM_{10}" />,
-              m2: <InlineMath math="v_1" />,
-              m3: <InlineMath math="k - 1" />,
-              m4: <InlineMath math="v_2" />,
-              m5: <InlineMath math="n - k" />,
-            }}
-          />
-        </p>
         <FisherFChart />
       </div>
     </section>

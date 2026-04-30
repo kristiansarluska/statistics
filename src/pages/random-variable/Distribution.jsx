@@ -2,6 +2,7 @@
 import React from "react";
 import { InlineMath } from "react-katex";
 import { useTranslation, Trans } from "react-i18next";
+import { Link } from "react-router-dom";
 import DiscreteDistributionChart from "../../components/charts/random-variable/distribution/DiscreteDistributionChart";
 import SimulatedPMFChart from "../../components/charts/random-variable/distribution/SimulatedPMFChart";
 import SimulatedPDFChart from "../../components/charts/random-variable/distribution/SimulatedPDFChart";
@@ -71,7 +72,9 @@ function Distribution() {
           <p className="text-muted mb-4 small">
             <Trans
               i18nKey="randomVariable.distribution.pmfPdf.chart1Desc"
-              components={{ bold: <strong /> }}
+              components={{
+                1: <Link to="/probability-distributions#binomial" />,
+              }}
             />
           </p>
           <SimulatedPMFChart />
@@ -146,6 +149,7 @@ function Distribution() {
               components={{
                 bold: <strong />,
                 br: <br />,
+                1: <Link to="/probability-distributions#normal" />,
               }}
             />
           </p>
@@ -160,7 +164,16 @@ function Distribution() {
         </h3>
         <p className="mb-4">
           <Trans
-            i18nKey="randomVariable.distribution.quantile.desc"
+            i18nKey="randomVariable.distribution.quantile.desc1"
+            components={{
+              bold: <strong />,
+            }}
+          />
+        </p>
+
+        <p className="mb-4">
+          <Trans
+            i18nKey="randomVariable.distribution.quantile.desc2"
             components={{
               m1: <InlineMath math="x" />,
               m2: <InlineMath math="x_p" />,

@@ -9,7 +9,7 @@ import StatsBadge from "../helpers/StatsBadge";
 // Population parameters based on the full NUTS3 dataset
 const POP_MEAN = 46.2226;
 const POP_STD = 3.7576;
-const POP_VARIANCE = POP_STD * POP_STD;
+const MAX_SAMPLES = 5;
 
 /**
  * @function computeStats
@@ -22,15 +22,17 @@ const computeStats = (vals) => {
   const mean = vals.reduce((a, b) => a + b, 0) / n;
   const variance =
     vals.reduce((a, v) => a + Math.pow(v - mean, 2), 0) / (n - 1);
-  const sem = POP_STD / Math.sqrt(n);
-  return { mean, std: Math.sqrt(variance), variance, sem, n };
+  const std = Math.sqrt(variance);
+  // Calculate SEM using sample standard deviation
+  const sem = std / Math.sqrt(n);
+  return { mean, std, variance, sem, n };
 };
 
 /**
  * @component RealDataSampling
  * @description Interactive simulation allowing users to draw random samples from real-world geographic data.
  * It visualizes the sampled regions on a map, lists them in a table, and compares sample estimates
- * (mean or variance) against known population parameters.
+ * against known population parameters.
  */
 function RealDataSampling() {
   const { t } = useTranslation();
@@ -40,7 +42,6 @@ function RealDataSampling() {
   const [loading, setLoading] = useState(true);
   const [n, setN] = useState(30);
   const [currentSample, setCurrentSample] = useState([]);
-  const [targetParam, setTargetParam] = useState("mean");
   const [sampledStats, setSampledStats] = useState([]);
   const [hoveredNuts, setHoveredNuts] = useState(null);
 
@@ -130,109 +131,66 @@ function RealDataSampling() {
    */
   const grandEstimate = useMemo(() => {
     if (sampledStats.length < 2) return null;
-    const vals = sampledStats.map((s) =>
-      targetParam === "mean" ? s.mean : s.variance,
-    );
+    const vals = sampledStats.map((s) => s.mean);
     return vals.reduce((a, b) => a + b, 0) / vals.length;
-  }, [sampledStats, targetParam]);
+  }, [sampledStats]);
 
   /**
    * Formats the statistical data to be consumed by the StatsBadge component.
-   * Dynamically switches between Mean and Variance layouts based on user selection.
    */
   const badgeData = useMemo(() => {
     if (!currentStats) return { items: [], footer: null };
 
-    const isVariance = targetParam === "variance";
-    const popVal = isVariance ? POP_VARIANCE : POP_MEAN;
-    const sampleVal = isVariance ? currentStats.variance : currentStats.mean;
-    const estimateLabel = isVariance ? "s²" : "x̄";
-
-    // Správne volanie funkcie t() pre získanie jednotiek
     const unitYears = t("parameterEstimation.realDataSampling.stats.years");
-    const unitYearsSq = t(
-      "parameterEstimation.realDataSampling.stats.yearsSquared",
-    );
-    const unit = isVariance ? unitYearsSq : unitYears;
-
     const hasMultipleSamples =
       sampledStats.length > 1 && grandEstimate !== null;
-    const activeEstimate = hasMultipleSamples ? grandEstimate : sampleVal;
-    const activeEstimateLabel = hasMultipleSamples
-      ? `${estimateLabel}̄`
-      : estimateLabel;
-    const error = Math.abs(activeEstimate - popVal);
+    const activeEstimate = hasMultipleSamples
+      ? grandEstimate
+      : currentStats.mean;
+    const activeEstimateLabel = hasMultipleSamples ? "x̄̄" : "x̄";
+    const error = Math.abs(activeEstimate - POP_MEAN);
 
     const m = Math.max(1, sampledStats.length);
-    const errorThreshold = isVariance
-      ? (POP_VARIANCE * Math.sqrt(2 / (currentStats.n - 1))) / Math.sqrt(m)
-      : currentStats.sem / Math.sqrt(m);
+    const errorThreshold = currentStats.sem / Math.sqrt(m);
 
-    const items = isVariance
-      ? [
-          {
-            label: "s²",
-            value: `${currentStats.variance.toFixed(3)} ${unitYearsSq}`,
-            color: "text-primary",
-            groupStart: true,
-          },
-          {
-            label: "s",
-            value: `${currentStats.std.toFixed(2)} ${unitYears}`,
-            color: "text-warning",
-            groupStart: false,
-          },
-          {
-            label: "σ²",
-            value: `${POP_VARIANCE.toFixed(3)} ${unitYearsSq}`,
-            color: "text-secondary",
-            groupStart: true,
-          },
-          {
-            label: `|${activeEstimateLabel} − σ²|`,
-            value: `${error.toFixed(3)} ${unitYearsSq}`,
-            color: error <= errorThreshold ? "text-success" : "text-danger",
-            groupStart: true,
-          },
-        ]
-      : [
-          {
-            label: "x̄",
-            value: `${currentStats.mean.toFixed(2)} ${unitYears}`,
-            color: "text-primary",
-            groupStart: true,
-          },
-          {
-            label: "s",
-            value: `${currentStats.std.toFixed(2)} ${unitYears}`,
-            color: "text-warning",
-            groupStart: false,
-          },
-          {
-            label: "SEM",
-            value: currentStats.sem.toFixed(3),
-            color: "text-success",
-            groupStart: false,
-          },
-          {
-            label: "μ",
-            value: `${POP_MEAN.toFixed(2)} ${unitYears}`,
-            color: "text-secondary",
-            groupStart: true,
-          },
-          {
-            label: "σ",
-            value: `${POP_STD.toFixed(2)} ${unitYears}`,
-            color: "text-secondary",
-            groupStart: false,
-          },
-          {
-            label: `|${activeEstimateLabel} − μ|`,
-            value: `${error.toFixed(3)} ${unitYears}`,
-            color: error <= errorThreshold ? "text-success" : "text-danger",
-            groupStart: true,
-          },
-        ];
+    const items = [
+      {
+        label: "x̄",
+        value: `${currentStats.mean.toFixed(2)} ${unitYears}`,
+        color: "text-primary",
+        groupStart: true,
+      },
+      {
+        label: "s",
+        value: `${currentStats.std.toFixed(2)} ${unitYears}`,
+        color: "text-warning",
+        groupStart: false,
+      },
+      {
+        label: "SEM",
+        value: currentStats.sem.toFixed(3),
+        color: "text-success",
+        groupStart: false,
+      },
+      {
+        label: "μ",
+        value: `${POP_MEAN.toFixed(2)} ${unitYears}`,
+        color: "text-secondary",
+        groupStart: true,
+      },
+      {
+        label: "σ",
+        value: `${POP_STD.toFixed(2)} ${unitYears}`,
+        color: "text-secondary",
+        groupStart: false,
+      },
+      {
+        label: `|${activeEstimateLabel} − μ|`,
+        value: `${error.toFixed(3)} ${unitYears}`,
+        color: error <= errorThreshold ? "text-success" : "text-danger",
+        groupStart: true,
+      },
+    ];
 
     const footer = hasMultipleSamples ? (
       <>
@@ -242,13 +200,14 @@ function RealDataSampling() {
           })}
         </span>
         <strong style={{ color: "var(--bs-primary)" }}>
-          {activeEstimateLabel} = {grandEstimate.toFixed(3)} {unit}
+          {activeEstimateLabel} = {grandEstimate.toFixed(3)} {unitYears}
         </strong>
       </>
     ) : null;
 
     return { items, footer };
-  }, [currentStats, targetParam, sampledStats, grandEstimate, t]);
+  }, [currentStats, sampledStats, grandEstimate, t]);
+
   const tableRows = useMemo(
     () => currentSample.map((f) => ({ ...f.properties })),
     [currentSample],
@@ -274,41 +233,6 @@ function RealDataSampling() {
         className="d-flex flex-wrap justify-content-center align-items-end gap-4 mb-4 w-100"
         style={{ maxWidth: "1100px" }}
       >
-        {/* Target Parameter Toggle (Mean vs. Variance) */}
-        <div className="d-flex flex-column align-items-center">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
-            {t("parameterEstimation.realDataSampling.controls.target")}
-          </label>
-          <div className="btn-group" role="group">
-            {[
-              {
-                value: "mean",
-                label: t(
-                  "parameterEstimation.realDataSampling.controls.targetMean",
-                ),
-              },
-              {
-                value: "variance",
-                label: t(
-                  "parameterEstimation.realDataSampling.controls.targetVar",
-                ),
-              },
-            ].map(({ value, label }, i) => (
-              <button
-                key={value}
-                type="button"
-                className={`btn btn-sm px-3 btn-outline-primary ${targetParam === value ? "active" : ""} ${i === 0 ? "rounded-start-pill" : "rounded-end-pill"}`}
-                onClick={() => setTargetParam(value)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Sample Size (n) Slider */}
         <div className="d-flex flex-column align-items-center">
           <label
@@ -336,11 +260,12 @@ function RealDataSampling() {
         </div>
 
         {/* Action Buttons (Generate New Sample & Clear History) */}
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 pb-1">
           <button
             type="button"
             className="btn btn-primary btn-sm rounded-pill px-4"
             onClick={drawSample}
+            disabled={sampledStats.length >= MAX_SAMPLES}
           >
             {t("parameterEstimation.realDataSampling.controls.generate")}
           </button>
@@ -370,30 +295,26 @@ function RealDataSampling() {
             style={{ fontSize: "0.85rem" }}
           >
             <span className="text-muted" style={{ fontSize: "0.82rem" }}>
-              {targetParam === "mean"
-                ? t("parameterEstimation.realDataSampling.stats.recordedMeans")
-                : t("parameterEstimation.realDataSampling.stats.recordedVars")}
+              {t("parameterEstimation.realDataSampling.stats.recordedMeans")}
             </span>
             {sampledStats.map((s, i) => {
-              const val = targetParam === "mean" ? s.mean : s.variance;
+              const isLatest = i === sampledStats.length - 1;
               return (
                 <span
                   key={i}
                   className="badge rounded-pill"
                   style={{
-                    background:
-                      i === sampledStats.length - 1
-                        ? "var(--bs-primary)"
-                        : "var(--bs-secondary-bg)",
-                    color:
-                      i === sampledStats.length - 1
-                        ? "#fff"
-                        : "var(--bs-body-color)",
+                    background: isLatest
+                      ? "var(--bs-primary)"
+                      : "var(--bs-secondary-bg)",
+                    color: isLatest ? "#fff" : "var(--bs-body-color)",
                     border: "1px solid var(--bs-border-color)",
                     fontSize: "0.82rem",
+                    fontWeight: "normal",
                   }}
                 >
-                  {val.toFixed(2)}
+                  x̄: {s.mean.toFixed(2)} | s: {s.std.toFixed(2)} | SEM:{" "}
+                  {s.sem.toFixed(2)}
                 </span>
               );
             })}

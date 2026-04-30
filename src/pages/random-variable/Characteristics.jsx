@@ -55,7 +55,7 @@ function Characteristics() {
         </p>
 
         {/* Arithmetic Mean */}
-        <h4 className="mb-3">
+        <h4 id="arithmetic-mean" className="mb-3">
           {t("randomVariable.characteristics.location.arithmeticMean.title")}
         </h4>
         <p className="mb-4">
@@ -83,7 +83,7 @@ function Characteristics() {
         </div>
 
         {/* Harmonic Mean */}
-        <h4 className="mb-3">
+        <h4 id="harmonic-mean" className="mb-3">
           {t("randomVariable.characteristics.location.harmonicMean.title")}
         </h4>
         <p className="mb-4">
@@ -108,7 +108,7 @@ function Characteristics() {
         </div>
 
         {/* Geometric Mean */}
-        <h4 className="mb-3">
+        <h4 id="geometric-mean" className="mb-3">
           {t("randomVariable.characteristics.location.geometricMean.title")}
         </h4>
         <p className="mb-4">
@@ -136,7 +136,7 @@ function Characteristics() {
         </div>
 
         {/* Weighted Mean */}
-        <h4 className="mb-3">
+        <h4 id="weighted-mean" className="mb-3">
           {t("randomVariable.characteristics.location.weightedMean.title")}
         </h4>
         <p className="mb-4">
@@ -164,7 +164,7 @@ function Characteristics() {
         </div>
 
         {/* Mode */}
-        <h3 className="mb-3">
+        <h3 id="mode" className="mb-3">
           {t("randomVariable.characteristics.location.mode.title")}
         </h3>
         <p className="mb-4">
@@ -185,7 +185,7 @@ function Characteristics() {
         </div>
 
         {/* Median */}
-        <h3 className="mb-3">
+        <h3 id="median" className="mb-3">
           {t("randomVariable.characteristics.location.median.title")}
         </h3>
         <p className="mb-4">
@@ -219,7 +219,7 @@ function Characteristics() {
         </p>
 
         {/* Range */}
-        <h4 className="mb-3">
+        <h4 id="range" className="mb-3">
           {t("randomVariable.characteristics.variability.range.title")}
         </h4>
         <p className="mb-4">
@@ -240,7 +240,7 @@ function Characteristics() {
         </div>
 
         {/* Mean Deviation */}
-        <h4 className="mb-3">
+        <h4 id="mean-deviation" className="mb-3">
           {t("randomVariable.characteristics.variability.meanDeviation.title")}
         </h4>
         <p className="mb-4">
@@ -265,7 +265,7 @@ function Characteristics() {
         </div>
 
         {/* Mean Difference */}
-        <h4 className="mb-3">
+        <h4 id="mean-difference" className="mb-3">
           {t("randomVariable.characteristics.variability.meanDifference.title")}
         </h4>
         <p className="mb-4">
@@ -293,7 +293,7 @@ function Characteristics() {
         </div>
 
         {/* Variance */}
-        <h4 className="mb-3">
+        <h4 id="variance" className="mb-3">
           {t("randomVariable.characteristics.variability.variance.title")}
         </h4>
         <p className="mb-4">
@@ -324,7 +324,7 @@ function Characteristics() {
         </div>
 
         {/* Standard Deviation */}
-        <h4 className="mt-4">
+        <h4 id="standard-deviation" className="mt-4">
           {t(
             "randomVariable.characteristics.variability.standardDeviation.title",
           )}
@@ -355,7 +355,7 @@ function Characteristics() {
         </div>
 
         {/* Coefficient of Variation */}
-        <h4 className="mt-4">
+        <h4 id="coefficient-of-variation" className="mt-4">
           {t(
             "randomVariable.characteristics.variability.coefficientOfVariation.title",
           )}
@@ -385,7 +385,7 @@ function Characteristics() {
         </div>
 
         {/* Quartile Deviation */}
-        <h4 className="mt-4">
+        <h4 id="quartile-deviation" className="mt-4">
           {t(
             "randomVariable.characteristics.variability.quartileDeviation.title",
           )}
@@ -431,7 +431,7 @@ function Characteristics() {
         </p>
 
         {/* Skewness */}
-        <h4 className="mt-4">
+        <h4 id="skewness" className="mt-4">
           {t("randomVariable.characteristics.otherMeasures.skewness.title")}
         </h4>
         <p className="mb-4">
@@ -465,7 +465,7 @@ function Characteristics() {
         </div>
 
         {/* Kurtosis */}
-        <h4 className="mt-4">
+        <h4 id="kurtosis" className="mt-4">
           {t("randomVariable.characteristics.otherMeasures.kurtosis.title")}
         </h4>
         <p className="mb-4">

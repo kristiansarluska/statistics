@@ -37,6 +37,15 @@ function UniformDiscreteChart() {
   // Calculate dynamic Y-axis maximum for the PMF chart to maintain visual clarity
   const maxY = (Math.floor(p * 10) + 1) / 10;
 
+  /**
+   * Array of standard dice sides for the uniform distribution.
+   * @type {number[]}
+   */
+  const diceValues = [4, 6, 8, 10, 12, 20];
+
+  // Find current index based on 'n' state to keep slider in sync
+  const currentIndex = diceValues.indexOf(n) !== -1 ? diceValues.indexOf(n) : 1; // Default to 6 (index 1)
+
   return (
     <div className="chart-with-controls-container d-flex flex-column align-items-center mb-4">
       {/* Parameter Control Panel */}
@@ -53,11 +62,14 @@ function UniformDiscreteChart() {
             type="range"
             className="form-range w-100 mb-0"
             id="nRange"
-            min="2"
-            max="10"
+            min="0"
+            max={diceValues.length - 1}
             step="1"
-            value={n}
-            onChange={(e) => setN(Number(e.target.value))}
+            value={currentIndex}
+            onChange={(e) => {
+              const index = parseInt(e.target.value, 10);
+              setN(diceValues[index]);
+            }}
           />
           {/* Helper text showing the exact probability calculation */}
           <div className="text-center mt-2 small text-muted">

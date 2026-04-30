@@ -43,14 +43,80 @@ export const sidebarData = [
           {
             labelKey: "sidebar.randomVariable.location",
             path: "/random-variable#location",
+            children: [
+              {
+                labelKey: "sidebar.randomVariable.arithmeticMean",
+                path: "/random-variable#arithmetic-mean",
+              },
+              {
+                labelKey: "sidebar.randomVariable.harmonicMean",
+                path: "/random-variable#harmonic-mean",
+              },
+              {
+                labelKey: "sidebar.randomVariable.geometricMean",
+                path: "/random-variable#geometric-mean",
+              },
+              {
+                labelKey: "sidebar.randomVariable.weightedMean",
+                path: "/random-variable#weighted-mean",
+              },
+              {
+                labelKey: "sidebar.randomVariable.mode",
+                path: "/random-variable#mode",
+              },
+              {
+                labelKey: "sidebar.randomVariable.median",
+                path: "/random-variable#median",
+              },
+            ],
           },
           {
             labelKey: "sidebar.randomVariable.variability",
             path: "/random-variable#variability",
+            children: [
+              {
+                labelKey: "sidebar.randomVariable.range",
+                path: "/random-variable#range",
+              },
+              {
+                labelKey: "sidebar.randomVariable.meanDeviation",
+                path: "/random-variable#mean-deviation",
+              },
+              {
+                labelKey: "sidebar.randomVariable.meanDifference",
+                path: "/random-variable#mean-difference",
+              },
+              {
+                labelKey: "sidebar.randomVariable.variance",
+                path: "/random-variable#variance",
+              },
+              {
+                labelKey: "sidebar.randomVariable.standardDeviation",
+                path: "/random-variable#standard-deviation",
+              },
+              {
+                labelKey: "sidebar.randomVariable.coefficientOfVariation",
+                path: "/random-variable#coefficient-of-variation",
+              },
+              {
+                labelKey: "sidebar.randomVariable.quartileDeviation",
+                path: "/random-variable#quartile-deviation",
+              },
+            ],
           },
           {
             labelKey: "sidebar.randomVariable.otherMeasures",
             path: "/random-variable#other-measures",
+            children: [
+              {
+                labelKey: "sidebar.randomVariable.skewness",
+                path: "/random-variable#skewness",
+              },
+              {
+                labelKey: "sidebar.randomVariable.kurtosis",
+                path: "/random-variable#kurtosis",
+              },
+            ],
           },
           {
             labelKey: "sidebar.randomVariable.fiveNumber",

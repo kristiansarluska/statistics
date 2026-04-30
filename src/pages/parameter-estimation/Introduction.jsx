@@ -1,5 +1,6 @@
 // src/pages/parameterEstimation/Introduction.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
@@ -84,7 +85,9 @@ function Introduction() {
               <tbody>
                 <tr>
                   <th className="text-start fw-normal">
-                    {t("parameterEstimation.intro.table.row1_stat")}
+                    <Link to="/random-variable#arithmetic-mean">
+                      {t("parameterEstimation.intro.table.row1_stat")}
+                    </Link>
                   </th>
                   <td style={{ width: "10%" }}>
                     <InlineMath math="\bar{x}" />
@@ -98,7 +101,9 @@ function Introduction() {
                 </tr>
                 <tr>
                   <th className="text-start fw-normal">
-                    {t("parameterEstimation.intro.table.row2_stat")}
+                    <Link to="/random-variable#standard-deviation">
+                      {t("parameterEstimation.intro.table.row2_stat")}
+                    </Link>
                   </th>
                   <td>
                     <InlineMath math="s" />
@@ -112,13 +117,29 @@ function Introduction() {
                 </tr>
                 <tr>
                   <th className="text-start fw-normal">
-                    {t("parameterEstimation.intro.table.row3_stat")}
+                    <Link to="/random-variable#variance">
+                      {t("parameterEstimation.intro.table.row3_stat")}
+                    </Link>
+                  </th>
+                  <td>
+                    <InlineMath math="s^2" />
+                  </td>
+                  <th className="text-start fw-normal border-start">
+                    {t("parameterEstimation.intro.table.row3_param")}
+                  </th>
+                  <td>
+                    <InlineMath math="\sigma^2" />
+                  </td>
+                </tr>
+                <tr>
+                  <th className="text-start fw-normal">
+                    {t("parameterEstimation.intro.table.row4_stat")}
                   </th>
                   <td>
                     <InlineMath math="n" />
                   </td>
                   <th className="text-start fw-normal border-start">
-                    {t("parameterEstimation.intro.table.row3_param")}
+                    {t("parameterEstimation.intro.table.row4_param")}
                   </th>
                   <td>
                     <InlineMath math="N" />
@@ -129,8 +150,6 @@ function Introduction() {
           </div>
         </div>
       </div>
-
-      <p>{t("parameterEstimation.intro.p4")}</p>
     </section>
   );
 }

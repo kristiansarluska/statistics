@@ -74,9 +74,7 @@ function PointEstimation() {
           <Trans
             i18nKey="parameterEstimation.pointEstimation.simulation.exampleDesc"
             components={{
-              m1: <InlineMath math="\mu" />,
               bold: <strong />,
-              m2: <InlineMath math="\sigma = 5" />,
               m3: <InlineMath math="n" />,
               m4: <InlineMath math="\bar{x}" />,
               m5: <InlineMath math="s" />,

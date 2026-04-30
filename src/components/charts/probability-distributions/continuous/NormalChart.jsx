@@ -7,19 +7,25 @@ import "../../../../styles/charts.css";
 
 /**
  * @component NormalChart
- * @description Provides an interactive visualization of the Normal (Gaussian) distribution.
- * Users can manipulate the mean (μ) and standard deviation (σ) to observe changes in the bell curve and cumulative probability.
+ * @description Provides an interactive visualization of the Normal distribution.
+ * Users manipulate mean (μ) and variance (σ²) to observe changes in PDF and CDF.
  */
 function NormalChart() {
   const { t } = useTranslation();
 
-  // State for distribution parameters: mean (location) and standard deviation (scale)
+  // State for distribution parameters: mean (location) and variance (scale squared)
   const [mean, setMean] = useState(0);
-  const [sd, setSd] = useState(1);
+  const [variance, setVariance] = useState(1);
   const [hoverX, setHoverX] = useState(null);
 
   const m = Number(mean);
-  const s = Number(sd);
+  const v = Number(variance);
+
+  /**
+   * Derive standard deviation from variance for mathematical functions.
+   * @type {number}
+   */
+  const s = Math.sqrt(v);
 
   // Fixed domain to allow comparison across different parameter settings
   const minX = -15;
@@ -96,30 +102,30 @@ function NormalChart() {
           />
         </div>
 
-        {/* Standard Deviation (σ) Slider */}
+        {/* Variance (σ²) Slider */}
         <div className="col-10 col-sm-5 col-md-4 col-lg-3 d-flex flex-column align-items-center">
           <label
-            htmlFor="sdRangeNormal"
+            htmlFor="varianceRangeNormal"
             className="form-label fw-bold mb-2 text-center small"
           >
-            {t("components.probabilityCharts.normal.sd")}
+            {t("components.probabilityCharts.normal.variance")}
             <span className="parameter-value">{s.toFixed(1)}</span>
           </label>
           <input
             type="range"
             className="form-range w-100 mb-0"
-            id="sdRangeNormal"
+            id="varianceRangeNormal"
             min="0.1"
-            max="5"
-            step="0.1"
-            value={s}
-            onChange={(e) => setSd(Number(e.target.value))}
+            max="25"
+            step="0.5"
+            value={v}
+            onChange={(e) => setVariance(Number(e.target.value))}
           />
         </div>
       </div>
 
       <div className="charts-wrapper w-100">
-        {/* Probability Density Function (Bell Curve) */}
+        {/* Probability Density Function */}
         <div>
           <StyledLineChart
             data={dataPDF}
@@ -138,7 +144,7 @@ function NormalChart() {
           />
         </div>
 
-        {/* Cumulative Distribution Function (S-curve) */}
+        {/* Cumulative Distribution Function */}
         <div>
           <StyledLineChart
             data={dataCDF}

@@ -90,10 +90,10 @@ function DiscreteDistributions() {
 
       <div className="overflow-x-auto mb-4">
         <BlockMath
-          math={`p(x_i) = p(x) = \\frac{1}{n} \\quad \\text x \\in \\{1, 2, \\dots, n\\}`}
+          math={`p(x_i) = \\frac{1}{n} \\quad i \\in \\{1, 2, \\dots, n\\}`}
         />
         <BlockMath
-          math={`F(x) = \\frac{\\lfloor x \\rfloor}{n} \\quad \\text 1 \\le x \\le n`}
+          math={`F(x) = \\sum_{i=1}^{n} \\frac{I(x_i \\le x)}{n} \\quad x \\in \\mathbb{R}`}
         />
       </div>
 
@@ -107,9 +107,9 @@ function DiscreteDistributions() {
             components={{
               bold: <strong />,
               m1: <InlineMath math="n" />,
-              m2: <InlineMath math="n" />,
-              m3: <InlineMath math="n=5" />,
-              m4: <InlineMath math="n=7" />,
+              m2: <InlineMath math="n=4" />,
+              m3: <InlineMath math="n=6" />,
+              m4: <InlineMath math="\frac{1}{n}" />,
             }}
           />
         </p>
@@ -126,7 +126,6 @@ function DiscreteDistributions() {
           components={{
             m1: <InlineMath math="n" />,
             m2: <InlineMath math="p" />,
-            m3: <InlineMath math="n" />,
           }}
         />
       </p>

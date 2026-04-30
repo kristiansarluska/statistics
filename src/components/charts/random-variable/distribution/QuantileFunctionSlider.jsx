@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import StyledLineChart from "../../helpers/StyledLineChart";
 import DataPreviewTable from "../../helpers/DataPreviewTable";
 import StatsBadge from "../../../content/helpers/StatsBadge";
-import useDebouncedValue from "../../../../hooks/useDebouncedValue";
 import useFetch from "../../../../hooks/useFetch";
 import { parseCSV } from "../../../../utils/csvParser";
 
@@ -45,7 +44,7 @@ const transformHCI = (csvText) => {
 /**
  * @component QuantileFunctionSlider
  * @description Interactive component for exploring the quantile function (inverse CDF).
- * Allows users to input probability (p) via slider or value (x) via input to see the corresponding mapping.
+ * Allows users to input probability (p) via slider to see the corresponding mapping.
  * Uses real-world dataset (World HCI) fetched and parsed on mount.
  */
 function QuantileFunctionSlider() {
@@ -53,8 +52,7 @@ function QuantileFunctionSlider() {
 
   // Interaction state
   const [activeMode, setActiveMode] = useState("slider");
-  const [sliderP, setSliderP] = useState(25);
-  const [inputX, debouncedInputX, setInputX] = useDebouncedValue("", 0);
+  const [sliderP, setSliderP] = useState(0.25);
   const [hoverX, setHoverX] = useState(null);
 
   const csvUrl = `${import.meta.env.BASE_URL}data/World_HCI.csv`;
@@ -80,7 +78,7 @@ function QuantileFunctionSlider() {
       {
         key: "HCI_2025",
         label: t("components.randomVariableCharts.quantileSlider.scoreCol"),
-        render: (val) => <strong>{parseFloat(val).toFixed(2)}</strong>,
+        render: (val) => <strong>{parseFloat(val).toFixed(4)}</strong>,
       },
     ],
     [t],
@@ -92,15 +90,15 @@ function QuantileFunctionSlider() {
   const chartData = useMemo(() => {
     if (n === 0) return [];
 
-    const allX = new Set([0, 100]);
+    const allX = new Set([0, 1]);
     for (let i = 0; i < n; i++) {
-      allX.add(((i + 1) / n) * 100);
+      allX.add((i + 1) / n);
     }
 
     return Array.from(allX)
       .sort((a, b) => a - b)
       .map((x) => {
-        const exactK = (x / 100) * n;
+        const exactK = x * n;
         const k = Math.round(exactK);
         const isIntegerK = Math.abs(exactK - k) < 1e-9;
 
@@ -125,7 +123,7 @@ function QuantileFunctionSlider() {
     if (n === 0) return null;
 
     if (activeMode === "slider") {
-      const p = sliderP / 100;
+      const p = sliderP;
       if (p === 0) return { p: 0, x: minX, msg: null };
 
       const exactK = p * n;
@@ -141,49 +139,18 @@ function QuantileFunctionSlider() {
       }
       return { p, x: val, msg: null };
     }
-
-    if (activeMode === "input") {
-      const val = parseFloat(debouncedInputX);
-      if (isNaN(val)) return null;
-
-      if (val < minX)
-        return {
-          p: null,
-          x: null,
-          msg: t("components.randomVariableCharts.quantileSlider.errorMin", {
-            val,
-            min: minX.toFixed(2),
-          }),
-        };
-      if (val > maxX)
-        return {
-          p: null,
-          x: null,
-          msg: t("components.randomVariableCharts.quantileSlider.errorMax", {
-            val,
-            max: maxX.toFixed(2),
-          }),
-        };
-
-      let count = 0;
-      for (let i = 0; i < n; i++) {
-        if (data[i] <= val) count++;
-        else break;
-      }
-      return { p: count / n, x: val, msg: null };
-    }
-  }, [n, activeMode, sliderP, debouncedInputX, data, minX, maxX, t]);
+  }, [n, activeMode, sliderP, data, minX, maxX, t]);
 
   const currentSliderValue =
     activeMode === "slider"
       ? sliderP
       : target?.p != null
-        ? Math.round(target.p * 100)
+        ? Math.round(target.p)
         : sliderP;
 
   const displayPercentage =
     activeMode === "input" && target?.p != null
-      ? (target.p * 100).toFixed(1)
+      ? target.p.toFixed(3)
       : currentSliderValue;
 
   const badgeItems =
@@ -191,7 +158,7 @@ function QuantileFunctionSlider() {
       ? [
           {
             label: t("components.randomVariableCharts.quantileSlider.badgeP"),
-            value: `${(target.p * 100).toFixed(1)} %`,
+            value: `${target.p.toFixed(2)}`,
             color: "text-primary",
             groupStart: true,
           },
@@ -235,49 +202,21 @@ function QuantileFunctionSlider() {
               className="text-primary d-inline-block text-start ms-1"
               style={{ width: "45px" }}
             >
-              {displayPercentage}%
+              {displayPercentage}
             </span>
           </label>
           <input
             type="range"
             className="form-range"
             min="0"
-            max="100"
-            step="1"
+            max="1"
+            step="0.01"
             value={currentSliderValue}
             onChange={(e) => {
               setSliderP(Number(e.target.value));
               setActiveMode("slider");
-              setInputX("");
             }}
             style={{ maxWidth: "250px" }}
-          />
-        </div>
-
-        <div className="d-flex flex-column align-items-center flex-grow-1">
-          <label
-            className="form-label fw-bold mb-2 text-center"
-            style={{ fontSize: "0.9rem" }}
-          >
-            {t("components.randomVariableCharts.quantileSlider.labelX")}
-          </label>
-          <input
-            type="number"
-            className="form-control text-center shadow-sm"
-            value={inputX}
-            onChange={(e) => {
-              setInputX(e.target.value);
-              setActiveMode("input");
-            }}
-            placeholder={
-              target?.x != null
-                ? target.x.toFixed(2).replace(".", ",")
-                : t(
-                    "components.randomVariableCharts.quantileSlider.placeholder",
-                  )
-            }
-            step="any"
-            style={{ maxWidth: "150px" }}
           />
         </div>
       </div>
@@ -306,19 +245,19 @@ function QuantileFunctionSlider() {
       >
         <StyledLineChart
           data={chartData}
-          xLabel="p (%)"
+          xLabel="p"
           yLabel="HCI+"
           lineType="stepBefore"
           hoverX={hoverX}
           setHoverX={setHoverX}
           minX={0}
-          maxX={100}
+          maxX={1}
           yAxisDomain={[0, 325]}
         >
           {target && !target.msg && (
             <>
               <ReferenceLine
-                x={target.p * 100}
+                x={target.p}
                 stroke="var(--bs-success)"
                 strokeWidth={1}
                 opacity={0.8}
