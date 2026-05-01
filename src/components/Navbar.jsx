@@ -167,7 +167,11 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
               </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#!" onClick={handleHomeClick}>
+              <a
+                className="nav-link"
+                href="https://www.geoinformatics.upol.cz/dprace/bakalarske/sarluska26/"
+                onClick={handleHomeClick}
+              >
                 {t("navbar.about")}
               </a>
             </li>
