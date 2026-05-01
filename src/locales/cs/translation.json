@@ -618,14 +618,14 @@
       },
       "step3": {
         "title": "3. Výpočet testového kritéria",
-        "description": "Testové kritérium je vzorec, pomocí něhož z výběrových dat získáme konkrétní číselnou hodnotu (testovou statistiku). Tato statistika se řídí známým rozdělením pravděpodobnosti (např. t-rozdělení), se kterým ji následně porovnáváme, abychom určili, zda padne do kritického oboru a tudíž můžeme hypotézu zamítat. Naopak, pokud padne do tzv. oboru přijetí, nepodařilo se v datech najít důkaz podporující zamítnutí hypotézy. Hraniční hodnoty mezi kritickým oborem a oborem přijetí určujeme na základě kvantilů rozdělení testové statistiky.",
+        "description": "Testové kritérium je vzorec, pomocí něhož z výběrových dat získáme konkrétní číselnou hodnotu (testovou statistiku). Tato statistika se řídí známým rozdělením pravděpodobnosti (např. t-rozdělení), se kterým ji následně porovnáváme, abychom určili, zda padne do kritického oboru a tudíž můžeme hypotézu zamítat. Naopak, pokud padne do tzv. oboru přijetí, nepodařilo se v datech najít důkaz podporující zamítnutí hypotézy. Hraniční hodnoty mezi kritickým oborem a oborem přijetí určujeme na základě kvantilů rozdělení testové statistiky, sledujících stanovenou hladinu <a/>.",
         "appTitle": "Aplikace na data",
         "appDesc": "Jelikož porovnáváme průměr jednoho výběru (obce v okrese) se známou konstantou (20,56 %) a vstupní data se přibližují normálnímu rozdělení, použijeme <bold>jednovýběrový Studentův t-test</bold>. Vzorec pro testovou statistiku je:",
-        "formulaDesc": "Kde <xbar/> je výběrový průměr (podíl v okrese), <mu0/> je referenční hodnota (20,56), <s/> je směrodatná odchylka výběru a <n/> je počet obcí."
+        "formulaDesc": "Kde <xbar/> je výběrový průměr (podíl v okrese), <mu0/> je referenční hodnota (20,56), <s/> je směrodatná odchylka výběru a <n/> je počet obcí. O této statistice víme, že se za platnosti <h0/> řídí t-rozdělením o <n1/> stupních volnosti."
       },
       "step4": {
         "title": "4. Vyhodnocení hypotézy a p-hodnota",
-        "description": "Na základě hodnoty testového kritéria získáme <bold>p-hodnotu (p-value)</bold>. Představuje nejmenší hladinu významnosti, na které můžeme <h0/> zamítnout. Pokud je p-hodnota menší než <alpha/>, nulovou hypotézu zamítáme. Při každém rozhodnutí však hrozí riziko statistické chyby.",
+        "description": "Kromě porovnání hodnoty testového kritéria s oborem přijetí a kritickým oborem můžeme z testového kritéria spočítat také tzv. <bold>p-hodnotu (p-value)</bold>. P-hodnota vyjadřuje pravděpodobnost, že za předpokladu platnosti nulové hypotézy <h0/> získáme z náhodného výběru takovou hodnotu testové statistiky, která je stejně vzdálená od očekávané hodnoty podle <h0/>, nebo ještě extrémnější, tedy více odporující nulové hypotéze, než je hodnota skutečně pozorovaná ve výběru. Pokud je p-hodnota menší než <alpha/>, nulovou hypotézu zamítáme: čím je menší, tím silnější jsou v datech důkazy proti nulové hypotéze. Na p-value se můžeme dívat i opačnou optikou, a to tak, že se jedná o <bold>nejmenší hladinu významnosti, na které můžeme <h0/> zamítnout</bold>. Při každém rozhodnutí však hrozí riziko statistické chyby.",
         "appTitle": "Aplikace na data (možné závěry)",
         "table": {
           "col1": "Skutečnost v populaci",
@@ -694,9 +694,9 @@
       "p1": "V geografii a společenských vědách se velmi často setkáváme se stochastickou (statistickou) závislostí. Víme sice, že mezi proměnnými existuje nějaký vztah, ale není přesně a jednoznačně definován, například pevným vzorcem nebo funkční závislostí. Ke zkoumání a kvantifikování takové stochastické závislosti slouží korelační analýza.",
       "tableTitle": "Výběr metody podle typu proměnných",
       "tableDesc": "Výběr vhodné statistické metody k hledání závislostí závisí na tom, s jakými typy znaků (proměnných) se pracuje. Korelační analýza se využívá tehdy, když jsou obě proměnné kvantitativní.",
-      "typeY": "Typ znaku Y (Závislá proměnná)",
-      "typeX": "Typ znaku X (Nezávislá proměnná)",
-      "categorical": "Kategorické",
+      "typeY": "Typ znaku Y",
+      "typeX": "Typ znaku X",
+      "categorical": "Kategoriální",
       "quantitative": "Kvantitativní",
       "contingency": "Kontingenční tabulky, testy dobré shody",
       "anova": "ANOVA",
@@ -714,10 +714,10 @@
       "alertCausalityTitle": "Korelace není kauzalita",
       "alertCausalityDesc": "Samotný fakt, že se dvě veličiny mění společně korelují <bold>ještě nedokazuje, že jedna způsobuje druhou</bold>. Jde o nekauzální vztah – z matematického výpočtu neumíme určit, co je příčina a co následek, nebo zda na obě veličiny nepůsobí nějaký skrytý třetí faktor.",
       "testingTitle": "Testování statistické významnosti",
-      "testingDesc": "Pokud z dat vypočítáme například korelaci <m1/>, musíme ověřit, zda tato závislost skutečně existuje v celé populaci, nebo zda jde jen o náhodu v našem malém výběru. Pro tento účel provádíme testování hypotéz (podobně jako u t-testů).",
+      "testingDesc": "Pokud z dat vypočítáme například výběrový korelační koeficient <m1/>, musíme ověřit, zda tato závislost skutečně existuje v celé populaci, nebo zda jde jen o náhodu v našem malém výběru. Pro tento účel provádíme testování hypotéz (podobně jako u t-testů).",
       "testingH0": "<bold>Nulová hypotéza (<h0/>):</bold> <m/> (veličiny jsou lineárně nezávislé).",
       "testingHa": "<bold>Alternativní hypotéza (<ha/>):</bold> <m/> (mezi veličinami existuje lineární závislost).",
-      "testingTStat": "Testové kritérium (T) se následně řídí Studentovým t-rozdělením",
+      "testingTStat": "Testové kritérium (T) se následně za předpokladu normality obou výběrů řídí Studentovým t-rozdělením:",
       "testingExperimentTitle": "Vyzkoušejte si to na grafu výše",
       "testingExperimentDesc": "Vraťte se k interaktivnímu prvku a nastavte relativně slabou korelaci (např. <bold>r = 0,30</bold>) a malý počet bodů (<bold>n = 10</bold>). Výsledek pravděpodobně <textDanger>nebude statisticky významný</textDanger>. Následně začněte postupně zvyšovat počet bodů na posuvníku. Všimněte si, jak s přibývajícím množstvím dat klesá <italic>p-hodnota</italic> a i tato slabá korelace se při velkém vzorku (např. <bold>n = 100</bold>) stane <textSuccess>statisticky prokazatelnou</textSuccess>."
     },
@@ -808,7 +808,7 @@
       "p1": "ANOVA (<italic>Analysis of Variance</italic>) je statistická metoda pro současné testování rozdílů středních hodnot <bold>tří a více</bold> výběrových souborů. Zjišťuje, zda pozorované rozdíly mezi skupinami lze připsat sledovanému faktoru, nebo zda jde pouze o náhodné kolísání.",
       "p2": "Příkladem může být <bold>srovnávání úspěšnosti skupin při řešení úloh na mapě</bold> v rámci eye-tracking experimentu. Zajímá nás, zda má dosažené vzdělání (faktor) statisticky významný vliv na dosaženou úspěšnost – nebo jsou rozdíly mezi příslušníky skupin pouze důsledkem náhodného kolísání.",
       "usageTitle": "Použití ANOVY",
-      "usageDesc": "Výběr správného testu závisí na <bold>počtu srovnávaných skupin</bold>. Níže se nachází přehled testů podle počtu skupin, vždy s uvedením neparametrické alternativy:",
+      "usageDesc": "Výběr správného testu závisí na <bold>počtu srovnávaných skupin</bold>. Níže se nachází přehled testů podle počtu skupin, vždy s uvedením neparametrické alternativy (používané v případě porušení předpokladu normality dat):",
       "tests": {
         "oneSample": {
           "title": "Jeden výběr",
@@ -846,18 +846,16 @@
       "homogeneityDesc": "Tyto testy zkoumají stejnou hypotézu o shodě rozptylů a liší se citlivostí na porušení normality:",
       "bartlett": {
         "title": "Bartlettův test",
-        "desc1": "Přesnější a silnější test, avšak vyžaduje splněný předpoklad normality. Pokud normalita nebyla zamítnuta, upřednostňujeme Bartlettův test před Leveneovým.",
-        "desc2": "Testová statistika má <m1/> rozdělení s <m2/> stupni volnosti."
+        "desc1": "Přesnější a silnější test, avšak vyžaduje splněný předpoklad normality. Pokud normalita nebyla zamítnuta, upřednostňujeme Bartlettův test před Leveneovým."
       },
       "levene": {
         "title": "Leveneův test",
-        "desc1": "Robustnější alternativa – méně citlivý na porušení normality. Vhodný, když normalita dat není jistá nebo byla zamítnuta.",
-        "desc2": "Testová statistika má F-rozdělení se stupni volnosti <m1/> v čitateli a <m2/> ve jmenovateli."
+        "desc1": "Robustnější alternativa – méně citlivý na porušení normality. Vhodný, když normalita dat není jistá nebo byla zamítnuta."
       }
     },
     "singleFactor": {
       "title": "Jednofaktorová ANOVA",
-      "intro1": "Zkoumá vliv <bold>jednoho faktoru</bold> (kategorické proměnné) na spojitou náhodnou veličinu. Faktor definuje <m/> skupin (kategorií). Testujeme nulovou hypotézu, že všechny skupinové střední hodnoty pocházejí ze stejné populace:",
+      "intro1": "Zkoumá vliv <bold>jednoho faktoru</bold> (kategoriální proměnné) na spojitou náhodnou veličinu. Faktor definuje <m/> skupin (kategorií). Testujeme nulovou hypotézu, že všechny skupinové střední hodnoty pocházejí ze stejné populace:",
       "intro2": "Alternativní hypotéza říká, že <bold>alespoň jedna</bold> střední hodnota pochází z jiné populace. ANOVA sama o sobě neurčuje, která dvojice se liší, tato skutečnost se zjišťuje až případnými <bold>post-hoc testy</bold>.",
       "intro3": "Každé pozorování <m/> (n-tý prvek k-té skupiny) lze hypoteticky rozložit na tři složky:",
       "legend": {
@@ -883,17 +881,15 @@
       "intro": "Pokud ANOVA zamítne nulovou hypotézu (<m1/>), víme, že alespoň jedna dvojice středních hodnot se liší. ANOVA však neidentifikuje, o kterou dvojici se jedná. K tomu slouží <bold>post-hoc testy</bold> – provádějí se <italic>po</italic> zamítnutí <m2/> v ANOVĚ a upravují hladinu významnosti tak, aby celková chyba I. druhu zůstala pod zvoleným <m3/>.",
       "tukey": {
         "title": "Tukeyho HSD test",
-        "desc": "<bold>Nejpoužívanější post-hoc test.</bold> Srovnává všechny možné dvojice skupin a zachovává zvolenou hladinu <m/> pro celou rodinu testů. Vhodný pro vyvážené i nevyvážené výběry.",
-        "legend": "<m1/> – statistika studentizovaného rozdělení (z tabulek), <m2/> – velikost skupiny."
+        "desc": "<bold>Nejpoužívanější post-hoc test.</bold> Srovnává všechny možné dvojice skupin a zachovává zvolenou hladinu <m/> pro celou rodinu testů. Vhodný pro vyvážené i nevyvážené výběry."
       },
       "bonferroni": {
         "title": "Bonferroniho metoda",
-        "desc": "Jednoduchá a konzervativní korekce – korigovaná hladina významnosti se vypočítá vydělením <m1/> celkovým počtem srovnání <m2/>:",
-        "legend": "Každý párový t-test se vyhodnocuje na upraveném <m/>. Vhodná pro menší počet srovnání, kde je konzervativnost akceptovatelná."
+        "desc": "Jednoduchá a konzervativní korekce – korigovaná hladina významnosti se vypočítá vydělením <m1/> celkovým počtem srovnání <m2/>. Vhodná pro menší počet srovnání, kde je konzervativnost akceptovatelná."
       },
       "scheffe": {
         "title": "Scheffého metoda",
-        "desc": "Nejkonzervativnější test – kontroluje chybu I. druhu při všech možných lineárních kontrastech, nejen párových srovnáních. Vhodná zejména pro <bold>nevyvážené výběry</bold> (různý počet pozorování ve skupinách). Testové kritérium se srovnává s kritickou hodnotou odvozenou z Fisherova F-rozdělení."
+        "desc": "Nejkonzervativnější test, vhodný zejména pro <bold>nevyvážené výběry</bold> (různý počet pozorování ve skupinách). Testové kritérium se srovnává s kritickou hodnotou odvozenou z Fisherova F-rozdělení."
       },
       "simulation": {
         "title": "Průměrné denní teploty",
@@ -909,7 +905,7 @@
       "list": {
         "independence": "nezávislost měření",
         "normality": "normalita rozdělení",
-        "homoscedasticity": "homoskedasticita"
+        "homoscedasticity": "shoda rozptylů"
       },
       "intro2": "Jejich porušení a následné použití ANOVY může vést k chybným závěrům – zejména ke zvýšenému riziku chyby I. druhu. Následující metody nahrazují klasickou ANOVU v situacích, kdy jsou některé předpoklady porušeny.",
       "cards": {

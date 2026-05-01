@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "StatTerra",
-    "description": "Interactive web application for teaching statistical methods in geoinformatics. Includes theory, charts, and real-world data.",
+    "description": "Interactive web application for teaching statistical methods in geoinformatics. Contains theory, charts, and real-world data.",
     "keywords": "statistics, geoinformatics, GIS, data analysis, interactive charts, bachelor thesis, StatTerra"
   },
   "navbar": {
@@ -20,69 +20,84 @@
   },
   "sidebar": {
     "randomVariable": {
-      "continuousDiscrete": "Continuous and Discrete Random Variables",
-      "distribution": "Distribution of a Random Variable",
-      "pmfPdf": "Probability Functions",
-      "cdf": "Cumulative Distribution Function",
-      "quantile": "Quantile Function",
-      "characteristics": "Characteristics of a Random Variable",
-      "location": "Measures of Location",
-      "variability": "Measures of Variability",
-      "otherMeasures": "Other Numerical Measures",
-      "fiveNumber": "Five-number Summary"
+      "continuousDiscrete": "Continuous and discrete random variables",
+      "distribution": "Random variable distribution",
+      "pmfPdf": "Probability function",
+      "cdf": "Cumulative distribution function",
+      "quantile": "Quantile function",
+      "characteristics": "Characteristics of a random variable",
+      "location": "Measures of location",
+      "variability": "Measures of variability",
+      "otherMeasures": "Other numerical characteristics",
+      "fiveNumber": "Five-number summary",
+      "arithmeticMean": "Arithmetic mean",
+      "harmonicMean": "Harmonic mean",
+      "geometricMean": "Geometric mean",
+      "weightedMean": "Weighted mean",
+      "mode": "Mode",
+      "median": "Median",
+      "range": "Range",
+      "meanDeviation": "Mean deviation",
+      "meanDifference": "Mean difference",
+      "variance": "Variance",
+      "standardDeviation": "Standard deviation",
+      "coefficientOfVariation": "Coefficient of variation",
+      "quartileDeviation": "Quartile deviation",
+      "skewness": "Skewness",
+      "kurtosis": "Kurtosis"
     },
     "probabilityDistributions": {
-      "discrete": "Discrete Distributions",
-      "bernoulli": "Bernoulli Distribution",
-      "uniformDiscrete": "Uniform Distribution (Discrete)",
-      "binomial": "Binomial Distribution",
-      "poisson": "Poisson Distribution",
-      "continuous": "Continuous Distributions",
-      "uniformContinuous": "Uniform Distribution (Continuous)",
-      "exponential": "Exponential Distribution",
-      "normal": "Normal Distribution",
-      "chiSquare": "Chi-squared Distribution",
+      "discrete": "Discrete distributions",
+      "bernoulli": "Bernoulli distribution",
+      "uniformDiscrete": "Uniform distribution",
+      "binomial": "Binomial distribution",
+      "poisson": "Poisson distribution",
+      "continuous": "Continuous distributions",
+      "uniformContinuous": "Uniform distribution",
+      "exponential": "Exponential distribution",
+      "normal": "Normal distribution",
+      "chiSquare": "Chi-square distribution",
       "studentT": "Student's t-distribution",
       "fisherF": "Fisher's F-distribution"
     },
     "parameterEstimation": {
-      "pointEstimation": "Point Estimation",
-      "intervalEstimation": "Interval Estimation"
+      "pointEstimation": "Point estimation",
+      "intervalEstimation": "Interval estimation"
     },
     "hypothesisTesting": {
-      "procedure": "General Procedure",
+      "procedure": "General procedure",
       "interactiveTest": "Interactive t-test"
     },
     "correlation": {
-      "analysis": "Principles of Correlation Analysis",
-      "coefficients": "Correlation Coefficients"
+      "analysis": "Principles of correlation analysis",
+      "coefficients": "Correlation coefficients"
     },
     "anova": {
       "singleFactor": "One-way ANOVA",
-      "postHoc": "Multiple Comparison Tests",
-      "violation": "Assumption Violations"
+      "postHoc": "Multiple comparison tests",
+      "violation": "Violation of assumptions"
     }
   },
   "home": {
     "hero": {
-      "title": "Understand Statistics in Space",
-      "subtitle": "Interactive educational application (not only) for geoinformaticians. It connects theoretical knowledge with dynamic visualizations and real-world data."
+      "title": "Understand statistics in space",
+      "subtitle": "Interactive educational application (not only) for geoinformaticians. Connects theoretical knowledge with dynamic visualizations and real data."
     },
     "about": {
-      "title": "About the Application",
-      "description": "This web application was created as an output of a bachelor's thesis. Its goal is to link theoretical statistical knowledge with practical demonstrations, visualizations, and geodata.",
+      "title": "About the application",
+      "description": "This web application was created as an output of a bachelor's thesis. Its goal is to connect theoretical knowledge of statistics with practical examples, visualizations, and spatial data.",
       "targetAudienceTitle": "Who is it for?",
-      "audience1": "for students of the Department of Geoinformatics at Palacký University Olomouc",
+      "audience1": "for students of the Department of Geoinformatics, Palacký University Olomouc",
       "audience2": "for students of related fields",
       "audience3": "for anyone looking for a modern way to learn statistics"
     },
     "topicsTitle": "Covered Topics",
-    "topicsDescription": "The topics included in this application are based on the syllabus of the Statistical Methods in Geoinformatics course (<1>KGI/STAME</1>). Each chapter introduces basic theoretical concepts related to the curriculum, complemented by interactive data visualizations linked to practice through examples and real-world data.",
+    "topicsDescription": "The topics covered in this application are based on the syllabus of the Statistical Methods in Geoinformatics (<1>KGI/STAME</1>) course. Each chapter introduces basic theoretical concepts related to the curriculum, supplemented by interactive data visualizations with connections to practice through examples or real data.",
     "data": {
       "chapters": {
         "randomVariable": {
           "title": "Random Variable",
-          "desc": "Basic concepts, function types, and measures of location or variability."
+          "desc": "Basic concepts, types of functions, and measures of location or variability."
         },
         "probabilityDistributions": {
           "title": "Probability Distributions",
@@ -94,7 +109,7 @@
         },
         "hypothesisTesting": {
           "title": "Hypothesis Testing",
-          "desc": "General testing procedure and interactive t-test."
+          "desc": "General testing procedure and an interactive t-test."
         },
         "correlation": {
           "title": "Correlation",
@@ -108,324 +123,321 @@
       "methodologyModules": {
         "theory": {
           "title": "Basic Theory",
-          "shortDesc": "Explanation of statistical terms and methods, including mathematical notation.",
-          "longDesc": "Each chapter begins with a clear theoretical introduction explaining key terms, mathematical formulas, and concepts. An example of interactivity is the following arithmetic mean calculator, which allows students to enter their own values and immediately see the result, making the theory tangible and easier to understand:"
+          "shortDesc": "Explanation of statistical concepts and methods, including mathematical notation.",
+          "longDesc": "Each chapter begins with a clear theoretical introduction that explains key concepts, mathematical formulas, and principles. An example of interactivity can be seen in the following arithmetic mean calculator, which allows students to enter their own values and immediately see the result, making the theory tangible and easier to understand:"
         },
         "interactive": {
           "title": "Interactive Elements",
           "shortDesc": "Dynamically changing charts and calculators with adjustable parameters.",
-          "longDesc": "Each chapter contains interactive visualizations that allow experimenting with different parameters and observing immediate changes in charts or results. For example, in the probability distribution chapter, students can adjust the mean and standard deviation of a normal distribution to see how the curve shape changes:"
+          "longDesc": "Each chapter contains interactive visualizations that allow experimenting with different parameters and observing immediate changes in charts or results. For example, in the probability distribution chapter, students can adjust the mean and variance of a normal distribution and watch how the curve shape changes:"
         },
         "data": {
-          "title": "Data from Practice",
-          "shortDesc": "Application of methods directly on real European or Czech geodata.",
-          "longDesc": "Chapters include demonstrations and exercises based on data from the World Bank, Eurostat, or the Czech Statistical Office. Theoretical concepts are thus applied to real-world datasets, allowing students to see how the presented statistical methods are used in the real world:"
+          "title": "Real-World Data",
+          "shortDesc": "Application of methods directly to real European or Czech spatial data.",
+          "longDesc": "Chapters include examples and exercises based on datasets from the World Bank, Eurostat, or the Czech Statistical Office. This way, theoretical concepts are applied to real-world datasets, allowing students to see how the presented statistical methods are used in practice:"
         }
       }
     },
     "methodology": {
       "title": "Teaching Methodology",
-      "guideDescription": "For maximum understanding of the topic, we recommend following this procedure for each topic:",
-      "step1Title": "Theoretical Basis",
-      "step1Desc": "Read the definitions and understand the mathematical principle.",
-      "step2Title": "Problem Context",
-      "step2Desc": "Familiarize yourself with the practical geoinformatics example.",
-      "step3Title": "Interaction and Experiment",
-      "step3Desc": "Change parameters, watch the changes in charts, and consolidate your knowledge.",
-      "guideConnection": "Below are three basic modules found in individual topics within the application. Click on a card to open its preview.",
+      "guideDescription": "For maximum understanding of the subject matter, we recommend following this procedure for each topic:",
+      "step1Title": "Theoretical foundation",
+      "step1Desc": "Read the definitions and understand the mathematical principles.",
+      "step2Title": "Problem context",
+      "step2Desc": "Familiarize yourself with the task of a practical geoinformatics example.",
+      "step3Title": "Interaction and experiment",
+      "step3Desc": "Change parameters, observe changes in charts, and consolidate your knowledge.",
+      "guideConnection": "Below are three basic modules that appear within the individual topics covered in the application. Click on a card to open a preview.",
       "loadingMap": "Loading map data...",
       "table": {
-        "title": "Real Data Preview (NUTS 3 Regions)",
+        "title": "Real data preview (NUTS 3 Regions)",
         "colNutsId": "NUTS ID",
         "colRegion": "Region",
         "colCountry": "Country",
         "colMedianAge": "Median Age"
       },
-      "cta": "Start Learning"
+      "cta": "Start learning"
     }
   },
+
   "randomVariable": {
     "introduction": {
-      "p1": "In the real world, the results of our measurements and observations are not known in advance. Whether it's measuring altitude with a GNSS receiver, counting the occurrence of traffic accidents at an intersection, or analyzing temperature, the specific value is determined only by carrying out a random experiment.",
-      "p2": "To process these phenomena mathematically and statistically, the concept of a <bold>random variable</bold> is introduced. It is a function that assigns a specific real number to each possible outcome of a random experiment. Thanks to this, we can describe the variable using a probability distribution and thus express its properties, such as expected value or variability."
+      "p1": "In the real world, the results of our measurements and observations are not known in advance. Whether it is measuring elevation with a GNSS receiver, counting the occurrence of traffic accidents at an intersection, or analyzing temperature, we only find out the specific value by conducting a random experiment.",
+      "p2": "To process these phenomena mathematically and statistically, the concept of a <bold>random variable</bold> is introduced. It is a function that assigns a specific real number to each possible outcome of a random experiment. Thanks to this, we can describe the variable using a probability distribution and express its properties, such as expected value or variability."
     },
     "continuousDiscrete": {
-      "title": "Continuous and Discrete Random Variables",
-      "description": "As mentioned, a random variable is a function that assigns a real number to each elementary event. Simply put, it \"translates\" the random outcomes of various events into the language of numbers, which can be further processed statistically. Depending on what values the variable can take, we recognize two basic types:",
+      "title": "Continuous and discrete random variables",
+      "description": "As mentioned, a random variable is a function that assigns a real number to each elementary event. Simply put, it \"translates\" the random outcomes of various events into the language of numbers, which can then be further processed statistically. Depending on the values a variable can take, we recognize two basic types:",
       "discrete": {
-        "title": "Discrete Variable",
-        "description": "Takes on only a <bold>countable number of values</bold> (usually integers). The values are distinctly separated from each other.",
+        "title": "Discrete variable",
+        "description": "Takes only a <bold>countable number of values</bold> (e.g., integers). The values are distinctly different from each other.",
         "process": "Process:",
         "processDesc": "Arises, for example, by counting occurrences.",
         "examples": "Examples:",
         "examplesDesc": "Number of earthquakes per year, number of buildings in a block, number of traffic accidents at an intersection."
       },
       "continuous": {
-        "title": "Continuous Variable",
-        "description": "Can take on <bold>any value within a certain interval</bold>. The number of possible values is infinite and is limited only by the precision of the measuring instrument.",
+        "title": "Continuous variable",
+        "description": "Can take <bold>any value within a certain interval</bold>. The number of possible values is infinite and is limited only by the precision of the measuring instrument.",
         "process": "Process:",
-        "processDesc": "Arises, for example, by measuring.",
+        "processDesc": "Arises, for example, by measurement.",
         "examples": "Examples:",
         "examplesDesc": "Elevation of a point, average annual temperature, distance of a building from a river."
       }
     },
     "distribution": {
-      "title": "Distribution of a Random Variable",
-      "description": "A probability distribution tells us how probabilities are \"distributed\" among the individual possible values of a random variable. Three basic functions are used for its comprehensive mathematical and visual description: the probability function (referred to as probability density for continuous variables), the cumulative distribution function, and the quantile function.",
+      "title": "Random variable distribution",
+      "description": "The probability distribution tells us how probabilities are \"distributed\" among the individual possible values of a random variable. For its comprehensive mathematical and visual description, three basic functions are used: probability mass function (called probability density for continuous variables), cumulative distribution function, and quantile function.",
       "pmfPdf": {
-        "title": "Probability Mass Function and Probability Density Function",
-        "desc1": "For discrete variables, we use the <bold>probability mass function (PMF)</bold>, which assigns a direct probability of occurrence to a specific value (<m1/>).<br/><br/>For continuous variables, the <bold>probability density function (PDF) (<m2/>)</bold> is defined. Since a continuous variable has an infinite number of values, the probability of any single specific point is zero. Instead, we determine the probability that a value falls within a certain interval – this probability is represented by the <bold>area under the density curve</bold> over the given interval and can be calculated using a definite integral.",
-        "alertTitle": "Theory vs. Empiricism (Law of Large Numbers)",
-        "alertDesc": "The connection between theoretical mathematical models and real data is described by the <bold>Law of Large Numbers</bold>. It states that as the number of independent trials of a random experiment increases, the relative frequency of an event's occurrence (empirical distribution) approaches its theoretical probability. You can observe this phenomenon directly in the following two simulations.",
-        "chart1Title": "<color>Probability Mass Function:</color> Number of visible GNSS satellites",
-        "chart1Desc": "In an urban environment, the number of visible satellites is a random variable, as it is affected by surrounding buildings and the specific arrangement of satellites in the sky at a given moment. The chart below shows the <bold>theoretical probabilities</bold> for individual numbers of currently visible satellites (from 0 to 12, with the visibility probability of each set to 45%). By clicking the buttons below, artificial measurements are generated into the interactive simulation. Notice the aforementioned law in practice: with a low number of measurements, the empirical bars fluctuate and may not match the theoretical assumption. However, once the number of measurements grows into the hundreds or thousands, the empirical relative frequencies stabilize and almost perfectly merge with the theoretical model.",
-        "chart2Title": "<color>Probability Density Function:</color> Simulation of GNSS measurement error",
-        "chart2Desc": "This chart demonstrates the probability density function for a normal distribution of GNSS receiver errors. The blue curve represents a perfect <bold>theoretical model</bold> with a mean of <bold>0 m</bold> and a standard deviation of <bold>2.5 m</bold>. The gray histogram underneath shows the density of simulated (empirical) data. Again, the law of large numbers applies here – as you add new measurements, watch how the irregular empirical histogram gradually smooths out with an increasing number of iterations, and its shape converges exactly to the theoretical Gaussian curve."
+        "title": "Probability mass function and probability density",
+        "desc1": "For discrete variables, a <bold>probability mass function (PMF)</bold> is used, which assigns a direct probability of occurrence to a specific value (<m1/>).<br/><br/>For continuous variables, a <bold>probability density function (<m2/>)</bold> is defined. Since a continuous variable has infinitely many values, the probability of one specific point is zero. Instead, we determine the probability that the value falls within a certain interval – this probability is represented by the <bold>area under the density curve</bold> over a given section and can be calculated using a definite integral.",
+        "alertTitle": "Theory and empiricism (Law of Large Numbers)",
+        "alertDesc": "The connection between theoretical mathematical models and real data is described by the <bold>Law of Large Numbers</bold>. It states that as the number of independent repetitions of a random experiment increases, the relative frequency of the event's occurrence (empirical distribution) converges to its theoretical probability. You can observe this phenomenon directly in the following two simulations.",
+        "chart1Title": "<color>Probability mass function:</color> Number of visible GNSS satellites",
+        "chart1Desc": "The chart below shows the theoretical probabilities for individual numbers of currently visible satellites (modeled using the <1>binomial probability distribution</1> with parameter p = 0.45). By clicking the buttons below, artificial empirical measurements are generated into the interactive simulation, which can represent the findings of currently available satellites. Notice the mentioned law in practice: with a low number of measurements, the empirical columns fluctuate and may not match the theoretical assumption. However, once the number of measurements grows to higher hundreds or thousands, the empirical relative frequencies stabilize and merge almost perfectly with the theoretical model.",
+        "chart2Title": "<color>Probability density:</color> Simulation of GNSS measurement deviation",
+        "chart2Desc": "This chart demonstrates the probability density for a normal distribution of GNSS receiver errors. The blue curve represents a perfect <bold>theoretical model</bold> with a mean of <bold>0 m</bold> and a standard deviation of <bold>2.5 m</bold>. The gray histogram below it shows the density of the simulated (empirical) data. The law of large numbers applies here again – when adding new measurements, watch how the irregular empirical histogram gradually smooths out with an increasing number of iterations and its shape converges exactly to the theoretical Gaussian curve."
       },
       "cdf": {
-        "title": "Cumulative Distribution Function",
-        "desc": "The cumulative distribution function (CDF) (<m1/>) plays a cumulative role. It indicates the total probability that a random variable will take a value less than or equal to a specific number <m2/> (<m3/>). It is a non-decreasing function that starts at zero (0%) and gradually or stepwise increases to the value of 1 (100%), covering the entire probability.",
-        "chart1Title": "<color>Discrete case:</color> Availability of satellite data",
-        "chart1Desc": "Imagine we expect a maximum of 5 satellite passes over a certain location per month. The random variable X represents the number of images per month that are actually usable (cloud-free).<br /> You do not enter the probability directly into the input fields below, but rather the <bold>historical frequency</bold>: <br /> <ul> <li><bold>X (0 to 5):</bold> possible outcome – number of usable images per month.</li> <li><bold>Input field:</bold> number of months in history when exactly this outcome occurred.</li> </ul> The chart automatically calculates the total number of months and converts the values into probability. <br /><bold>Try it yourself:</bold> By entering a high value (e.g., 80) for <bold>x = 0</bold>, you simulate a location where it is too cloudy for most months of the year. Notice the behavior of the cumulative distribution function depending on the input values.",
-        "chart2Title": "<color>Continuous case:</color> Distribution of GNSS measurement errors",
-        "chart2Desc": "Unlike discrete variables, the cumulative distribution function of a continuous variable is represented by a <bold>smooth curve</bold> without jumps. This model is important, for example, when analyzing the accuracy of measuring instruments in the field.<br/><br/>In the case of a normal distribution, the shape of this curve is determined by two types of errors: <bold>systematic error (parameter μ)</bold>, which represents a constant measurement shift (e.g., by 1 meter due to poor calibration), and <bold>random error (parameter σ)</bold>, which expresses the precision of the instrument itself. The CDF at any point gives the probability that the measurement error will not exceed the chosen value. Note that at point <bold>μ</bold> (the center of the distribution), the function always takes the value <bold>0.5</bold>. This means there is exactly a 50% probability that the measured deviation will be less than or equal to the systematic shift of the instrument."
+        "title": "Cumulative distribution function",
+        "desc": "The cumulative distribution function (CDF) (<m1/>) serves a cumulative role. It covers the total probability that a random variable will take a value less than or equal to a specific number <m2/> (<m3/>). It is a non-decreasing function that starts at zero and gradually or stepwise increases to the value of 1, thereby covering the entire probability.",
+        "chart1Title": "<color>Example of a discrete cumulative distribution function:</color> Availability of satellite data",
+        "chart1Desc": "Let's imagine that we expect a maximum of 5 satellite passes over a certain location per month. The random variable X represents the number of images per month that are actually usable (cloud-free).<br /> You do not enter the probability directly into the input fields below, but rather the <bold>historical frequency</bold>. This is automatically recalculated into a probability, from which the empirical probability mass and cumulative distribution functions are drawn in the chart. <br /> <ul> <li><bold>X (0 to 5):</bold> possible outcome – the number of usable images per month.</li> <li><bold>Input field:</bold> the number of months in history when exactly this outcome occurred.</li> </ul> <bold>Try it out:</bold> By entering a high value (e.g., 80) for <bold>x = 0</bold>, you simulate a location where it is too cloudy for most months of the year. Notice the behavior of the cumulative distribution function depending on the input values.",
+        "chart2Title": "<color>Example of a continuous cumulative distribution function:</color> Distribution of GNSS measurement errors",
+        "chart2Desc": "Unlike discrete variables, the graph of the cumulative distribution function for a continuous variable is a smooth curve without jumps. <br/><br/> Using a continuous random variable, we can model, for example, the distribution of measurement errors of a field surveying instrument. In the following example, this is based on a <1>normal distribution</1>. The shape of the probability density and the cumulative distribution function are determined by the parameters of the <bold>mean μ</bold> (which can represent a systematic error, e.g., a constant measurement shift of 1 meter due to incorrect calibration), and <bold>variance σ²</bold>, which can be a random error expressing the precision of the instrument itself. The cumulative distribution function at each point indicates the probability that the measurement error will not exceed the chosen value."
       },
       "quantile": {
-        "title": "Quantile Function",
-        "desc": "The quantile function is the inverse of the cumulative distribution function. Instead of asking <italic>What is the probability that we measure a value below <m1/>?</italic> we reverse it: <italic>What is the threshold value (<m2/>) below which exactly a specified percentage of data (<m3/>) lies?</italic> The most well-known quantile is the <bold>median</bold> (<m4/>); other important quantiles are quartiles (dividing the dataset into four parts) and deciles (dividing it into ten parts).",
+        "title": "Quantile function",
+        "desc1": "Before introducing the quantile function itself, it is necessary to explain the concept of a <bold>quantile</bold>: it is a value that divides sorted data in ascending order so that a certain proportion of values lies below it. We can use it to find out below what value a certain part of all observations is located. Special cases of a quantile are, for example, the <bold>median</bold> (divides the dataset into halves), or <bold>quartiles</bold> (divide the dataset into quarters).",
+        "desc2": "The quantile function is the inverse (opposite) of the cumulative distribution function. Instead of the question <italic>What is the probability that we measure a value below <m1/>?</italic> we flip it: <italic>What is the threshold value (<m2/>) below which exactly a specified proportion of data (<m3/>) is located?</italic>",
         "chart1Title": "<color>Real data:</color> Human Capital Index",
-        "chart1Desc": "In the following chart, you can see the quantile function created from real data on the Human Capital Index (HCI+) for various countries around the world (year 2025). This index evaluates the impact of health, education, and work skills on productivity (scale 0 to 325). On the <bold>x-axis</bold>, we select the percentile (<m1/> in %), and on the <bold>y-axis</bold>, we read the corresponding quantile <m2/> (HCI+ score).<br/><br/><bold>How to read this?</bold> Move the slider to a probability of <bold>50% (median)</bold>. The quantile you get represents the threshold value – half of the countries have an HCI+ score less than or equal to this number.",
-        "chart2Title": "<color>Simulated data:</color> Tree heights in a reserve",
-        "chart2Desc": "The default data represent the sorted heights of trees (in meters) measured in a small fictional nature reserve. Try displaying the <bold>median</bold> (50% of the trees are shorter or equally tall) or <bold>deciles</bold> (e.g., the 9th decile shows the threshold height below which 90% of all trees are found). You can interactively delete data and add your own values."
+        "chart1Desc": "The following chart shows the empirical quantile function created from real data on the Human Capital Index (HCI+) for various countries of the world (year 2025). This index evaluates the impact of health, education, and work skills on productivity (scale 0 to 325). On the <bold>x</bold>-axis, we choose the percentile (<m1/>) and on the <bold>y</bold>-axis, we read the corresponding quantile <m2/> (HCI+ score).<br/><br/><bold>How to read it?</bold> Move the slider to the probability of <bold>0.5 (median)</bold>. The quantile you get represents the threshold value – half of the countries have an HCI+ score less than or equal to this number.",
+        "chart2Title": "<color>Simulated data:</color> Height of trees in a reserve",
+        "chart2Desc": "The default data represents the sorted heights of trees (in meters) measured in a small fictional nature reserve. Try displaying the <bold>median</bold> (half of the trees are shorter or equal in height) or <bold>deciles</bold> (e.g., the 9th decile shows the threshold height below which 90% of all trees are located). You can interactively delete data and add your own values."
       }
     },
     "characteristics": {
-      "title": "Characteristics of a Random Variable",
-      "description": "Numerical characteristics allow us to summarize the complex properties of an entire probability distribution into a few concise values. Instead of analyzing the full course of functions, we can quickly compare datasets based on their location, variability, or shape.",
+      "title": "Characteristics of a random variable",
+      "description": "Numerical characteristics allow us to summarize the complex properties of an entire probability distribution into a few concise values. Instead of analyzing the entire course of functions, we can quickly compare datasets based on their location, variability, or shape.",
       "location": {
-        "title": "Measures of Location",
-        "description": "These measures, often referred to as central tendencies, serve to identify the \"center of gravity\" or typical value of a statistical dataset. They indicate the position on the <m/> axis around which the values of the random variable concentrate the most.",
+        "title": "Measures of location",
+        "description": "A typical measure of location of a random variable is its expected value, which serves to identify the \"center of gravity\" or a typical value of a statistical population. They indicate the position on the <m/> axis around which the values of the random variable are most concentrated.",
         "arithmeticMean": {
-          "title": "Arithmetic Mean",
+          "title": "Arithmetic mean",
           "description": "The arithmetic mean (<m1/> for a sample, <m2/> for a population) is the most common estimate of the expected value. It is calculated as the sum of all measured values divided by their count. In geoinformatics, we often use it, for example, when processing repeated measurements at the same location to eliminate random errors.",
-          "exampleTitle": "Determining point elevation",
-          "exampleDesc": "When accurately determining the elevation of a point, we perform a series of independent measurements (e.g., using GNSS equipment). The arithmetic mean provides us with the resulting elevation value. Try entering a few values close to 420 m into the calculator. If you add one erroneous value (e.g., 480 m due to signal multipath), you will see how sensitively the mean reacts to this extreme."
+          "exampleTitle": "Determining the elevation of a point",
+          "exampleDesc": "When accurately determining the elevation of a point, we perform a series of independent measurements (e.g., with GNSS equipment). The arithmetic mean provides us with the final elevation estimate. Try entering a few values close to 420 m into the calculator. If you add one incorrect value (e.g., 480 m due to signal reflection), you will see how sensitively the mean reacts to this extreme."
         },
         "harmonicMean": {
-          "title": "Harmonic Mean",
-          "description": "The harmonic mean (<m/>) is suitable for variables defined as ratios (e.g., units per time). It is the reciprocal of the arithmetic mean of the reciprocals of the data values. In geography, we use it, for example, when calculating average speeds over segments of equal length.",
-          "exampleTitle": "Average flight speed of a surveying drone",
-          "exampleDesc": "Imagine a drone flying over an area along two equally long paths. It flies the first path at a speed of 12.5 m/s (against the wind) and the second at 18 m/s (with the wind). If we want to know the average speed for the entire mission, the arithmetic mean would not be an appropriate representative value. The harmonic mean correctly accounts for the fact that the drone spent more time on the slower segment."
+          "title": "Harmonic mean",
+          "description": "The harmonic mean (<m/>) is suitable for variables that are defined as ratios (e.g., units per time). It is the reciprocal of the arithmetic mean of the reciprocals of the data values. In geography, we use it, for example, when calculating average speeds on segments of equal length.",
+          "exampleTitle": "Average flight speed of a drone during surveying",
+          "exampleDesc": "Imagine a drone flying over an area along two equally long routes. It flies the first route at a speed of 12.5 m/s (against the wind) and the second at a speed of 18 m/s (with the wind). If we want to know the average speed for the entire mission, the arithmetic mean would not be an appropriate representative value. The harmonic mean correctly accounts for the fact that the drone spent more time on the slower segment."
         },
         "geometricMean": {
-          "title": "Geometric Mean",
-          "description": "The geometric mean (<m/>) is used for values that have the character of growth rates or indices. Unlike the arithmetic mean, it uses the product of the values and the n-th root, thus better capturing <bold>cumulative changes</bold>.",
-          "exampleTitle": "Growth rate of a built-up area",
-          "exampleDesc": "If we observe by what percentage a city has grown over ten consecutive years, the geometric mean tells us the true average annual growth rate. It is ideal for data where each subsequent value builds on the previous one (chain indices)."
+          "title": "Geometric mean",
+          "description": "The geometric mean (<m/>) is used for values that have the character of growth rates or indices. Unlike the arithmetic mean, it uses the product of values and the n-th root, which better captures <bold>cumulative changes</bold>.",
+          "exampleTitle": "Growth rate of built-up areas",
+          "exampleDesc": "If we track by what percentage a city has grown in ten consecutive years, the geometric mean will tell us the true average annual growth rate. It is ideal for data where each subsequent value builds on the previous one (chain indices)."
         },
         "weightedMean": {
-          "title": "Weighted Mean",
+          "title": "Weighted mean",
           "description": "The weighted mean (<m1/>) takes into account the unequal importance or weight of individual measurements. We assign a weight (<m2/>) to each value, which determines how much it contributes to the result. It is an important tool, for example, when combining data from different sources.",
           "exampleTitle": "Combined elevation measurement",
-          "exampleDesc": "If we measure the elevation of the same point using two different instruments – a professional GNSS station and a smartphone – we cannot treat them equally. We assign a higher weight to the professional instrument (e.g., based on the inverse of the measurement error). The weighted mean thus \"pulls\" the result closer to the more reliable measurement."
+          "exampleDesc": "If we measure the elevation of the same point with two different instruments – a professional GNSS station and a smartphone – we cannot treat them equally. We assign a higher weight to the professional instrument (e.g., based on the reciprocal of the measurement error). The weighted mean thus \"pulls\" the result closer to the more reliable measurement."
         },
         "mode": {
           "title": "Mode",
-          "description": "The mode (<m/>) is the value that appears most frequently in a statistical dataset. For continuous data (such as precise GNSS measurements), it is harder to determine, and we look for the interval with the highest density. For discrete data, however, it is a direct, specific value.",
-          "exampleTitle": "Number of stories in urban buildings",
-          "exampleDesc": "In the following example, we analyze the number of stories of buildings in a selected city district. The mode will be the type of building most prevalent in the given area (e.g., two-story single-family homes). In the chart, you can also notice a secondary local peak (a so-called local mode) representing, for example, a cluster of seven-story apartment blocks. By adding or removing buildings, you can observe how the most frequently occurring value changes."
+          "description": "The mode (<m/>) is the value that occurs most frequently in a statistical population. For continuous data (e.g., precise GNSS measurements), it is harder to determine, and we look instead for the interval with the highest density. For discrete data, however, it is a direct, specific value.",
+          "exampleTitle": "Number of floors in urban development",
+          "exampleDesc": "In the following example, we analyze the number of floors of buildings in a selected urban district. The mode will be the building type that occurs most in the given area (e.g., two-story family houses). You may also notice a secondary local peak on the chart (a so-called local mode) representing, for example, a cluster of seven-story panel buildings. By adding or removing buildings, you can watch how the most frequently occurring value changes."
         },
         "median": {
           "title": "Median",
-          "description": "The median (<m/>) divides the statistical dataset into two equal halves. Half of the values are less than or equal to the median, and the other half are greater than or equal to the median.",
-          "exampleTitle": "Building heights and resistance to extremes",
-          "exampleDesc": "The main advantage of the median over the arithmetic mean is its <bold>robustness to outliers</bold>. Imagine analyzing building heights in a standard development. Try adding an extreme value to the data – for example, a new <bold>150-meter skyscraper</bold>. Notice that while the arithmetic mean would be radically distorted by this structure (shooting up to almost double), the median shifts only minimally because it exclusively considers the physical center of the ordered sequence."
+          "description": "The median (<m/>) divides a statistical dataset into two equally large halves. Half of the values are less than or equal to the median, and the other half are greater than or equal to the median.",
+          "exampleTitle": "Building height and resistance to extremes",
+          "exampleDesc": "The main advantage of the median over the arithmetic mean is its <bold>robustness to outliers</bold>. Let's imagine we are analyzing building heights in a standard development. Try adding an extreme value to the data – for example, a new <bold>150-meter skyscraper</bold>. Notice that while this structure would radically distort the arithmetic mean (it would shoot up to almost double), the median shifts only minimally because it exclusively considers the physical center of the sorted series."
         }
       },
       "variability": {
-        "title": "Measures of Variability",
-        "description": "While measures of location tell us where data is concentrated, measures of variability reveal how spread out the data is. The simplest measure is the range.",
+        "title": "Measures of variability",
+        "description": "While measures of location tell us where the data is centered, measures of variability reveal how spread out the data is. The simplest measure is the range.",
         "range": {
           "title": "Range",
-          "description": "The range (<m/>) is the difference between the maximum and minimum values in a statistical dataset. It is a quick indicator of the width of the interval containing the data, but by its very nature, it is extremely sensitive to extreme values.",
+          "description": "The range (<m/>) is the difference between the maximum and minimum value in a statistical dataset. It is a quick indicator of the width of the interval in which the data is located, but by its nature, it is extremely sensitive to extreme values.",
           "exampleTitle": "Elevation difference of a ski slope",
-          "exampleDesc": "Imagine analyzing the elevation profile of a ski slope. We have obtained several elevation points (in meters above sea level). The range in this case gives us the total elevation drop of the slope. Add an extreme value to the calculation (for example, a nearby mountain peak at 1492 m a.s.l.) and watch how the range is immediately distorted."
+          "exampleDesc": "Imagine we are analyzing the elevation profile of a ski slope in Malá Morávka. We obtained several elevation points (in meters above sea level). The range in this case gives us the total elevation difference of the slope. Add an extreme value to the calculation (for example, the nearby Praděd peak with an elevation of 1492 m a.s.l.) and watch how the range is instantly distorted."
         },
         "meanDeviation": {
-          "title": "Mean Deviation",
-          "description": "The mean deviation (<m/>) expresses by how much, on average, individual values in a statistical dataset deviate from their arithmetic mean. It is calculated as the arithmetic mean of the absolute values of the deviations from the central tendency. Compared to the range, it uses information from all measurements, not just the extremes.",
+          "title": "Mean deviation",
+          "description": "The mean deviation (<m/>) expresses how much, on average, individual values of a statistical dataset deviate from their arithmetic mean. It is calculated as the arithmetic mean of the absolute values of the deviations from the arithmetic mean. Compared to the range, it uses information from all measurements, not just the extremes.",
           "exampleTitle": "Repeated length measurement",
-          "exampleDesc": "In geodesy, we never measure the same distance twice with an absolutely identical result. The following data represent five independent measurements of a parcel boundary length in meters. The mean deviation in this case gives us the average absolute error of an individual measurement against the mean value. Try adding a measurement with an obvious gross error (e.g., 51.5) and watch the deviation change."
+          "exampleDesc": "In geodesy, we never measure the same distance twice with an absolutely identical result. The following data represent five independent measurements of the length of a parcel boundary in meters. The mean deviation in this case gives us the average absolute error of a single measurement relative to the mean. Try adding a measurement with an obvious gross error (e.g., 51.5) and observe the change in the deviation."
         },
         "meanDifference": {
-          "title": "Mean Difference",
-          "description": "The mean difference (<m/>) does not express the deviation of values from their mean, but rather the average absolute difference between <bold>any two values</bold> mutually. It is calculated as the sum of absolute differences of all possible pairs divided by the number of these pairs.",
+          "title": "Mean difference",
+          "description": "The mean difference (<m/>) does not express the deviation of values from their mean, but the average absolute difference between <bold>any two values</bold> mutually. It is calculated as the sum of absolute differences of all possible pairs divided by the number of these pairs.",
           "exampleTitle": "Heterogeneity of air pollution",
-          "exampleDesc": "In geoinformatics, we often work with sensor networks. Imagine monitoring stations tracking PM10 particulate concentrations (in µg/m³) in a metropolis. The mean difference directly tells us what average difference in pollution we can expect if we move from the vicinity of any one station to another. Try adding a station located near a busy intersection to the network (e.g., with a value of 85.0) and see how the average difference in the network increases."
+          "exampleDesc": "In geoinformatics, we often work with sensor networks. Let's imagine measuring stations monitoring the concentration of PM10 particulate matter (in µg/m³) in a metropolis. The mean difference tells us directly what average difference in pollution we can expect if we move from the vicinity of one random station to another. Try adding a station located at a busy intersection to the network (for example, with a value of 85.0) and watch how the average difference in the network increases."
         },
         "variance": {
           "title": "Variance",
-          "description": "Variance (<m1/> for a sample, <m2/> for a population) is the average squared deviation of values from their mean. In calculations, we distinguish between <bold>sample variance</bold> (divided by <m3/>) and <bold>population variance</bold> (divided by <m4/>). Because deviations are squared, variance <bold>heavily penalizes extremes</bold>. The disadvantage is that the result is in squared units (e.g., square meters, degrees Celsius squared), which is harder to interpret directly.",
+          "description": "Variance (<m1/> for a sample, <m2/> for a population) is the mean squared deviation of values from their expected value. When calculating, we distinguish between <bold>sample variance</bold> (dividing by <m3/>) and <bold>population variance</bold> (dividing by <m4/>). Because the deviations are squared, the variance <bold>heavily penalizes extremes</bold>. The disadvantage is that the result is in squared units (e.g., square meters, degrees Celsius squared), which is harder to interpret directly.",
           "exampleTitle": "Heterogeneity of a point cloud",
-          "exampleDesc": "In airborne laser scanning of a forest, we are interested not only in the average point density but also in its variability. The following data represent the number of returns (points) per square meter in selected test plots. Try adding a plot with extremely dense coverage (e.g., 50 points/m²) and notice how the variance value increases rapidly due to squaring.",
+          "exampleDesc": "During airborne laser scanning of a forest, we are interested not only in the average point density but also in its variability. The following data represent the number of returns (points) per square meter in selected test areas. Try adding an area with extremely dense coverage (e.g., 50 points/m²) and notice how the variance value increases rapidly due to the squaring.",
           "unit": "(points/m²)²"
         },
         "standardDeviation": {
-          "title": "Standard Deviation",
-          "description": "The standard deviation (<m1/> or <m2/>) is the square root of the variance, and similarly, we distinguish between sample and population variants. Its main advantage is that it <bold>returns the result to the original units</bold> of measurement (e.g., degrees Celsius, meters), making it much more intuitive and easier to interpret in practice. It tells us how much the values typically deviate from the mean.",
+          "title": "Standard deviation",
+          "description": "The standard deviation (<m1/> or <m2/>) is the square root of the variance and, similarly, we distinguish between sample and population variants when calculating. Its main advantage is that it <bold>returns the result to the original units</bold> of measurement (e.g., degrees Celsius, meters), making it much more intuitive and easier to interpret in practice. It tells us how much values typically deviate from the mean.",
           "exampleTitle": "Urban heat island",
-          "exampleDesc": "The urban heat island phenomenon causes city centers to be significantly warmer than their surroundings. Imagine a network of five temperature sensors placed in different zones of a city. The standard deviation in this case tells us how pronounced the temperature differences are within this area. Try adding a sensor from a cooler suburban park (e.g., 18.5 °C) and watch how the deviation in the system increases."
+          "exampleDesc": "The urban heat island phenomenon causes city centers to be significantly warmer than their surroundings. Let's imagine a network of five temperature sensors distributed in different zones of a city. The standard deviation in this case tells us how significant the temperature differences are within this area. Try adding a sensor from a cooler suburban park (e.g., 18.5 °C) and watch how the deviation in the system increases."
         },
         "coefficientOfVariation": {
-          "title": "Coefficient of Variation",
-          "description": "The coefficient of variation (<m/>) is a dimensionless measure of variability, most often expressed as a percentage. It is calculated as the ratio of the standard deviation to the arithmetic mean. Its advantage is that it <bold>allows comparing variability between datasets with different units</bold> or diametrically opposed means (e.g., the variability of tree heights vs. their trunk diameters).",
-          "exampleTitle": "Spatial instability of precipitation",
-          "exampleDesc": "In hydrology and climatology, the coefficient of variation is often used to assess precipitation stability. The following data represent annual precipitation totals (in mm) at five different rain gauge stations in a monitored area. If the resulting coefficient is high (e.g., above 30%), it tells us that precipitation in the area is highly uneven and unpredictable spatially. Try changing the values to make the precipitation more even (for example, set values around 500 mm for all stations) and observe the decrease in percentage variability."
+          "title": "Coefficient of variation",
+          "description": "The coefficient of variation (<m/>) is a dimensionless measure of variability, most often expressed as a percentage. It is calculated as the ratio of the standard deviation to the arithmetic mean. Its advantage is that it <bold>allows comparing variability between datasets with different units</bold> or diametrically different means (e.g., the variability of tree heights vs. their trunk diameters).",
+          "exampleTitle": "Spatial volatility of precipitation",
+          "exampleDesc": "In hydrology and climatology, the coefficient of variation is often used to evaluate the stability of precipitation. The following data represent annual precipitation totals (in mm) at five different rain gauge stations in the monitored area. If the resulting coefficient is high (e.g., over 30%), it tells us that precipitation in the area is spatially very uneven and unpredictable. Try changing the values so that the precipitation is more even (for example, set all stations to values around 500 mm) and watch the percentage variability drop."
         },
         "quartileDeviation": {
-          "title": "Quartile Deviation",
-          "description": "Quartile deviation (<m1/>) is defined as half of the interquartile range. It focuses exclusively on the <bold>middle 50% of the data</bold>. It is calculated as half the difference between the third (<m2/>) and first quartiles (<m3/>). Since extremes (the bottom and top 25% of values) do not enter the calculation, this characteristic is highly robust to outliers.",
+          "title": "Quartile deviation",
+          "description": "The quartile deviation (<m1/>) is defined as half of the interquartile range. It focuses exclusively on the <bold>middle 50% of the data</bold>. It is calculated as half the difference between the third (<m2/>) and first quartile (<m3/>). Since extremes (the lower and upper 25% of values) do not enter the calculation, this characteristic is highly robust to outliers.",
           "exampleTitle": "Land market prices and the impact of extremes",
-          "exampleDesc": "Cadastral and price maps often contain anomalies. Imagine analyzing land prices (in €/m²) in a gardening colony. Among regular sales, there is one extreme (e.g., a speculative purchase at 145 €/m²). While the ordinary range for these data would skyrocket, <m1/> ignores the extreme and stably describes the variability of the middle segment of the market. Try deleting the extreme (145) and notice that the value of <m2/> barely changes."
+          "exampleDesc": "Cadastral and price maps often contain anomalies. Imagine analyzing land prices (in €/m²) in an allotment garden settlement. Among standard sales, there is one extreme (e.g., a speculative purchase at 145 €/m²). While the ordinary range would skyrocket for this data, <m1/> ignores the extreme and stably describes the variability of the middle part of the market. Try deleting the extreme (145) and notice that the value of <m2/> barely changes."
         }
       },
       "otherMeasures": {
-        "title": "Other Numerical Measures",
-        "description": "In addition to the location and spread of data, we also examine the overall shape and symmetry of the distribution. These shape characteristics tell us whether the data clusters to one side or how steep its peak is compared to a theoretical model.",
+        "title": "Other numerical characteristics",
+        "description": "In addition to the location and spread of the data, we also examine the overall course and symmetry of the distribution. These shape characteristics tell us whether the data is concentrated to one side or how steep its peak is compared to a theoretical model. When calculating them, we compare the empirical density estimate with the density of a symmetric (skewness) or normal distribution (kurtosis).",
         "skewness": {
-          "title": "Skewness",
-          "description": "Skewness (<m/>) evaluates the <bold>asymmetry</bold> of the data distribution around its mean. If the distribution has a longer tail towards higher values, it has <bold>positive skewness</bold> (a few high values pull the mean upwards). If it has a longer tail towards lower values, it has <bold>negative skewness</bold>.",
+          "title": "Skewness coefficient",
+          "description": "The skewness coefficient (<m/>) evaluates the <bold>asymmetry</bold> of the data distribution around its mean. If the distribution has a longer tail towards higher values, it is a <bold>positive skewness</bold> (a few high values pull the mean up). If it has a longer tail towards lower values, it is a <bold>negative skewness</bold>.",
           "exampleTitle": "Age structure of a forest",
-          "exampleDesc": "Move the slider to change the skewness of the tree age distribution in a forest. <bold>Positive skewness</bold> represents, for example, a young regenerated forest after logging (most trees are young, very few old ones - tail on the right). <bold>Negative skewness</bold>, on the other hand, models an old, impenetrable primeval forest (most trees are old, only a few young ones survive due to lack of light - tail on the left)."
+          "exampleDesc": "Move the slider to change the skewness of the tree age distribution in a forest. <bold>Positive skewness</bold> represents, for example, a rejuvenated forest after logging (most trees are young, old ones are minimal - tail to the right). <bold>Negative skewness</bold>, on the other hand, models an old impenetrable primeval forest (most trees are old, only a few young ones survive due to lack of light - tail to the left)."
         },
         "kurtosis": {
-          "title": "Kurtosis",
-          "description": "Kurtosis (<m/>) describes the concentration of values around the mean compared to a normal distribution. A positive value of this coefficient manifests in the data as a sharp peak and fat tails (leptokurtic distribution), while a negative value means a flat distribution with thin tails (platykurtic distribution).",
-          "exampleTitle": "River flow regimes",
-          "exampleDesc": "In hydrology, the shape of the distribution is crucial for predicting extremes. A <bold>peaked distribution</bold> with thick tails models, for example, an untamed mountain stream or a wadi in a desert. Most of the year, the flow is stable (high peak in the center), but if a strong storm hits, an unexpected extreme flash flood occurs (thick tails far from the center). Conversely, a <bold>flat distribution</bold> represents a large river regulated by a dam. The flow here is predictable and fluctuates evenly in a broader middle band, but anomalous extreme floods almost never occur (thin tails)."
+          "title": "Kurtosis coefficient",
+          "description": "The kurtosis coefficient (<m/>) describes the concentration of values around the mean compared to a normal distribution. A positive value of this coefficient manifests in the data as a distinct peak and heavy tails (leptokurtic distribution), while a negative value means a flat distribution with light tails (platykurtic distribution).",
+          "exampleTitle": "River discharge regime",
+          "exampleDesc": "In hydrology, the shape of the distribution is crucial for predicting extremes. A <bold>peaked distribution</bold> with heavy tails models, for example, an untamed mountain stream or a wadi in a desert. For most of the year, the flow is stable (high peak in the middle), but if a strong storm comes, an unexpected extreme flash flood occurs (heavy tails far from the center). Conversely, a <bold>flat distribution</bold> represents a large river regulated by a dam. The flow here is predictable and evenly fluctuates within a wider middle band, but anomalous extreme floods almost never occur (light tails)."
         }
       },
       "fiveNumber": {
-        "title": "Five-number Summary and Boxplot",
-        "description": "The five-number summary provides a comprehensive view of the data distribution. Its visual representation is the <bold>boxplot</bold>, which consists of several key parts: <br/><br/> <ul> <li> <bold>Box (rectangle):</bold> is bounded by the <bold>lower quartile (<m1/>)</bold> and the <bold>upper quartile (<m2/>)</bold>. It represents the middle 50% of the values (interquartile range – IQR). </li>  <li> <bold>Median:</bold> the line inside the box that divides the dataset into two halves. <br/> </li> <li> <bold>Whiskers:</bold> line segments showing the variability outside the box. They extend to the furthest point that is <bold>not an outlier</bold>. If outliers exist, the whiskers <bold>do not correspond to the minimum and maximum</bold>. <br/> </li> <li> <bold>Outliers:</bold> points plotted outside the whiskers. A value is considered an outlier if it is further from the box than 1.5 times the length of the box (IQR). </li> </ul>",
-        "note": "Note: precise rules for drawing whiskers and outliers may vary depending on specific software or settings, but the basic principle of displaying the data distribution using a boxplot remains the same.",
-        "exampleTitle": "Life expectancy at birth worldwide",
-        "exampleDesc": "Boxplots are most powerful when we need to quickly compare multiple groups over time. The following data from the World Bank and the UN show <bold>life expectancy at birth</bold> (how many years a newborn would live on average if current mortality rates remained unchanged). This metric is an important indicator of health status and socioeconomic development. <br /><br /> Try grouping the countries by <bold>continent (UN classification)</bold> or <bold>income group (in 2025)</bold> and turn on the comparison for multiple years simultaneously. You will see how the means shift upward over time and how the variability or number of extremes changes between groups."
+        "title": "Five-number summary and boxplot",
+        "description": "The five-number summary provides a comprehensive view of the data distribution. Its visual representation is the <bold>boxplot</bold>, which consists of several key parts:<br/><br/> <ul> <li> <bold>Box (rectangle):</bold> is bounded by the <bold>lower quartile (<m1/>)</bold> and the <bold>upper quartile (<m2/>)</bold>. It represents the middle 50% of values (interquartile range – IQR). </li> <li> <bold>Median:</bold> a line inside the box that divides the dataset into two halves.<br/> </li> <li> <bold>Whiskers:</bold> lines showing the variability outside the box. They extend to the furthest point that <bold>is not an outlier</bold>. If outliers exist, the whiskers <bold>do not correspond to the minimum and maximum</bold>.<br/> </li> <li> <bold>Outliers:</bold> points displayed outside the whiskers. A value is considered an outlier if it is further from the box than 1.5 times the length of the box (IQR). </li> </ul>",
+        "note": "Note: the exact rules for drawing whiskers and outliers may vary depending on specific software or settings, but the basic principle of displaying data distribution using a boxplot remains the same.",
+        "exampleTitle": "Life expectancy at birth in the world",
+        "exampleDesc": "Boxplots are strongest when we need to quickly compare multiple groups over time. The following data from the World Bank and the UN show <bold>life expectancy at birth</bold> (how many years a newborn would live on average, assuming current mortality rates remain constant). This indicator is an important measure of health status and socioeconomic development.<br /><br /> Try grouping countries by <bold>continent (UN classification)</bold> or <bold>income group (in 2025)</bold> and turn on the comparison of multiple years simultaneously. You will see how the median values shift upwards over time and how the variability or the number of extremes between groups changes."
       }
     }
   },
+
   "probabilityDistributions": {
     "introduction": {
-      "p1": "In geoinformatics, we often work with data that has a random nature – for example, measurement errors, deviations in point positions, or variability in data collected in the field. To be able to model these phenomena, we use <bold>probability distributions</bold>.",
-      "p2": "Their goal is to mathematically describe the probability with which individual values of a random variable occur. Based on such a description, we can not only analyze past data but also predict the system's behavior in the future."
+      "p1": "In geoinformatics, we often work with data that has a random character – for example, measurement error, deviations in point positions, or variability in data collected in the field. To be able to model these phenomena, we use <bold>probability distributions</bold>.",
+      "p2": "Their goal is to mathematically describe the probability with which individual values of a random variable occur. Based on such a description, we can not only analyze past data but also predict the behavior of the system in the future."
     },
     "discrete": {
-      "title": "Discrete Distributions",
-      "description": "Discrete probability distributions describe random variables that can take only a countable number of values, such as specific integers.",
+      "title": "Discrete distributions",
+      "description": "Discrete probability distributions describe random variables that can take only a countable number of values, for example, certain integers.",
       "bernoulli": {
-        "title": "Bernoulli Distribution",
-        "description": "The Bernoulli distribution is the simplest discrete distribution for experiments that have only two mutually exclusive outcomes: \"success\" (value 1) and \"failure\" (value 0). The set of possible outcomes is <m1/>. The probability of success is denoted as <m2/> (where <m3/>), therefore <m4/>. The probability of failure is the complement to 1, i.e., <m5/>.",
+        "title": "Bernoulli distribution",
+        "description": "The Bernoulli distribution is the simplest discrete distribution for experiments that have only two mutually exclusive outcomes: \"success\" (value 1) and \"failure\" (value 0). The set of possible outcomes is <m1/>. The probability of success is denoted as <m2/> (where <m3/>), i.e., <m4/>. The probability of failure is the complement to 1, i.e., <m5/>.",
         "otherwise": "otherwise",
         "exampleTitle": "Satellite image classification",
-        "exampleDesc": "Imagine we are analyzing a satellite image of an area where 25% of the surface is water. We randomly select one pixel in the image. The random variable X takes the value 1 (success) if the pixel represents water, and 0 (failure) if it is land. In the chart below, you can change the parameter <bold><m/></bold> (the proportion of water area) and watch the probability mass function and cumulative distribution function change."
+        "exampleDesc": "Imagine we are analyzing a satellite image of an area where 25% of the surface is water. We randomly select one pixel on the image. The random variable X takes the value 1 (success) if the pixel represents water, and 0 (failure) if it is land. In the chart below, you can change the parameter <bold><m/></bold> (the proportion of water area in the territory) and observe the change in the probability mass and cumulative distribution functions."
       },
       "uniform": {
-        "title": "Uniform Distribution",
-        "description": "The discrete uniform distribution describes a random variable where each of a finite number <m1/> of possible outcomes has an equal probability of occurring. The probability mass function is constant: <m2/> for all possible values.",
-        "exampleTitle": "Random selection of an administrative unit",
-        "exampleDesc": "Imagine we want to perform a random air quality check in one selected district of a certain region. The parameter <bold><m1/></bold> here represents the total number of districts in that region. If the selection is completely random, every district has an equal chance of being checked. By changing the parameter <bold><m2/></bold> on the slider, we simulate moving to another region with a different number of districts (e.g., the Olomouc region has <m3/>, the South Moravian region <m4/>). Notice that the more districts there are, the lower the probability of selecting a specific one."
+        "title": "Uniform distribution",
+        "description": "The discrete uniform distribution describes a random variable where each of the finite number <m1/> of possible outcomes has an equal probability of occurring. The probability mass function is constant: <m2/> for all possible values.",
+        "exampleTitle": "Rolling a die",
+        "exampleDesc": "An example is rolling a statistically fair die. The parameter <bold><m1/></bold> represents the number of faces on the die. Every number on the die has an equal probability of being rolled. By changing the parameter <bold><m1/></bold>, you simulate the use of different types of dice (e.g., four-sided <m2/>, classic six-sided <m3/>, or twenty-sided). The probability of each outcome is always <m4/>."
       },
       "binomial": {
-        "title": "Binomial Distribution",
-        "description": "The binomial distribution determines the number of successes in <m1/> independent trials. A variable with a binomial distribution is the sum of independent variables with a Bernoulli distribution; the parameters of this distribution are <m2/> (the probability of success) and the number of trials <m3/>.",
+        "title": "Binomial distribution",
+        "description": "The binomial distribution describes the probability of the number of successes in <m1/> independent trials, where only two possible outcomes (success or failure) can occur in each trial, and the probability of success is the same in all trials and equal to <m2/>. A random variable with a binomial distribution is the sum of <m1/> independent random variables with a Bernoulli distribution. The parameters of the binomial distribution are the number of trials <m1/> and the probability of success <m2/>.",
         "exampleTitle": "Automatic object extraction",
-        "exampleDesc": "When analyzing satellite images, we use an algorithm to detect buildings. The parameter <bold><m1/></bold> represents the probability that the algorithm correctly identifies a building (success), and <bold><m2/></bold> is the total number of buildings in the image it has to process. Notice that if the algorithm's accuracy is high (e.g., <m3/>), the highest probability accumulates at a value close to the total number of buildings <bold><m4/></bold>."
+        "exampleDesc": "When analyzing satellite images, we use an algorithm for building detection. The parameter <bold><m1/></bold> represents the probability that the algorithm correctly identifies a building (success), and <bold><m2/></bold> is the total number of buildings in the image it has to process. Notice that if the algorithm's accuracy is high (e.g., <m3/>), the highest probability accumulates at a value close to the total number of buildings <bold><m4/></bold>."
       },
       "poisson": {
-        "title": "Poisson Distribution",
-        "description": "The Poisson distribution describes the probability of a certain number of random events occurring in a fixed time or space interval. The key parameter is <m1/> (lambda), which represents the average number of these events per given unit.",
-        "exampleTitle": "Map server load monitoring",
-        "exampleDesc": "During the operation of a WMS server, requests for map tiles arrive randomly. Suppose the average arrival rate is <bold><m1/></bold> requests per second. The Poisson distribution helps determine the probability of spikes that could overload the server. Watch how increasing the average load (<bold><m2/></bold>) also increases the probability of a higher number of simultaneous requests."
+        "title": "Poisson distribution",
+        "description": "The Poisson distribution describes the probability of a certain number of random events occurring in a fixed interval, assuming these events occur independently of each other and with a constant average rate. The parameter of the Poisson distribution is <m1/> (lambda), which expresses the expected number of occurrences of the observed event in a given interval.",
+        "exampleTitle": "Monitoring map server load",
+        "exampleDesc": "During the operation of a WMS server, requests for map tiles arrive randomly. Let's assume the average arrival rate is <bold><m1/></bold> requests per second. The Poisson distribution helps determine the probability of spikes that could overload the server. Watch how increasing the average load (<bold><m2/></bold>) also increases the probability of a higher number of simultaneous requests."
       }
     },
     "continuous": {
-      "title": "Continuous Distributions",
-      "description": "Continuous probability distributions describe random variables that can take any value within a certain interval. Unlike discrete distributions, the probability that a continuous variable takes exactly one specific value (e.g., exactly <m/>) is zero. Instead, we calculate the probability that the value falls into a specific interval.",
+      "title": "Continuous distributions",
+      "description": "Continuous probability distributions describe random variables that can take any value within a certain interval. Unlike discrete distributions, the probability that a continuous variable takes a specific value (e.g., exactly <m/>) is zero. Instead, we calculate the probability that the value falls within a certain interval.",
       "uniform": {
-        "title": "Uniform Distribution",
-        "description": "The continuous uniform distribution defines a random variable that can take any value in a closed interval <m/>. The probability density is constant throughout this interval, meaning all subintervals of the same length are equally probable.",
+        "title": "Uniform distribution",
+        "description": "The continuous uniform distribution defines a random variable that can take any value in the closed interval <m/>. The probability density is constant throughout this interval, meaning all subintervals of the same length are equally probable.",
         "exampleTitle": "Waiting for a natural phenomenon",
-        "exampleDesc": "Imagine we are monitoring a geyser known to erupt randomly in an interval from <bold><m1/></bold> to <bold><m2/></bold> minutes after the last eruption. If we have no other information, such as when the last eruption occurred, we assume the probability of an eruption in the 14th minute is the same as in the 18th minute. In the chart below, you can see that the probability density forms a rectangle – its area must always equal 1, so as the interval widens, the height of the rectangle decreases."
+        "exampleDesc": "Let's imagine we are monitoring a geyser known to erupt randomly within an interval of <bold><m1/></bold> to <bold><m2/></bold> minutes since the last eruption. If we have no further information, such as when the last eruption occurred, we assume that the probability of an eruption in the 14th minute is the same as in the 18th minute. In the chart below, you can see that the probability density forms a rectangle – its area must always equal 1, so as the interval increases, the height of the rectangle decreases."
       },
       "exponential": {
-        "title": "Exponential Distribution",
-        "description": "The exponential distribution is often used to model the time between random events – it expresses the waiting time for a random event. It is a distribution with \"short memory\" – the probability that an event will occur in the next moment does not depend on how long we have already been waiting. While a uniform distribution means all values in a given interval are equally likely, the exponential distribution describes situations where a short wait time is most probable, and the probability drops rapidly over time.",
+        "title": "Exponential distribution",
+        "description": "The exponential distribution is often used to model the time between random events – it expresses the waiting time for a random event. It is a 'memoryless' distribution – the probability that the event will occur in the next moment does not depend on how long we have already been waiting. While the uniform distribution means all values in a given interval are equally likely, the exponential distribution describes situations where a short waiting time is most probable, and the probability drops rapidly with time.",
         "exampleTitle": "Reliability of a monitoring network",
-        "exampleDesc": "Imagine an automatic weather station in the field. The exponential distribution models the <bold>time between two data transmission failures</bold>. The parameter <bold><m1/></bold> (lambda) represents the failure rate – the higher it is, the more frequently failures occur and the shorter the intervals between them. Notice that the curve starts high (short intervals are most probable) and typically drops sharply towards the right for long wait times."
+        "exampleDesc": "Let's imagine an automatic weather station in the field. The exponential distribution models the <bold>time between two failures</bold> in data transmission. The parameter <bold><m1/></bold> (lambda) represents the failure rate – the higher it is, the more frequently failures occur and the shorter the intervals between them. Notice that the curve starts high (short intervals are most probable) and generally drops sharply to the right towards long waiting times."
       },
       "normal": {
-        "title": "Normal Distribution",
-        "description": "The normal (Gaussian) distribution is the most important continuous distribution in statistics because it approximates the distribution of many real-world phenomena and is of great significance in statistical methods, such as parameter estimation and hypothesis testing. It is symmetric around the mean <m1/> and the shape of its \"bell\" is determined by the standard deviation <m2/>. In nature and technology, for example, most random measurement errors follow a normal distribution.",
-        "standardNormalDesc": "A special case is the <bold>standard normal distribution</bold> (also referred to as the Z-distribution), which has: <ul> <li>a mean equal to zero (<m1/> = 0),</li> <li>a standard deviation equal to one (<m2/> = 1).</li> </ul> The standard normal distribution was introduced because, due to the more complex calculation of probability density and cumulative distribution functions, they would otherwise have to be computed separately for every unique parameter combination. For this reason, this standardization method was created, converting all possible normal distributions into a uniform format.",
-        "exampleTitle": "GNSS receiver calibration and accuracy",
-        "exampleDesc": "Imagine measuring the position of a stationary point using GNSS. The parameter <bold><m1/> (mean)</bold> represents a systematic error (e.g., if the instrument is poorly calibrated and always shifts the result by 1 meter). The parameter <bold><m2/> (standard deviation)</bold> determines the precision of the instrument – the smaller it is, the more the measurements are concentrated closely around the center, meaning the instrument is of higher quality. Notice that when <bold><m3/></bold> is decreased, the chart narrows and its peak rises sharply, as the total area under the curve must remain 1."
+        "title": "Normal distribution",
+        "description": "The normal (Gaussian) distribution is the most important continuous distribution in statistics because it approximates the distribution of many real-world phenomena and has great significance in statistical methods, such as statistical estimation and hypothesis testing. It is symmetric around the mean <m1/>, and the shape of its \"bell\" is determined by the standard deviation <m2/>. In nature and technology, for example, most random measurement errors follow a normal distribution.",
+        "standardNormalDesc": "A special case is the <bold>standard normal distribution</bold> (also referred to as the Z-distribution), which has: <ul> <li>a mean equal to zero (<m1/> = 0),</li> <li>a standard deviation equal to one (<m2/> = 1).</li> </ul> The standard normal distribution was introduced because, due to the complex calculation of the probability density and cumulative distribution function, it would have to be calculated separately for every unique combination of parameters. For this reason, this standardization method was created, which converts all possible normal distributions into a uniform format.",
+        "exampleTitle": "Calibration and accuracy of a GNSS receiver",
+        "exampleDesc": "Let's imagine measuring the position of a stationary point using GNSS. The parameter <bold><m1/> (mean)</bold> represents a systematic error (e.g., if the instrument is poorly calibrated and always shifts the result by 1 meter). The parameter <bold><m2/> (standard deviation)</bold> determines the precision of the instrument – the smaller it is, the more concentrated the measurements are closer to the center, and the higher the quality of the instrument. Notice that when <bold><m3/></bold> is reduced, the chart narrows and its peak grows sharply because the total area under the curve must remain equal to 1.",
+        "otherDistributions": "Three other important probability distributions are derived from the normal distribution, which are of great importance, especially in interval estimation or hypothesis testing, where the probability distribution of selected test statistics is governed by them."
       },
       "chiSquare": {
-        "title": "Chi-squared Distribution",
-        "description": "The Chi-squared distribution (<m1/>) is an asymmetric continuous probability distribution that takes only non-negative values. It arises as the sum of the squares of independent standard normal random variables. It is defined by the parameter <bold><m2/> (degrees of freedom)</bold>, and in many statistical tasks, the relationship <m3/> applies. This distribution is crucial for testing hypotheses about variance, testing independence in contingency tables, or in goodness-of-fit tests.",
-        "exampleTitle": "Checking the stability of measurement accuracy",
-        "exampleDesc": "Imagine we are testing the precision of a new laser rangefinder. We perform a series of measurements over a known distance, and we are not interested in the average length, but rather the <bold>variability (variance)</bold> of the measurement errors. The <m1/> distribution models exactly the sum of the squares of these random errors. The parameter <bold><m3/> (degrees of freedom)</bold> directly reflects the scope of your experiment (<m2/>). <br/><br/> Observe on the chart that with a low number of measurements, the distribution is heavily skewed, and most errors concentrate near zero. As the number of measurements grows and <bold><m3/></bold> increases, the peak of the distribution shifts to the right, the variability of the values increases, and the shape of the curve begins to resemble a symmetric normal distribution."
+        "title": "Chi-square distribution",
+        "description": "The chi-square distribution (<m1/>) is an asymmetric continuous probability distribution that takes only non-negative values. It arises as the sum of the squares of independent standard normal random variables. It is defined by the parameter <bold><m2/> (degrees of freedom)</bold>. This distribution is crucial for testing hypotheses about variance, testing independence in contingency tables, or for goodness-of-fit tests."
       },
       "studentT": {
         "title": "Student's t-distribution",
-        "description": "Student's t-distribution is used to estimate the population mean in cases where the sample size is small and the population standard deviation is unknown. It is derived from the normal distribution, and thanks to it, we can work with these smaller datasets with a certain level of confidence. The sample size is accounted for by the parameter <bold><m1/> (degrees of freedom)</bold>.",
-        "exampleTitle": "Verifying the precision of a new measuring instrument",
-        "exampleDesc": "Imagine we are testing the precision of a new laser scanner, but we only managed to perform 5 control measurements (a small sample). Because of the small amount of data, we have higher uncertainty, which the t-distribution expresses with wider tails. The parameter <bold>df (degrees of freedom)</bold> is directly related to the number of measurements. Notice that as <bold><m1/></bold> increases, the t-distribution gradually approaches the normal distribution."
+        "description": "Student's t-distribution is used to model the estimate of the population mean assuming the data comes from a normal distribution and we do not know its variance. It is derived from the normal distribution, and with a certain level of confidence, it allows us to work even with these smaller samples. The sample size is accounted for by the parameter <bold><m1/> (degrees of freedom)</bold>."
       },
       "fisherF": {
         "title": "Fisher's F-distribution",
-        "description": "Fisher's F-distribution describes the ratio of two independent variance estimates. It is defined by two degrees of freedom parameters: <m1/> (numerator – variability between groups) and <m2/> (denominator – variability within groups). It is key for the analysis of variance (ANOVA).",
-        "exampleTitle": "Comparing air quality across different city zones",
-        "exampleDesc": "Imagine we are comparing average dust concentrations <m1/> across 5 zones. The parameter <m2/> is calculated as <m3/> (number of zones minus one) and represents the differences between them. The parameter <m4/> is equal to <m5/> (total number of measurements across zones minus the number of zones) and reflects the natural fluctuation of values within each zone. The F-distribution helps us decide whether the differences between zones are <bold>statistically significant</bold> relative to this random noise."
+        "description": "Fisher's distribution describes the ratio of two independent variance estimates. It is defined by two degrees of freedom parameters: <m1/> and <m2/>. Three other important probability distributions are derived from the normal distribution, which are of great importance, especially in interval estimation or hypothesis testing, where the probability distribution of selected test statistics is governed by them."
       }
     }
   },
+
   "parameterEstimation": {
     "intro": {
-      "p1": "A common scenario when processing mass phenomena is that we have a relatively small number of observations (sample) and we want to draw conclusions about the entire population.",
-      "p2": "Finding the 'universal truth' about a population using a random sample is called <bold>statistical inference</bold>. Based on the values from the sample, we estimate the unknown values of the population, always having to accept a certain margin of error – our estimate is probabilistic in nature.",
+      "p1": "A common case when processing collective phenomena is that we have a relatively small number of observations (sample) and we want to draw conclusions about the entire population.",
+      "p2": "The search for 'general truth' about a population using a random sample is called <bold>statistical inference</bold>. Based on the values from the sample, we estimate the unknown population values, while always having to accept a certain margin of error – our estimate has a probabilistic character.",
       "populationTitle": "Population",
-      "populationDesc": "We characterize the population using parameters. These are constant values depending on the probability distribution of the population, which are mostly unknown to us.",
+      "populationDesc": "A population is characterized by parameters. These are constant values dependent on the population's probability distribution, which are mostly unknown to us.",
       "sampleTitle": "Sample",
-      "sampleDesc": "In the sample, we observe sample statistics. These are not constants; rather, they have the character of a random variable that changes depending on the specific sample drawn.",
-      "p3": "To explicitly distinguish whether we are talking about an unknown value of the entire population or a value derived from our sample, statistics uses strictly separated notation.",
-      "tableTitle": "Population and Sample",
+      "sampleDesc": "In a sample, we observe sample statistics. These are not constants, but rather have the character of a random variable that changes depending on the specific sample.",
+      "p3": "To strictly distinguish in estimation theory whether we are talking about an unknown population value or a value derived from our sample, statistics uses strictly separated notation.",
+      "tableTitle": "Population and sample",
       "table": {
-        "col1": "Sample statistic → point estimate",
+        "col1": "Sample statistic",
         "col2": "Unknown population parameter",
         "row1_stat": "sample mean",
-        "row1_param": "population mean (expected value)",
+        "row1_param": "population mean",
         "row2_stat": "sample standard deviation",
         "row2_param": "population standard deviation",
-        "row3_stat": "sample size",
-        "row3_param": "population size"
-      },
-      "p4": "Calculating sample statistics from a specific sample provides us with a so-called point estimate of the sought parameter (e.g., the sample mean estimates the population mean). However, a point estimate is not perfect and by itself tells us nothing about its accuracy."
+        "row3_stat": "sample variance",
+        "row3_param": "population variance",
+        "row4_stat": "sample size",
+        "row4_param": "population size"
+      }
     },
     "pointEstimation": {
-      "title": "Point Estimation",
-      "p1": "The main goal of point estimation is to approximate an unknown population parameter using a single number – a sample statistic. The most typical example is the <bold>sample mean</bold> (<xbar/>), which we use to estimate the true mean (<mu/>) of the entire population.",
-      "p2": "However, this estimate is never 100% accurate. Since it is based solely on one specific sample of elements, it is always subject to a certain <bold>estimation error</bold>. If a new, equally sized random sample were drawn, the calculated mean would differ slightly.",
+      "title": "Point estimation",
+      "p1": "The basic goal of point estimation is to approximate an unknown population parameter using a single number – a sample statistic. The most typical example is the <bold>sample mean</bold> (<xbar/>), which we use to estimate the true mean (<mu/>) of the entire population.",
+      "p2": "However, this estimate is never 100% accurate. Since it is based on only one specific sample realization, it is always burdened with a certain <bold>estimation error</bold>. If a new random sample of the same size were drawn, the calculated mean would differ slightly.",
       "semTitle": "Standard Error of the Mean",
-      "semDesc": "The error of this estimate – i.e., how much the obtained sample mean typically differs from the true population mean – is expressed by the <bold>Standard Error of the Mean</bold> (SEM). The standard error of the mean corresponds to the standard deviation of the sampling distribution of the sample mean. It is calculated from the standard deviation of the entire population (<sigma/>) and the sample size (<n/>):",
-      "semEffect": "This relationship implies that as the sample size increases, the standard error decreases. The more observations we have, the less the sample mean fluctuates around the true mean, making our estimate more accurate.",
+      "semDesc": "The error rate of this estimate – that is, how much the obtained sample mean typically differs from the true population mean – is expressed by the so-called <bold>Standard Error of the Mean</bold> (SEM). The standard error of the mean corresponds to the standard deviation of the sampling distribution of the sample means. It is calculated from the population standard deviation (<sigma/>) and the sample size (<n/>):",
+      "semEffect": "From this relationship, it follows that as the sample size increases, the standard error decreases. The more observations we have, the less the sample mean fluctuates around the true population mean, making our estimate more precise. In practice, the population standard deviation is often unknown, so it is estimated from the sample.",
       "simulation": {
         "exampleTitle": "Determining point elevation using GNSS measurement",
-        "exampleDesc": "Imagine we repeatedly measure the elevation of Mt. Praděd using a GPS device. The true elevation (<m1/>) is <bold>1492 m</bold>, and the device has a given precision representing the population standard deviation (<m2/> m). In the simulation below, you can observe <bold>how the point estimate behaves</bold> for the mean (<m4/>) and the sample standard deviation (<m5/>) across different sample sizes (<m3/> measurements). <bold>By adding more samples, you can see how the individual estimates fluctuate</bold> around the true value.",
+        "exampleDesc": "Imagine repeatedly measuring the elevation of Mount Praděd with a less precise GPS device. In the simulation below, you can observe <bold>how the point estimate behaves with different sample sizes (<m3/> measurements)</bold> for the mean (<m4/>) and the sample standard deviation (<m5/>), which is then used to calculate the standard error of the mean. Since we know the true elevation (1492 m a.s.l.), by adding more samples, you can observe how individual estimates fluctuate around the true value.",
         "controls": {
-          "target": "Estimated parameter:",
-          "targetMean": "Mean (μ)",
-          "targetStd": "Standard Deviation (σ)",
           "popMean": "True mean (μ):",
           "popStd": "True std. deviation (σ):",
           "sampleSize": "Sample size (n):"
@@ -438,38 +450,37 @@
           "sampleMean": "Sample mean",
           "sampleStd": "Sample std. deviation",
           "sem": "Standard error (SEM)",
-          "recordedMeans": "Recorded means:",
-          "recordedStds": "Recorded std. deviations:",
+          "recordedMeans": "Recorded samples:",
           "samplesCount": "samples"
         },
         "chart": {
           "xAxisLabel": "Elevation (m)",
-          "yAxisLabel": "f(x)"
+          "yAxisLabel": "Empirical density"
         }
       },
-      "realDataTitle": "Point estimate of the median population age in EU regions",
-      "realDataP1": "In the chart above, point estimation and SEM were illustrated using synthetic data. In this case, the <bold>population</bold> consists of all <bold>1,113 NUTS3 regions of the European Union</bold> for which Eurostat recorded the median population age in 2025.",
-      "realDataP2": "Since we have the entire population available, we know its true parameters: the mean <mu/> in years and the standard deviation <sigma/> in years. This makes it possible to observe the accuracy of the estimate depending on the sample size. Using the tool below, you can <bold>generate random samples of different sizes and watch how the sample mean and variance behave depending on n.</bold>"
+      "realDataTitle": "Point estimate of the median age of the population in EU regions",
+      "realDataP1": "In the chart above, the point estimate and SEM were illustrated using synthetic data. In this case, the <bold>population</bold> consists of all <bold>1,113 NUTS3 regions of the European Union</bold> for which Eurostat recorded the median age of the population in 2025.",
+      "realDataP2": "Since we have the entire population available, we know its true parameters: a mean of <mu/> years and a standard deviation of <sigma/> years. Because of this, it is possible to observe the precision of the estimate depending on the sample size. Using the tool below, you can <bold>generate random samples of various sizes and observe how the sample mean and standard deviation behave depending on n.</bold>"
     },
     "intervalEstimation": {
-      "title": "Interval Estimation",
-      "p1": "While a point estimate approximates an unknown parameter with a single number, an interval estimate defines an <bold>interval of values</bold> in which the parameter lies with a certain probability <m1/> (confidence level).",
-      "p2": "A confidence interval is a pair of statistics <m1/> for which the following holds true:",
-      "alertTitle": "Frequent Misconception",
-      "alertDesc": "A confidence interval <bold>does not</bold> mean that 95% of the data lies within the given interval. It is the probability that <bold>this specific sampling procedure</bold>, when applied repeatedly, <bold>will cover the true parameter value 95% of the time</bold>. If 100 researchers independently drew a sample and calculated a 95% interval, roughly 95 of them would actually cover the population parameter, while 5 would miss it.",
-      "typesTitle": "Types of Confidence Intervals",
+      "title": "Interval estimation",
+      "p1": "While point estimation approximates an unknown parameter with a single number, interval estimation defines an <bold>interval of values</bold> within which the parameter lies with a certain probability <m1/> (confidence level).",
+      "p2": "A confidence interval is a pair of statistics <m1/> for which the following applies:",
+      "alertTitle": "Common confusion of terms",
+      "alertDesc": "The confidence interval <bold>does not</bold> mean that 95% of the data lies within the given interval. It is the probability that <bold>this specific sampling procedure</bold>, when applied repeatedly, <bold>will cover the true parameter value in 95% of cases</bold>. If 100 researchers independently took a sample and calculated a 95% interval, about 95 of them would actually cover the population parameter, while 5 would miss it.",
+      "typesTitle": "Types of confidence intervals",
       "typesDesc": "Confidence intervals are divided into one-sided (left-sided and right-sided) and two-sided:",
       "typeLeftTitle": "Left-sided",
-      "typeLeftDesc": "The parameter is greater than the lower bound. Used to test if a value is not too small.",
+      "typeLeftDesc": "The parameter is greater than the lower bound. Tests whether the value is not too small.",
       "typeTwoSidedTitle": "Two-sided",
       "typeTwoSidedDesc": "The parameter lies between the lower and upper bounds. The most commonly used type.",
       "typeRightTitle": "Right-sided",
-      "typeRightDesc": "The parameter is less than the upper bound. Used to test if a value is not too large.",
-      "p3": "If the population standard deviation <m1/> is <bold>unknown</bold> (a common case in practice), we replace the <m2/>-score with quantiles from <bold>Student's t-distribution</bold> and the population <m3/> with the sample <m4/>. This distribution has heavier tails (greater uncertainty) and converges to the normal distribution as <m5/> increases.",
-      "simTitle": "Interval estimate of the median population age in EU regions",
+      "typeRightDesc": "The parameter is less than the upper bound. Tests whether the value is not too large.",
+      "p3": "If the population standard deviation <m1/> is <bold>unknown</bold> (a common case in practice), we replace the <m2/>-score with quantiles of <bold>Student's t-distribution</bold> and the population <m3/> with the sample <m4/>. This distribution has heavier tails (greater uncertainty) and converges to the normal distribution as <m5/> increases.",
+      "simTitle": "Interval estimate of the median age of the population in EU regions",
       "simDesc": "The estimation simulation uses the same data as the point estimate – median ages of 1,113 EU NUTS3 regions (Eurostat 2025), with a population mean of <bold>μ = 46.22 years</bold> and a standard deviation of <bold>σ = 3.76 years</bold>. Add samples and <bold>watch how many intervals actually cover μ</bold>. After changing the settings (level, type, σ), <italic>all existing intervals will automatically recalculate</italic> – allowing you to directly compare how settings affect coverage.",
       "simulation": {
-        "infoZvsT": "Interesting fact: Notice that if the <bold>Z-score (known σ)</bold> is enabled, the axes of both charts and the vertical lines align perfectly underneath each other. However, if you switch to the <bold>t-score (unknown σ)</bold>, you will see deviations at the edges. This is not a bug, but a direct consequence of dividing by the sample standard deviation <m1/> in the t-score, which is different for every sample. Thus, the relationship between <m2/> and <m3/> slightly varies for each sample.",
+        "infoZvsT": "Interesting fact: Notice that if the <bold>Z-score (known σ)</bold> is enabled, the axes of both charts and the vertical lines are perfectly aligned below each other. However, if you switch to the <bold>t-score (unknown σ)</bold>, you will see deviations at the edges. This is not a bug, but a direct consequence of the fact that with the t-score, we divide by the sample deviation <m1/>, which is different for each sample. The relationship between <m2/> and <m3/> is therefore slightly different for each sample.",
         "controls": {
           "confidence": "Confidence level (1 − α):",
           "type": "Interval type:",
@@ -488,21 +499,21 @@
           "limitReached": "Maximum is {{max}} samples"
         },
         "coverage": {
-          "contains": "Contains μ:",
-          "notContains": "Does not contain μ:",
-          "theoretical": "Theoretical coverage:"
+          "contains": "Contains μ",
+          "notContains": "Does not contain μ",
+          "theoretical": "Theoretical coverage"
         },
         "charts": {
           "distTitle": "Distribution of sample means ({{dist}}) and critical regions",
           "legendCrit": "■ critical region (α)",
-          "legendLast": "│ {{score}}-score of last sample",
+          "legendLast": "│ last sample's {{score}}-score",
           "xLabelDist": "{{score}}-score (standardized sample mean)",
-          "ciTitle": "Confidence intervals ({{cl}} %) – μ = {{mu}} yrs",
+          "ciTitle": "Confidence intervals ({{cl}}%) – μ = {{mu}} yrs.",
           "legendContains": "– contains μ",
           "legendNotContains": "– does not contain μ",
           "legendMean": "● x̄ (sample mean)",
-          "emptyState": "No samples yet. Click '+ sample'.",
-          "xAxisLabel": "median age (yrs)",
+          "emptyState": "No samples yet. Click on \"+ sample\".",
+          "xAxisLabel": "median age (yrs.)",
           "tooltipF": "F({{score}})",
           "tooltipSelection": "Sample #{{num}}",
           "tooltipLower": "lower = {{val}}",
@@ -510,11 +521,11 @@
           "tooltipContains": "Contains μ",
           "tooltipNotContains": "Does not contain μ"
         },
-        "explanation": "This graphical panel connects <bold>two concepts</bold>: The top chart does not show the distribution of the original population data, but rather the <bold>theoretical distribution of all possible sample means</bold> (transformed into Z/t-scores). The bottom chart plots <bold>specific drawn samples</bold>. In the center of the line segment is the <bold>sample mean, and its length represents the size of the SEM</bold>. If this center falls into the white band in the top chart (outside the critical region), its confidence interval covers the true population value μ.",
+        "explanation": "This graphical panel connects <bold>two concepts</bold>: The top chart does not display the distribution of the original population data, but rather the <bold>theoretical distribution of all possible sample means</bold> (transformed into Z/t-scores). The bottom chart plots the <bold>actual realized samples</bold>. In the middle of the line segment is the <bold>sample mean, and its length represents the size of the SEM</bold>. If this center falls into the white band in the top chart (outside the critical region), its confidence interval will cover the true population value μ.",
         "formula": {
           "show": "Show formula and calculation ▼",
           "hide": "Hide formula ▲",
-          "title": "Formula ({{cl}} %, {{type}}, {{varType}}):",
+          "title": "Formula ({{cl}}%, {{type}}, {{varType}}):",
           "varKnown": "σ known – Z-score",
           "varUnknown": "σ unknown – t-score",
           "calcTitle": "Calculation for the last sample (n = {{n}}):",
@@ -536,251 +547,254 @@
       },
       "stats": {
         "grandMean": "Mean of {{count}} samples:",
-        "recordedMeans": "Recorded means:",
-        "recordedVars": "Recorded variances:",
-        "years": "yrs",
-        "yearsSquared": "yrs²"
+        "recordedMeans": "Recorded samples:",
+        "years": "yrs.",
+        "yearsSquared": "yrs.²"
       },
       "table": {
-        "title": "Selected Regions",
+        "title": "Selected regions",
         "colRegion": "Region (NUTS3)",
         "colCountry": "Country",
-        "colMedianAge": "Median Age (yrs)"
+        "colMedianAge": "Median age (yrs.)"
       },
       "map": {
-        "legend": "Median Age (yrs)",
-        "tooltipAge": "Median Age:"
+        "legend": "Median age (yrs.)",
+        "tooltipAge": "Median age:"
       }
     }
   },
 
   "hypothesisTesting": {
     "introduction": {
-      "leadText": "Hypothesis testing is a fundamental method of inferential statistics that allows us to make decisions about the properties of a population based on data obtained from a sample. In practice, we often need to find out whether an observed difference in the data represents a real phenomenon or is merely a consequence of random sample variability.",
-      "basicHypothesesTitle": "Basic Hypotheses",
-      "nullHypothesis": "<bold>Null Hypothesis (<h0/>):</bold> The expected state that we assume to be true. It usually expresses a null effect (e.g., there is no difference, the mean equals the expected value).",
-      "alternativeHypothesis": "<bold>Alternative Hypothesis (<ha/>):</bold> The logical opposite of <h0/>. It asserts that there is a difference, dependence, or change. We look for evidence in the data specifically to reject <h0/> and accept <ha/>."
+      "leadText": "Hypothesis testing is a fundamental method of inferential statistics that allows making decisions about population properties based on data obtained from a sample. In practice, we often need to determine whether an observed difference in data represents a real phenomenon or is merely a consequence of random sample variability.",
+      "basicHypothesesTitle": "Basic hypotheses",
+      "nullHypothesis": "<bold>Null hypothesis (<h0/>):</bold> The expected state that we assume to be true. It usually expresses a null effect (e.g., there is no difference, the mean equals the expected value).",
+      "alternativeHypothesis": "<bold>Alternative hypothesis (<ha/>):</bold> The logical opposite of <h0/>. It claims that there is a difference, relationship, or change. In the data, we look for evidence precisely to reject <h0/> and accept <ha/>."
     },
     "generalProcedure": {
-      "title": "General Testing Procedure",
-      "description": "Hypothesis testing always follows several standardized steps. A similar procedure can be used to test for data normality, compare statistical samples, investigate relationships between groups, etc. To demonstrate, we will use data from municipalities in the Moravian-Silesian Region (source: <1>ArcČR 4.3</1>). We will investigate whether the proportion of the population over 65 in these municipalities is comparable to the national average.",
+      "title": "General testing procedure",
+      "description": "Hypothesis testing always proceeds in several standardized steps. A similar procedure can be used to determine data normality, compare statistical samples, examine relationships between groups, etc. For demonstration, data from municipalities of the Moravian-Silesian Region (source: <1>ArcČR 4.3</1>) will be used in this case. We will investigate whether the proportion of the population over 65 years old in these municipalities is comparable to the national average.",
       "dataPreview": {
-        "subtitle": "Input Data",
+        "subtitle": "Input data",
         "description": "Preview of loaded data from the Moravian-Silesian Region. The proportion of residents over 65 was calculated from the attributes <c1>Poc_obyv_SLDB_2021</c1> and <c2>poc_obyv_nad_65</c2>.",
         "error": "Failed to download or process the JSON file.",
         "tableTitle": "Municipalities of the Moravian-Silesian Region",
         "columns": {
-          "code": "Municipality Code",
-          "name": "Municipality Name",
+          "code": "Municipality code",
+          "name": "Municipality name",
           "district": "District",
           "population": "Population",
-          "pop65": "Pop. over 65",
+          "pop65": "Pop. over 65 yrs.",
           "share65": "Share over 65 (%)"
         }
       },
       "step1": {
-        "title": "1. Formulation of Hypotheses",
-        "description": "The foundation is setting the null hypothesis (<h0/>), which usually expresses the expected state, the absence of a difference, or parameter equality. Opposing it is the alternative hypothesis (<ha/>), which represents the logical opposite and confirms the existence of a statistically significant difference. We always look for evidence in the data to reject <h0/>.",
-        "appTitle": "Application to Data",
-        "appDesc": "The average proportion of residents over 65 in municipalities across the Czech Republic is 20.56%. Let's set our hypotheses for our selected district:",
-        "h0Item": "<bold><m/></bold> (the average proportion of seniors in the district's municipalities does not statistically differ from the national average)",
+        "title": "1. Hypothesis formulation",
+        "description": "The basis is establishing the null hypothesis (<h0/>), which usually expresses the expected state, non-existence of a difference, or equality of parameters. Opposing it is the alternative hypothesis (<ha/>), which represents the logical opposite and confirms the existence of a statistically significant difference. In the data, we always look for evidence to reject <h0/>.",
+        "appTitle": "Application to data",
+        "appDesc": "The mean of the average proportion of residents over 65 in the municipalities of the Czech Republic is 20.56%. We will set the hypotheses for our selected district:",
+        "h0Item": "<bold><m/></bold> (the average proportion of seniors in the district's municipalities does not statistically differ from the CZ average)",
         "haItem": "<bold><m/></bold> (the average proportion of seniors differs – two-sided hypothesis)"
       },
       "step2": {
-        "title": "2. Choice of Significance Level (<alpha/>)",
-        "description": "The significance level represents the maximum acceptable risk of incorrectly rejecting the null hypothesis when it is actually true (so-called Type I error). Most commonly, a value of 0.05 is chosen in statistics, which corresponds to a 5% probability of error. Other commonly used values include 0.01 (1%) and 0.1 (10%).",
-        "appTitle": "Application to Data",
-        "appDesc": "For our test, we will choose the standard level <bold><alpha/></bold>. If the resulting probability (p-value) falls below this threshold, we will consider the difference in the proportion of seniors to be statistically significant and reject <h0/>."
+        "title": "2. Choice of significance level (<alpha/>)",
+        "description": "The significance level represents the maximum acceptable risk of incorrectly rejecting the null hypothesis when it is actually true (so-called Type I error). Most often in statistics, a value of 0.05 is chosen, which tells us that with repeated testing on a new dataset, we will commit a Type I error on average in five percent of cases. Other commonly used values are, for example, 0.01 and 0.1.",
+        "appTitle": "Application to data",
+        "appDesc": "For our test, we choose the standard level <bold><alpha/></bold>. If the resulting probability (p-value) drops below this threshold, we will consider the difference in the proportion of seniors to be statistically significant and reject <h0/>."
       },
       "step3": {
-        "title": "3. Calculation of the Test Statistic",
-        "description": "A test statistic is a formula that allows us to obtain a specific numerical value from sample data. This statistic follows a known probability distribution (e.g., t-distribution), with which we subsequently compare it to determine whether it falls into the critical region, meaning we can reject the hypothesis. Conversely, if it falls into the so-called acceptance region, we failed to find evidence in the data to support rejecting the hypothesis. The boundary values between the critical region and the acceptance region are determined based on the quantiles of the test statistic's distribution.",
-        "appTitle": "Application to Data",
-        "appDesc": "Since we are comparing the mean of a single sample (municipalities in a district) with a known constant (20.56%) and the input data roughly follows a normal distribution, we will use the <bold>one-sample Student's t-test</bold>. The formula for the test statistic is:",
-        "formulaDesc": "Where <xbar/> is the sample mean (proportion in the district), <mu0/> is the reference value (20.56), <s/> is the sample standard deviation, and <n/> is the number of municipalities."
+        "title": "3. Calculation of the test statistic",
+        "description": "The test statistic is a formula that uses sample data to obtain a specific numerical value. This statistic follows a known probability distribution (e.g., t-distribution), which we then compare it to in order to determine whether it falls into the critical region, and thus we can reject the hypothesis. Conversely, if it falls into the acceptance region, we failed to find evidence in the data supporting the rejection of the hypothesis. The boundary values between the critical region and the acceptance region are determined based on the quantiles of the test statistic's distribution following the established level <a/>.",
+        "appTitle": "Application to data",
+        "appDesc": "Since we are comparing the mean of one sample (municipalities in a district) with a known constant (20.56%) and the input data approaches a normal distribution, we will use a <bold>one-sample Student's t-test</bold>. The formula for the test statistic is:",
+        "formulaDesc": "Where <xbar/> is the sample mean (proportion in the district), <mu0/> is the reference value (20.56), <s/> is the sample standard deviation, and <n/> is the number of municipalities. We know that under <h0/>, this statistic follows a t-distribution with <n1/> degrees of freedom."
       },
       "step4": {
-        "title": "4. Evaluation of the Hypothesis and P-value",
-        "description": "Based on the value of the test statistic, we obtain the <bold>p-value</bold>. It represents the lowest significance level at which we can reject <h0/>. If the p-value is less than <alpha/>, we reject the null hypothesis. However, every decision carries a risk of statistical error.",
-        "appTitle": "Application to Data (Possible Conclusions)",
+        "title": "4. Hypothesis evaluation and p-value",
+        "description": "In addition to comparing the test statistic value with the acceptance and critical regions, we can also calculate a so-called <bold>p-value</bold> from the test statistic. The p-value expresses the probability of obtaining a test statistic value from a random sample that is as extreme or more extreme (i.e., more contrary to the null hypothesis) than the actually observed value, assuming the null hypothesis <h0/> is true. If the p-value is less than <alpha/>, we reject the null hypothesis: the smaller it is, the stronger the evidence in the data against the null hypothesis. We can also look at the p-value from the opposite perspective, as the <bold>smallest significance level at which we can reject <h0/></bold>. However, there is a risk of statistical error with every decision.",
+        "appTitle": "Application to data (possible conclusions)",
         "table": {
-          "col1": "Reality in Population",
-          "col2": "Test Decision (result from data)",
-          "col2a": "Fail to reject <h0/>",
+          "col1": "Reality in the population",
+          "col2": "Test decision (result from data)",
+          "col2a": "Do not reject <h0/>",
           "col2b": "Reject <h0/>",
-          "row1Title": "<h0/> is True <br/> <small>The proportion of seniors does not really differ from the national average.</small>",
+          "row1Title": "<h0/> is true <br/> <small>The proportion of seniors does not truly differ from the CZ average.</small>",
           "row1a": "Correct decision <br/> <m/>",
-          "row1b": "<bold>Type I Error (<alpha/>)</bold><br/><small>We incorrectly claim that the district has a significantly different proportion of seniors, even though it is actually the same as the national average (the difference in the data was just random).</small>",
-          "row2Title": "<ha/> is True <br/> <small>The proportion of seniors really differs from the national average.</small>",
-          "row2a": "<bold>Type II Error (<beta/>)</bold><br/><small>Missing the difference. We failed to prove a difference from the data sample, and therefore incorrectly claim that the district has an average proportion of seniors, even though it actually differs significantly.</small>",
-          "row2b": "Correct decision <br/> (Test Power <m/>)"
+          "row1b": "<bold>Type I Error (<alpha/>)</bold><br/><small>We incorrectly claim that the district has a significantly different proportion of seniors, although it is actually the same as the national average (the difference in the data was just random).</small>",
+          "row2Title": "<ha/> is true <br/> <small>The proportion of seniors truly differs from the CZ average.</small>",
+          "row2a": "<bold>Type II Error (<beta/>)</bold><br/><small>Missed difference. We failed to prove a difference from the data sample, and therefore incorrectly claim that the district has an average proportion of seniors, although it actually differs significantly.</small>",
+          "row2b": "Correct decision <br/> (test power <m/>)"
         }
       }
     },
     "tTestDashboard": {
-      "title": "Interactive One-Sample t-test",
-      "description": "In the previous sections, the general procedure for hypothesis testing was introduced, and specific hypotheses were formed for the proportion of residents over 65 in municipalities of the Moravian-Silesian Region. Now you can try the whole process interactively – select a district, set the reference value <m/>, and watch how the test result and distribution visualization change.",
-      "interpretiveNote": "Notice that the test result does not depend only on the true <bold>sample mean</bold>, but also on the <bold>variability (s)</bold> and <bold>sample size (n)</bold>. This is exactly why a situation can occur where in one district the hypothesis is not rejected despite a larger difference from μ₀, while in another it is rejected with a smaller difference – simply because there is lower variability or a larger number of municipalities there.",
+      "title": "Interactive one-sample t-test",
+      "description": "In the previous sections, the general hypothesis testing procedure was introduced, and specific hypotheses were formulated for the proportion of residents over 65 in the municipalities of the Moravian-Silesian Region. Now you can try the whole process interactively – select a district, set the reference value <m/>, and watch how the test result and distribution visualization change.",
+      "interpretiveNote": "Notice that the test result depends not only on the actual <bold>sample mean</bold>, but also on the <bold>variability (s)</bold> and <bold>sample size (n)</bold>. This is exactly why a situation can occur where the hypothesis is not rejected in one district despite a larger difference from μ₀, while in another it is rejected with a smaller difference – simply because there is lower variability or a larger number of municipalities.",
       "controls": {
-        "district": "Select District:",
-        "expectedValue": "Expected proportion over 65 (μ₀):",
-        "alpha": "Significance Level (α):"
+        "district": "District selection:",
+        "expectedValue": "Expected proportion over 65 years (μ₀):",
+        "alpha": "Significance level (α):"
       },
       "alert": {
-        "title": "Test Result:",
+        "title": "Testing result:",
         "reject": "Reject H₀",
-        "failToReject": "Fail to Reject H₀",
+        "failToReject": "Do not reject H₀",
         "pValue": "<bold>P-value: {{value}}</bold> <sign/> α ({{alpha}}).",
-        "significantText": "At the significance level of {{alpha}}, there is a statistically significant difference. The average proportion of residents over 65 in the municipalities of the {{district}} district ({{mean}}%) is proven to differ from the national reference value of {{expected}}%.",
-        "insignificantText": "At the significance level of {{alpha}}, we did not prove a statistically significant difference. The variability in the data is too large, or the mean ({{mean}}%) is sufficiently close to the reference value of {{expected}}%."
+        "significantText": "At the {{alpha}} significance level, there is a statistically significant difference. The average proportion of residents over 65 in the municipalities of the {{district}} district ({{mean}}%) demonstrably differs from the national reference value of {{expected}}%.",
+        "insignificantText": "At the {{alpha}} significance level, we did not prove a statistically significant difference. The variability in the data is too large, or the mean ({{mean}}%) is close enough to the reference value of {{expected}}%."
       },
       "calcToggle": {
-        "show": "Show Calculation ▼",
-        "hide": "Hide Calculation ▲"
+        "show": "Show calculation ▼",
+        "hide": "Hide calculation ▲"
       },
       "calculation": {
-        "tStatTitle": "t-statistic calculation for district {{district}}",
+        "tStatTitle": "Calculation of t-statistic for the {{district}} district",
         "meanLabel": "sample mean (%)",
         "expectedLabel": "ref. value (%)",
         "sdLabel": "std. dev.",
-        "nLabel": "num. of mun.",
-        "pValTitle": "P-value Calculation",
+        "nLabel": "number of municipalities",
+        "pValTitle": "Calculation of p-value",
         "pValDesc": "where <fdf/> is the cumulative distribution function of Student's t-distribution with <df/> degrees of freedom.",
         "rejectSummary": "we reject H₀",
-        "acceptSummary": "we fail to reject H₀",
+        "acceptSummary": "we do not reject H₀",
         "equivalent": "Equivalently:"
       },
       "charts": {
-        "scatterTitle": "Variability in the District",
-        "scatterXAxis": "share of pop. over 65 (%)",
-        "scatterTooltip": "Share over 65: {{value}}%",
+        "scatterTitle": "Variability in the district",
+        "scatterXAxis": "proportion of pop. over 65 (%)",
+        "scatterTooltip": "Proportion over 65: {{value}}%",
         "tChartTitle": "Student's t-distribution (df = {{df}})",
         "tChartCritArea": "critical region (α/2)"
+      },
+      "assumptions": {
+        "title": "Note on test assumptions",
+        "description": "The use of the t-test assumes that the data comes from a normal distribution. For the purpose of this demonstration, the assumption is considered met. In practice, if the data significantly violates the normality assumption, it is more appropriate to use a non-parametric alternative, such as the one-sample Wilcoxon test."
       }
     }
   },
-
   "correlation": {
     "introduction": {
-      "title": "Introduction to Dependence Analysis",
-      "p1": "In geography and social sciences, we very often encounter stochastic (statistical) dependence. We know that a relationship exists between variables, but it is not precisely and uniquely defined, for example, by a fixed formula or functional dependence. Correlation analysis serves to investigate and quantify such stochastic dependence.",
-      "tableTitle": "Method selection based on variable types",
-      "tableDesc": "The choice of a suitable statistical method for finding dependencies depends on the types of characteristics (variables) we are working with. Correlation analysis is used when both variables are quantitative.",
-      "typeY": "Type of Y Variable (Dependent)",
-      "typeX": "Type of X Variable (Independent)",
+      "title": "Introduction to dependency analysis",
+      "p1": "In geography and social sciences, we very often encounter stochastic (statistical) dependence. We know that a relationship exists between variables, but it is not precisely and uniquely defined, for example by a fixed formula or functional dependence. Correlation analysis is used to examine and quantify such stochastic dependence.",
+      "tableTitle": "Choosing a method by variable type",
+      "tableDesc": "The choice of an appropriate statistical method to find dependencies depends on the types of characteristics (variables) being worked with. Correlation analysis is used when both variables are quantitative.",
+      "typeY": "Type of variable Y",
+      "typeX": "Type of variable X",
       "categorical": "Categorical",
       "quantitative": "Quantitative",
-      "contingency": "Contingency tables, Goodness-of-fit tests",
+      "contingency": "Contingency tables, goodness-of-fit tests",
       "anova": "ANOVA",
-      "corr_regr": "Correlation and Regression"
+      "corr_regr": "Correlation and regression"
     },
     "analysis": {
-      "title": "Principles of Correlation Analysis",
-      "p1": "Correlation analysis measures the <bold>strength and direction of linear dependence</bold> between two quantitative variables. It is quantified using the correlation coefficient, which is dimensionless and takes values in the closed interval <m/>. A value of 0 indicates complete linear independence, while values of 1 and -1 represent perfect functional (linear) dependence.",
-      "positiveTitle": "Positive Correlation",
-      "positiveDesc": "Occurs when, as the value of one variable increases, the value of the other variable <bold>also increases</bold>. <br/><br/>Rule of thumb: <i>\"The more of one, the more of the other.\"</i>",
-      "positiveExamples": "<bold>Example:</bold> The relationship between altitude and precipitation amount, the relationship between population density and the number of points of interest (POI) in urban areas.",
-      "negativeTitle": "Negative Correlation",
-      "negativeDesc": "Occurs when, as the value of one variable increases, the value of the other variable <bold>decreases</bold>. <br/><br/>Rule of thumb: <i>\"The more of one, the less of the other.\"</i>",
-      "negativeExamples": "<bold>Example:</bold> The relationship between altitude and temperature, the relationship between distance from the city center and land prices.",
-      "alertCausalityTitle": "Correlation is not Causation",
-      "alertCausalityDesc": "The mere fact that two variables change together and correlate <bold>does not prove that one causes the other</bold>. It is a non-causal relationship – from the mathematical calculation, we cannot determine what is the cause and what is the effect, or whether some hidden third factor is influencing both variables.",
-      "testingTitle": "Testing for Statistical Significance",
-      "testingDesc": "If we calculate a correlation of, say, <m1/> from the data, we must verify whether this dependence actually exists in the entire population or if it is just a coincidence in our small sample. For this purpose, we perform hypothesis testing (similar to t-tests).",
-      "testingH0": "<bold>Null Hypothesis (<h0/>):</bold> <m/> (the variables are linearly independent).",
-      "testingHa": "<bold>Alternative Hypothesis (<ha/>):</bold> <m/> (a linear dependence exists between the variables).",
-      "testingTStat": "The test statistic (T) subsequently follows Student's t-distribution",
+      "title": "Principles of correlation analysis",
+      "p1": "Correlation analysis measures the <bold>strength and direction of a linear relationship</bold> between two quantitative variables. It is quantified using a correlation coefficient, which is dimensionless and takes values in the closed interval <m/>. A value of 0 indicates complete linear independence, while values of 1 and -1 represent perfect functional (linear) dependence.",
+      "positiveTitle": "Positive correlation",
+      "positiveDesc": "Occurs when, as the value of one variable increases, the value of the other variable also <bold>increases</bold>. <br/><br/>Rule: <i>\"The more of one, the more of the other.\"</i>",
+      "positiveExamples": "<bold>Example:</bold> The relationship between elevation and precipitation amount, the relationship between population density and the number of points of interest (POI) in urban areas.",
+      "negativeTitle": "Negative correlation",
+      "negativeDesc": "Occurs when, as the value of one variable increases, the value of the other variable <bold>decreases</bold>. <br/><br/>Rule: <i>\"The more of one, the less of the other.\"</i>",
+      "negativeExamples": "<bold>Example:</bold> The relationship between elevation and temperature, the relationship between distance from the city center and land prices.",
+      "alertCausalityTitle": "Correlation is not causality",
+      "alertCausalityDesc": "The mere fact that two variables change together and correlate <bold>does not prove that one causes the other</bold>. It is a non-causal relationship – from a mathematical calculation, we cannot determine what is the cause and what is the effect, or whether a hidden third factor influences both variables.",
+      "testingTitle": "Testing statistical significance",
+      "testingDesc": "If we calculate, for example, a sample correlation coefficient <m1/> from the data, we must verify whether this relationship truly exists in the entire population, or whether it is just a coincidence in our small sample. For this purpose, we perform hypothesis testing (similar to t-tests).",
+      "testingH0": "<bold>Null hypothesis (<h0/>):</bold> <m/> (variables are linearly independent).",
+      "testingHa": "<bold>Alternative hypothesis (<ha/>):</bold> <m/> (a linear relationship exists between the variables).",
+      "testingTStat": "The test statistic (T) then, assuming normality of both samples, follows Student's t-distribution:",
       "testingExperimentTitle": "Try it on the chart above",
-      "testingExperimentDesc": "Return to the interactive element and set a relatively weak correlation (e.g., <bold>r = 0.30</bold>) and a small number of points (<bold>n = 10</bold>). The result will likely <textDanger>not be statistically significant</textDanger>. Then start gradually increasing the number of points on the slider. Notice how the <italic>p-value</italic> decreases with the growing amount of data, and even this weak correlation becomes <textSuccess>statistically demonstrable</textSuccess> with a large sample (e.g., <bold>n = 100</bold>)."
+      "testingExperimentDesc": "Return to the interactive element and set a relatively weak correlation (e.g., <bold>r = 0.30</bold>) and a small number of points (<bold>n = 10</bold>). The result will likely <textDanger>not be statistically significant</textDanger>. Then start gradually increasing the number of points on the slider. Notice how the <italic>p-value</italic> drops with an increasing amount of data, and even this weak correlation becomes <textSuccess>statistically significant</textSuccess> with a large sample (e.g., <bold>n = 100</bold>)."
     },
     "simulator": {
       "exampleTitle": "Property price and distance from the river",
       "exampleDesc": "Use the slider to change the target correlation value, simulating different spatial contexts in a city:",
       "examplePoints": {
         "positive": "<bold>Strong positive correlation (r near +1):</bold> Models a dangerous flood zone. The <italic>greater</italic> the distance from the river (higher safety from a 100-year flood), the <italic>higher</italic> the property price.",
-        "negative": "<bold>Strong negative correlation (r near -1):</bold> Models an attractive recreational area with clean water. The <italic>smaller</italic> the distance to the river (closer to water), the <italic>higher</italic> the property price due to tourism potential.",
-        "zero": "<bold>Zero correlation (r near 0):</bold> Models an industrial city with a regulated river in a concrete channel that offers no recreation nor poses a flood risk. The distance to the river has no systematic effect on apartment prices."
+        "negative": "<bold>Strong negative correlation (r near -1):</bold> Models an attractive recreational area with clean water. The <italic>smaller</italic> the distance to the river (closer to the water), the <italic>higher</italic> the property price due to tourism potential.",
+        "zero": "<bold>Zero correlation (r near 0):</bold> Models an industrial city with a regulated stream in a concrete channel, which offers no recreation nor poses a flood threat. Distance to the river has no systematic effect on apartment prices."
       },
       "targetR": "Target correlation value (r):",
-      "badgeTargetR": "r target",
-      "badgeActualR": "r calculated",
+      "badgeTargetR": "target r",
+      "badgeActualR": "calculated r",
       "pointCount": "Number of points (n):",
-      "generateNew": "Generate New Data",
+      "generateNew": "Generate new data",
       "xAxisLabel": "Distance (m)",
       "yAxisLabel": "Price (thous. €)",
-      "resultsTitle": "Significance Test Results",
+      "resultsTitle": "Significance test results",
       "actualR": "Calculated r:",
-      "tStat": "Test Statistic (T):",
+      "tStat": "Test statistic (T):",
       "pValue": "p-value:",
       "significant": "Reject H₀: Correlation is statistically significant",
-      "significantDesc": "The p-value is smaller than the significance level α = {{alpha}}.",
-      "insignificant": "Fail to reject H₀: Correlation is not statistically significant",
+      "significantDesc": "The p-value is less than the significance level α = {{alpha}}.",
+      "insignificant": "Do not reject H₀: Correlation is not statistically significant",
       "insignificantDesc": "The p-value is greater than the significance level α = {{alpha}}.",
       "showCalc": "Show calculation ▼",
       "hideCalc": "Hide calculation ▲",
-      "calcTitle": "Calculation of Test Statistic (T)",
-      "calcDesc": "Two-sided p-value from Student's t-distribution with degrees of freedom",
-      "rDiffInfo": "The <bold>Target value of r</bold> determines the strength of dependence during data generation (a mathematical parameter). The <bold>Calculated r</bold> is the Pearson coefficient measured directly on the generated points. Because the data is random, these <bold>values differ slightly</bold> – the <bold>smaller the number of points</bold> (n), the <bold>larger the deviation</bold>. Click 'Generate New Data' and watch how the calculated r changes."
+      "calcTitle": "Calculation of test statistic (T)",
+      "calcDesc": "Two-tailed p-value from Student's t-distribution with degrees of freedom",
+      "rDiffInfo": "<bold>The target r value</bold> determines the strength of the relationship when generating data (mathematical parameter). <bold>Calculated r</bold> is the Pearson coefficient measured directly on the generated points. Since the data is random, these <bold>values differ slightly</bold> – the <bold>smaller the number of points</bold> (n), the <bold>greater the deviation</bold>. Click Generate new data and watch how the calculated r changes."
     },
     "coefficients": {
-      "title": "Correlation Coefficients",
-      "p1": "Based on the nature of the input data and the fulfillment of statistical assumptions (such as the presence of a normal distribution), we choose from multiple types of correlation coefficients. The two most commonly used are the Pearson and Spearman coefficients.",
-      "pearsonTitle": "Pearson Correlation Coefficient (<m/>)",
-      "pearsonDesc": "It is based on the covariance standardized by the standard deviations of both variables. It is a parametric test that measures exclusively <bold>linear dependence</bold>. It requires the data to come from a normal distribution. Its disadvantage is its high <bold>sensitivity to outliers</bold> – a single outlier can significantly distort the coefficient.",
-      "spearmanTitle": "Spearman Correlation Coefficient (<m/>)",
-      "spearmanDesc": "This is a non-parametric alternative, a so-called <bold>rank test</bold>. Instead of original values, it works with their ranks. Because of this, it is highly <bold>robust to outliers</bold> and can capture even monotonic non-linear dependence. It is used when the data does not meet the assumption of normality."
+      "title": "Correlation coefficients",
+      "p1": "Based on the character of the input data and the fulfillment of statistical assumptions (for example, the presence of a normal distribution), we choose from multiple types of correlation coefficients. The two most commonly used are the Pearson and Spearman coefficients.",
+      "pearsonTitle": "Pearson correlation coefficient (<m/>)",
+      "pearsonDesc": "It is based on covariance standardized by the standard deviations of both variables. It is a parametric test that exclusively measures <bold>linear dependence</bold>. It requires the data to come from a normal distribution. Its disadvantage is high <bold>sensitivity to outliers</bold> – a single outlier can significantly distort the coefficient.",
+      "spearmanTitle": "Spearman rank correlation coefficient (<m/>)",
+      "spearmanDesc": "It is a non-parametric alternative, a so-called <bold>rank test</bold>. Instead of original values, it works with their ranks. Because of this, it is very <bold>robust to outliers</bold> and can also capture monotonic non-linear dependence. It is used when data does not meet the normality assumption."
     },
     "comparison": {
-      "title": "Comparing Coefficient Properties on GDP and Life Expectancy Data",
-      "p1": "We can demonstrate the theoretical differences between the coefficients using real data from Eurostat (at the NUTS2 level – the data only includes regions where both values were available for the year 2024). In the chart below, we observe the relationship between <bold>Gross Domestic Product</bold> (GDP per capita in Purchasing Power Standards as a percentage of the EU average) and <bold>life expectancy</bold>.",
-      "instructionsTitle": "What to observe in the chart:",
+      "title": "Comparison of coefficient properties on GDP and life expectancy data",
+      "p1": "Theoretical differences between coefficients can be demonstrated on real Eurostat data (at the NUTS2 level – the data only includes regions for which both values were available for the year 2024). In the chart below, we observe the relationship between <bold>gross domestic product</bold> (GDP per capita in purchasing power standard as a percentage of the EU average) and <bold>life expectancy</bold>.",
+      "instructionsTitle": "What to notice in the chart:",
       "instructions": {
-        "nonlinear": "<bold>Non-linear relationship (all regions):</bold> The so-called Preston curve shows that as GDP grows, life expectancy initially rises sharply but then levels off for richer regions. Since the relationship is monotonic but not linear, the Spearman coefficient reaches visibly higher values than the Pearson coefficient here.",
-        "outlier": "<bold>Impact of outliers (Southern Europe + Romania):</bold> Regions in Spain or Italy form a cluster with exceptionally high life expectancy and average GDP. Bucharest (Romania), however, has a very high GDP, yet life expectancy remains low. This outlier in the bottom right corner distorts the linear trend (the Pearson coefficient decreases noticeably), while Spearman maintains better stability.",
-        "interactive": "<bold>Adding a fictional value:</bold> Use the control panel to create your own fictional region. Place it, for example, in the bottom right corner (extremely high GDP but low life expectancy). Watch how just one such point can significantly affect the value of the Pearson coefficient."
+        "nonlinear": "<bold>Non-linear relationship (all regions):</bold> The so-called Preston curve shows that as GDP grows, life expectancy initially rises sharply, but levels off for richer regions. Since the relationship is monotonic but not linear, the Spearman coefficient reaches visibly higher values than the Pearson coefficient here.",
+        "outlier": "<bold>Impact of outliers (Southern Europe + Romania):</bold> Regions of Spain or Italy form a cluster with exceptionally high life expectancy and average GDP. Bucharest (Romania), however, has a very high GDP, but life expectancy remains low. This outlier in the bottom right corner distorts the linear trend (the Pearson coefficient decreases noticeably), while Spearman maintains better stability.",
+        "interactive": "<bold>Adding a fictional value:</bold> Use the control panel to create your own fictional region. Place it, for example, in the bottom right corner (extremely high GDP, but low life expectancy). Watch how a single such point can significantly affect the value of the Pearson coefficient."
       },
       "tabAll": "All regions",
       "tabSouthRO": "Southern Europe + Romania",
-      "pearsonTitle": "Pearson Coefficient",
-      "pearsonDesc": "Sensitive to outliers. Measures only linear relationships.",
-      "spearmanTitle": "Spearman Coefficient",
+      "pearsonTitle": "Pearson coefficient",
+      "pearsonDesc": "Sensitive to outliers. Measures only linear relationship.",
+      "spearmanTitle": "Spearman coefficient",
       "spearmanDesc": "Robust to outliers. Captures monotonic relationships.",
       "outlierControls": {
         "title": "Add custom value",
         "labelX": "GDP (X)",
-        "labelY": "Life exp. (Y)",
+        "labelY": "Life Expectancy (Y)",
         "addBtn": "Add point",
         "clearBtn": "Clear fictional"
       },
-      "fetchError": "Failed to load the file",
+      "fetchError": "Failed to load file",
       "fictionalOutlier": "Fictional value",
       "datasetLabel": "Dataset",
       "chart": {
-        "xLabel": "GDP (PPS % of EU avg)",
-        "yLabel": "Life Expectancy (years)",
+        "xLabel": "GDP (PPS % of EU average)",
+        "yLabel": "Life expectancy (years)",
         "xLabelShort": "GDP",
-        "yLabelShort": "Life Exp."
+        "yLabelShort": "Life Expectancy"
       },
       "stats": {
-        "originalData": "Original Data",
-        "withOutliers": "With Fictional Values",
+        "originalData": "Original data",
+        "withOutliers": "With fictional values",
         "pearsonLabel": "r (Pearson)",
         "spearmanLabel": "rₛ (Spearman)"
       },
       "table": {
-        "title": "Source Data for Calculation",
+        "title": "Source data for calculation",
         "colCode": "Code",
         "colCountry": "Country",
         "colRegion": "Region"
       }
     }
   },
+
   "anova": {
     "introduction": {
-      "p1": "ANOVA (<italic>Analysis of Variance</italic>) is a statistical method for simultaneously testing the differences in means of <bold>three or more</bold> samples. It determines whether the observed differences between groups can be attributed to the investigated factor or if they are merely due to random fluctuation.",
-      "p2": "An example would be <bold>comparing the success rate of groups in map-reading tasks</bold> in an eye-tracking experiment. We are interested in whether educational attainment (the factor) has a statistically significant impact on the achieved success – or whether differences between group members are just the result of random fluctuation.",
-      "usageTitle": "Usage of ANOVA",
-      "usageDesc": "Selecting the correct test depends on the <bold>number of compared groups</bold>. Below is an overview of tests according to the number of groups, always including the non-parametric alternative:",
+      "p1": "ANOVA (<italic>Analysis of Variance</italic>) is a statistical method for simultaneously testing the differences in means of <bold>three or more</bold> samples. It determines whether the observed differences between groups can be attributed to the observed factor, or if it is just random fluctuation.",
+      "p2": "An example would be <bold>comparing the success rate of groups in solving map tasks</bold> in an eye-tracking experiment. We are interested in whether the achieved education (factor) has a statistically significant effect on the achieved success - or if the differences between group members are merely due to random fluctuation.",
+      "usageTitle": "Use of ANOVA",
+      "usageDesc": "Choosing the correct test depends on the <bold>number of compared groups</bold>. Below is an overview of tests by the number of groups, always including a non-parametric alternative (used in case of violation of the data normality assumption):",
       "tests": {
         "oneSample": {
           "title": "One sample",
@@ -789,7 +803,7 @@
         },
         "twoSamples": {
           "title": "Two samples",
-          "parametric": "Paired / Two-sample t-test",
+          "parametric": "Paired / two-sample t-test",
           "nonparametric": "Wilcoxon / Mann-Whitney test"
         },
         "threePlusSamples": {
@@ -798,13 +812,13 @@
           "nonparametric": "Kruskal-Wallis test"
         }
       },
-      "whyNotMultipleP1": "It might seem that for <m1/> groups, one could simply perform <m2/> independent t-tests. Each test operates at a 95% confidence level, but the overall confidence decreases when conducting multiple tests simultaneously:",
-      "whyNotMultipleP2": "The actual Type I error rate thus rises to <bold>14.3%</bold> – almost three times the set value of <m1/>. As the number of groups increases, this problem worsens further. ANOVA handles the entire comparison with a single test, accounting for mutual dependencies and multiple comparisons.",
-      "prerequisitesTitle": "ANOVA Assumptions",
-      "prerequisitesDesc": "The reliability of ANOVA depends on three basic assumptions. These are verified at the beginning of the analysis, prior to performing the ANOVA itself.",
+      "whyNotMultipleP1": "It might seem that for <m1/> groups, one could simply perform <m2/> independent t-tests. Each test works with a 95% confidence level, but the overall confidence decreases with multiple simultaneous tests:",
+      "whyNotMultipleP2": "The real Type I error thus increases to <bold>14.3%</bold> – almost triple the set value of <m1/>. With an increasing number of groups, this problem worsens further. ANOVA solves the entire comparison with a single test that accounts for mutual relationships and multiple comparisons.",
+      "prerequisitesTitle": "Assumptions of ANOVA",
+      "prerequisitesDesc": "The reliability of ANOVA depends on three basic assumptions. They are verified at the beginning of the analysis, even before performing the ANOVA itself.",
       "prereqIndependence": {
         "title": "Independence of observations",
-        "desc": "Observations are independent of each other – both within and between groups. This is a design assumption depending on the method of data collection."
+        "desc": "Observations are independent of each other - both within and between groups. This is a design assumption depending on the method of data collection."
       },
       "prereqNormality": {
         "title": "Normality of distribution",
@@ -812,98 +826,94 @@
       },
       "prereqHomoscedasticity": {
         "title": "Homogeneity of variances",
-        "desc": "The variances of all groups are equal – the variance does not depend on the group. A stronger assumption than normality. Verified by Bartlett's or Levene's test."
+        "desc": "The variances of all groups are equal - variance does not depend on the group. A stronger assumption than normality. Verified by Bartlett's or Levene's test."
       },
-      "homogeneityTitle": "Homogeneity of variance tests",
-      "homogeneityDesc": "These tests examine the same hypothesis of equal variances and differ in their sensitivity to violations of normality:",
+      "homogeneityTitle": "Tests for homogeneity of variances",
+      "homogeneityDesc": "These tests examine the same hypothesis about the equality of variances and differ in their sensitivity to the violation of normality:",
       "bartlett": {
         "title": "Bartlett's test",
-        "desc1": "A more precise and powerful test, but it requires the normality assumption to be met. If normality has not been rejected, we prefer Bartlett's test over Levene's.",
-        "desc2": "The test statistic follows a <m1/> distribution with <m2/> degrees of freedom."
+        "desc1": "A more precise and powerful test, but requires the assumption of normality to be met. If normality has not been rejected, we prefer Bartlett's test over Levene's."
       },
       "levene": {
         "title": "Levene's test",
-        "desc1": "A more robust alternative – less sensitive to violations of normality. Suitable when data normality is uncertain or has been rejected.",
-        "desc2": "The test statistic follows an F-distribution with <m1/> degrees of freedom in the numerator and <m2/> in the denominator."
+        "desc1": "A more robust alternative - less sensitive to the violation of normality. Suitable when the normality of the data is uncertain or has been rejected."
       }
     },
     "singleFactor": {
       "title": "One-way ANOVA",
       "intro1": "Examines the effect of a <bold>single factor</bold> (categorical variable) on a continuous random variable. The factor defines <m/> groups (categories). We test the null hypothesis that all group means come from the same population:",
-      "intro2": "The alternative hypothesis states that <bold>at least one</bold> mean comes from a different population. ANOVA itself does not determine which pair differs; this is ascertained by subsequent <bold>post-hoc tests</bold>.",
-      "intro3": "Each observation <m/> (the n-th element of the k-th group) can hypothetically be decomposed into three components:",
+      "intro2": "The alternative hypothesis states that <bold>at least one</bold> mean comes from a different population. ANOVA itself does not determine which pair differs; this is found out later by potential <bold>post-hoc tests</bold>.",
+      "intro3": "Every observation <m/> (the n-th element of the k-th group) can hypothetically be decomposed into three components:",
       "legend": {
-        "mu": "– overall mean",
+        "mu": "– grand mean",
         "alpha": "– effect of the factor",
         "epsilon": "– random error"
       },
-      "varianceTitle": "Decomposition of Variance",
-      "varianceDesc": "The core idea of ANOVA is that the total data variability <m1/> decomposes into two independent components – between-group variability <m2/> and within-group variability <m3/>. If the factor's effect is real, the <italic>between-group</italic> variability will significantly exceed the <italic>within-group</italic> variability.",
+      "varianceTitle": "Decomposition of variance",
+      "varianceDesc": "The basic idea of ANOVA is that the total variability of the data <m1/> is decomposed into two independent components – the variability between groups <m2/> and the variability within groups <m3/>. If the effect of the factor is real, the variability <italic>between groups</italic> will significantly exceed the variability <italic>within groups</italic>.",
       "betweenTitle": "Between-group variability",
-      "betweenDesc": "Measures the distance of group means from the overall mean. Captures the <bold>effect of the factor</bold>. The larger it is, the more pronounced the effect of the observed category.",
+      "betweenDesc": "Measures the distance of group means from the grand mean. Captures the <bold>effect of the factor</bold>. The larger it is, the more pronounced the effect of the observed category.",
       "withinTitle": "Within-group variability",
-      "withinDesc": "The natural variability of observations around their group mean. The <bold>random</bold> component – independent of the factor.",
-      "ftestTitle": "Test Statistic and Decision Making",
-      "ftestDesc": "The <m1/> statistic is the ratio of the <italic>between-group</italic> variability to the <italic>within-group</italic> variability, both normalized by their respective degrees of freedom. Under <m2/>, it follows a Fisher's F-distribution with <m3/> and <m4/> degrees of freedom:",
-      "reject": "→ reject",
-      "rejectDesc": "The difference is statistically significant; the variability between groups is significantly larger than within groups. At least one group mean significantly differs from the others.",
-      "accept": "→ fail to reject",
-      "acceptDesc": "The difference is not statistically significant; the between-group variability is comparable to the within-group variability. The observed differences in means can be attributed to random fluctuations."
+      "withinDesc": "Natural variability of observations around their group mean. The <bold>random</bold> component – independent of the factor.",
+      "ftestTitle": "Test statistic and decision making",
+      "ftestDesc": "The <m1/> statistic is the ratio of the variability <italic>between groups</italic> to the variability <italic>within groups</italic>, both expressions normalized by their respective degrees of freedom. Assuming <m2/> is true, it follows Fisher's F-distribution with <m3/> and <m4/> degrees of freedom:",
+      "reject": "→ we reject",
+      "rejectDesc": "The difference is statistically significant, the variability between groups is significantly larger than within groups. At least one group mean differs statistically significantly from the others.",
+      "accept": "→ we do not reject",
+      "acceptDesc": "The difference is not statistically significant, the variability between groups is comparable to the variability within groups. The observed differences in means can be attributed to random fluctuations."
     },
     "postHoc": {
-      "title": "Multiple Comparison Tests",
-      "intro": "If ANOVA rejects the null hypothesis (<m1/>), we know that at least one pair of means differs. However, ANOVA does not identify which one it is. This is where <bold>post-hoc tests</bold> come in – performed <italic>after</italic> rejecting <m2/> in ANOVA, they adjust the significance level so that the overall Type I error remains below the chosen <m3/>.",
+      "title": "Multiple comparison tests",
+      "intro": "If ANOVA rejects the null hypothesis (<m1/>), we know that at least one pair of means differs. However, ANOVA does not identify which one it is. That's what <bold>post-hoc tests</bold> are for – they are performed <italic>after</italic> rejecting <m2/> in ANOVA and adjust the significance level so that the overall Type I error remains below the chosen <m3/>.",
       "tukey": {
         "title": "Tukey's HSD test",
-        "desc": "<bold>The most commonly used post-hoc test.</bold> It compares all possible pairs of groups and maintains the chosen <m/> level for the entire family of tests. Suitable for both balanced and unbalanced designs.",
-        "legend": "<m1/> – studentized range distribution statistic (from tables), <m2/> – group size."
+        "desc": "<bold>The most widely used post-hoc test.</bold> Compares all possible pairs of groups and maintains the chosen level <m/> for the entire family of tests. Suitable for both balanced and unbalanced designs.",
+        "legend": "<m1/> – studentized range statistic (from tables), <m2/> – group size."
       },
       "bonferroni": {
-        "title": "Bonferroni correction",
-        "desc": "A simple and conservative correction – the adjusted significance level is calculated by dividing <m1/> by the total number of comparisons <m2/>:",
-        "legend": "Each pairwise t-test is evaluated at the adjusted <m/>. Suitable for a smaller number of comparisons where its conservatism is acceptable."
+        "title": "Bonferroni method",
+        "desc": "A simple and conservative correction – the corrected significance level is calculated by dividing <m1/> by the total number of comparisons <m2/>. Suitable for a smaller number of comparisons where conservatism is acceptable."
       },
       "scheffe": {
         "title": "Scheffé's method",
-        "desc": "The most conservative test – controls the Type I error for all possible linear contrasts, not just pairwise comparisons. Especially suitable for <bold>unbalanced designs</bold> (unequal number of observations in groups). The test statistic is compared against a critical value derived from Fisher's F-distribution."
+        "desc": "The most conservative test, particularly suitable for <bold>unbalanced designs</bold> (different number of observations in groups). The test statistic is compared to a critical value derived from Fisher's F-distribution."
       },
       "simulation": {
         "title": "Average daily temperatures",
-        "intro": "In the following simulation, <bold>historical data (OpenMeteo) for July 2025</bold> from three Moravian cities are loaded. The aim of the analysis is to determine whether there is a demonstrable difference in their average temperatures for the given month.",
-        "cityOlomoucPrerov": "<bold>Olomouc and Přerov:</bold> Both cities lie in the lowland area of the Upper Morava Valley. We assume that temperature differences between them will be minimal.",
-        "cityJesenik": "<bold>Jeseník:</bold> A city situated in a mountainous environment at a higher altitude. We expect ANOVA to reject the null hypothesis and the post-hoc test to confirm a significant difference compared to both lowland cities.",
-        "tryIt": "<bold>Try it yourself:</bold> In the Tukey HSD chart, notice that the interval of the difference between Olomouc and Přerov crosses the zero line (the difference is not statistically significant). Then try increasing the temperature in Jeseník using the sliders. Watch when its temperatures approach those in the lowlands and how the post-hoc test result and p-value react. Try also distinguishing the individual cities by their mean, but by increasing the standard deviation, cause the values to overlap more. See where the test finds a significant difference and where it doesn't."
+        "intro": "In the following simulation, <bold>historical data (OpenMeteo) for July 2025</bold> in three Moravian cities are loaded. The aim of the analysis is to determine whether there is a demonstrable difference in their average temperatures for the given month.",
+        "cityOlomoucPrerov": "<bold>Olomouc and Přerov:</bold> Both cities lie in the lowland area of the Upper Moravian Vale. We assume that the temperature differences between them will be minimal.",
+        "cityJesenik": "<bold>Jeseník:</bold> A city located in a mountainous environment at a higher altitude. We expect ANOVA to reject the null hypothesis and the post-hoc test to confirm a significant difference against both lowland cities.",
+        "tryIt": "<bold>Try it out:</bold> In the Tukey HSD chart, notice that the interval of the difference between Olomouc and Přerov crosses the zero line (the difference is not statistically significant). Then try using the sliders to increase the temperature in Jeseník. Watch when its temperatures approach those in the lowlands and how the post-hoc test result and p-value react to it. Also, try differentiating the individual cities using the mean, but by increasing the standard deviation, cause the values to overlap more. Observe where the test determines a significant difference and where it doesn't."
       }
     },
     "assumptionViolations": {
-      "title": "ANOVA Assumption Violations",
-      "intro1": "Before the actual ANOVA analysis, it is necessary to verify the three mentioned assumptions:",
+      "title": "Violation of ANOVA assumptions",
+      "intro1": "Before the ANOVA analysis itself, it is essential to verify the three mentioned assumptions:",
       "list": {
         "independence": "independence of observations",
         "normality": "normality of distribution",
-        "homoscedasticity": "homoscedasticity"
+        "homoscedasticity": "homogeneity of variances"
       },
-      "intro2": "Violating them and subsequently using ANOVA can lead to incorrect conclusions – especially an increased risk of a Type I error. The following methods replace classical ANOVA in situations where certain assumptions are violated.",
+      "intro2": "Their violation and subsequent use of ANOVA can lead to erroneous conclusions – especially an increased risk of Type I error. The following methods replace classic ANOVA in situations where certain assumptions are violated.",
       "cards": {
         "friedman": {
           "violation": "Violation of independence of observations",
           "title": "Friedman test",
-          "desc": "A non-parametric alternative for <bold>dependent (repeated) measures</bold>. A median test for more than two samples – unlike the Kruskal-Wallis test, it takes sample dependence into account."
+          "desc": "A non-parametric alternative for <bold>dependent (repeated) measures</bold>. A median test for more than two samples – unlike the Kruskal-Wallis test, it takes the dependence of the samples into account."
         },
         "kruskal": {
           "violation": "Violation of normality",
           "title": "Kruskal-Wallis test",
-          "desc": "A <bold>non-parametric substitute for ANOVA</bold> – a generalization of the Mann-Whitney test for multiple groups. Instead of means, it tests the equality of distribution functions. It does not perform well with heterogeneous variances."
+          "desc": "<bold>Non-parametric replacement for ANOVA</bold> – a generalization of the Mann-Whitney test for multiple groups. Instead of means, it tests the equality of distribution functions. It does not perform well with heterogeneous variances."
         },
         "welch": {
           "violation": "Violation of homogeneity of variances",
           "title": "Welch's ANOVA",
-          "desc": "A modification of ANOVA that <bold>does not require equal variances</bold>. It reduces the risk of a Type I error when variances are inhomogeneous. It still <bold>assumes normality</bold> and works better with similar sample sizes."
+          "desc": "A modification of ANOVA that <bold>does not require equal variances</bold>. It reduces the risk of Type I error with non-homogeneous variances. It still <bold>assumes normality</bold> and performs better with similar sample sizes."
         }
       }
     }
   },
-
   "components": {
     "dataPreviewTable": {
       "records": "{{count}} records",
@@ -911,10 +921,10 @@
       "downloadBtn": "Download",
       "showLess": "Show less ▲",
       "showAll": "Show all ▼",
-      "showingRows": "Showing {{shown}} out of {{total}} rows"
+      "showingRows": "Showing {{shown}} of {{total}} rows"
     },
     "choroplethMap": {
-      "fullscreenTitle": "View in fullscreen",
+      "fullscreenTitle": "View full screen",
       "legendTitle": "Share [%]",
       "tooltip": {
         "outsideDistrict": "Outside selected district",
@@ -922,35 +932,33 @@
         "share": "Share: {{value}} %"
       }
     },
-
     "randomVariableCharts": {
       "measurements": "Measurements: {{count}}",
       "simulatedPMF": {
-        "title": "Simulation of captured satellites (Binomial distribution)",
+        "title": "Simulation of acquired satellites (Binomial distribution)",
         "xLabel": "Number of satellites (k)",
         "yLabel": "P(X=k)",
         "theoretical": "Theoretical",
         "empirical": "Empirical"
       },
       "simulatedPDF": {
-        "title": "GNSS deviation simulation: f(x)",
+        "title": "Simulation of GNSS deviations: f(x)",
         "xLabel": "Deviation (m)",
         "yLabel": "f(x)"
       },
       "quantileSlider": {
-        "title": "Quantile Function: Human Capital Index Plus (HCI+)",
-        "labelP": "View by quantile (p):",
-        "labelX": "Or enter a specific value (x):",
-        "placeholder": "e.g. 150",
+        "title": "Quantile function: Human Capital Index Plus (HCI+)",
+        "labelP": "Show by quantile (p):",
+        "placeholder": "e.g., 150",
         "resultLabel": "Result:",
-        "resultProb": "Probabilities",
-        "resultCorresponds": "corresponds to the value",
+        "resultProb": "Probability",
+        "resultCorresponds": "corresponds to value",
         "loading": "Loading data from CSV...",
-        "errorNoData": "CSV loaded, but no valid numeric data found for column 'HCI_2025'.",
-        "errorFetch": "Failed to download or process the CSV file.",
+        "errorNoData": "CSV loaded, but no valid numerical data found for the column 'HCI_2025'.",
+        "errorFetch": "Failed to fetch or process the CSV file.",
         "errorMin": "The entered value ({{val}}) is lower than the minimum in the data ({{min}}).",
         "errorMax": "The entered value ({{val}}) exceeds the maximum in the data ({{max}}).",
-        "dataTableTitle": "Input Data (HCI+ 2025)",
+        "dataTableTitle": "Input data (HCI+ 2025)",
         "countryCol": "Country",
         "scoreCol": "HCI+ Score (2025)",
         "badgeP": "Quantile (p)",
@@ -964,7 +972,7 @@
         "deciles": "Deciles",
         "quartile": "quartile",
         "decile": "decile",
-        "inputDataLabel": "Input Data (sorted):",
+        "inputDataLabel": "Input data (sorted):",
         "placeholder": "New value",
         "calculatedTitle": "Calculated quantile ({{p}})"
       },
@@ -977,7 +985,7 @@
         "sliderMin": "Negative",
         "sliderMax": "Positive",
         "xLabel": "Tree age (years)",
-        "yLabel": "Frequency (%)"
+        "yLabel": "Relative frequency"
       },
       "kurtosis": {
         "title": "Distribution shape:",
@@ -988,14 +996,14 @@
         "sliderMin": "Flat (Regulated)",
         "sliderMax": "Peaked (Stream)",
         "xLabel": "Deviation from normal state",
-        "yLabel": "Probability (%)"
+        "yLabel": "Probability"
       },
       "boxplot": {
         "title": "Life expectancy at birth",
         "loading": "Loading data...",
         "groupLabel": "Group by:",
         "yearLabel": "Show years:",
-        "dataTableTitle": "Input Data",
+        "dataTableTitle": "Input data",
         "groups": {
           "continent": "Continent",
           "incomeGroup": "Income group"
@@ -1027,15 +1035,14 @@
         }
       }
     },
-
     "probabilityCharts": {
-      "pmfTitle": "Probability Mass Function",
-      "cdfTitle": "Cumulative Distribution Function",
+      "pmfTitle": "Probability mass function",
+      "cdfTitle": "Cumulative distribution function",
       "bernoulli": {
         "paramP": "Parameter (p):"
       },
       "uniform": {
-        "outcomes": "Number of possible outcomes (n):",
+        "outcomes": "Number of die faces (n):",
         "probCalc": "P(X=x) = 1/{{n}} ≈ {{p}}"
       },
       "binomial": {
@@ -1045,14 +1052,14 @@
       "poisson": {
         "paramLambda": "Parameter (λ):"
       },
-      "pdfTitle": "Probability Density Function",
+      "pdfTitle": "Probability density",
       "uniformContinuous": {
-        "lowerA": "Lower bound (a): ",
-        "upperB": "Upper bound (b): "
+        "lowerA": "Lower (a): ",
+        "upperB": "Upper (b): "
       },
       "normal": {
         "mean": "Mean (μ):",
-        "sd": "Standard Deviation (σ):"
+        "variance": "Variance (σ²):"
       },
       "studentT": {
         "df": "Degrees of freedom (k):"
@@ -1065,7 +1072,6 @@
         "df": "Degrees of freedom (k):"
       }
     },
-
     "dataInputControl": {
       "value": "Value",
       "weight": "Weight",
@@ -1073,7 +1079,7 @@
       "cancel": "Cancel",
       "edit": "Edit",
       "delete": "Delete",
-      "clickToOptions": "Click to show options",
+      "clickToOptions": "Click to view options",
       "clickToRemove": "Click to remove",
       "noData": "No data...",
       "add": "Add",
@@ -1081,12 +1087,12 @@
     },
     "calculatorTemplate": {
       "calcSteps": "Calculation steps:",
-      "collapse": "Collapse notation",
-      "expand": "Expand full notation"
+      "collapse": "Collapse formula",
+      "expand": "Expand full formula"
     },
     "characteristics": {
       "arithmetic": {
-        "title": "Calculating average point elevation",
+        "title": "Calculation of average point elevation",
         "inputLabel": "Measured values (m):"
       },
       "harmonic": {
@@ -1094,8 +1100,8 @@
         "inputLabel": "Drone speeds (m/s):"
       },
       "geometric": {
-        "title": "Average growth factor of built-up area",
-        "inputLabel": "Annual growth factors:"
+        "title": "Average growth coefficient of built-up area",
+        "inputLabel": "Annual growth coefficients (factor):"
       },
       "weighted": {
         "title": "Weighted average elevation (by precision)",
@@ -1105,7 +1111,7 @@
         "weightLabel": "w:"
       },
       "mode": {
-        "title": "Number of building floors in a district",
+        "title": "Number of building floors in a housing estate",
         "currentMode": "Current mode:",
         "floor_1": "floor",
         "floors_2_4": "floors",
@@ -1117,82 +1123,82 @@
         "placeholder": "New building"
       },
       "median": {
-        "title": "Calculating the median: Building heights in urban areas",
-        "inputLabel": "Measured building heights (m) – sorted:",
+        "title": "Median calculation: Building height in urban development",
+        "inputLabel": "Measured building heights (m) - sorted:",
         "placeholder": "New building",
         "oddCount": "(for an odd number of data points)",
         "evenCount": "(for an even number of data points)",
         "tooltip": "Calculated median",
         "comparisonTitle": "For comparison:",
         "comparisonMean": "The arithmetic mean of this data is",
-        "comparisonDesc": "Try adding an extreme value and see how massively the mean changes compared to the median."
+        "comparisonDesc": "Try adding an extreme value and watch how massively the mean changes compared to the median."
       },
       "range": {
-        "title": "Calculating the range: Elevation profile of a ski slope",
-        "inputLabel": "Measured elevations (m a.s.l.) – Sorted:",
+        "title": "Range calculation: Elevation profile of a ski slope",
+        "inputLabel": "Measured elevations (m a.s.l.) - Sorted:",
         "placeholder": "New elevation"
       },
       "meanDeviation": {
-        "title": "Calculating mean deviation: Precision of repeated length measurement",
+        "title": "Mean deviation calculation: Precision of repeated length measurement",
         "inputLabel": "Measured lengths (m):",
         "placeholder": "New length"
       },
       "meanDifference": {
-        "title": "Calculating mean difference: Variations in air pollution",
+        "title": "Mean difference calculation: Differences in air pollution",
         "inputLabel": "Measured PM10 concentrations (µg/m³):",
         "placeholder": "New value",
-        "errorMin2": "At least 2 values are required for the calculation.",
+        "errorMin2": "At least 2 values are required for calculation.",
         "where": "where"
       },
       "variance": {
-        "title": "Calculating variance: Variability of LiDAR data density",
+        "title": "Variance calculation: Variability of LiDAR data density",
         "inputLabel": "Measured point density (points/m²):",
         "placeholder": "New value",
         "errorMin2": "At least 2 values are required to calculate the sample variance.",
         "unit": "(points/m²)²"
       },
       "standardDeviation": {
-        "title": "Calculating standard deviation: Temperatures from sensors",
+        "title": "Standard deviation calculation: Temperatures at sensors",
         "inputLabel": "Measured temperatures (°C):",
         "placeholder": "Temperature",
-        "errorMin2": "Not enough data (n > 1)"
+        "errorMin2": "Insufficient data (n > 1)"
       },
       "coefficientOfVariation": {
-        "title": "Calculating the coefficient of variation: Precipitation totals",
-        "inputLabel": "Annual precipitation (mm):",
+        "title": "Coefficient of variation calculation: Precipitation totals",
+        "inputLabel": "Annual precipitation total (mm):",
         "placeholder": "Total (mm)",
-        "errorMin2": "Not enough data (n > 1)",
+        "errorMin2": "Insufficient data (n > 1)",
         "errorDivZero": "Undefined (mean is 0)",
         "errorDivZeroMath": "Division by zero"
       },
       "quartileDeviation": {
-        "title": "Calculating quartile deviation: Land prices",
+        "title": "Quartile deviation calculation: Land prices",
         "inputLabel": "Unit prices (€/m²):",
         "placeholder": "Price",
-        "errorMin4": "Not enough data (n ≥ 4)",
+        "errorMin4": "Insufficient data (n ≥ 4)",
         "sortedData": "Sorted data:"
       }
     },
     "anovaSimulation": {
-      "city": "City of {{name}}",
-      "fetchError": "Failed to load CSV file.",
+      "city": "City {{name}}",
+      "fetchError": "Failed to load the CSV file.",
       "loading": "Loading climate data...",
       "errorPrefix": "Error:",
       "dayOfMonth": "Day of the month",
-      "simulatedDataWarning": "Showing simulated data",
+      "simulatedDataWarning": "Simulated data is displayed",
       "resetTitle": "Restore real measured data",
       "simulationTitle": "Simulation (modified: {{cities}})",
       "historicalTitle": "Historical measurements (OpenMeteo)",
       "downloadBtn": "Download original CSV",
       "distributionChart": {
         "xAxis": "Temperature (°C)",
-        "yAxis": "Probability Density"
+        "yAxis": "Probability density"
       },
       "tukeyChart": {
-        "title": "Tukey HSD (Post-hoc analysis)",
+        "title": "Tukey HSD (post-hoc analysis)",
         "description": "Confidence intervals for differences in means. If the interval does not cross zero (green line), the pairwise difference is statistically significant.",
         "xAxisLabel": "Temperature difference (°C)",
-        "meanDiff": "Mean difference",
+        "meanDiff": "Difference of means",
         "confInterval": "95% confidence interval",
         "resultLabel": "Result",
         "reject": "Reject H₀",
@@ -1201,15 +1207,15 @@
       },
       "anovaTable": {
         "title": "Calculation of ANOVA test statistic",
-        "colSource": "Source of Variation",
-        "colSS": "Sum of Squares (SS)",
-        "colDF": "Degrees of Freedom (df)",
-        "colMS": "Mean Square (MS)",
-        "colF": "F-statistic",
-        "rowBetween": "Between Groups",
-        "rowWithin": "Within Groups",
+        "colSource": "Source of variation",
+        "colSS": "Sum of squares",
+        "colDF": "Degrees of freedom",
+        "colMS": "Mean square",
+        "colF": "Test statistic",
+        "rowBetween": "Between groups",
+        "rowWithin": "Within groups",
         "rowTotal": "Total",
-        "decision": "Test Result",
+        "decision": "Test result",
         "rejectH0": "Reject H₀ (there is a significant difference between groups)",
         "acceptH0": "Fail to reject H₀ (differences between groups are not significant)"
       }
@@ -1217,8 +1223,8 @@
   },
   "footer": {
     "thesis": "Created as part of a bachelor's thesis",
-    "supervisor": "Supervisor: Mgr. Karel Macků, PhD.",
-    "sourceCode": "GitHub | Source Code",
+    "supervisor": "Supervisor: Mgr. Karel Macků, Ph.D.",
+    "sourceCode": "GitHub | Source code",
     "ui": "UI:",
     "iconsBy": "Icons by"
   }

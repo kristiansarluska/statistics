@@ -174,15 +174,6 @@ function Introduction() {
               <p className="card-text small">
                 {t("anova.introduction.bartlett.desc1")}
               </p>
-              <p className="card-text small text-muted mb-0">
-                <Trans
-                  i18nKey="anova.introduction.bartlett.desc2"
-                  components={{
-                    m1: <InlineMath math="\chi^2" />,
-                    m2: <InlineMath math="k - 1" />,
-                  }}
-                />
-              </p>
             </div>
           </div>
         </div>
@@ -194,15 +185,6 @@ function Introduction() {
               </h5>
               <p className="card-text small">
                 {t("anova.introduction.levene.desc1")}
-              </p>
-              <p className="card-text small text-muted mb-0">
-                <Trans
-                  i18nKey="anova.introduction.levene.desc2"
-                  components={{
-                    m1: <InlineMath math="k - 1" />,
-                    m2: <InlineMath math="n - k" />,
-                  }}
-                />
               </p>
             </div>
           </div>

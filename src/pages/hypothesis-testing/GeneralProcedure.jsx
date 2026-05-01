@@ -239,7 +239,14 @@ function GeneralProcedure() {
       {/* STEP 3: TEST STATISTIC */}
       <div className="mt-5">
         <h4>{t("hypothesisTesting.generalProcedure.step3.title")}</h4>
-        <p>{t("hypothesisTesting.generalProcedure.step3.description")}</p>
+        <p>
+          <Trans
+            i18nKey="hypothesisTesting.generalProcedure.step3.description"
+            components={{
+              a: <InlineMath math="\alpha" />,
+            }}
+          />
+        </p>
         <div className="mx-auto w-100 mb-5" style={{ maxWidth: "1000px" }}>
           <div className="card shadow-sm mt-3">
             <div className="card-body">
@@ -263,6 +270,8 @@ function GeneralProcedure() {
                     mu0: <InlineMath math="\mu_0" />,
                     s: <InlineMath math="s" />,
                     n: <InlineMath math="n" />,
+                    h0: <InlineMath math="H_0" />,
+                    n1: <InlineMath math="n-1" />,
                   }}
                 />
               </p>

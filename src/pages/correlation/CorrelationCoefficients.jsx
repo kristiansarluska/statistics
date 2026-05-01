@@ -38,9 +38,6 @@ function CorrelationCoefficients() {
                   components={{ bold: <strong /> }}
                 />
               </p>
-              <div className="text-center overflow-auto mt-4">
-                <BlockMath math="r = \frac{cov(X,Y)}{\sigma_X \sigma_Y}" />
-              </div>
             </div>
           </div>
         </div>
@@ -61,9 +58,6 @@ function CorrelationCoefficients() {
                   components={{ bold: <strong /> }}
                 />
               </p>
-              <div className="text-center overflow-auto mt-4">
-                <BlockMath math="r_s = 1 - \frac{6 \sum (P_i - R_i)^2}{n(n^2 - 1)}" />
-              </div>
             </div>
           </div>
         </div>

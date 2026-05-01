@@ -31,6 +31,7 @@ function PostHocTests() {
 
       {/* TEST CARDS */}
       <div className="row mb-5 g-3">
+        {/* TUKEY HSD */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-primary border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -46,22 +47,11 @@ function PostHocTests() {
                   }}
                 />
               </p>
-              <div className="text-center overflow-auto mt-3">
-                <BlockMath math="\mathrm{HSD} = q \sqrt{\frac{S_\varepsilon}{n_k}}" />
-              </div>
-              <p className="text-muted small mb-0">
-                <Trans
-                  i18nKey="anova.postHoc.tukey.legend"
-                  components={{
-                    m1: <InlineMath math="q" />,
-                    m2: <InlineMath math="n_k" />,
-                  }}
-                />
-              </p>
             </div>
           </div>
         </div>
 
+        {/* BONFERRONI */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-success border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">
@@ -77,19 +67,11 @@ function PostHocTests() {
                   }}
                 />
               </p>
-              <div className="text-center overflow-auto mt-3">
-                <BlockMath math="\alpha^* = \frac{\alpha}{m}" />
-              </div>
-              <p className="text-muted small mb-0">
-                <Trans
-                  i18nKey="anova.postHoc.bonferroni.legend"
-                  components={{ m: <InlineMath math="\alpha^*" /> }}
-                />
-              </p>
             </div>
           </div>
         </div>
 
+        {/* SCHEFFE */}
         <div className="col-md-6 col-lg-4">
           <div className="card h-100 shadow-sm border-warning border-2 border-top-0 border-bottom-0 border-end-0">
             <div className="card-body">

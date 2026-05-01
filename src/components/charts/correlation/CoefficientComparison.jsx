@@ -253,7 +253,7 @@ function CoefficientComparison() {
         {/* Outlier Inputs & Actions */}
         <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 gap-md-4 w-100">
           <div className="d-flex flex-column flex-sm-row gap-3 gap-sm-4 justify-content-center">
-            <div style={{ width: "160px" }}>
+            <div style={{ width: "200px" }}>
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <label className="form-label small fw-bold text-secondary mb-0">
                   {t("correlation.comparison.outlierControls.labelX")}
@@ -273,7 +273,7 @@ function CoefficientComparison() {
               />
             </div>
 
-            <div style={{ width: "160px" }}>
+            <div style={{ width: "200px" }}>
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <label className="form-label small fw-bold text-secondary mb-0">
                   {t("correlation.comparison.outlierControls.labelY")}

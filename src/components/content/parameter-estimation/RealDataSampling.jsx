@@ -9,7 +9,7 @@ import StatsBadge from "../helpers/StatsBadge";
 // Population parameters based on the full NUTS3 dataset
 const POP_MEAN = 46.2226;
 const POP_STD = 3.7576;
-const MAX_SAMPLES = 5;
+const MAX_SAMPLES = 10;
 
 /**
  * @function computeStats
