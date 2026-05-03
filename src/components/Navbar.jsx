@@ -170,6 +170,7 @@ function Navbar({ onToggleSidebar, isSidebarOpen, closeSidebar }) {
               <a
                 className="nav-link"
                 href="https://www.geoinformatics.upol.cz/dprace/bakalarske/sarluska26/"
+                target="_blank"
                 onClick={handleHomeClick}
               >
                 {t("navbar.about")}
