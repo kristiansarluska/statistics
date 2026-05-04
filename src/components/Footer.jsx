@@ -40,6 +40,16 @@ function Footer() {
                 Kristián ŠARLUŠKA
               </a>
               <br />
+              {t("footer.license")}
+              <a
+                href="https://www.gnu.org/licenses/gpl-3.0.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-primary text-decoration-none"
+              >
+                GNU GPL v3
+              </a>
+              <br />
               {t("footer.thesis")}
               <br />
               {t("footer.supervisor")}

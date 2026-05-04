@@ -1241,6 +1241,7 @@
   "footer": {
     "thesis": "Vytvořeno v rámci bakalářské práce",
     "supervisor": "Školitel: Mgr. Karel Macků, Ph.D.",
+    "license": "Licencováno pod ",
     "sourceCode": "GitHub | Zdrojový kód",
     "ui": "UI:",
     "iconsBy": "Ikony od"

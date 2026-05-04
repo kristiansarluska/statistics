@@ -1224,6 +1224,7 @@
   "footer": {
     "thesis": "Created as part of a bachelor's thesis",
     "supervisor": "Supervisor: Mgr. Karel Macků, Ph.D.",
+    "license": "Licensed under ",
     "sourceCode": "GitHub | Source code",
     "ui": "UI:",
     "iconsBy": "Icons by"
